@@ -1,0 +1,69 @@
+.loginForm{
+    width: 100%;
+    flex-grow: 1;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.formBox{
+    display: flex;
+    flex-direction: column;
+    padding: 25px 0;
+    gap: 25px;
+}
+
+.h2{
+    color: #171717;
+    font-size: 40px;
+}
+
+.h2 span{
+    -webkit-text-stroke: 2px #171717;
+    color: transparent;
+    letter-spacing: 2px;
+    transition: all 0.5s ease;
+}
+
+.h2 span:hover{
+    color:#171717;
+}
+
+.h3{
+    color: #171717;
+    font-size: 30px;
+}
+
+.input{
+    height: 40px;
+}
+
+.notify span{
+    color:#171717;
+}
+
+.passIcon{
+    border: 0;
+    outline: 0;
+    min-width: 40px;
+    height: 40px;
+    padding: 5px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    position: absolute;
+    right: 0;
+}
+.passIcon .eye{
+    width: 1.5rem;
+    height: 1.5rem;
+    color: #171717;
+}
+
+.inputWrapper{
+    display: flex;
+    flex-wrap: nowrap;
+    position: relative;
+}

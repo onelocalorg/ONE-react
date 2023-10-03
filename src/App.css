@@ -1,0 +1,14 @@
+:root{
+  --primary-color:#7A40F2F2;
+  --background-color-main:#F2F8FD;
+}
+
+.App {
+  width: 100%;
+  min-height: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #E6E6E6;
+}

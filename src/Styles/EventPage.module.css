@@ -1,0 +1,302 @@
+.mainDiv {
+  width: 100%;
+  min-height: inherit;
+  background-color: #e6e6e6;
+}
+
+.dataContainer {
+  max-width: 900px;
+  padding: 15px;
+  width: 100%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 110px;
+}
+
+.eventImg {
+  width: 100%;
+  margin: auto;
+  height: 263px;
+  object-fit: cover;
+  border-radius: 0px 0px 10px 10px;
+}
+
+.boxes {
+  min-height: 140px;
+  width: 90%;
+  margin: auto;
+  display: flex;
+  gap: 15px;
+}
+
+.iconDiv {
+  width: 142px;
+  height: 138px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.infoDiv {
+  flex: 1;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.producerDiv {
+  width: 186px;
+  height: 194px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: #e3c384;
+}
+
+.producerInfo {
+  flex: 1;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.descDiv {
+  min-height: 140px;
+  width: 95%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.purchase {
+  max-width: 527px;
+  margin: auto;
+  width: 90%;
+  height: 115px;
+  background-color: #a493b7;
+  border-radius: 15px;
+  font-size: 32px;
+  font-weight: 500;
+  color: #fff;
+  position: relative;
+  border: 0;
+  outline: 0;
+  box-shadow: 0 0 10px #6f7ec940;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.purchase:hover{
+  background-color: #fff;
+  color: #7744b0;
+}
+
+.purchase:hover > .arrowIcon > img{
+  transform: rotate(-45deg);
+}
+
+.arrowIcon {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background-color: #7744b0;
+  color: #fff;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arrowIcon > img{
+  transition: transform 0.3s ease;
+}
+
+.date {
+  font-size: 32px;
+  font-weight: 500;
+}
+
+.timing {
+  font-size: 24px;
+  font-weight: 300;
+}
+
+.proName {
+  font-size: 36px;
+  font-weight: 400;
+  text-transform: capitalizes;
+}
+
+.desc {
+  font-size: 36px;
+  font-weight: 500;
+}
+
+.descDetail {
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.eventName {
+  font-size: 48px;
+  font-weight: 500;
+}
+
+.brand {
+  position: absolute;
+  font-size: 64px;
+  font-weight: 400;
+  color: #fff;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@media only screen and (max-width: 768px) {
+  .date {
+    font-size: 28px;
+    font-weight: 500;
+  }
+
+  .timing {
+    font-size: 20px;
+    font-weight: 300;
+  }
+
+  .proName {
+    font-size: 30px;
+    font-weight: 400;
+    text-transform: capitalizes;
+  }
+
+  .desc {
+    font-size: 30px;
+    font-weight: 500;
+  }
+
+  .descDetail {
+    font-size: 14px;
+    font-weight: 300;
+  }
+
+  .eventName {
+    font-size: 36px;
+    font-weight: 500;
+  }
+
+  .brand{
+    font-size: 45px;
+  }
+}
+
+@media only screen and (max-width: 425px) {
+  .date {
+    font-size: 24px;
+    font-weight: 500;
+  }
+
+  .timing {
+    font-size: 16px;
+    font-weight: 300;
+  }
+
+  .proName {
+    font-size: 24px;
+    font-weight: 400;
+    text-transform: capitalizes;
+  }
+
+  .desc {
+    font-size: 24px;
+    font-weight: 500;
+  }
+
+  .descDetail {
+    font-size: 13px;
+    font-weight: 300;
+  }
+
+  .eventName {
+    font-size: 26px;
+    font-weight: 500;
+  }
+
+  .iconDiv {
+    width: 120px;
+    height: 120px;
+  }
+
+  .iconDiv > img {
+    width: 90px;
+    height: 90px;
+  }
+
+  .producerDiv {
+    width: 150px;
+    height: 150px;
+  }
+
+  .producerDiv > img {
+    width: 100%;
+  }
+
+  .purchase {
+    max-width: 400px;
+    margin: auto;
+    width: 90%;
+    height: 100px;
+    font-size: 24px;
+    font-weight: 500;
+  }
+
+  .arrowIcon {
+    width: 40px;
+    height: 40px;
+    right: 20px;
+  }
+
+  .arrowIcon > img {
+    width: 20px;
+  }
+
+  .brand{
+    font-size: 40px;
+  }
+}
+
+@media only screen and (max-width: 325px) {
+  .boxes {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .iconDiv {
+    width: 142px;
+    height: 138px;
+  }
+
+  .purchase {
+    height: 70px;
+    font-size: 18px;
+  }
+
+  .arrowIcon {
+    right: 10px;
+  }
+}

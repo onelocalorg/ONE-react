@@ -1,0 +1,6 @@
+.dashboard{
+    min-height: inherit;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
