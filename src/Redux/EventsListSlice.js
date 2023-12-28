@@ -1,3 +1,5 @@
+// EventsListSlice.js
+
 import { createSlice } from "@reduxjs/toolkit";
 
 const EventsListSlice = createSlice({
@@ -6,8 +8,12 @@ const EventsListSlice = createSlice({
     // Your initial state
   },
   reducers: {
-    // Your reducers
+    eventfetch: (state, action) => {
+      // Your reducer logic here
+    },
   },
 });
 
-export const { actions, reducer } = EventsListSlice;
+// Export the actions and the reducer
+export const { eventfetch } = EventsListSlice.actions;
+export default EventsListSlice.reducer;
