@@ -127,16 +127,7 @@ const EventPage = () => {
         <div className={Style.descDiv}>
           <p className={Style.desc}>Description</p>
           <p className={Style.descDetail}>
-            Enjoy your favorite dishes and a lovely your friends and family and
-            have a great time. Food from local food trucks will be available for
-            purchase. Read More...Enjoy your favorite dishes and a lovely your
-            friends and family and have a great time. Food from local food
-            trucks will be available for purchase. Read More...Enjoy your
-            favorite dishes and a lovely your friends and family and have a
-            great time. Food from local food trucks will be available for
-            purchase. Read More...Enjoy your favorite dishes and a lovely your
-            friends and family and have a great time. Food from local food
-            trucks will be available for purchase. Read More...
+            {event.about ? event.about : ""}
           </p>
         </div>
 
