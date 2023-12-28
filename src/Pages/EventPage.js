@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useLocation, Link } from "react-router-dom";
-import banner from "../images/Rectangle 5918.svg";
+import { useLocation, Link, useNavigate } from "react-router-dom";
+import logo from "../images/logo.svg";
+import user from "../images/user.png";
 import moment from "moment";
 import calendarIcon from "../images/Group 33778.svg";
 import locationIcon from "../images/Group 18184.svg";
@@ -13,7 +14,6 @@ const EventPage = () => {
   const [data, setData] = useState([]);
   const [img, setImg] = useState();
   const [eventName, setEventName] = useState();
-  const { event } = useParams();
   const location = useLocation();
   const [add, setAdd] = useState();
   const [fullAdd, setFullAdd] = useState();
@@ -37,33 +37,42 @@ const EventPage = () => {
     }
   }, [location]);
 
-  console.log(event);
+  const navigate = useNavigate();
+  const onLastPage = () => {
+    navigate("/");
+  };
 
   return (
     <div className={Style.mainDiv}>
-      <div
-        style={{
-          width: "100%",
-          height: "100px",
-          borderRadius: "0 0 10px 10px",
-          overflow: "hidden",
-          position: "fixed",
-        }}
-      >
-        <h2
-        className={Style.brand}
+      <div className={Style.navHeader}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "7px",
+            flexGrow: "1",
+          }}
         >
-          ONE|BOULDER
-        </h2>
-        <img
-          src={banner}
-          alt="banner"
-          style={{ width: "100%", height: "100%", objectFit: "cover" }}
-        />
+          <img src={logo} alt="logo" className={Style.oneLogo} />
+          <h2 className={Style.brand}>NE</h2>
+        </div>
+        <div className={Style.userCover}>
+          <img
+            src={user}
+            alt="user"
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
+        </div>
       </div>
       <div className={Style.dataContainer}>
+        <div>
+          <button className={Style.backButton} onClick={onLastPage}>
+            {"< back"}
+          </button>
+        </div>
         <img src={img ? img : ""} alt="event" className={Style.eventImg} />
-        <h2 className={Style.eventName} >{eventName}</h2>
+        <h2 className={Style.eventName}>{eventName}</h2>
 
         {/* boxes 1  */}
         <div className={Style.boxes}>
@@ -76,7 +85,7 @@ const EventPage = () => {
                 ? moment(data[0].start_date).format("DD MMMM YYYY")
                 : ""}
             </p>
-            <p className={Style.timing} >
+            <p className={Style.timing}>
               {data.length ? moment(data[0].start_date).format("ddd") : ""},{" "}
               {data.length ? moment(data[0].start_date).format("hh:mm A") : ""}{" "}
               - {data.length ? moment(data[0].end_date).format("hh:mm A") : ""}
@@ -90,12 +99,8 @@ const EventPage = () => {
             <img src={locationIcon} alt="locationIcon" />
           </div>
           <div className={Style.infoDiv}>
-            <p className={Style.date}>
-              {data.length ? add : ""}
-            </p>
-            <p className={Style.timing}>
-              {data.length ? fullAdd : ""}
-            </p>
+            <p className={Style.date}>{data.length ? add : ""}</p>
+            <p className={Style.timing}>{data.length ? fullAdd : ""}</p>
           </div>
         </div>
 
@@ -110,7 +115,7 @@ const EventPage = () => {
             <img src={proImg} alt="producerIcon" />
           </div>
           <div className={Style.producerInfo}>
-            <p className={Style.proName} >
+            <p className={Style.proName}>
               {data.length ? producer.first_name : ""}{" "}
               {data.length ? producer.last_name : ""}
             </p>
@@ -119,11 +124,9 @@ const EventPage = () => {
         </div>
 
         {/* boxes 4 */}
-        <div
-        className={Style.descDiv}
-        >
-          <p className={Style.desc} >Description</p>
-          <p className={Style.descDetail} >
+        <div className={Style.descDiv}>
+          <p className={Style.desc}>Description</p>
+          <p className={Style.descDetail}>
             Enjoy your favorite dishes and a lovely your friends and family and
             have a great time. Food from local food trucks will be available for
             purchase. Read More...Enjoy your favorite dishes and a lovely your
@@ -139,14 +142,12 @@ const EventPage = () => {
 
         {/* ticket buy cta  */}
         <Link
-        className={Style.purchase}
+          className={Style.purchase}
           to={data.length ? data[0].ticket_purchase_link : ""}
           target="_blank"
         >
           <span>BUY TICKET ${data.length ? data[0].price : ""}</span>
-          <span
-          className={Style.arrowIcon}
-          >
+          <span className={Style.arrowIcon}>
             <img src={arrow} alt="arrow" />
           </span>
         </Link>

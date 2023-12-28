@@ -17,7 +17,12 @@ const LoginForm = () => {
     formState: { errors },
   } = useForm();
 
-  const errorMsg = Object.values(errors).map((item) => item.message);
+  useEffect(() => {
+    const errorMsg = Object.values(errors).map((item) => item.message);
+    errorMsg.slice(0, 1).forEach((errorMessage) => {
+      ToasterComponent(errorMessage, 3000);
+    });
+  }, [errors]);
 
   const navigate = useNavigate();
 
@@ -44,10 +49,6 @@ const LoginForm = () => {
       navigate("/dashboard");
     }, 1000);
   };
-
-  useEffect(() => {
-    errorMsg.forEach((errorMessage) => ToasterComponent(errorMessage, 3000));
-  }, [errorMsg]);
 
   const [show, setShow] = useState(false);
 
@@ -90,7 +91,11 @@ const LoginForm = () => {
             type="button"
             onClick={() => setShow((prev) => !prev)}
           >
-            {show ? <AiOutlineEyeInvisible className="eye" /> : <AiOutlineEye className="eye" />}
+            {show ? (
+              <AiOutlineEyeInvisible className="eye" />
+            ) : (
+              <AiOutlineEye className="eye" />
+            )}
           </button>
         </div>
         <span>
