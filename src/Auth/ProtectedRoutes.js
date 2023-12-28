@@ -6,7 +6,7 @@ const ProtectedRoutes = () => {
   const navigate = useNavigate();
   useEffect(() => {
     let login = localStorage.getItem("success_key");
-    
+
     // Check if the value is null or "null"
     if (login === null || login.trim() === "null") {
       navigate("/login");

@@ -1,12 +1,10 @@
 import axios from "axios";
 
-const token = localStorage.getItem("access_token")
+const token = localStorage.getItem("access_token");
 
 export const axiosClient = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
-  headers: { "X-Custom-Header": "foobar",
-    Authorization: `Bearer ${token}`
-},
+  headers: { "X-Custom-Header": "foobar", Authorization: `Bearer ${token}` },
 });
 axiosClient.interceptors.response.use(
   function (response) {
@@ -46,7 +44,7 @@ axiosClient.interceptors.response.use(
       } else {
         // If URL is "/auth/refresh-tokens", navigate to "/dashboard"
         // console.log("Navigating to dashboard");
-        localStorage.clear()
+        localStorage.clear();
         window.location.href = "/dashboard";
         return Promise.reject(error);
       }
@@ -57,7 +55,6 @@ axiosClient.interceptors.response.use(
     }
   }
 );
-
 
 // axiosClient.interceptors.response.use(
 //   function (response) {
@@ -91,10 +88,8 @@ axiosClient.interceptors.response.use(
 
 //       } else {
 
-
 //       }
 //     }
-
 
 //     if (res.data.code === 429) {
 //       console.log("Hellllo")
@@ -105,7 +100,6 @@ axiosClient.interceptors.response.use(
 
 axiosClient.interceptors.request.use(
   function (request) {
-
     return request;
   },
   function (error) {
