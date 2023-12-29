@@ -124,11 +124,10 @@ const EventPage = () => {
         </div>
 
         {/* boxes 4 */}
+
         <div className={Style.descDiv}>
           <p className={Style.desc}>Description</p>
           <p className={Style.descDetail}>
-            {event.about ? event.about : ""}
-          </p>
         </div>
 
         {/* ticket buy cta  */}
