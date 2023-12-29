@@ -10,6 +10,7 @@ import arrow from "../images/Shape.svg";
 import { singleEvents } from "../api/services";
 
 import Style from "../Styles/EventPage.module.css";
+import Loader from "../Components/Loader";
 
 const EventPage = () => {
   const { eventId } = useParams();
@@ -24,14 +25,12 @@ const EventPage = () => {
     const fetchEventData = async () => {
       if (eventId) {
         const response = await singleEvents(eventId);
-        console.log(response);
         setEventData(response?.data);
       }
     };
 
     fetchEventData();
   }, [eventId]);
-  console.log(eventId);
 
   return (
     <>
