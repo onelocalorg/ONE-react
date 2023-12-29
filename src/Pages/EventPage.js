@@ -29,8 +29,7 @@ const EventPage = () => {
     };
 
     fetchEventData();
-  }, []);
-
+  }, [eventId]);
   console.log(eventData);
 
   return (
@@ -66,6 +65,7 @@ const EventPage = () => {
           src={eventData?.event_image}
           alt="event"
           className={Style.eventImg}
+          loading="eager"
         />
         <h2 className={Style.eventName}>{eventData?.name}</h2>
 
@@ -91,7 +91,7 @@ const EventPage = () => {
         {/* boxes 2  */}
         <div className={Style.boxes}>
           <div className={Style.iconDiv} style={{ backgroundColor: "#E3C384" }}>
-            <img src={locationIcon} alt="locationIcon" />
+            <img src={locationIcon} alt="locationIcon" loading="eager" />
           </div>
           <div className={Style.infoDiv}>
             <p className={Style.date}>{eventData?.address}</p>
@@ -112,6 +112,7 @@ const EventPage = () => {
             <img
               src={eventData ? eventData?.eventProducer?.pic : proImg}
               alt="producerIcon"
+              loading="eager"
               style={{
                 width: "100%",
                 height: "100%",
@@ -143,12 +144,14 @@ const EventPage = () => {
         {/* ticket buy cta  */}
         <Link
           className={Style.purchase}
-          to={eventData ? eventData?.tickets?.ticket_purchase_link : ""}
+          to={eventData ? eventData?.tickets[0]?.ticket_purchase_link : ""}
           target="_blank"
         >
-          <span>BUY TICKET ${eventData ? eventData?.tickets?.price : ""}</span>
+          <span>
+            BUY TICKET ${eventData ? eventData?.tickets[0]?.price : ""}
+          </span>
           <span className={Style.arrowIcon}>
-            <img src={arrow} alt="arrow" />
+            <img src={arrow} alt="arrow" loading="eager" />
           </span>
         </Link>
       </div>
