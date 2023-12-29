@@ -18,6 +18,7 @@ import Loader from "../Components/Loader";
 
 function UserData() {
   const [isLoading, setIsLoading] = useState(false);
+  console.log(isLoading);
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(false);
   const [pagination, setPagination] = useState({
