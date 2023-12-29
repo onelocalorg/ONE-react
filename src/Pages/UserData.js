@@ -16,7 +16,6 @@ import Card from "../Components/Card";
 
 import Loader from "../Components/Loader";
 
-
 function UserData() {
   const [isLoading, setIsLoading] = useState(false);
   const [items, setItems] = useState([]);
@@ -30,19 +29,20 @@ function UserData() {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [search, setSearch] = useState(false);
+  const [filterData, setFilterData] = useState("");
 
   const fetchMoreData = async () => {
     try {
       setIsLoading(true);
-  
+
       const data = {
         start_date: moment(startDate).format("YYYY-MM-DD"),
         end_date: moment(endDate).format("YYYY-MM-DD"),
       };
-  
+
       const response = await listEvents(pagination.page, data);
       const eventList = response.data.events;
-  
+
       if (eventList.length > 0) {
         setPagination((prev) => ({
           ...prev,
@@ -51,14 +51,14 @@ function UserData() {
           totalPage: response.data.totalPage,
         }));
       }
-  
+
       setHasMore(page < totalPage);
-  
+
       if (!eventList || eventList.length === 0) {
         setHasMore(false);
         return;
       }
-  
+
       setItems((prevItems) => [...prevItems, ...eventList]);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -66,11 +66,11 @@ function UserData() {
       setIsLoading(false);
     }
   };
-  
+
   const fetchFirstData = async () => {
     try {
       setIsLoading(true);
-  
+
       setItems([]);
       setSearch(true);
       setPagination({
@@ -78,15 +78,15 @@ function UserData() {
         page: 1,
         totalPage: 3,
       });
-  
+
       const data = {
         start_date: moment(startDate).format("YYYY-MM-DD"),
         end_date: moment(endDate).format("YYYY-MM-DD"),
       };
-  
+
       const response = await listEvents(1, data);
       const eventList = response.data.events;
-  
+
       if (eventList.length > 0) {
         setPagination((prev) => ({
           ...prev,
@@ -95,23 +95,27 @@ function UserData() {
           totalPage: response.data.totalPage,
         }));
       }
-  
+
       setHasMore(page < totalPage + 1);
-  
+
       if (!eventList || eventList.length === 0) {
         setHasMore(false);
         return;
       }
-  
+
       setItems(eventList);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   };
 
-  // console.log(items);
+  const filteredEvents = items.filter((user) => {
+    return (
+      user.name && user.name.toLowerCase().includes(filterData.toLowerCase())
+    );
+  });
 
   return (
     <div className={Style.maindiv}>
@@ -121,6 +125,9 @@ function UserData() {
         setStartDate={setStartDate}
         setEndDate={setEndDate}
         handleSearch={fetchFirstData}
+        filter={items.length > 0 ? true : false}
+        // filter={items ? true : false}
+        setFilterData={setFilterData}
       />
 
       {isLoading ? (
@@ -152,7 +159,7 @@ function UserData() {
                 Please select a date interval to fetch data
               </p>
             ) : (
-              items.map((event, index) => (
+              filteredEvents.map((event, index) => (
                 <Card
                   key={index}
                   index={index}
