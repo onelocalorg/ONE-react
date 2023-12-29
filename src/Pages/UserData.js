@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { listEvents } from "../api/services";
 import Style from "../Styles/UserData.module.css";
@@ -112,6 +112,24 @@ function UserData() {
     }
   };
 
+  useEffect(() => {
+    const start_date = moment().format("YYYY-MM-DD");
+
+    // Set end_date to one month from today
+    const end_date = moment().add(1, "months").format("YYYY-MM-DD");
+
+    const initialDate = {
+      start_date: start_date,
+      end_date: end_date,
+    };
+    const fetchDataOfMonth = async () => {
+      const res = await listEvents(1, initialDate);
+      const dataToShow = res.data.events;
+      setItems(dataToShow);
+    };
+    fetchDataOfMonth();
+  }, []);
+
   const filteredEvents = items.filter((user) => {
     return (
       user.name && user.name.toLowerCase().includes(filterData.toLowerCase())
@@ -162,17 +180,18 @@ function UserData() {
             ) : (
               filteredEvents.map((event, index) => (
                 <Card
+                  eventId={event?.id}
                   key={index}
                   index={index}
                   tent={tent}
-                  img={event.event_image}
-                  start_date={event.start_date}
-                  name={event.name}
-                  full_address={event.full_address}
+                  img={event?.event_image}
+                  start_date={event?.start_date}
+                  name={event?.name}
+                  full_address={event?.full_address}
                   locationPin={locationPin}
-                  ticket={event.tickets}
-                  address={event.address}
-                  eventProducer={event.eventProducer}
+                  ticket={event?.tickets}
+                  address={event?.address}
+                  eventProducer={event?.eventProducer}
                 />
               ))
             )}
