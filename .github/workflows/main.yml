@@ -35,6 +35,6 @@ jobs:
           source ~/.nvm/nvm.sh
           node -v
           npm -v
-          npm install
+          npm i --legacy-peer-deps
           npm list
           npm run build
