@@ -63,8 +63,6 @@ export const listEvents = async (page, data) => {
 export const singleEvents = async (eventId) => {
   try {
     const response = await axiosClient.get(`/open/events/${eventId}`);
-    console.log(response);
-
     return response.data;
   } catch (error) {
     console.log(error);
