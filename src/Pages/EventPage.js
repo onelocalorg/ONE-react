@@ -127,7 +127,7 @@ const EventPage = () => {
 
         <div className={Style.descDiv}>
           <p className={Style.desc}>Description</p>
-          <p className={Style.descDetail}>
+          <p className={Style.descDetail}></p>
         </div>
 
         {/* ticket buy cta  */}
