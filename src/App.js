@@ -5,7 +5,7 @@ import Forgot from "./Pages/Forgot";
 import NotFound from "./Pages/NotFound";
 import ProtectedRoutes from "./Auth/ProtectedRoutes";
 import Dashboard from "./Pages/Dashboard";
-import {ToastContainer} from 'react-toastify'
+import { ToastContainer } from "react-toastify";
 import UserList from "./Pages/UserList";
 import TicketList from "./Pages/TicketList";
 import Reset from "./Pages/Reset";
@@ -19,16 +19,22 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/dashboard" element={<ProtectedRoutes cmp={Dashboard} />}>
+          <Route
+            path="/dashboard"
+            element={<ProtectedRoutes cmp={Dashboard} />}
+          >
             <Route path="/dashboard/userlist" element={<UserList />} />
             <Route path="/dashboard/ticketlist" element={<TicketList />} />
-            <Route path="/dashboard/subscriptionsplans" element={<SubscriptionsPlans />} />
+            <Route
+              path="/dashboard/subscriptionsplans"
+              element={<SubscriptionsPlans />}
+            />
           </Route>
           <Route path="/forgot" element={<Forgot />} />
           <Route path="/login" element={<Login />} />
           <Route path="/reset-password" element={<Reset />} />
           <Route path="/" element={<UserData />} />
-          <Route path="/event/:event" element={<EventPage />} />
+          <Route path="/event/:eventId" element={<EventPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <ToastContainer />

@@ -1,9 +1,9 @@
 import React from "react";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
-import EventPage from "../Pages/EventPage";
 
 const Card = ({
+  eventId,
   index,
   tent,
   img,
@@ -11,16 +11,11 @@ const Card = ({
   name,
   full_address,
   locationPin,
-  ticket,
-  address,
-  eventProducer,
 }) => {
   const navigate = useNavigate();
 
   const ticketPage = () => {
-    navigate(`/event/${ticket[0].name}`, {
-      state: { ticket, img, name, address, full_address, eventProducer },
-    });
+    navigate(`/event/${eventId}`);
   };
 
   return (
@@ -57,6 +52,7 @@ const Card = ({
         src={img}
         style={{ width: "155px", height: "163px", borderRadius: "10px" }}
         alt="event"
+        loading="lazy"
       />
 
       <div
@@ -88,11 +84,20 @@ const Card = ({
           }}
         >
           <img src={locationPin} alt="location" />
-          {full_address}
+          <p
+            style={{
+              maxWidth: "380px",
+              height: "inherit",
+              display: "inline-block",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              margin: "auto",
+            }}
+          >
+            {full_address}
+          </p>
         </p>
-      </div>
-      <div style={{ display: "none" }}>
-        <EventPage ticket={ticket} />
       </div>
     </div>
   );
