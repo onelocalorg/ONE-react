@@ -9,6 +9,7 @@ import { logInApi } from "../api/services";
 import ToasterSuccess from "./../Components/ToasterSuccess";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import Loader from "../Components/Loader";
+import defaultStyle from "../Styles/InputComponent.module.css";
 
 const LoginForm = () => {
   const {
@@ -71,6 +72,7 @@ const LoginForm = () => {
               required: "Enter Valid Email",
               maxLength: 80,
             }}
+            className={defaultStyle.input}
           />
         </div>
 
@@ -85,6 +87,7 @@ const LoginForm = () => {
               minLength: 6,
               maxLength: 12,
             }}
+            className={defaultStyle.input}
           />
           <button
             className={style.passIcon}
