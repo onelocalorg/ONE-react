@@ -34,7 +34,7 @@ const EventPage = () => {
 
   return (
     <>
-      {eventData ? (
+      {eventData !== undefined ? (
         <>
           <div className={Style.mainDiv}>
             <div className={Style.navHeader}>
@@ -68,7 +68,7 @@ const EventPage = () => {
                 src={eventData?.event_image}
                 alt="event"
                 className={Style.eventImg}
-                loading="eager"
+                loading="lazy"
               />
               <h2 className={Style.eventName}>{eventData?.name}</h2>
 
@@ -163,6 +163,8 @@ const EventPage = () => {
                 </p>
               </div>
 
+              {/* //here we need to mapover the tickets array and need to make radio button available options */}
+
               {/* ticket buy cta  */}
               <Link
                 className={Style.purchase}
@@ -181,6 +183,41 @@ const EventPage = () => {
                   <img src={arrow} alt="arrow" loading="eager" />
                 </span>
               </Link>
+            </div>
+          </div>
+        </>
+      ) : eventData === undefined ? (
+        <>
+          <div className={Style.mainDiv}>
+            <div className={Style.navHeader}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: "7px",
+                  flexGrow: "1",
+                }}
+              >
+                <img src={logo} alt="logo" className={Style.oneLogo} />
+                <h2 className={Style.brand}>NE</h2>
+              </div>
+              <div className={Style.userCover}>
+                <img
+                  src={user}
+                  alt="user"
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+              </div>
+            </div>
+            <div className={Style.dataContainer}>
+              <div>
+                <button className={Style.backButton} onClick={onLastPage}>
+                  {"< back"}
+                </button>
+              </div>
+
+              <h2 style={{ fontWeight: "600" }}>{`No Event Details Found `}</h2>
             </div>
           </div>
         </>
