@@ -18,7 +18,6 @@ import Loader from "../Components/Loader";
 
 function UserData() {
   const [isLoading, setIsLoading] = useState(false);
-  console.log(isLoading);
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(false);
   const [pagination, setPagination] = useState({
@@ -27,8 +26,14 @@ function UserData() {
     totalPage: 3,
   });
   const { page, totalPage } = pagination;
+
+  const currentDate = new Date();
+  const oneMonthLater = new Date(
+    currentDate.setMonth(currentDate.getMonth() + 1)
+  );
+
   const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(oneMonthLater);
   const [search, setSearch] = useState(false);
   const [filterData, setFilterData] = useState("");
 

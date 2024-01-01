@@ -17,6 +17,7 @@ function EventFilterComponent({
   const getFilterOutPut = (e) => {
     setFilterData(e.target.value);
   };
+
   return (
     <>
       <div className={Style.navHeader}>
@@ -70,7 +71,7 @@ function EventFilterComponent({
             onChange={(date) => setEndDate(date)}
             minDate={new Date()}
             className={Style.date_picker}
-            todayButton={"Today"}
+            todayButton={"Default"}
             dateFormat={"dd/MM/yyyy"}
           />
         </div>
