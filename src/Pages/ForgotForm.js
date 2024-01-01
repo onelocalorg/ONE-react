@@ -6,6 +6,7 @@ import ButtonComponent from "../Components/ButtonComponent";
 import ToasterComponent from "../Components/ToasterComponent";
 import { forgotApi } from "../api/services";
 import ToasterSuccess from "../Components/ToasterSuccess";
+import defaultStyle from "../Styles/InputComponent.module.css";
 
 const ForgotForm = () => {
   const {
@@ -50,6 +51,7 @@ const ForgotForm = () => {
               required: "Enter Valid Email",
               maxLength: 80,
             }}
+            className={defaultStyle.input}
           />
           <ButtonComponent type="submit" cta="Submit" />
         </form>
