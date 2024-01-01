@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import logo from "../images/logo.svg";
 import user from "../images/user.png";
 import moment from "moment";
@@ -11,6 +11,12 @@ import { singleEvents } from "../api/services";
 
 import Style from "../Styles/EventPage.module.css";
 import Loader from "../Components/Loader";
+import { useForm } from "react-hook-form";
+import InputComponent from "../Components/InputComponent";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import ToasterComponent from "../Components/ToasterComponent";
+import { calculateTotalTicketPrice } from "../utils/TaxCalculation";
 
 const EventPage = () => {
   const { eventId } = useParams();
@@ -19,18 +25,54 @@ const EventPage = () => {
     navigate("/");
   };
 
+  const schema = yup.object().shape({
+    ticket: yup.string().required("Do check ticket before buy"),
+  });
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      ticket: "0",
+    },
+  });
+  useEffect(() => {
+    const errorMsg = Object.values(errors).map((item) => item.message);
+    errorMsg.slice(0, 1).forEach((errorMessage) => {
+      ToasterComponent(errorMessage, 3000);
+    });
+  }, [errors]);
+
   const [eventData, setEventData] = useState({});
+  const [ticketData, setTicketData] = useState([]);
 
   useEffect(() => {
     const fetchEventData = async () => {
       if (eventId) {
         const response = await singleEvents(eventId);
         setEventData(response?.data);
+        setTicketData(response?.data?.tickets);
       }
     };
 
     fetchEventData();
   }, [eventId]);
+  const navigateToTicketPurchase = (link) => {
+    if (link) {
+      window.open(link, "_blank");
+    }
+  };
+  const onSubmit = (data) => {
+    const linktoTicketPurchase = ticketData.filter(
+      (item) => item.price === data.ticket
+    );
+    navigateToTicketPurchase(linktoTicketPurchase[0]?.ticket_purchase_link);
+  };
+
+  const formVal = watch();
 
   return (
     <>
@@ -165,24 +207,81 @@ const EventPage = () => {
 
               {/* //here we need to mapover the tickets array and need to make radio button available options */}
 
-              {/* ticket buy cta  */}
-              <Link
+              <form onSubmit={handleSubmit(onSubmit)} className={Style.descDiv}>
+                <p className={Style.desc}>Ticket list</p>
+                {ticketData &&
+                  ticketData?.map((ticketitem) => (
+                    <div
+                      key={ticketitem.id}
+                      style={{
+                        display: "flex",
+                        gap: "10px",
+                        justifyContent: "flex-start",
+                        alignItems: "center",
+                      }}
+                    >
+                      <InputComponent
+                        type={"radio"}
+                        register={register}
+                        inputRef={"ticket"}
+                        name={"ticket"}
+                        id={ticketitem.id}
+                        value={ticketitem?.price}
+                        // value={ticketitem?.ticket_purchase_link}
+                        style={{ height: "20px" }}
+                      />
+
+                      <label htmlFor={ticketitem.id}>
+                        {ticketitem.name}-${ticketitem.price}
+                      </label>
+                    </div>
+                  ))}
+                <hr />
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <p className={Style.desc}>Price and Taxes</p>
+                  {formVal.ticket === "0" ? (
+                    <></>
+                  ) : (
+                    <>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-start",
+                          gap: "10px",
+                        }}
+                      >
+                        Total Amount to Pay
+                        <span style={{ fontWeight: "600" }}>
+                          {calculateTotalTicketPrice(Number(formVal?.ticket))}{" "}
+                          $.
+                        </span>
+                      </div>
+                    </>
+                  )}
+                </div>
+                <hr />
+                <button
+                  type="submit"
+                  className={Style.purchase}
+                  style={{ marginTop: "10px" }}
+                >
+                  <span>PURCHASE</span>
+                  <span className={Style.arrowIcon}>
+                    <img src={arrow} alt="arrow" loading="eager" />
+                  </span>
+                </button>
+              </form>
+
+              {/* <Link
                 className={Style.purchase}
-                to={
-                  eventData?.tickets
-                    ? eventData?.tickets[0]?.ticket_purchase_link
-                    : ""
-                }
+                to={eventData?.tickets ? formVal?.ticket : ""}
                 target="_blank"
               >
-                <span>
-                  BUY TICKET $
-                  {eventData?.tickets ? eventData?.tickets[0]?.price : ""}
-                </span>
+                <span>PURCHASE</span>
                 <span className={Style.arrowIcon}>
                   <img src={arrow} alt="arrow" loading="eager" />
                 </span>
-              </Link>
+              </Link> */}
             </div>
           </div>
         </>
