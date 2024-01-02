@@ -320,7 +320,7 @@ const EventPage = () => {
 
                 <div style={{ display: "flex", flexDirection: "column" }}>
                   <p className={Style.desc}>Price and Taxes</p>
-                  {confirmation === true && (
+                  {confirmation === true && formVal?.quantity > 0 && (
                     <div>
                       <div className={Style.calcDiv}>
                         <p className={Style.descDetail}>Ticket Price</p>
