@@ -7,7 +7,7 @@ import calendarIcon from "../images/Group 33778.svg";
 import locationIcon from "../images/Group 18184.svg";
 import proImg from "../images/Oval Copy 5.png";
 import arrow from "../images/Shape.svg";
-import { singleEvents } from "../api/services";
+import { getAmountOfTickets, singleEvents } from "../api/services";
 
 import Style from "../Styles/EventPage.module.css";
 import Loader from "../Components/Loader";
@@ -16,7 +16,7 @@ import InputComponent from "../Components/InputComponent";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ToasterComponent from "../Components/ToasterComponent";
-import { calculateTotalTicketPrice } from "../utils/TaxCalculation";
+import InputWithPlusAndMinusComponent from "../Components/InputWithPlusMinusComp";
 
 const EventPage = () => {
   const { eventId } = useParams();
@@ -27,17 +27,18 @@ const EventPage = () => {
 
   const schema = yup.object().shape({
     ticket: yup.string().required("Do check ticket before buy"),
+    // quantity: yup.object().shape({ value: yup.number(), label: yup.string() }),
+    quantity: yup.number(),
   });
   const {
     register,
     handleSubmit,
+    setValue,
     watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: {
-      ticket: "0",
-    },
+    defaultValues: {},
   });
   useEffect(() => {
     const errorMsg = Object.values(errors).map((item) => item.message);
@@ -45,9 +46,11 @@ const EventPage = () => {
       ToasterComponent(errorMessage, 3000);
     });
   }, [errors]);
-
   const [eventData, setEventData] = useState({});
   const [ticketData, setTicketData] = useState([]);
+  const [loading, setloading] = useState(false);
+  const [taxAmount, setTaxAmount] = useState({});
+  const [confirmation, setConfirmation] = useState(false);
 
   useEffect(() => {
     const fetchEventData = async () => {
@@ -65,14 +68,70 @@ const EventPage = () => {
       window.open(link, "_blank");
     }
   };
-  const onSubmit = (data) => {
-    const linktoTicketPurchase = ticketData.filter(
-      (item) => item.price === data.ticket
-    );
-    navigateToTicketPurchase(linktoTicketPurchase[0]?.ticket_purchase_link);
+  const onSubmit = async (data) => {
+    try {
+      setloading(true); // Start loading
+      console.log(data);
+
+      // Fetch object which has the same price as data.ticket
+      const linktoTicketPurchase = ticketData.filter(
+        (item) => item.price === data.ticket
+      );
+
+      // API call to get the amount of tickets
+      const res = await getAmountOfTickets(
+        linktoTicketPurchase[0]?.id,
+        data.quantity
+      );
+      console.log(res);
+
+      // Set link to navigate
+      navigateToTicketPurchase(res?.data?.payment_link);
+    } catch (error) {
+      console.error("Error during submission:", error);
+      // Handle the error appropriately
+      // e.g., show an error message to the user
+    } finally {
+      setloading(false); // End loading
+    }
   };
 
   const formVal = watch();
+
+  const trakker = watch("ticket");
+
+  useEffect(() => {
+    setValue("quantity", 0);
+  }, [trakker]);
+  const trakkerQuantity = watch("quantity");
+  useEffect(() => {
+    setTaxAmount({});
+    const getDataOfAmountAndTax = async () => {
+      try {
+        if (Number(formVal?.quantity) > 0) {
+          setloading(true);
+          const linktoTicketPurchase = ticketData.filter(
+            (item) => item.price === formVal?.ticket
+          );
+
+          // API call to get the amount of tickets
+          const res = await getAmountOfTickets(
+            linktoTicketPurchase[0]?.id,
+            Number(formVal?.quantity)
+          );
+          setTaxAmount(res?.data);
+          setConfirmation(res?.success);
+          console.log(res);
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setloading(false);
+      }
+    };
+
+    getDataOfAmountAndTax();
+  }, [trakkerQuantity]);
 
   return (
     <>
@@ -227,36 +286,66 @@ const EventPage = () => {
                         name={"ticket"}
                         id={ticketitem.id}
                         value={ticketitem?.price}
-                        // value={ticketitem?.ticket_purchase_link}
                         style={{ height: "20px" }}
                       />
 
                       <label htmlFor={ticketitem.id}>
                         {ticketitem.name}-${ticketitem.price}
                       </label>
+
+                      {formVal.ticket === ticketitem.price && (
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            gap: "10px",
+                          }}
+                        >
+                          <InputWithPlusAndMinusComponent
+                            type="number"
+                            register={register}
+                            inputRef="quantity"
+                            boundary={ticketitem?.max_quantity_to_show}
+                            classNamebtn1={Style.iconCover}
+                            classNamebtn2={Style.iconCover}
+                            className={Style.counterInput}
+                            setValue={setValue}
+                          />
+                        </div>
+                      )}
                     </div>
                   ))}
                 <hr />
+
                 <div style={{ display: "flex", flexDirection: "column" }}>
                   <p className={Style.desc}>Price and Taxes</p>
-                  {formVal.ticket === "0" ? (
-                    <></>
-                  ) : (
-                    <>
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "flex-start",
-                          gap: "10px",
-                        }}
-                      >
-                        Total Amount to Pay
-                        <span style={{ fontWeight: "600" }}>
-                          {calculateTotalTicketPrice(Number(formVal?.ticket))}{" "}
-                          $.
-                        </span>
+                  {confirmation === true && (
+                    <div>
+                      <div className={Style.calcDiv}>
+                        <p className={Style.descDetail}>Ticket Price</p>
+                        <p className={Style.descDetail}>
+                          {taxAmount?.ticket_price} $
+                        </p>
                       </div>
-                    </>
+                      <div className={Style.calcDiv}>
+                        <p className={Style.descDetail}>Quantity</p>
+                        <p className={Style.descDetail}>
+                          {taxAmount?.quantity}
+                        </p>
+                      </div>
+                      <div className={Style.calcDiv}>
+                        <p className={Style.descDetail}>Service Tax</p>
+                        <p className={Style.descDetail}>
+                          {taxAmount?.service_tax}
+                        </p>
+                      </div>
+                      <hr />
+                      <div className={Style.calcDiv}>
+                        <p className={Style.descDetail}>Total Amount</p>
+                        <p className={Style.descDetail}>{taxAmount?.total} $</p>
+                      </div>
+                    </div>
                   )}
                 </div>
                 <hr />
@@ -271,17 +360,6 @@ const EventPage = () => {
                   </span>
                 </button>
               </form>
-
-              {/* <Link
-                className={Style.purchase}
-                to={eventData?.tickets ? formVal?.ticket : ""}
-                target="_blank"
-              >
-                <span>PURCHASE</span>
-                <span className={Style.arrowIcon}>
-                  <img src={arrow} alt="arrow" loading="eager" />
-                </span>
-              </Link> */}
             </div>
           </div>
         </>
@@ -316,15 +394,14 @@ const EventPage = () => {
                 </button>
               </div>
 
-              <h2 style={{ fontWeight: "600" }}>{`No Event Details Found `}</h2>
+              <h2 style={{ fontWeight: "600" }}>{`No Event Details Found`}</h2>
             </div>
           </div>
         </>
       ) : (
-        <>
-          <Loader />
-        </>
+        <></>
       )}
+      {loading && <Loader />}
     </>
   );
 };
