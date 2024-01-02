@@ -11,6 +11,7 @@ const InputComponent = ({
   value,
   name,
   className,
+  disabled,
 }) => {
   return (
     <>
@@ -23,6 +24,7 @@ const InputComponent = ({
         id={id}
         name={name}
         className={className}
+        disabled={disabled}
       />
     </>
   );

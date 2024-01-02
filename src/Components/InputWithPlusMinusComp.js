@@ -15,8 +15,9 @@ const InputWithPlusAndMinusComponent = ({
   classNamebtn1,
   classNamebtn2,
   setValue,
+  defaultValue,
 }) => {
-  const [value, setCounter] = useState(0);
+  const [value, setCounter] = useState(defaultValue);
 
   const handleIncrement = () => {
     setCounter((prevValue) =>

@@ -38,7 +38,9 @@ const EventPage = () => {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: {},
+    defaultValues: {
+      quantity: 1,
+    },
   });
   useEffect(() => {
     const errorMsg = Object.values(errors).map((item) => item.message);
@@ -97,11 +99,12 @@ const EventPage = () => {
   };
 
   const formVal = watch();
+  console.log(formVal);
 
   const trakker = watch("ticket");
 
   useEffect(() => {
-    setValue("quantity", 0);
+    setValue("quantity", 1);
   }, [trakker]);
   const trakkerQuantity = watch("quantity");
   useEffect(() => {
@@ -131,7 +134,7 @@ const EventPage = () => {
     };
 
     getDataOfAmountAndTax();
-  }, [trakkerQuantity]);
+  }, [trakkerQuantity, trakker]);
 
   return (
     <>
@@ -287,9 +290,21 @@ const EventPage = () => {
                         id={ticketitem.id}
                         value={ticketitem?.price}
                         style={{ height: "20px" }}
+                        disabled={
+                          ticketitem?.max_quantity_to_show === 0 ? true : false
+                        }
                       />
 
-                      <label htmlFor={ticketitem.id}>
+                      <label
+                        htmlFor={ticketitem.id}
+                        style={{
+                          cursor:
+                            ticketitem?.max_quantity_to_show === 0
+                              ? "no-drop"
+                              : "pointer",
+                        }}
+                      >
+                        {/* Label content here */}
                         {ticketitem.name}-${ticketitem.price}
                       </label>
 
@@ -304,6 +319,7 @@ const EventPage = () => {
                         >
                           <InputWithPlusAndMinusComponent
                             type="number"
+                            defaultValue={1}
                             register={register}
                             inputRef="quantity"
                             boundary={ticketitem?.max_quantity_to_show}
@@ -320,7 +336,7 @@ const EventPage = () => {
 
                 <div style={{ display: "flex", flexDirection: "column" }}>
                   <p className={Style.desc}>Price and Taxes</p>
-                  {confirmation === true && formVal?.quantity > 0 && (
+                  {confirmation === true && (
                     <div>
                       <div className={Style.calcDiv}>
                         <p className={Style.descDetail}>Ticket Price</p>
