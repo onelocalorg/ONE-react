@@ -69,6 +69,26 @@ export const singleEvents = async (eventId) => {
   }
 };
 
+export const getAmountOfTickets = async (ticketId, quantity) => {
+  try {
+    const response = await axiosClient.get(`/tickets/${ticketId}/${quantity}`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
+export const getTaxAndAmout = async (ticketId, quantity) => {
+  try {
+    const response = await axiosClient.get(`/tickets/${ticketId}/${quantity}`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
 export const subscriptionsPlansApi = async () => {
   try {
     const response = await axiosClient.get("/subscriptions/plans", {});
