@@ -115,7 +115,7 @@ const EventPage = () => {
     setTaxAmount({});
     const getDataOfAmountAndTax = async () => {
       try {
-        if (Number(formVal?.quantity) > 0) {
+        if (Number(formVal?.quantity) > 0 && formVal?.ticket) {
           setloading(true);
           const linktoTicketPurchase = ticketData.filter(
             (item) => item.price === formVal?.ticket

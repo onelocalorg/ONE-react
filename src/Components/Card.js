@@ -71,7 +71,7 @@ const Card = ({
         <p style={{ fontSize: "24px", fontWeight: "400", lineHeight: "36px" }}>
           {name}
         </p>
-        <p
+        <div
           style={{
             fontSize: "24px",
             fontWeight: "400",
@@ -96,7 +96,7 @@ const Card = ({
           >
             {full_address}
           </p>
-        </p>
+        </div>
       </div>
     </div>
   );
