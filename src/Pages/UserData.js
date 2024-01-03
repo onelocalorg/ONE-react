@@ -129,7 +129,7 @@ function UserData() {
     };
     const fetchDataOfMonth = async () => {
       const res = await listEvents(1, initialDate);
-      const dataToShow = res.data.events;
+      const dataToShow = res?.data?.events;
       setItems(dataToShow);
     };
     fetchDataOfMonth();
