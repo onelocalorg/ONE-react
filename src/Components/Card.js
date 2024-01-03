@@ -52,7 +52,6 @@ const Card = ({
         src={img}
         style={{ width: "155px", height: "163px", borderRadius: "10px" }}
         alt="event"
-        loading="lazy"
       />
 
       <div
@@ -72,7 +71,7 @@ const Card = ({
         <p style={{ fontSize: "24px", fontWeight: "400", lineHeight: "36px" }}>
           {name}
         </p>
-        <p
+        <div
           style={{
             fontSize: "24px",
             fontWeight: "400",
@@ -97,7 +96,7 @@ const Card = ({
           >
             {full_address}
           </p>
-        </p>
+        </div>
       </div>
     </div>
   );
