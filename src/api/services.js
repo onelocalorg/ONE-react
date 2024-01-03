@@ -73,7 +73,7 @@ export const singleEvents = async (eventId) => {
 export const getAmountOfTickets = async (ticketId, quantity) => {
   try {
     const response = await axiosClient.post(
-      `/tickets/${ticketId}/${quantity}`,
+      `/open/ticket-calculation/${ticketId}/${quantity}`,
       {
         isPaymentLink: true,
       }
@@ -89,7 +89,7 @@ export const getAmountOfTickets = async (ticketId, quantity) => {
 export const getTaxAndAmout = async (ticketId, quantity) => {
   try {
     const response = await axiosClient.post(
-      `/tickets/${ticketId}/${quantity}`,
+      `/open/ticket-calculation/${ticketId}/${quantity}`,
       {
         isPaymentLink: false,
       }
