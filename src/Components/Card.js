@@ -52,7 +52,6 @@ const Card = ({
         src={img}
         style={{ width: "155px", height: "163px", borderRadius: "10px" }}
         alt="event"
-        loading="lazy"
       />
 
       <div
