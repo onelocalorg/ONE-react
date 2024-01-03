@@ -7,7 +7,11 @@ import calendarIcon from "../images/Group 33778.svg";
 import locationIcon from "../images/Group 18184.svg";
 import proImg from "../images/Oval Copy 5.png";
 import arrow from "../images/Shape.svg";
-import { getAmountOfTickets, singleEvents } from "../api/services";
+import {
+  getAmountOfTickets,
+  getTaxAndAmout,
+  singleEvents,
+} from "../api/services";
 
 import Style from "../Styles/EventPage.module.css";
 import Loader from "../Components/Loader";
@@ -99,13 +103,13 @@ const EventPage = () => {
   };
 
   const formVal = watch();
-  console.log(formVal);
 
   const trakker = watch("ticket");
 
   useEffect(() => {
     setValue("quantity", 1);
   }, [trakker]);
+
   const trakkerQuantity = watch("quantity");
   useEffect(() => {
     setTaxAmount({});
@@ -118,7 +122,7 @@ const EventPage = () => {
           );
 
           // API call to get the amount of tickets
-          const res = await getAmountOfTickets(
+          const res = await getTaxAndAmout(
             linktoTicketPurchase[0]?.id,
             Number(formVal?.quantity)
           );
@@ -170,9 +174,8 @@ const EventPage = () => {
               </div>
               <img
                 src={eventData?.event_image}
-                alt="event"
+                alt={"event_image"}
                 className={Style.eventImg}
-                loading="lazy"
               />
               <h2 className={Style.eventName}>{eventData?.name}</h2>
 
@@ -212,7 +215,7 @@ const EventPage = () => {
                   className={Style.iconDiv}
                   style={{ backgroundColor: "#E3C384" }}
                 >
-                  <img src={locationIcon} alt="locationIcon" loading="eager" />
+                  <img src={locationIcon} alt="locationIcon" />
                 </div>
                 <div className={Style.infoDiv}>
                   <p className={Style.date}>{eventData?.address}</p>
@@ -236,7 +239,6 @@ const EventPage = () => {
                   <img
                     src={eventData ? eventData?.eventProducer?.pic : proImg}
                     alt="producerIcon"
-                    loading="eager"
                     style={{
                       width: "100%",
                       height: "100%",
@@ -306,17 +308,21 @@ const EventPage = () => {
                       >
                         {/* Label content here */}
                         {ticketitem.name}-${ticketitem.price}
+                        {ticketitem?.max_quantity_to_show === 0 && (
+                          <span
+                            style={{
+                              fontWeight: "600",
+                              color: "red",
+                              padding: "0 7px",
+                            }}
+                          >
+                            -- sold out --
+                          </span>
+                        )}
                       </label>
 
                       {formVal.ticket === ticketitem.price && (
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            gap: "10px",
-                          }}
-                        >
+                        <>
                           <InputWithPlusAndMinusComponent
                             type="number"
                             defaultValue={1}
@@ -328,7 +334,7 @@ const EventPage = () => {
                             className={Style.counterInput}
                             setValue={setValue}
                           />
-                        </div>
+                        </>
                       )}
                     </div>
                   ))}
@@ -368,11 +374,14 @@ const EventPage = () => {
                 <button
                   type="submit"
                   className={Style.purchase}
-                  style={{ marginTop: "10px" }}
+                  style={{
+                    marginTop: "10px",
+                    pointerEvents: !confirmation ? "none" : "",
+                  }}
                 >
                   <span>PURCHASE</span>
                   <span className={Style.arrowIcon}>
-                    <img src={arrow} alt="arrow" loading="eager" />
+                    <img src={arrow} alt="arrow" />
                   </span>
                 </button>
               </form>

@@ -69,9 +69,15 @@ export const singleEvents = async (eventId) => {
   }
 };
 
+//to get final purchase link to buy tickets
 export const getAmountOfTickets = async (ticketId, quantity) => {
   try {
-    const response = await axiosClient.get(`/tickets/${ticketId}/${quantity}`);
+    const response = await axiosClient.post(
+      `/tickets/${ticketId}/${quantity}`,
+      {
+        isPaymentLink: true,
+      }
+    );
     return response.data;
   } catch (error) {
     console.log(error);
@@ -79,9 +85,15 @@ export const getAmountOfTickets = async (ticketId, quantity) => {
   }
 };
 
+//to get amount , taxes and total amount
 export const getTaxAndAmout = async (ticketId, quantity) => {
   try {
-    const response = await axiosClient.get(`/tickets/${ticketId}/${quantity}`);
+    const response = await axiosClient.post(
+      `/tickets/${ticketId}/${quantity}`,
+      {
+        isPaymentLink: false,
+      }
+    );
     return response.data;
   } catch (error) {
     console.log(error);
