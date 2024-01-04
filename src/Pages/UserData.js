@@ -174,7 +174,8 @@ function UserData() {
               gap: "20px",
             }}
           >
-            {items.length === 0 && search ? (
+            {(items.length === 0 && search) ||
+            (filterData !== "" && filteredEvents.length === 0) ? (
               <p style={{ textAlign: "center", fontWeight: "600" }}>
                 No Events Found
               </p>
