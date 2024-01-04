@@ -31,7 +31,6 @@ const EventPage = () => {
 
   const schema = yup.object().shape({
     ticket: yup.string().required("Do check ticket before buy"),
-    // quantity: yup.object().shape({ value: yup.number(), label: yup.string() }),
     quantity: yup.number(),
   });
   const {
@@ -81,7 +80,7 @@ const EventPage = () => {
 
       // Fetch object which has the same price as data.ticket
       const linktoTicketPurchase = ticketData.filter(
-        (item) => item.price === data.ticket
+        (item) => item.price === Number(data.ticket)
       );
 
       // API call to get the amount of tickets
@@ -108,6 +107,33 @@ const EventPage = () => {
 
   useEffect(() => {
     setValue("quantity", 1);
+    const getDataOfAmountAndTax = async () => {
+      try {
+        if (formVal?.ticket) {
+          setloading(true);
+          const linktoTicketPurchase = ticketData.filter(
+            (item) => item.price === Number(formVal?.ticket)
+          );
+          console.log(linktoTicketPurchase);
+
+          // API call to get the amount of tickets
+          console.log(linktoTicketPurchase[0]?.id);
+          const res = await getTaxAndAmout(
+            linktoTicketPurchase[0]?.id,
+            Number(1)
+          );
+          setTaxAmount(res?.data);
+          setConfirmation(res?.success);
+          console.log(res);
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setloading(false);
+      }
+    };
+
+    getDataOfAmountAndTax();
   }, [trakker]);
 
   const trakkerQuantity = watch("quantity");
@@ -125,6 +151,7 @@ const EventPage = () => {
           console.log(linktoTicketPurchase);
 
           // API call to get the amount of tickets
+          console.log(linktoTicketPurchase[0]?.id);
           const res = await getTaxAndAmout(
             linktoTicketPurchase[0]?.id,
             Number(formVal?.quantity)
@@ -141,7 +168,7 @@ const EventPage = () => {
     };
 
     getDataOfAmountAndTax();
-  }, [trakkerQuantity, trakker]);
+  }, [trakkerQuantity]);
 
   return (
     <>
@@ -241,9 +268,9 @@ const EventPage = () => {
                 >
                   <img
                     src={
-                      eventData?.eventProducer?.pic
-                        ? eventData?.eventProducer?.pic
-                        : proImg
+                      eventData?.eventProducer?.pic === ""
+                        ? proImg
+                        : eventData?.eventProducer?.pic
                     }
                     alt="producerIcon"
                     style={{
@@ -298,7 +325,7 @@ const EventPage = () => {
                         inputRef={"ticket"}
                         name={"ticket"}
                         id={ticketitem.id}
-                        value={ticketitem?.price}
+                        value={Number(ticketitem?.price)}
                         style={{ height: "20px" }}
                         disabled={
                           ticketitem?.max_quantity_to_show === 0 ? true : false
@@ -313,6 +340,7 @@ const EventPage = () => {
                               ? "no-drop"
                               : "pointer",
                         }}
+                        className={Style.label}
                       >
                         {/* Label content here */}
                         {ticketitem.name}-${ticketitem.price}
