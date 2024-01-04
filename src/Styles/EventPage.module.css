@@ -70,7 +70,7 @@
 
 .descDiv {
   min-height: 140px;
-  width: 95%;
+  width: 90%;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -150,6 +150,7 @@
 .descDetail {
   font-size: 16px;
   font-weight: 300;
+  padding-left: 10px;
 }
 
 .eventName {
@@ -294,21 +295,34 @@
     width: 60px;
     height: 60px;
   }
+  .descDiv {
+    min-height: 100px;
+  }
 }
 
-@media only screen and (max-width: 425px) {
+@media only screen and (max-width: 430px) {
   .date {
-    font-size: 24px;
+    font-size: 16px;
     font-weight: 500;
+  }
+  .boxes {
+    min-height: auto;
+    gap: 8px;
+  }
+  .infoDiv {
+    padding: 5px;
   }
 
   .timing {
-    font-size: 16px;
+    font-size: 12px;
     font-weight: 300;
+  }
+  .eventImg {
+    height: auto;
   }
 
   .proName {
-    font-size: 24px;
+    font-size: 15px;
     font-weight: 400;
     text-transform: capitalizes;
   }
@@ -321,6 +335,7 @@
   .descDetail {
     font-size: 13px;
     font-weight: 300;
+    padding-left: 7px;
   }
 
   .eventName {
@@ -339,8 +354,8 @@
   }
 
   .producerDiv {
-    width: 150px;
-    height: 150px;
+    width: 52px;
+    height: 52px;
   }
 
   .producerDiv > img {
@@ -377,6 +392,17 @@
     width: 40px;
     height: 40px;
   }
+  .iconDiv {
+    width: 59px;
+    height: 56px;
+  }
+  .iconDiv > img {
+    width: 43px;
+    height: 40px;
+  }
+  .descDiv {
+    min-height: 70px;
+  }
 }
 
 @media only screen and (max-width: 325px) {
@@ -384,6 +410,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    min-height: auto;
   }
 
   .iconDiv {

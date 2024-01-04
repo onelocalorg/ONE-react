@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { listEvents } from "../api/services";
 import Style from "../Styles/UserData.module.css";
-// import AccordianComponent from "../Components/AccordianComponent";
-// import Accordion from "react-bootstrap/Accordion";
 import moment from "moment";
 import EventFilterComponent from "../Components/EventFilterComponent";
 
@@ -129,17 +127,19 @@ function UserData() {
     };
     const fetchDataOfMonth = async () => {
       const res = await listEvents(1, initialDate);
-      const dataToShow = res.data.events;
+      const dataToShow = res?.data?.events;
       setItems(dataToShow);
     };
     fetchDataOfMonth();
   }, []);
 
-  const filteredEvents = items.filter((user) => {
-    return (
-      user.name && user.name.toLowerCase().includes(filterData.toLowerCase())
-    );
-  });
+  const filteredEvents =
+    items &&
+    items.filter((user) => {
+      return (
+        user.name && user.name.toLowerCase().includes(filterData.toLowerCase())
+      );
+    });
 
   return (
     <div className={Style.maindiv}>
