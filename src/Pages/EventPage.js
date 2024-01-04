@@ -115,16 +115,18 @@ const EventPage = () => {
             (item) => item.price === Number(formVal?.ticket)
           );
           console.log(linktoTicketPurchase);
-
-          // API call to get the amount of tickets
-          console.log(linktoTicketPurchase[0]?.id);
-          const res = await getTaxAndAmout(
-            linktoTicketPurchase[0]?.id,
-            Number(1)
-          );
-          setTaxAmount(res?.data);
-          setConfirmation(res?.success);
-          console.log(res);
+          if (linktoTicketPurchase) {
+            console.log(linktoTicketPurchase[0]?.id);
+            const res = await getTaxAndAmout(
+              linktoTicketPurchase[0]?.id,
+              Number(1)
+            );
+            setTaxAmount(res?.data);
+            setConfirmation(res?.success);
+            console.log(res);
+          } else {
+            console.log("no event found");
+          }
         }
       } catch (error) {
         console.log(error);
@@ -151,14 +153,18 @@ const EventPage = () => {
           console.log(linktoTicketPurchase);
 
           // API call to get the amount of tickets
-          console.log(linktoTicketPurchase[0]?.id);
-          const res = await getTaxAndAmout(
-            linktoTicketPurchase[0]?.id,
-            Number(formVal?.quantity)
-          );
-          setTaxAmount(res?.data);
-          setConfirmation(res?.success);
-          console.log(res);
+          if (linktoTicketPurchase) {
+            console.log(linktoTicketPurchase[0]?.id);
+            const res = await getTaxAndAmout(
+              linktoTicketPurchase[0]?.id,
+              Number(formVal?.quantity)
+            );
+            setTaxAmount(res?.data);
+            setConfirmation(res?.success);
+            console.log(res);
+          } else {
+            console.log("no event found");
+          }
         }
       } catch (error) {
         console.log(error);
