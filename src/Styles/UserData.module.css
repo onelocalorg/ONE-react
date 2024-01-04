@@ -182,12 +182,25 @@
   align-items: center;
   padding: 0 62px;
 }
-
+.brandText {
+  display: "flex";
+  justify-content: "center";
+  align-items: "center";
+  gap: "7px";
+  flex-grow: "1";
+}
+.upperHeader {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  align-items: center;
+}
 .brand {
   font-size: 52px;
   font-weight: 300;
   letter-spacing: -5px;
   color: #fff;
+  flex-shrink: 0;
 }
 
 .userCover {
@@ -232,6 +245,16 @@
   color: #fff;
   font-size: 14px;
 }
+.brandText {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  width: 80%;
+}
+.upperHeader {
+  flex-basis: 50%;
+}
 
 @media only screen and (max-width: 768px) {
   .headerdiv {
@@ -242,6 +265,7 @@
   }
   .navHeader {
     padding: 0 30px;
+    flex-wrap: wrap-reverse;
   }
   .userCover {
     width: 60px;
@@ -252,17 +276,31 @@
     height: 55px;
   }
   .filterContainer {
-    flex-basis: 100%;
+    width: 150px;
+    flex-basis: auto;
+    margin: auto;
+    justify-content: flex-start;
+    margin-right: 10px;
   }
-  .navHeader {
-    flex-wrap: wrap-reverse;
+  .upperHeader {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .brandText {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
   }
 }
 
-@media only screen and (max-width: 425px) {
+@media only screen and (max-width: 430px) {
   .filterdiv {
     margin-top: 110px;
     position: unset;
+    gap: 10px;
   }
   .headertitle {
     padding: 10px 0 30px 0;
@@ -272,7 +310,16 @@
     font-size: 35px;
   }
   .navHeader {
-    padding: 0 10px;
+    padding: 20px 10px;
+    height: auto;
+    gap: 10px;
+    flex-wrap: wrap-reverse;
+  }
+  .filterContainer {
+    width: 150px;
+    flex-basis: auto;
+    margin: auto;
+    justify-content: flex-start;
   }
   .userCover {
     width: 40px;
@@ -281,5 +328,42 @@
   .oneLogo {
     width: 40px;
     height: 40px;
+  }
+  .filterdiv {
+    gap: 0;
+    flex-wrap: wrap;
+  }
+  .searchdiv {
+    min-height: fit-content;
+  }
+  .datediv {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: auto;
+    padding-top: 7px;
+  }
+  .datediv > span {
+    font-size: 15px;
+    text-align: left;
+    width: 200px;
+  }
+  .date_picker {
+    border-radius: 10px;
+    padding: 3.5px 7.5px;
+    background-color: #fff;
+    font-size: 15px;
+  }
+  .searchbtn {
+    margin-top: 10px;
+    font-size: 15px;
+    padding: 7.5px 12px;
+  }
+  .brandText {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
   }
 }

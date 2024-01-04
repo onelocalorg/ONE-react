@@ -117,9 +117,12 @@ const EventPage = () => {
       try {
         if (Number(formVal?.quantity) > 0 && formVal?.ticket) {
           setloading(true);
+          console.log(formVal?.ticket);
+          console.log(formVal?.quantity);
           const linktoTicketPurchase = ticketData.filter(
-            (item) => item.price === formVal?.ticket
+            (item) => item.price === Number(formVal?.ticket)
           );
+          console.log(linktoTicketPurchase);
 
           // API call to get the amount of tickets
           const res = await getTaxAndAmout(
@@ -188,12 +191,12 @@ const EventPage = () => {
                   <img src={calendarIcon} alt="calendar" />
                 </div>
                 <div className={Style.infoDiv}>
-                  <p className={Style.date}>
+                  <div className={Style.date}>
                     {eventData
                       ? moment(eventData?.start_date).format("DD MMMM YYYY")
                       : ""}
-                  </p>
-                  <p className={Style.timing}>
+                  </div>
+                  <div className={Style.timing}>
                     {eventData
                       ? moment(eventData?.start_date).format("ddd")
                       : ""}
@@ -205,7 +208,7 @@ const EventPage = () => {
                     {eventData
                       ? moment(eventData?.end_date).format("hh:mm A")
                       : ""}
-                  </p>
+                  </div>
                 </div>
               </div>
 
@@ -218,10 +221,10 @@ const EventPage = () => {
                   <img src={locationIcon} alt="locationIcon" />
                 </div>
                 <div className={Style.infoDiv}>
-                  <p className={Style.date}>{eventData?.address}</p>
-                  <p className={Style.timing}>
+                  <div className={Style.date}>{eventData?.address}</div>
+                  <div className={Style.timing}>
                     {eventData ? eventData?.full_address : ""}
-                  </p>
+                  </div>
                 </div>
               </div>
 
@@ -229,7 +232,7 @@ const EventPage = () => {
               <div
                 className={Style.boxes}
                 style={{
-                  width: "95%",
+                  width: "90%",
                 }}
               >
                 <div
@@ -237,7 +240,11 @@ const EventPage = () => {
                   style={{ overflow: "hidden" }}
                 >
                   <img
-                    src={eventData ? eventData?.eventProducer?.pic : proImg}
+                    src={
+                      eventData?.eventProducer?.pic
+                        ? eventData?.eventProducer?.pic
+                        : proImg
+                    }
                     alt="producerIcon"
                     style={{
                       width: "100%",
@@ -247,32 +254,32 @@ const EventPage = () => {
                   />
                 </div>
                 <div className={Style.producerInfo}>
-                  <p className={Style.proName}>
+                  <div className={Style.proName}>
                     {eventData ? eventData?.eventProducer?.first_name : ""}{" "}
                     {eventData ? eventData?.eventProducer?.last_name : ""}
-                  </p>
-                  <p className={Style.timing}>
+                  </div>
+                  <div className={Style.timing}>
                     {/* {eventData ? eventData?.eventProducer?.user_type : ""} */}
                     Producer
-                  </p>
+                  </div>
                 </div>
               </div>
 
               {/* boxes 4 */}
 
               <div className={Style.descDiv}>
-                <p className={Style.desc}>Description</p>
-                <p className={Style.descDetail}>
+                <div className={Style.desc}>Description</div>
+                <div className={Style.descDetail}>
                   {eventData?.about
                     ? eventData?.about
                     : "No description available"}
-                </p>
+                </div>
               </div>
 
               {/* //here we need to mapover the tickets array and need to make radio button available options */}
 
               <form onSubmit={handleSubmit(onSubmit)} className={Style.descDiv}>
-                <p className={Style.desc}>Ticket list</p>
+                <div className={Style.desc}>Ticket list</div>
                 {ticketData &&
                   ticketData?.map((ticketitem) => (
                     <div
@@ -282,6 +289,7 @@ const EventPage = () => {
                         gap: "10px",
                         justifyContent: "flex-start",
                         alignItems: "center",
+                        marginLeft: "10px",
                       }}
                     >
                       <InputComponent
@@ -321,7 +329,7 @@ const EventPage = () => {
                         )}
                       </label>
 
-                      {formVal.ticket === ticketitem.price && (
+                      {Number(formVal.ticket) === ticketitem.price && (
                         <>
                           <InputWithPlusAndMinusComponent
                             type="number"
@@ -341,7 +349,7 @@ const EventPage = () => {
                 <hr />
 
                 <div style={{ display: "flex", flexDirection: "column" }}>
-                  <p className={Style.desc}>Price and Taxes</p>
+                  <div className={Style.desc}>Price and Taxes</div>
                   {confirmation === true && (
                     <div>
                       <div className={Style.calcDiv}>

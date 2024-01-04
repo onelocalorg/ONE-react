@@ -32,24 +32,19 @@ function EventFilterComponent({
           />
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "7px",
-            flexGrow: "1",
-          }}
-        >
-          <img src={logo} alt="logo" className={Style.oneLogo} />
-          <h2 className={Style.brand}>NE</h2>
-        </div>
-        <div className={Style.userCover}>
-          <img
-            src={user}
-            alt="user"
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-          />
+        <div className={Style.upperHeader}>
+          <div className={Style.brandText}>
+            <img src={logo} alt="logo" className={Style.oneLogo} />
+            <div className={Style.brand}>NE</div>
+          </div>
+
+          <div className={Style.userCover}>
+            <img
+              src={user}
+              alt="user"
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
+          </div>
         </div>
       </div>
       <div className={Style.filterdiv}>
