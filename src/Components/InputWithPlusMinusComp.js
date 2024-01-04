@@ -38,7 +38,7 @@ const InputWithPlusAndMinusComponent = ({
         onClick={handleDecrement}
         className={classNamebtn1}
         type="button"
-        disabled={value === 0 ? true : false}
+        disabled={value === defaultValue ? true : false}
       >
         <HiMiniMinusSmall />
       </button>
