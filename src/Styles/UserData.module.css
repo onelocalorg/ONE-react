@@ -184,11 +184,11 @@
   z-index: 999;
 }
 .brandText {
-  display: "flex";
-  justify-content: "center";
-  align-items: "center";
-  gap: "7px";
-  flex-grow: "1";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  flex-grow: 1;
 }
 .upperHeader {
   display: flex;

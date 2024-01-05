@@ -13,6 +13,8 @@ import UserData from "./Pages/UserData";
 import SubscriptionsPlans from "./Pages/SubscriptionsPlans";
 import "react-datepicker/dist/react-datepicker.css";
 import EventPage from "./Pages/EventPage";
+import PaymentSuccessfull from "./Pages/PaymentSuccessfull";
+import PaymentFailed from "./Pages/PaymentFailed";
 
 function App() {
   return (
@@ -34,6 +36,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/reset-password" element={<Reset />} />
           <Route path="/" element={<UserData />} />
+          <Route path="/payment-successfull" element={<PaymentSuccessfull />} />
+          <Route path="/payment-failed" element={<PaymentFailed />} />
           <Route path="/event/:eventId" element={<EventPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
