@@ -17,7 +17,7 @@ const PaymentSuccessfull = () => {
   return (
     <div className={Style.container}>
       <img src={img} alt="done" className={Style.img} />
-      <div className={Style.msg}>
+      <div className={Style.msg} style={{ color: "green" }}>
         Your Payment has been processed successfully..
       </div>
       <div className={Style.naviagte}>
