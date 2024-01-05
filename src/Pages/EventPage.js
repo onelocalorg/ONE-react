@@ -352,7 +352,6 @@ const EventPage = () => {
                               ticketitem?.max_quantity_to_show === 0
                                 ? "no-drop"
                                 : "pointer",
-                            fontSize: "12px",
                           }}
                           className={Style.labelText}
                         >
