@@ -80,7 +80,7 @@ const EventPage = () => {
   }, [eventId]);
   const navigateToTicketPurchase = (link) => {
     if (link) {
-      window.open(link, "_blank");
+      window.open(link, "_self");
     }
   };
   const onSubmit = async (data) => {
