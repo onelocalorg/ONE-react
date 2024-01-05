@@ -5,11 +5,11 @@ import { useNavigate } from "react-router-dom";
 
 const PaymentSuccessfull = () => {
   const navigate = useNavigate();
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     navigate("/");
-  //   }, 7000);
-  // }, [navigate]);
+  useEffect(() => {
+    setTimeout(() => {
+      navigate("/");
+    }, 7000);
+  }, [navigate]);
 
   const handleNavigate = () => {
     navigate("/");
