@@ -76,7 +76,6 @@
 
 @media only screen and (max-width: 768px) {
   .cardMainDiv {
-    max-width: 639px;
     width: 95%;
     margin: auto;
     gap: 10px;
