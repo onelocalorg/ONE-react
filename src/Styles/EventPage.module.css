@@ -5,16 +5,28 @@
 }
 
 .dataContainer {
-  max-width: 900px;
+  max-width: 1222px;
   padding: 15px;
-  width: 100%;
+  width: 95%;
   margin: auto;
   display: flex;
   flex-direction: column;
   gap: 15px;
   margin-top: 110px;
 }
-
+.wrapper {
+  display: flex;
+  gap: 15px;
+}
+.left {
+  min-width: 350px;
+  flex-shrink: 0;
+}
+.right {
+  flex: 1;
+  flex-grow: 1;
+  padding: 10px;
+}
 .eventImg {
   width: 100%;
   margin: auto;
@@ -24,24 +36,25 @@
 }
 
 .boxes {
-  min-height: 140px;
-  width: 90%;
-  margin: auto;
+  width: 100%;
   display: flex;
-  gap: 15px;
+  gap: 10px;
+  margin-bottom: 8px;
 }
 
 .iconDiv {
-  width: 142px;
-  height: 138px;
-  border-radius: 10px;
+  width: 59px;
+  height: 56px;
+  border-radius: 16px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
+.iconDiv > img {
+  width: 43px;
+  height: 40px;
+}
 .infoDiv {
-  flex: 1;
   border-radius: 10px;
   padding: 10px;
   display: flex;
@@ -50,8 +63,8 @@
 }
 
 .producerDiv {
-  width: 186px;
-  height: 194px;
+  width: 52px;
+  height: 53px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -69,8 +82,7 @@
 }
 
 .descDiv {
-  min-height: 140px;
-  width: 90%;
+  width: 100%;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -78,13 +90,13 @@
 }
 
 .purchase {
-  max-width: 527px;
+  max-width: 271px;
   margin: auto;
   width: 90%;
-  height: 115px;
+  height: 58px;
   background-color: #a493b7;
   border-radius: 15px;
-  font-size: 32px;
+  font-size: 16px;
   font-weight: 500;
   color: #fff;
   position: relative;
@@ -94,6 +106,7 @@
   text-decoration: none;
   display: flex;
   justify-content: center;
+  gap: 10px;
   align-items: center;
   transition: all 0.3s ease;
 }
@@ -108,53 +121,51 @@
 }
 
 .arrowIcon {
-  width: 58px;
-  height: 58px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   background-color: #7744b0;
   color: #fff;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  right: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 8px;
 }
 
 .arrowIcon > img {
   transition: transform 0.3s ease;
+  width: 100%;
+  height: 100%;
 }
 
 .date {
-  font-size: 32px;
+  font-size: 16px;
   font-weight: 500;
 }
 
 .timing {
-  font-size: 24px;
+  font-size: 12px;
   font-weight: 300;
 }
 
 .proName {
-  font-size: 36px;
+  font-size: 15px;
   font-weight: 400;
   text-transform: capitalizes;
 }
 
 .desc {
-  font-size: 36px;
+  font-size: 20px;
   font-weight: 500;
 }
 
 .descDetail {
   font-size: 16px;
   font-weight: 300;
-  padding-left: 10px;
 }
 
 .eventName {
-  font-size: 48px;
+  font-size: 35px;
   font-weight: 500;
 }
 
@@ -207,8 +218,8 @@
 }
 .iconCover {
   background-color: #bbb8b8;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -221,8 +232,8 @@
 }
 
 .counterInput {
-  width: 30px;
-  height: 20px;
+  width: 28px;
+  height: 18px;
   border: 0;
   outline: 0;
   font-size: 12px;
@@ -252,38 +263,34 @@
   font-weight: 600;
 }
 
+.aboutEventDiv {
+  padding: 8px 0;
+}
+.aboutEventText {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.aboutEventDetail {
+  font-size: 16px;
+  font-weight: 300;
+}
+.labelText {
+  font-size: 14px;
+}
+
+@media only screen and (max-width: 800px) {
+  .wrapper {
+    flex-wrap: wrap-reverse !important;
+  }
+  .left {
+    min-width: 100%;
+  }
+  .right {
+    padding: 0;
+  }
+}
 @media only screen and (max-width: 768px) {
-  .date {
-    font-size: 28px;
-    font-weight: 500;
-  }
-
-  .timing {
-    font-size: 20px;
-    font-weight: 300;
-  }
-
-  .proName {
-    font-size: 30px;
-    font-weight: 400;
-    text-transform: capitalizes;
-  }
-
-  .desc {
-    font-size: 30px;
-    font-weight: 500;
-  }
-
-  .descDetail {
-    font-size: 14px;
-    font-weight: 300;
-  }
-
-  .eventName {
-    font-size: 36px;
-    font-weight: 500;
-  }
-
   .brand {
     font-size: 45px;
   }
@@ -295,81 +302,21 @@
     width: 60px;
     height: 60px;
   }
-  .descDiv {
-    min-height: 100px;
-  }
 }
 
 @media only screen and (max-width: 431px) {
-  .date {
-    font-size: 16px;
-    font-weight: 500;
-  }
   .boxes {
-    min-height: auto;
     gap: 8px;
   }
   .infoDiv {
     padding: 5px;
   }
-
-  .timing {
+  .labelText {
     font-size: 12px;
-    font-weight: 300;
   }
   .eventImg {
     height: auto;
     max-height: 250px;
-  }
-
-  .proName {
-    font-size: 15px;
-    font-weight: 400;
-    text-transform: capitalizes;
-  }
-
-  .desc {
-    font-size: 24px;
-    font-weight: 500;
-  }
-
-  .descDetail {
-    font-size: 13px;
-    font-weight: 300;
-    padding-left: 7px;
-  }
-
-  .eventName {
-    font-size: 26px;
-    font-weight: 500;
-  }
-
-  .producerDiv {
-    width: 52px;
-    height: 52px;
-  }
-
-  .producerDiv > img {
-    width: 100%;
-  }
-
-  .purchase {
-    max-width: 400px;
-    margin: auto;
-    width: 90%;
-    height: 100px;
-    font-size: 24px;
-    font-weight: 500;
-  }
-
-  .arrowIcon {
-    width: 40px;
-    height: 40px;
-    right: 20px;
-  }
-
-  .arrowIcon > img {
-    width: 20px;
   }
 
   .brand {
@@ -383,114 +330,26 @@
     width: 40px;
     height: 40px;
   }
-  .iconDiv {
-    width: 59px;
-    height: 56px;
+  .eventName {
+    font-size: 20px;
   }
-  .iconDiv > img {
-    width: 43px;
-    height: 40px;
+  .aboutEventDetail {
+    font-size: 12px;
   }
-  .descDiv {
-    min-height: 70px;
+  form .descDetail {
+    font-size: 12px;
   }
 }
 
 @media only screen and (max-width: 325px) {
-  .boxes {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: auto;
-  }
-
-  .purchase {
-    height: 70px;
-    font-size: 18px;
-  }
-
-  .arrowIcon {
-    right: 10px;
-  }
-  .date {
-    font-size: 14px;
-    font-weight: 500;
-  }
-  .boxes {
-    min-height: auto;
-    gap: 8px;
-    flex-direction: row;
-  }
   .infoDiv {
     padding: 5px;
   }
-
-  .timing {
-    font-size: 10px;
-    font-weight: 300;
-  }
-  .eventImg {
-    height: auto;
-    max-height: 250px;
-  }
-
-  .proName {
-    font-size: 15px;
-    font-weight: 400;
-    text-transform: capitalizes;
-  }
-
-  .desc {
-    font-size: 16px;
-    font-weight: 500;
-  }
-
-  .label {
-    font-size: 12px;
-  }
-
-  .descDetail {
-    font-size: 13px;
-    font-weight: 300;
-    padding-left: 7px;
-  }
-
-  .eventName {
-    font-size: 26px;
-    font-weight: 500;
-  }
-
-  .producerDiv {
-    width: 52px;
-    height: 52px;
-  }
-
-  .producerDiv > img {
-    width: 100%;
-  }
-
-  .purchase {
-    max-width: 400px;
-    margin: auto;
-    width: 90%;
-    height: auto;
-    font-size: 18px;
-    padding: 10px 5px;
-    font-weight: 500;
-  }
-
-  .arrowIcon {
-    width: 25px;
-    height: 25px;
-    right: 20px;
-  }
-
-  .arrowIcon > img {
-    width: 15px;
-  }
-
   .brand {
     font-size: 35px;
+  }
+  .labelText {
+    font-size: 12px;
   }
   .oneLogo {
     width: 40px;
@@ -499,16 +358,5 @@
   .userCover {
     width: 40px;
     height: 40px;
-  }
-  .iconDiv {
-    width: 48px;
-    height: 44px;
-  }
-  .iconDiv > img {
-    width: 35px;
-    height: 30px;
-  }
-  .descDiv {
-    min-height: 70px;
   }
 }
