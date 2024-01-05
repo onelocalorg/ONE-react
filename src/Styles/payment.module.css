@@ -1,0 +1,58 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+.img {
+  z-index: 1;
+  animation: pop 1.8s ease-in-out forwards;
+  width: 400px;
+}
+
+.btn {
+  font-size: 14px;
+  font-weight: 600;
+  border: 0;
+  outline: 0;
+  padding: 10px 15px;
+  text-transform: uppercase;
+  border-radius: 16px;
+  color: white;
+  background-color: #6f1111;
+}
+.msg {
+  margin-top: 15px;
+  color: #6f1111;
+  font-weight: 500;
+  font-size: 14px;
+}
+.naviagte {
+  margin: 10px 0;
+  color: #000;
+  font-weight: 400;
+  font-size: 13px;
+}
+
+@keyframes pop {
+  0% {
+    transform: translateY(-60vh);
+  }
+  5% {
+    transform: translateY(5vh);
+  }
+  15% {
+    transform: translateY(0vh);
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .img {
+    width: 400px;
+  }
+}
