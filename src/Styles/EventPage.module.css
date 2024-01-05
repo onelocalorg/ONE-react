@@ -32,7 +32,6 @@
   margin: auto;
   height: 263px;
   object-fit: cover;
-  border-radius: 0px 0px 10px 10px;
 }
 
 .boxes {
@@ -229,6 +228,9 @@
 }
 .pointer {
   cursor: pointer;
+}
+.eventName {
+  margin-bottom: 12.5px;
 }
 
 .counterInput {
