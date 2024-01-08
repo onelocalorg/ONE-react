@@ -164,7 +164,7 @@ function UserData() {
           hasMore={hasMore}
           loader={<h5 style={{ textAlign: "center" }}>Loading...</h5>}
           minHeight={"inherit"}
-          style={{ paddingTop: "20px" }}
+          style={{ padding: "20px 0" }}
         >
           <div
             style={{

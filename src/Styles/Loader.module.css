@@ -23,6 +23,19 @@
   z-index: 99;
 }
 
+@media only screen and (max-width: 768px) {
+  .customLoader {
+    width: 47.5px;
+    height: 47.5px;
+  }
+}
+@media only screen and (max-width: 431px) {
+  .customLoader {
+    width: 35px;
+    height: 35px;
+  }
+}
+
 .customLoader::before,
 .customLoader::after {
   content: "";
@@ -33,7 +46,7 @@
 }
 
 .customLoader::before {
-  border-color: #DB9791 transparent;
+  border-color: #db9791 transparent;
   animation: inherit;
   animation-duration: 0.5s;
   animation-direction: reverse;
