@@ -175,7 +175,11 @@ function UserData() {
           dataLength={items.length}
           next={fetchMoreData}
           hasMore={hasMore}
-          loader={<h5 style={{ textAlign: "center" }}>Loading...</h5>}
+          loader={
+            filterData === "" ? (
+              <h5 style={{ textAlign: "center" }}>Loading...</h5>
+            ) : null
+          }
           minHeight={"inherit"}
           style={{ padding: "20px 0" }}
         >
