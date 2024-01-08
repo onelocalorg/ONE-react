@@ -128,6 +128,19 @@ function UserData() {
     const fetchDataOfMonth = async () => {
       const res = await listEvents(1, initialDate);
       const dataToShow = res?.data?.events;
+
+      // On scroll new request was not called so added this lines
+      if (dataToShow.length > 0) {
+        setPagination((prev) => ({
+          ...prev,
+          totalData: res?.data?.totalEvents,
+          page: 2,
+          totalPage: res?.data?.totalPage,
+        }));
+      }
+      setHasMore(page < totalPage + 1);
+      ///////
+
       setItems(dataToShow);
     };
     fetchDataOfMonth();
