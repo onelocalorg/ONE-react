@@ -168,7 +168,7 @@ function UserData() {
         filterData={filterData}
       />
       {isLoading && <Loader />}
-      {items.length && (
+      {items.length ? (
         <InfiniteScroll
           className={Style.infinitescroll}
           dataLength={items.length}
@@ -215,7 +215,7 @@ function UserData() {
             )}
           </div>
         </InfiniteScroll>
-      )}
+      ) : null}
     </div>
   );
 }
