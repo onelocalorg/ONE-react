@@ -98,9 +98,9 @@ function UserData() {
           page: 2,
           totalPage: response.data.totalPage,
         }));
-      }
 
-      setHasMore(page < totalPage + 1);
+        setHasMore(2 < response?.data?.totalPage + 1);
+      }
 
       if (!eventList || eventList.length === 0) {
         setHasMore(false);
@@ -126,8 +126,22 @@ function UserData() {
       end_date: end_date,
     };
     const fetchDataOfMonth = async () => {
+      setIsLoading(true);
       const res = await listEvents(1, initialDate);
       const dataToShow = res?.data?.events;
+
+      // On scroll new request was not called so added this lines
+      if (dataToShow.length > 0) {
+        setPagination((prev) => ({
+          ...prev,
+          totalData: res?.data?.totalEvents,
+          page: 2,
+          totalPage: res?.data?.totalPage,
+        }));
+      }
+      setHasMore(page < totalPage + 1);
+      ///////
+      setIsLoading(false);
       setItems(dataToShow);
     };
     fetchDataOfMonth();
@@ -154,10 +168,8 @@ function UserData() {
         setFilterData={setFilterData}
         filterData={filterData}
       />
-
-      {isLoading ? (
-        <Loader />
-      ) : (
+      {isLoading && <Loader />}
+      {items.length ? (
         <InfiniteScroll
           className={Style.infinitescroll}
           dataLength={items.length}
@@ -204,7 +216,7 @@ function UserData() {
             )}
           </div>
         </InfiniteScroll>
-      )}
+      ) : null}
     </div>
   );
 }
