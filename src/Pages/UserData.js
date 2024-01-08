@@ -126,6 +126,7 @@ function UserData() {
       end_date: end_date,
     };
     const fetchDataOfMonth = async () => {
+      setIsLoading(true);
       const res = await listEvents(1, initialDate);
       const dataToShow = res?.data?.events;
 
@@ -140,7 +141,7 @@ function UserData() {
       }
       setHasMore(page < totalPage + 1);
       ///////
-
+      setIsLoading(false);
       setItems(dataToShow);
     };
     fetchDataOfMonth();
