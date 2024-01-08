@@ -167,10 +167,8 @@ function UserData() {
         setFilterData={setFilterData}
         filterData={filterData}
       />
-
-      {isLoading ? (
-        <Loader />
-      ) : (
+      {isLoading && <Loader />}
+      {items.length && (
         <InfiniteScroll
           className={Style.infinitescroll}
           dataLength={items.length}
