@@ -98,9 +98,9 @@ function UserData() {
           page: 2,
           totalPage: response.data.totalPage,
         }));
-      }
 
-      setHasMore(page < totalPage + 1);
+        setHasMore(2 < response?.data?.totalPage + 1);
+      }
 
       if (!eventList || eventList.length === 0) {
         setHasMore(false);
