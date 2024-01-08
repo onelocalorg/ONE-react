@@ -74,7 +74,7 @@ function UserData() {
   const fetchFirstData = async () => {
     try {
       setIsLoading(true);
-
+      setFilterData("");
       setItems([]);
       setSearch(true);
       setPagination({
@@ -152,6 +152,7 @@ function UserData() {
         filter={items.length > 0 ? true : false}
         // filter={items ? true : false}
         setFilterData={setFilterData}
+        filterData={filterData}
       />
 
       {isLoading ? (

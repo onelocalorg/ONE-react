@@ -5,6 +5,7 @@ import Style from "../Styles/UserData.module.css";
 import logo from "../images/logo.svg";
 import user from "../images/user.png";
 import searchIcon from "../images/Search.svg";
+import { useNavigate } from "react-router-dom";
 function EventFilterComponent({
   startDate,
   endDate,
@@ -13,9 +14,16 @@ function EventFilterComponent({
   handleSearch,
   filter,
   setFilterData,
+  filterData,
 }) {
+  const navigate = useNavigate();
+
   const getFilterOutPut = (e) => {
     setFilterData(e.target.value);
+  };
+
+  const goToHomePage = () => {
+    navigate("/");
   };
 
   return (
@@ -29,11 +37,16 @@ function EventFilterComponent({
             placeholder="Search"
             onChange={getFilterOutPut}
             disabled={!filter}
+            value={filterData}
           />
         </div>
 
         <div className={Style.upperHeader}>
-          <div className={Style.brandText}>
+          <div
+            className={Style.brandText}
+            onClick={goToHomePage}
+            style={{ cursor: "pointer" }}
+          >
             <img src={logo} alt="logo" className={Style.oneLogo} />
             <div className={Style.brand}>NE</div>
           </div>
