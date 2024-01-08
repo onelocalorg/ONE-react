@@ -14,6 +14,7 @@ function EventFilterComponent({
   handleSearch,
   filter,
   setFilterData,
+  filterData,
 }) {
   const navigate = useNavigate();
 
@@ -36,6 +37,7 @@ function EventFilterComponent({
             placeholder="Search"
             onChange={getFilterOutPut}
             disabled={!filter}
+            value={filterData}
           />
         </div>
 
