@@ -30,6 +30,10 @@ const EventPage = () => {
     navigate("/");
   };
 
+  const goToHomePage = () => {
+    navigate("/");
+  };
+
   const schema = yup.object().shape({
     ticket: yup.string().required("Do check ticket before buy"),
     quantity: yup.number(),
@@ -202,7 +206,9 @@ const EventPage = () => {
                 alignItems: "center",
                 gap: "7px",
                 flexGrow: "1",
+                cursor: "pointer",
               }}
+              onClick={goToHomePage}
             >
               <img src={logo} alt="logo" className={Style.oneLogo} />
               <h2 className={Style.brand}>NE</h2>
