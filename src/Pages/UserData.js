@@ -169,6 +169,13 @@ function UserData() {
         filterData={filterData}
       />
       {isLoading && <Loader />}
+      {!items.length && !isLoading ? (
+        <p
+          style={{ textAlign: "center", fontWeight: "600", marginTop: "20px" }}
+        >
+          No Events Found
+        </p>
+      ) : null}
       {items.length ? (
         <InfiniteScroll
           className={Style.infinitescroll}
