@@ -64,6 +64,12 @@ const EventPage = () => {
   const [loading, setloading] = useState(true);
   const [error, setError] = useState(null);
   useEffect(() => {
+    // Scroll to top as some time it shows in middle of after image section when comes to detail page
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
     const fetchEventData = async () => {
       if (eventId) {
         try {
@@ -332,7 +338,6 @@ const EventPage = () => {
                           display: "flex",
                           gap: "8px",
                           justifyContent: "flex-start",
-                          alignItems: "center",
                           alignItems: "center",
                         }}
                       >
