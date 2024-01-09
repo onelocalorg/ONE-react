@@ -96,7 +96,6 @@ const EventPage = () => {
   const onSubmit = async (data) => {
     try {
       setloading(true); // Start loading
-      console.log(data);
 
       // Fetch object which has the same price as data.ticket
       const linktoTicketPurchase = ticketData.filter(
@@ -108,7 +107,6 @@ const EventPage = () => {
         linktoTicketPurchase[0]?.id,
         data.quantity
       );
-      console.log(res);
 
       // Set link to navigate
       navigateToTicketPurchase(res?.data?.payment_link);
@@ -134,16 +132,14 @@ const EventPage = () => {
           const linktoTicketPurchase = ticketData.filter(
             (item) => item.price === Number(formVal?.ticket)
           );
-          console.log(linktoTicketPurchase);
+
           if (linktoTicketPurchase) {
-            console.log(linktoTicketPurchase[0]?.id);
             const res = await getTaxAndAmout(
               linktoTicketPurchase[0]?.id,
               Number(1)
             );
             setTaxAmount(res?.data);
             setConfirmation(res?.success);
-            console.log(res);
           } else {
             console.log("no event found");
           }
@@ -166,23 +162,19 @@ const EventPage = () => {
       try {
         if (Number(formVal?.quantity) > 0 && formVal?.ticket) {
           setloading(true);
-          console.log(formVal?.ticket);
-          console.log(formVal?.quantity);
+
           const linktoTicketPurchase = ticketData.filter(
             (item) => item.price === Number(formVal?.ticket)
           );
-          console.log(linktoTicketPurchase);
 
           // API call to get the amount of tickets
           if (linktoTicketPurchase) {
-            console.log(linktoTicketPurchase[0]?.id);
             const res = await getTaxAndAmout(
               linktoTicketPurchase[0]?.id,
               Number(formVal?.quantity)
             );
             setTaxAmount(res?.data);
             setConfirmation(res?.success);
-            console.log(res);
           } else {
             console.log("no event found");
           }
