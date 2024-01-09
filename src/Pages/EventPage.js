@@ -154,8 +154,9 @@ const EventPage = () => {
         setloading(false);
       }
     };
-
-    getDataOfAmountAndTax();
+    if (formVal?.ticket) {
+      getDataOfAmountAndTax();
+    }
   }, [trakker]);
 
   const trakkerQuantity = watch("quantity");
@@ -193,7 +194,9 @@ const EventPage = () => {
       }
     };
 
-    getDataOfAmountAndTax();
+    if (Number(formVal?.quantity) > 0 && formVal?.ticket) {
+      getDataOfAmountAndTax();
+    }
   }, [trakkerQuantity]);
 
   if (error) {
