@@ -22,10 +22,16 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import ToasterComponent from "../Components/ToasterComponent";
 import InputWithPlusAndMinusComponent from "../Components/InputWithPlusMinusComp";
 import NotFound from "./NotFound";
+import HeaderUserComponent from "../Components/HeaderUserComponent";
+import UserConfirmDialog from "../Components/ModalDialog";
+import { useSelector, useDispatch } from "react-redux";
 
 const EventPage = () => {
   const { eventId } = useParams();
   const navigate = useNavigate();
+  const [showLoginDialog, setShowLoginDialog] = useState(false);
+  const userInfo = useSelector((state) => state?.userInfo);
+
   const onLastPage = () => {
     navigate("/");
   };
@@ -94,6 +100,11 @@ const EventPage = () => {
     }
   };
   const onSubmit = async (data) => {
+    if (!userInfo?.userData) {
+      setShowLoginDialog(true);
+      return;
+    }
+
     try {
       setloading(true); // Start loading
 
@@ -215,11 +226,7 @@ const EventPage = () => {
               <h2 className={Style.brand}>NE</h2>
             </div>
             <div className={Style.userCover}>
-              <img
-                src={user}
-                alt="user"
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-              />
+              <HeaderUserComponent headerClass={Style} />
             </div>
           </div>
           <div className={Style.dataContainer}>
@@ -470,6 +477,7 @@ const EventPage = () => {
         </div>
       </>
       {loading && <Loader />}
+      {showLoginDialog && <UserConfirmDialog hideFunc={setShowLoginDialog} />}
     </>
   );
 };

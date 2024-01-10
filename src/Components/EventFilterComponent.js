@@ -3,9 +3,9 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Style from "../Styles/UserData.module.css";
 import logo from "../images/logo.svg";
-import user from "../images/user.png";
 import searchIcon from "../images/Search.svg";
 import { useNavigate } from "react-router-dom";
+import HeaderUserComponent from "./HeaderUserComponent";
 function EventFilterComponent({
   startDate,
   endDate,
@@ -50,13 +50,8 @@ function EventFilterComponent({
             <img src={logo} alt="logo" className={Style.oneLogo} />
             <div className={Style.brand}>NE</div>
           </div>
-
           <div className={Style.userCover}>
-            <img
-              src={user}
-              alt="user"
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
-            />
+            <HeaderUserComponent headerClass={Style} />
           </div>
         </div>
       </div>
