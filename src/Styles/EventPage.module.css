@@ -281,6 +281,21 @@
   font-size: 14px;
 }
 
+.skeletonImg {
+  animation: skeleton-loading 1s linear infinite alternate;
+  width: 100%;
+  height: 263px;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: #e5e4e4;
+  }
+  100% {
+    background-color: #d8d7d7;
+  }
+}
+
 @media only screen and (max-width: 800px) {
   .wrapper {
     flex-wrap: wrap-reverse !important;
@@ -319,6 +334,7 @@
   .eventImg {
     height: auto;
     max-height: 250px;
+    min-height: 200px;
   }
 
   .brand {
