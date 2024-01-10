@@ -445,11 +445,15 @@ const EventPage = () => {
                 </form>
               </div>
               <div className={Style.right}>
-                <img
-                  src={eventData?.event_image}
-                  alt={"event_image"}
-                  className={Style.eventImg}
-                />
+                {eventData?.event_image ? (
+                  <img
+                    src={eventData?.event_image}
+                    alt={"event_image"}
+                    className={Style.eventImg}
+                  />
+                ) : (
+                  <div className={`${Style.eventImg} ${Style.skeletonImg}`} />
+                )}
                 <div className={Style.aboutEventDiv}>
                   <div className={Style.descDiv}>
                     <div className={Style.aboutEventText}>About Event</div>
