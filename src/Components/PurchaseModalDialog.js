@@ -8,6 +8,7 @@ import nextarrow from "../images/next-arrow.svg";
 import closeIcon from "../images/close-icon.svg";
 import BillingAddress from "./BillingAddress";
 import CardInfo from "./CardInfo";
+import CardList from "./CardList";
 
 function PurchaseModalDialog({ hideFunc }) {
   const [activeStep, setActiveStep] = useState(0);
@@ -46,7 +47,7 @@ function PurchaseModalDialog({ hideFunc }) {
       <Modal
         show
         onHide={handleClose}
-        className={Style.modalItem}
+        className={`${Style.modalItem} ${Style.purchaseModalItem}`}
         backdrop="static"
       >
         <Modal.Header>
@@ -67,6 +68,7 @@ function PurchaseModalDialog({ hideFunc }) {
               errors={errors}
               formStyle={Style}
             />
+            <CardList register={register} errors={errors} />
           </form>
         </Modal.Body>
         <Modal.Footer className={Style.purchaseFooter}>

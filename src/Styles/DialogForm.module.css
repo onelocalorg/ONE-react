@@ -151,11 +151,23 @@
   position: absolute;
 }
 
+.purchaseModalItem {
+  [class~="modal-dialog"] {
+    margin-top: 5%;
+  }
+}
+
 /* Responsive */
 @media only screen and (max-width: 768px) {
   .modalItem {
     [class~="modal-dialog"] {
       margin-top: 10%;
+    }
+  }
+
+  .purchaseModalItem {
+    [class~="modal-dialog"] {
+      margin-top: 5%;
     }
   }
 }
@@ -169,5 +181,11 @@
 
   .purchseArrowIconContainer {
     right: 13%;
+  }
+
+  .purchaseModalItem {
+    [class~="modal-dialog"] {
+      margin-top: 5%;
+    }
   }
 }
