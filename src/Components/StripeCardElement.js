@@ -43,12 +43,12 @@ function StripeCardComponent() {
   );
 }
 
-const stripe = loadStripe("pk_test_6pRNASCoBOKtIshFeQd4XMUh");
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
 
 function StripeCardElement() {
   return (
     <div className={Style.stripeContainer}>
-      <Elements stripe={stripe}>
+      <Elements stripe={stripePromise}>
         <StripeCardComponent />
       </Elements>
     </div>
