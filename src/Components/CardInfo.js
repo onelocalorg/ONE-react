@@ -1,5 +1,6 @@
 import InputComponent from "./InputComponent";
 import Style from "../Styles/CardInfo.module.css";
+import StripeCardElement from "./StripeCardElement";
 
 function CardInfo({ register, errors, formStyle }) {
   return (
@@ -21,19 +22,7 @@ function CardInfo({ register, errors, formStyle }) {
         )}
       </div>
       <div>
-        <InputComponent
-          type={"text"}
-          placeholder={"Card Number"}
-          register={register}
-          inputRef={"address1"}
-          name={"address1"}
-          className={formStyle.inputField}
-        />
-        {errors.address1 && errors.address1.type === "required" && (
-          <div role="alert" className={formStyle.error}>
-            {errors?.address1?.message}
-          </div>
-        )}
+        <StripeCardElement />
       </div>
     </div>
   );

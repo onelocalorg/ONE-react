@@ -24,7 +24,7 @@ function CardList({ register }) {
                 style={{ height: "18px" }}
               />
 
-              <label htmlhtmlFor="html" className={Style.inputLabel}>
+              <label htmlFor="html" className={Style.inputLabel}>
                 Visa - 0127
               </label>
             </div>
