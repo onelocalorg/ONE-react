@@ -1,13 +1,12 @@
-import { useEffect, useState } from "react";
-import Button from "react-bootstrap/Button";
+import { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import InputComponent from "./InputComponent";
-import ToasterComponent from "./ToasterComponent";
 import Style from "../Styles/DialogForm.module.css";
 import nextarrow from "../images/next-arrow.svg";
+import closeIcon from "../images/close-icon.svg";
 
 function ModalDialog({ hideFunc }) {
   const [activeStep, setActiveStep] = useState(0);
@@ -55,9 +54,14 @@ function ModalDialog({ hideFunc }) {
         className={Style.modalItem}
         backdrop="static"
       >
-        <Modal.Header closeButton>
-          <div className={Style.modalTitleContainer}>
-            <label className={Style.modalTitle}>Enter your Email</label>
+        <Modal.Header>
+          <div className={Style.modalHeader}>
+            <div className={Style.closeIcon} onClick={handleClose}>
+              <img src={closeIcon} alt="close" />
+            </div>
+            <div className={Style.modalTitleContainer}>
+              <label className={Style.modalTitle}>Enter your Email</label>
+            </div>
           </div>
         </Modal.Header>
         <Modal.Body>
@@ -111,7 +115,7 @@ function ModalDialog({ hideFunc }) {
               className={Style.formButton}
               onClick={handleSubmit(onSubmit)}
             >
-              <span className={Style.btnText}>SIGN IN</span>
+              <span className={Style.btnText}>SIGN-IN</span>
               <span className={Style.arrowIcon}>
                 <img src={nextarrow} alt="arrow" />
               </span>
