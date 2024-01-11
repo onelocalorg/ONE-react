@@ -2,27 +2,38 @@ import InputComponent from "./InputComponent";
 import Style from "../Styles/CardInfo.module.css";
 import StripeCardElement from "./StripeCardElement";
 
-function CardInfo({ register, errors, formStyle }) {
+function CardInfo({
+  register,
+  errors,
+  formStyle,
+  showBillingInformation,
+  showBillingFunc,
+}) {
   return (
     <div className={Style.billingContainer}>
-      <div className={formStyle.fieldHeading}>Card Info *</div>
-      <div>
-        <InputComponent
-          type={"text"}
-          placeholder={"Name on card"}
-          register={register}
-          inputRef={"nameoncard"}
-          name={"nameoncard"}
-          className={formStyle.inputField}
-        />
-        {errors.nameoncard && errors.nameoncard.type === "required" && (
-          <div role="alert" className={formStyle.error}>
-            {errors?.nameoncard?.message}
+      {showBillingInformation && (
+        <>
+          <div className={formStyle.fieldHeading}>Card Info *</div>
+
+          <div>
+            <InputComponent
+              type={"text"}
+              placeholder={"Name on card"}
+              register={register}
+              inputRef={"nameoncard"}
+              name={"nameoncard"}
+              className={formStyle.inputField}
+            />
+            {errors.nameoncard && errors.nameoncard.type === "required" && (
+              <div role="alert" className={formStyle.error}>
+                {errors?.nameoncard?.message}
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </>
+      )}
       <div>
-        <StripeCardElement />
+        <StripeCardElement showBillingFunc={showBillingFunc} />
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Elements,
   CardElement,
@@ -8,7 +8,7 @@ import {
 import { loadStripe } from "@stripe/stripe-js";
 import Style from "../Styles/StripeCard.module.css";
 
-function StripeCardComponent() {
+function StripeCardComponent({ showBillingFunc }) {
   const elements = useElements();
   const stripe = useStripe();
 
@@ -31,7 +31,15 @@ function StripeCardComponent() {
 
   return (
     <>
-      <CardElement className={`card ${Style.StripeElementInput}`} />
+      <CardElement
+        className={`card ${Style.StripeElementInput}`}
+        onFocus={() => {
+          showBillingFunc(true);
+        }}
+        onBlur={() => {
+          console.log("");
+        }}
+      />
       <button
         onClick={handleSubmit}
         disabled={!stripe || !elements}
@@ -45,11 +53,11 @@ function StripeCardComponent() {
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
 
-function StripeCardElement() {
+function StripeCardElement({ showBillingFunc }) {
   return (
     <div className={Style.stripeContainer}>
       <Elements stripe={stripePromise}>
-        <StripeCardComponent />
+        <StripeCardComponent showBillingFunc={showBillingFunc} />
       </Elements>
     </div>
   );

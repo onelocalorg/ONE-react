@@ -12,8 +12,10 @@ import CardList from "./CardList";
 import CreatePassword from "./CreatePassword";
 import ReferedBy from "./ReferedBy";
 
-function PurchaseModalDialog({ hideFunc }) {
+function PurchaseModalDialog({ hideFunc, purchaseTotal }) {
   const [activeStep, setActiveStep] = useState(0);
+  const [showBillingInformation, setShowBillingInformation] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
   const handleClose = () => {
     hideFunc(false);
   };
@@ -33,6 +35,9 @@ function PurchaseModalDialog({ hideFunc }) {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(currentValidationSchema),
+    defaultValues: {
+      savedcard: "33",
+    },
   });
 
   const onSubmit = async (data) => {
@@ -64,19 +69,31 @@ function PurchaseModalDialog({ hideFunc }) {
         </Modal.Header>
         <Modal.Body>
           <form>
-            <CardInfo register={register} errors={errors} formStyle={Style} />
-            <BillingAddress
+            <CardInfo
               register={register}
               errors={errors}
               formStyle={Style}
+              showBillingInformation={showBillingInformation}
+              showBillingFunc={setShowBillingInformation}
             />
+            {showBillingInformation && (
+              <BillingAddress
+                register={register}
+                errors={errors}
+                formStyle={Style}
+              />
+            )}
             <CardList register={register} errors={errors} />
-            <CreatePassword
-              register={register}
-              errors={errors}
-              formStyle={Style}
-            />
-            <ReferedBy register={register} formStyle={Style} />
+            {showRegister && (
+              <>
+                <CreatePassword
+                  register={register}
+                  errors={errors}
+                  formStyle={Style}
+                />
+                <ReferedBy register={register} formStyle={Style} />
+              </>
+            )}
           </form>
         </Modal.Body>
         <Modal.Footer className={Style.purchaseFooter}>
@@ -84,7 +101,9 @@ function PurchaseModalDialog({ hideFunc }) {
             className={Style.purchaseformButton}
             onClick={handleSubmit(onSubmit)}
           >
-            <span className={Style.purchasebtnText}>Pay $[total]</span>
+            <span className={Style.purchasebtnText}>
+              Pay ${`${purchaseTotal}`}
+            </span>
             <span className={Style.purchseArrowIconContainer}>
               <img
                 src={nextarrow}
@@ -93,13 +112,17 @@ function PurchaseModalDialog({ hideFunc }) {
               />
             </span>
           </button>
-          <div>
-            <input type="radio" id="terms" />
-            <label htmlFor="terms" className={Style.termLable}>
-              I agree to the{" "}
-              <span className={Style.termInnerText}>terms and conditions</span>
-            </label>
-          </div>
+          {showRegister && (
+            <div>
+              <input type="radio" id="terms" />
+              <label htmlFor="terms" className={Style.termLable}>
+                I agree to the{" "}
+                <span className={Style.termInnerText}>
+                  terms and conditions
+                </span>
+              </label>
+            </div>
+          )}
         </Modal.Footer>
       </Modal>
     </div>

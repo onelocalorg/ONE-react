@@ -486,7 +486,10 @@ const EventPage = () => {
         />
       )}
       {showPurchseDialog && (
-        <PurchaseModalDialog hideFunc={setShowPurchseDialog} />
+        <PurchaseModalDialog
+          hideFunc={setShowPurchseDialog}
+          purchaseTotal={taxAmount?.total}
+        />
       )}
     </>
   );
