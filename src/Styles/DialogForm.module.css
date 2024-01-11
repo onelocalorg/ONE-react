@@ -8,17 +8,19 @@
   width: 90%;
   align-items: center;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+  position: relative;
 }
 
 .arrowIcon {
-  width: 30px;
-  height: 30px;
+  width: 32px;
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 8px;
+  position: absolute;
+  right: 0;
 }
 
 .arrowIcon > img {
@@ -63,23 +65,26 @@
 }
 
 .inputField {
+  font-family: Average Sans;
   background-color: #cbcaca;
-  padding: 10px;
+  padding: 10px 15px;
   border: none;
   font-size: 14px;
   outline: 0;
   width: 100%;
-  border-radius: 12px;
+  border-radius: 8px;
   margin: 10px 0 0px 0;
+  height: 30px;
 }
 
 .error {
   color: red;
   font-size: 11px;
-  margin: 4px 21px 0px 21px;
+  margin: 4px 21px 0px 15px;
 }
 
 .modalTitle {
+  font-family: Average Sans;
   font-size: 14px;
 }
 
@@ -101,6 +106,51 @@
   cursor: pointer;
 }
 
+.fieldHeading {
+  font-family: Average Sans;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+  letter-spacing: 0px;
+  text-align: left;
+  margin-top: 10px;
+}
+
+.purchasebtnText {
+  text-transform: UPPERCASE;
+  width: 100%;
+}
+
+.purchaseformButton {
+  width: 100%;
+  background-color: #0e80e8;
+  height: 58px;
+  color: #ffffff;
+  border-radius: 15px;
+  border: 0;
+  width: 90%;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.purchaseFooter {
+  justify-content: center !important;
+}
+
+.purchseArrowIcon {
+  width: 30px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.purchseArrowIconContainer {
+  right: 11%;
+  position: absolute;
+}
+
 /* Responsive */
 @media only screen and (max-width: 768px) {
   .modalItem {
@@ -115,5 +165,9 @@
     [class~="modal-dialog"] {
       margin-top: 20%;
     }
+  }
+
+  .purchseArrowIconContainer {
+    right: 13%;
   }
 }

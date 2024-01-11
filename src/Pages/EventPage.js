@@ -24,12 +24,14 @@ import InputWithPlusAndMinusComponent from "../Components/InputWithPlusMinusComp
 import NotFound from "./NotFound";
 import HeaderUserComponent from "../Components/HeaderUserComponent";
 import UserConfirmDialog from "../Components/EmailModalDialog";
+import PurchaseModalDialog from "../Components/PurchaseModalDialog";
 import { useSelector, useDispatch } from "react-redux";
 
 const EventPage = () => {
   const { eventId } = useParams();
   const navigate = useNavigate();
   const [showLoginDialog, setShowLoginDialog] = useState(false);
+  const [showPurchseDialog, setShowPurchseDialog] = useState(false);
   const userInfo = useSelector((state) => state?.userInfo);
 
   const onLastPage = () => {
@@ -477,7 +479,15 @@ const EventPage = () => {
         </div>
       </>
       {loading && <Loader />}
-      {showLoginDialog && <UserConfirmDialog hideFunc={setShowLoginDialog} />}
+      {showLoginDialog && (
+        <UserConfirmDialog
+          hideFunc={setShowLoginDialog}
+          purchaseFunc={setShowPurchseDialog}
+        />
+      )}
+      {showPurchseDialog && (
+        <PurchaseModalDialog hideFunc={setShowPurchseDialog} />
+      )}
     </>
   );
 };

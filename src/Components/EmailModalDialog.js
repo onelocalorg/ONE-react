@@ -8,7 +8,7 @@ import Style from "../Styles/DialogForm.module.css";
 import nextarrow from "../images/next-arrow.svg";
 import closeIcon from "../images/close-icon.svg";
 
-function EmailModalDialog({ hideFunc }) {
+function EmailModalDialog({ hideFunc, purchaseFunc }) {
   const [activeStep, setActiveStep] = useState(0);
   const handleClose = () => {
     hideFunc(false);
@@ -39,6 +39,8 @@ function EmailModalDialog({ hideFunc }) {
 
   const onSubmit = async (data) => {
     console.log(data);
+    purchaseFunc(true);
+    handleClose();
   };
 
   const handleNext = async () => {
