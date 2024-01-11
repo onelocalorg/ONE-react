@@ -16,7 +16,7 @@ function EmailModalDialog({ hideFunc }) {
 
   const validationSchema = [
     yup.object({
-      email: yup.string().required("Email is required"),
+      email: yup.string().required("Email is required").email("Invalid Email"),
     }),
     yup.object({
       password: yup.string().required("Password is required"),
@@ -75,11 +75,13 @@ function EmailModalDialog({ hideFunc }) {
                 name={"email"}
                 className={Style.inputField}
               />
-              {errors.email && errors.email.type === "required" && (
-                <div role="alert" className={Style.error}>
-                  This is required
-                </div>
-              )}
+              {errors.email &&
+                (errors.email.type === "required" ||
+                  errors.email.type === "email") && (
+                  <div role="alert" className={Style.error}>
+                    {errors?.email?.message}
+                  </div>
+                )}
             </div>
 
             {activeStep === 1 && (
