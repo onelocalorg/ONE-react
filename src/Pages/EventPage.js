@@ -23,7 +23,7 @@ import ToasterComponent from "../Components/ToasterComponent";
 import InputWithPlusAndMinusComponent from "../Components/InputWithPlusMinusComp";
 import NotFound from "./NotFound";
 import HeaderUserComponent from "../Components/HeaderUserComponent";
-import UserConfirmDialog from "../Components/ModalDialog";
+import UserConfirmDialog from "../Components/EmailModalDialog";
 import { useSelector, useDispatch } from "react-redux";
 
 const EventPage = () => {

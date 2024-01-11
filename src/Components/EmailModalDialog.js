@@ -8,7 +8,7 @@ import Style from "../Styles/DialogForm.module.css";
 import nextarrow from "../images/next-arrow.svg";
 import closeIcon from "../images/close-icon.svg";
 
-function ModalDialog({ hideFunc }) {
+function EmailModalDialog({ hideFunc }) {
   const [activeStep, setActiveStep] = useState(0);
   const handleClose = () => {
     hideFunc(false);
@@ -127,4 +127,4 @@ function ModalDialog({ hideFunc }) {
   );
 }
 
-export default ModalDialog;
+export default EmailModalDialog;
