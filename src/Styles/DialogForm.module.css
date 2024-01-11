@@ -157,6 +157,15 @@
   }
 }
 
+.termLable {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.termInnerText {
+  font-weight: bold;
+}
+
 /* Responsive */
 @media only screen and (max-width: 768px) {
   .modalItem {
@@ -187,5 +196,6 @@
     [class~="modal-dialog"] {
       margin-top: 5%;
     }
+    padding-left: 6px !important;
   }
 }

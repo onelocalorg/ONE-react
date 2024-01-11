@@ -9,6 +9,8 @@ import closeIcon from "../images/close-icon.svg";
 import BillingAddress from "./BillingAddress";
 import CardInfo from "./CardInfo";
 import CardList from "./CardList";
+import CreatePassword from "./CreatePassword";
+import ReferedBy from "./ReferedBy";
 
 function PurchaseModalDialog({ hideFunc }) {
   const [activeStep, setActiveStep] = useState(0);
@@ -69,6 +71,12 @@ function PurchaseModalDialog({ hideFunc }) {
               formStyle={Style}
             />
             <CardList register={register} errors={errors} />
+            <CreatePassword
+              register={register}
+              errors={errors}
+              formStyle={Style}
+            />
+            <ReferedBy register={register} formStyle={Style} />
           </form>
         </Modal.Body>
         <Modal.Footer className={Style.purchaseFooter}>
@@ -85,6 +93,13 @@ function PurchaseModalDialog({ hideFunc }) {
               />
             </span>
           </button>
+          <div>
+            <input type="radio" id="terms" />
+            <label htmlFor="terms" className={Style.termLable}>
+              I agree to the{" "}
+              <span className={Style.termInnerText}>terms and conditions</span>
+            </label>
+          </div>
         </Modal.Footer>
       </Modal>
     </div>
