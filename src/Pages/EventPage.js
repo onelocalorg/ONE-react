@@ -107,7 +107,12 @@ const EventPage = () => {
   };
   const onSubmit = async (data) => {
     if (!userInfo?.userData) {
+      setActivePurchaseStep(0);
       setShowLoginDialog(true);
+      return;
+    } else {
+      setActivePurchaseStep(1);
+      setShowPurchseDialog(true);
       return;
     }
 
