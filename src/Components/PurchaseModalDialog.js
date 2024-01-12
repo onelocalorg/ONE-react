@@ -23,6 +23,7 @@ function PurchaseModalDialog({
   userEmail,
   activePurchaseStep,
 }) {
+  const [stripeCardStatus, setStripeCardStatus] = useState({});
   const handleClose = () => {
     hideFunc(false);
   };
@@ -49,7 +50,7 @@ function PurchaseModalDialog({
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitted },
   } = useForm({
     resolver: yupResolver(currentValidationSchema),
     defaultValues: {
@@ -59,7 +60,13 @@ function PurchaseModalDialog({
   });
 
   const onSubmit = async (data) => {
-    console.log(data);
+    if (!stripeCardStatus?.error) {
+      const paymentMethodID = stripeCardStatus?.paymentMethod?.id || "";
+      if (paymentMethodID !== "") {
+        data["paymentMethodID"] = stripeCardStatus?.paymentMethod?.id || "";
+        console.log(data);
+      }
+    }
   };
 
   return (
@@ -114,6 +121,9 @@ function PurchaseModalDialog({
               formStyle={Style}
               showBillingInformation={showBillingInformation}
               showBillingFunc={setShowBillingInformation}
+              stripeCardStatus={stripeCardStatus}
+              setStripeCardStatus={setStripeCardStatus}
+              isSubmitted={isSubmitted}
             />
             {showBillingInformation && (
               <BillingAddress

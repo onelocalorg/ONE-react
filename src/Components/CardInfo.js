@@ -8,6 +8,9 @@ function CardInfo({
   formStyle,
   showBillingInformation,
   showBillingFunc,
+  stripeCardStatus,
+  setStripeCardStatus,
+  isSubmitted,
 }) {
   return (
     <div className={Style.billingContainer}>
@@ -33,7 +36,12 @@ function CardInfo({
         </>
       )}
       <div>
-        <StripeCardElement showBillingFunc={showBillingFunc} />
+        <StripeCardElement
+          showBillingFunc={showBillingFunc}
+          stripeCardStatus={stripeCardStatus}
+          setStripeCardStatus={setStripeCardStatus}
+          isSubmitted={isSubmitted}
+        />
       </div>
     </div>
   );

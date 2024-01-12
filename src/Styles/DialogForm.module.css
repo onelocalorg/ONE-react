@@ -166,6 +166,14 @@
   font-weight: bold;
 }
 
+.hidden {
+  display: none;
+}
+
+.purchaseformButton:disabled {
+  cursor: not-allowed;
+}
+
 /* Responsive */
 @media only screen and (max-width: 768px) {
   .modalItem {
