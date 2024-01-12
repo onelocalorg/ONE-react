@@ -7,9 +7,18 @@ import InputComponent from "./InputComponent";
 import Style from "../Styles/DialogForm.module.css";
 import nextarrow from "../images/next-arrow.svg";
 import closeIcon from "../images/close-icon.svg";
+import { getUserByEmail, logInApi } from "../api/services";
 
-function EmailModalDialog({ hideFunc, purchaseFunc }) {
+function EmailModalDialog({
+  hideFunc,
+  purchaseFunc,
+  setloadingFunc,
+  setShowRegister,
+  setShowBillingInformation,
+  setUserEmail,
+}) {
   const [activeStep, setActiveStep] = useState(0);
+
   const handleClose = () => {
     hideFunc(false);
   };
@@ -29,6 +38,7 @@ function EmailModalDialog({ hideFunc, purchaseFunc }) {
     trigger,
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -38,14 +48,35 @@ function EmailModalDialog({ hideFunc, purchaseFunc }) {
   });
 
   const onSubmit = async (data) => {
-    console.log(data);
+    setloadingFunc(true);
+    const response = await logInApi(data);
+
+    setloadingFunc(false);
     purchaseFunc(true);
     handleClose();
   };
 
   const handleNext = async () => {
+    const formValues = getValues();
     const isStepValid = await trigger();
-    if (isStepValid) setActiveStep((prevActiveStep) => prevActiveStep + 1);
+
+    if (isStepValid) {
+      setloadingFunc(true);
+      setUserEmail(formValues?.email);
+      const response = await getUserByEmail(formValues?.email);
+
+      setloadingFunc(false);
+      if (response?.isAvailable) {
+        setShowRegister(false);
+        setShowBillingInformation(false);
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      } else {
+        setShowRegister(true);
+        purchaseFunc(true);
+        setShowBillingInformation(true);
+        handleClose();
+      }
+    }
   };
 
   return (

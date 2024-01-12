@@ -110,3 +110,16 @@ export const subscriptionsPlansApi = async () => {
     console.log(error);
   }
 };
+
+export const getUserByEmail = async (email) => {
+  try {
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    const response = { data: { isAvailable: false } };
+    await delay(2000);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};

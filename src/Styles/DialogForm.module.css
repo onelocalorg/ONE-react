@@ -78,6 +78,7 @@
 }
 
 .error {
+  font-family: "Average Sans", sans-serif;
   color: red;
   font-size: 11px;
   margin: 4px 21px 0px 15px;

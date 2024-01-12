@@ -22,7 +22,7 @@ function CreatePassword({ register, errors, formStyle }) {
       </div>
       <div>
         <InputComponent
-          type={"confirmpassword"}
+          type={"password"}
           placeholder={"Confirm Password"}
           register={register}
           inputRef={"confirmpassword"}
@@ -30,7 +30,8 @@ function CreatePassword({ register, errors, formStyle }) {
           className={formStyle.inputField}
         />
         {errors.confirmpassword &&
-          errors.confirmpassword.type === "required" && (
+          (errors.confirmpassword.type === "required" ||
+            errors.confirmpassword.type === "oneOf") && (
             <div role="alert" className={formStyle.error}>
               {errors?.confirmpassword?.message}
             </div>

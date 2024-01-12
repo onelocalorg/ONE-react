@@ -11,25 +11,42 @@ import CardInfo from "./CardInfo";
 import CardList from "./CardList";
 import CreatePassword from "./CreatePassword";
 import ReferedBy from "./ReferedBy";
+import InputComponent from "./InputComponent";
+const errorRequired = "This field is required";
 
-function PurchaseModalDialog({ hideFunc, purchaseTotal }) {
-  const [activeStep, setActiveStep] = useState(0);
-  const [showBillingInformation, setShowBillingInformation] = useState(false);
-  const [showRegister, setShowRegister] = useState(false);
+function PurchaseModalDialog({
+  hideFunc,
+  purchaseTotal,
+  showRegister,
+  showBillingInformation,
+  setShowBillingInformation,
+  userEmail,
+  activePurchaseStep,
+}) {
   const handleClose = () => {
     hideFunc(false);
   };
 
   const validationSchema = [
     yup.object({
-      nameoncard: yup.string().required("Name on card is required"),
+      email: yup.string().required(errorRequired).email("Invalid Email"),
+      nameoncard: yup.string().required(errorRequired),
+      country: yup.string().required(errorRequired),
+      address1: yup.string().required(errorRequired),
+      city: yup.string().required(errorRequired),
+      state: yup.string().required(errorRequired),
+      zip: yup.string().required(errorRequired),
+      password: yup.string().required(errorRequired),
+      confirmpassword: yup
+        .string()
+        .required(errorRequired)
+        .oneOf([yup.ref("password")], "Password do not match"),
     }),
   ];
 
-  const currentValidationSchema = validationSchema[activeStep];
+  const currentValidationSchema = validationSchema[activePurchaseStep];
 
   const {
-    trigger,
     register,
     handleSubmit,
     formState: { errors },
@@ -37,16 +54,12 @@ function PurchaseModalDialog({ hideFunc, purchaseTotal }) {
     resolver: yupResolver(currentValidationSchema),
     defaultValues: {
       savedcard: "33",
+      email: userEmail,
     },
   });
 
   const onSubmit = async (data) => {
     console.log(data);
-  };
-
-  const handleNext = async () => {
-    const isStepValid = await trigger();
-    if (isStepValid) setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   return (
@@ -67,12 +80,34 @@ function PurchaseModalDialog({ hideFunc, purchaseTotal }) {
               <img src={closeIcon} alt="close" />
             </div>
             <div className={Style.modalTitleContainer}>
-              <label className={Style.modalTitle}>Purchase</label>
+              <label className={Style.modalTitle}>{`${
+                showBillingInformation ? "Add Card" : "Purchase"
+              }`}</label>
             </div>
           </div>
         </Modal.Header>
         <Modal.Body>
           <form>
+            {showRegister && (
+              <div>
+                <div className={Style.fieldHeading}>Email *</div>
+                <div>
+                  <InputComponent
+                    type={"text"}
+                    placeholder={"Email"}
+                    register={register}
+                    inputRef={"email"}
+                    name={"email"}
+                    className={Style.inputField}
+                  />
+                  {errors.email && errors.email.type === "required" && (
+                    <div role="alert" className={Style.error}>
+                      {errors?.email?.message}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
             <CardInfo
               register={register}
               errors={errors}
@@ -87,7 +122,7 @@ function PurchaseModalDialog({ hideFunc, purchaseTotal }) {
                 formStyle={Style}
               />
             )}
-            <CardList register={register} errors={errors} />
+            {!showRegister && <CardList register={register} errors={errors} />}
             {showRegister && (
               <>
                 <CreatePassword
@@ -118,7 +153,7 @@ function PurchaseModalDialog({ hideFunc, purchaseTotal }) {
           </button>
           {showRegister && (
             <div>
-              <input type="radio" id="terms" />
+              <input type="radio" id="terms" defaultChecked />
               <label htmlFor="terms" className={Style.termLable}>
                 I agree to the{" "}
                 <span className={Style.termInnerText}>

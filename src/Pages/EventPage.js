@@ -25,13 +25,16 @@ import NotFound from "./NotFound";
 import HeaderUserComponent from "../Components/HeaderUserComponent";
 import UserConfirmDialog from "../Components/EmailModalDialog";
 import PurchaseModalDialog from "../Components/PurchaseModalDialog";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 const EventPage = () => {
   const { eventId } = useParams();
   const navigate = useNavigate();
   const [showLoginDialog, setShowLoginDialog] = useState(false);
   const [showPurchseDialog, setShowPurchseDialog] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
+  const [showBillingInformation, setShowBillingInformation] = useState(false);
+  const [activePurchaseStep, setActivePurchaseStep] = useState(0); //0 - new register, 1- already user email available
   const userInfo = useSelector((state) => state?.userInfo);
 
   const onLastPage = () => {
@@ -68,6 +71,7 @@ const EventPage = () => {
   const [ticketData, setTicketData] = useState([]);
   const [taxAmount, setTaxAmount] = useState({});
   const [confirmation, setConfirmation] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
 
   const [loading, setloading] = useState(true);
   const [error, setError] = useState(null);
@@ -210,285 +214,287 @@ const EventPage = () => {
 
   return (
     <>
-      <>
-        <div className={Style.mainDiv}>
-          <div className={Style.navHeader}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: "7px",
-                flexGrow: "1",
-                cursor: "pointer",
-              }}
-              onClick={goToHomePage}
-            >
-              <img src={logo} alt="logo" className={Style.oneLogo} />
-              <h2 className={Style.brand}>NE</h2>
-            </div>
-            <div className={Style.userCover}>
-              <HeaderUserComponent headerClass={Style} />
-            </div>
+      <div className={Style.mainDiv}>
+        <div className={Style.navHeader}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "7px",
+              flexGrow: "1",
+              cursor: "pointer",
+            }}
+            onClick={goToHomePage}
+          >
+            <img src={logo} alt="logo" className={Style.oneLogo} />
+            <h2 className={Style.brand}>NE</h2>
           </div>
-          <div className={Style.dataContainer}>
-            <div>
-              <button className={Style.backButton} onClick={onLastPage}>
-                {"< back"}
-              </button>
-            </div>
-            <div className={Style.wrapper}>
-              <div className={Style.left}>
-                {/* //event name */}
-                <h2 className={Style.eventName}>{eventData?.name}</h2>
-                {/* boxes 1  */}
-                <div className={Style.boxes}>
-                  <div
-                    className={Style.iconDiv}
-                    style={{ backgroundColor: "#db9791" }}
-                  >
-                    <img src={calendarIcon} alt="calendar" />
-                  </div>
-                  <div className={Style.infoDiv}>
-                    <div className={Style.date}>
-                      {eventData
-                        ? moment(eventData?.start_date).format("DD MMMM YYYY")
-                        : ""}
-                    </div>
-                    <div className={Style.timing}>
-                      {eventData
-                        ? moment(eventData?.start_date).format("ddd")
-                        : ""}
-                      ,{" "}
-                      {eventData
-                        ? moment(eventData?.start_date).format("hh:mm A")
-                        : ""}{" "}
-                      -{" "}
-                      {eventData
-                        ? moment(eventData?.end_date).format("hh:mm A")
-                        : ""}
-                    </div>
-                  </div>
-                </div>
-                {/* boxes 2  */}
-                <div className={Style.boxes}>
-                  <div
-                    className={Style.iconDiv}
-                    style={{ backgroundColor: "#E3C384" }}
-                  >
-                    <img src={locationIcon} alt="locationIcon" />
-                  </div>
-                  <div className={Style.infoDiv}>
-                    <div className={Style.date}>{eventData?.address}</div>
-                    <div className={Style.timing}>
-                      {eventData ? eventData?.full_address : ""}
-                    </div>
-                  </div>
-                </div>
-                {/* boxes 3  */}
+          <div className={Style.userCover}>
+            <HeaderUserComponent headerClass={Style} />
+          </div>
+        </div>
+        <div className={Style.dataContainer}>
+          <div>
+            <button className={Style.backButton} onClick={onLastPage}>
+              {"< back"}
+            </button>
+          </div>
+          <div className={Style.wrapper}>
+            <div className={Style.left}>
+              {/* //event name */}
+              <h2 className={Style.eventName}>{eventData?.name}</h2>
+              {/* boxes 1  */}
+              <div className={Style.boxes}>
                 <div
-                  className={Style.boxes}
-                  style={{
-                    width: "90%",
-                  }}
+                  className={Style.iconDiv}
+                  style={{ backgroundColor: "#db9791" }}
                 >
-                  <div
-                    className={Style.producerDiv}
-                    style={{ overflow: "hidden" }}
-                  >
-                    <img
-                      src={
-                        eventData?.eventProducer?.pic
-                          ? eventData.eventProducer.pic
-                          : proImg
-                      }
-                      alt="producerIcon"
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                        transition: "opacity 0.3s ease-in-out",
-                        opacity: eventData?.eventProducer?.pic ? 1 : 0.5, // Lower opacity for placeholder
-                      }}
-                    />
+                  <img src={calendarIcon} alt="calendar" />
+                </div>
+                <div className={Style.infoDiv}>
+                  <div className={Style.date}>
+                    {eventData
+                      ? moment(eventData?.start_date).format("DD MMMM YYYY")
+                      : ""}
                   </div>
-                  <div className={Style.producerInfo}>
-                    <div className={Style.proName}>
-                      {eventData ? eventData?.eventProducer?.first_name : ""}{" "}
-                      {eventData ? eventData?.eventProducer?.last_name : ""}
-                    </div>
-                    <div className={Style.timing}>
-                      {/* {eventData ? eventData?.eventProducer?.user_type : ""} */}
-                      Producer
-                    </div>
+                  <div className={Style.timing}>
+                    {eventData
+                      ? moment(eventData?.start_date).format("ddd")
+                      : ""}
+                    ,{" "}
+                    {eventData
+                      ? moment(eventData?.start_date).format("hh:mm A")
+                      : ""}{" "}
+                    -{" "}
+                    {eventData
+                      ? moment(eventData?.end_date).format("hh:mm A")
+                      : ""}
                   </div>
                 </div>
+              </div>
+              {/* boxes 2  */}
+              <div className={Style.boxes}>
+                <div
+                  className={Style.iconDiv}
+                  style={{ backgroundColor: "#E3C384" }}
+                >
+                  <img src={locationIcon} alt="locationIcon" />
+                </div>
+                <div className={Style.infoDiv}>
+                  <div className={Style.date}>{eventData?.address}</div>
+                  <div className={Style.timing}>
+                    {eventData ? eventData?.full_address : ""}
+                  </div>
+                </div>
+              </div>
+              {/* boxes 3  */}
+              <div
+                className={Style.boxes}
+                style={{
+                  width: "90%",
+                }}
+              >
+                <div
+                  className={Style.producerDiv}
+                  style={{ overflow: "hidden" }}
+                >
+                  <img
+                    src={
+                      eventData?.eventProducer?.pic
+                        ? eventData.eventProducer.pic
+                        : proImg
+                    }
+                    alt="producerIcon"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      transition: "opacity 0.3s ease-in-out",
+                      opacity: eventData?.eventProducer?.pic ? 1 : 0.5, // Lower opacity for placeholder
+                    }}
+                  />
+                </div>
+                <div className={Style.producerInfo}>
+                  <div className={Style.proName}>
+                    {eventData ? eventData?.eventProducer?.first_name : ""}{" "}
+                    {eventData ? eventData?.eventProducer?.last_name : ""}
+                  </div>
+                  <div className={Style.timing}>
+                    {/* {eventData ? eventData?.eventProducer?.user_type : ""} */}
+                    Producer
+                  </div>
+                </div>
+              </div>
+              <hr />
+
+              {/* boxes 4 */}
+
+              {/* //here we need to mapover the tickets array and need to make radio button available options */}
+
+              <form onSubmit={handleSubmit(onSubmit)} className={Style.descDiv}>
+                <div className={Style.desc}>Ticket list</div>
+                {ticketData &&
+                  ticketData?.map((ticketitem) => (
+                    <div
+                      key={ticketitem.id}
+                      style={{
+                        display: "flex",
+                        gap: "8px",
+                        justifyContent: "flex-start",
+                        alignItems: "center",
+                      }}
+                    >
+                      <InputComponent
+                        type={"radio"}
+                        register={register}
+                        inputRef={"ticket"}
+                        name={"ticket"}
+                        id={ticketitem.id}
+                        value={Number(ticketitem?.price)}
+                        style={{ height: "18px" }}
+                        disabled={
+                          ticketitem?.max_quantity_to_show === 0 ? true : false
+                        }
+                      />
+
+                      <label
+                        htmlFor={ticketitem.id}
+                        style={{
+                          cursor:
+                            ticketitem?.max_quantity_to_show === 0
+                              ? "no-drop"
+                              : "pointer",
+                        }}
+                        className={Style.labelText}
+                      >
+                        {/* Label content here */}
+                        {ticketitem.name}-${ticketitem.price}
+                        {ticketitem?.max_quantity_to_show === 0 && (
+                          <span
+                            style={{
+                              fontWeight: "600",
+                              color: "red",
+                              padding: "0 7px",
+                              fontSize: "12px",
+                            }}
+                          >
+                            -- sold out --
+                          </span>
+                        )}
+                      </label>
+
+                      {Number(formVal.ticket) === ticketitem.price && (
+                        <>
+                          <InputWithPlusAndMinusComponent
+                            type="number"
+                            defaultValue={1}
+                            register={register}
+                            inputRef="quantity"
+                            boundary={ticketitem?.max_quantity_to_show}
+                            classNamebtn1={Style.iconCover}
+                            classNamebtn2={Style.iconCover}
+                            className={Style.counterInput}
+                            setValue={setValue}
+                          />
+                        </>
+                      )}
+                    </div>
+                  ))}
                 <hr />
 
-                {/* boxes 4 */}
-
-                {/* //here we need to mapover the tickets array and need to make radio button available options */}
-
-                <form
-                  onSubmit={handleSubmit(onSubmit)}
-                  className={Style.descDiv}
-                >
-                  <div className={Style.desc}>Ticket list</div>
-                  {ticketData &&
-                    ticketData?.map((ticketitem) => (
-                      <div
-                        key={ticketitem.id}
-                        style={{
-                          display: "flex",
-                          gap: "8px",
-                          justifyContent: "flex-start",
-                          alignItems: "center",
-                        }}
-                      >
-                        <InputComponent
-                          type={"radio"}
-                          register={register}
-                          inputRef={"ticket"}
-                          name={"ticket"}
-                          id={ticketitem.id}
-                          value={Number(ticketitem?.price)}
-                          style={{ height: "18px" }}
-                          disabled={
-                            ticketitem?.max_quantity_to_show === 0
-                              ? true
-                              : false
-                          }
-                        />
-
-                        <label
-                          htmlFor={ticketitem.id}
-                          style={{
-                            cursor:
-                              ticketitem?.max_quantity_to_show === 0
-                                ? "no-drop"
-                                : "pointer",
-                          }}
-                          className={Style.labelText}
-                        >
-                          {/* Label content here */}
-                          {ticketitem.name}-${ticketitem.price}
-                          {ticketitem?.max_quantity_to_show === 0 && (
-                            <span
-                              style={{
-                                fontWeight: "600",
-                                color: "red",
-                                padding: "0 7px",
-                                fontSize: "12px",
-                              }}
-                            >
-                              -- sold out --
-                            </span>
-                          )}
-                        </label>
-
-                        {Number(formVal.ticket) === ticketitem.price && (
-                          <>
-                            <InputWithPlusAndMinusComponent
-                              type="number"
-                              defaultValue={1}
-                              register={register}
-                              inputRef="quantity"
-                              boundary={ticketitem?.max_quantity_to_show}
-                              classNamebtn1={Style.iconCover}
-                              classNamebtn2={Style.iconCover}
-                              className={Style.counterInput}
-                              setValue={setValue}
-                            />
-                          </>
-                        )}
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <div className={Style.desc}>Price and Taxes</div>
+                  {confirmation === true && (
+                    <div style={{ padding: "8px 0" }}>
+                      <div className={Style.calcDiv}>
+                        <p className={Style.descDetail}>Ticket Price</p>
+                        <p className={Style.descDetail}>
+                          {taxAmount?.ticket_price} $
+                        </p>
                       </div>
-                    ))}
-                  <hr />
-
-                  <div style={{ display: "flex", flexDirection: "column" }}>
-                    <div className={Style.desc}>Price and Taxes</div>
-                    {confirmation === true && (
-                      <div style={{ padding: "8px 0" }}>
-                        <div className={Style.calcDiv}>
-                          <p className={Style.descDetail}>Ticket Price</p>
-                          <p className={Style.descDetail}>
-                            {taxAmount?.ticket_price} $
-                          </p>
-                        </div>
-                        <div className={Style.calcDiv}>
-                          <p className={Style.descDetail}>Quantity</p>
-                          <p className={Style.descDetail}>
-                            {taxAmount?.quantity}
-                          </p>
-                        </div>
-                        <div className={Style.calcDiv}>
-                          <p className={Style.descDetail}>Service Tax</p>
-                          <p className={Style.descDetail}>
-                            {taxAmount?.service_tax}
-                          </p>
-                        </div>
-                        <hr />
-                        <div className={Style.calcDiv}>
-                          <p className={Style.descDetail}>Total Amount</p>
-                          <p className={Style.descDetail}>
-                            {taxAmount?.total} $
-                          </p>
-                        </div>
+                      <div className={Style.calcDiv}>
+                        <p className={Style.descDetail}>Quantity</p>
+                        <p className={Style.descDetail}>
+                          {taxAmount?.quantity}
+                        </p>
                       </div>
-                    )}
-                  </div>
-                  <hr />
-                  <button
-                    type="submit"
-                    className={Style.purchase}
-                    style={{
-                      marginTop: "10px",
-                      pointerEvents: !confirmation ? "none" : "",
-                    }}
-                  >
-                    <span>BUY TICKET</span>
-                    <span className={Style.arrowIcon}>
-                      <img src={arrow} alt="arrow" />
-                    </span>
-                  </button>
-                </form>
-              </div>
-              <div className={Style.right}>
-                {eventData?.event_image ? (
-                  <img
-                    src={eventData?.event_image}
-                    alt={"event_image"}
-                    className={Style.eventImg}
-                  />
-                ) : (
-                  <div className={`${Style.eventImg} ${Style.skeletonImg}`} />
-                )}
-                <div className={Style.aboutEventDiv}>
-                  <div className={Style.descDiv}>
-                    <div className={Style.aboutEventText}>About Event</div>
-                    <div className={Style.aboutEventDetail}>
-                      {eventData?.about
-                        ? eventData?.about
-                        : "No description available"}
+                      <div className={Style.calcDiv}>
+                        <p className={Style.descDetail}>Service Tax</p>
+                        <p className={Style.descDetail}>
+                          {taxAmount?.service_tax}
+                        </p>
+                      </div>
+                      <hr />
+                      <div className={Style.calcDiv}>
+                        <p className={Style.descDetail}>Total Amount</p>
+                        <p className={Style.descDetail}>{taxAmount?.total} $</p>
+                      </div>
                     </div>
+                  )}
+                </div>
+                <hr />
+                <button
+                  type="submit"
+                  className={Style.purchase}
+                  style={{
+                    marginTop: "10px",
+                    pointerEvents: !confirmation ? "none" : "",
+                  }}
+                >
+                  <span>BUY TICKET</span>
+                  <span className={Style.arrowIcon}>
+                    <img src={arrow} alt="arrow" />
+                  </span>
+                </button>
+              </form>
+            </div>
+            <div className={Style.right}>
+              {eventData?.event_image ? (
+                <img
+                  src={eventData?.event_image}
+                  alt={"event_image"}
+                  className={Style.eventImg}
+                />
+              ) : (
+                <div className={`${Style.eventImg} ${Style.skeletonImg}`} />
+              )}
+              <div className={Style.aboutEventDiv}>
+                <div className={Style.descDiv}>
+                  <div className={Style.aboutEventText}>About Event</div>
+                  <div className={Style.aboutEventDetail}>
+                    {eventData?.about
+                      ? eventData?.about
+                      : "No description available"}
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </>
+      </div>
+
       {loading && <Loader />}
       {showLoginDialog && (
         <UserConfirmDialog
           hideFunc={setShowLoginDialog}
           purchaseFunc={setShowPurchseDialog}
+          setloadingFunc={setloading}
+          setShowRegister={setShowRegister}
+          setShowBillingInformation={setShowBillingInformation}
+          setUserEmail={setUserEmail}
         />
       )}
       {showPurchseDialog && (
         <PurchaseModalDialog
           hideFunc={setShowPurchseDialog}
           purchaseTotal={taxAmount?.total}
+          setloadingFunc={setloading}
+          showRegister={showRegister}
+          showBillingInformation={showBillingInformation}
+          setShowBillingInformation={setShowBillingInformation}
+          userEmail={userEmail}
+          activePurchaseStep={activePurchaseStep}
         />
       )}
     </>
