@@ -483,6 +483,7 @@ const EventPage = () => {
           setShowRegister={setShowRegister}
           setShowBillingInformation={setShowBillingInformation}
           setUserEmail={setUserEmail}
+          setActivePurchaseStep={setActivePurchaseStep}
         />
       )}
       {showPurchseDialog && (

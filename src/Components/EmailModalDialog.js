@@ -16,6 +16,7 @@ function EmailModalDialog({
   setShowRegister,
   setShowBillingInformation,
   setUserEmail,
+  setActivePurchaseStep,
 }) {
   const [activeStep, setActiveStep] = useState(0);
 
@@ -67,6 +68,7 @@ function EmailModalDialog({
 
       setloadingFunc(false);
       if (response?.isAvailable) {
+        setActivePurchaseStep(1); //For Already avaiable user
         setShowRegister(false);
         setShowBillingInformation(false);
         setActiveStep((prevActiveStep) => prevActiveStep + 1);

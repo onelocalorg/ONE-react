@@ -1,12 +1,12 @@
 import Style from "../Styles/CardList.module.css";
 import AddIcon from "../images/add-icon.svg";
 import InputComponent from "./InputComponent";
-function CardList({ register }) {
+function CardList({ register, handleSubmitCardDetail }) {
   return (
     <div className={Style.cardListContainer}>
       <div className={Style.addIcon}>
         <div className={Style.imgContainer}>
-          <img src={AddIcon} alt="Add" />
+          <img src={AddIcon} alt="Add" onClick={handleSubmitCardDetail} />
         </div>
       </div>
       <div className={Style.cardList}>

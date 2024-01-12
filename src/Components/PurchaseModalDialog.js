@@ -26,9 +26,24 @@ function PurchaseModalDialog({
   setloadingFunc,
 }) {
   const [stripeCardStatus, setStripeCardStatus] = useState({});
+  const [addCardAction, setAddCardAction] = useState(false);
+  const [cardRequired, setCardRequired] = useState(false);
   const handleClose = () => {
     hideFunc(false);
   };
+
+  const billingValidation = yup.object({
+    nameoncard: yup.string().required(errorRequired),
+    country: yup.string().required(errorRequired),
+    address1: yup.string().required(errorRequired),
+    city: yup.string().required(errorRequired),
+    state: yup.string().required(errorRequired),
+    zip: yup.string().required(errorRequired),
+  });
+
+  const loggedInValidation = showBillingInformation
+    ? billingValidation
+    : yup.object({});
 
   const validationSchema = [
     yup.object({
@@ -45,6 +60,7 @@ function PurchaseModalDialog({
         .required(errorRequired)
         .oneOf([yup.ref("password")], "Password do not match"),
     }),
+    loggedInValidation,
   ];
 
   const currentValidationSchema = validationSchema[activePurchaseStep];
@@ -62,19 +78,42 @@ function PurchaseModalDialog({
   });
 
   const onSubmit = async (data) => {
-    if (!stripeCardStatus?.error) {
-      const paymentMethodID = stripeCardStatus?.paymentMethod?.id || "";
-      if (paymentMethodID !== "") {
-        setloadingFunc(true); // Start loading
-        data["paymentMethodID"] = stripeCardStatus?.paymentMethod?.id || "";
-        console.log(data);
-        setTimeout(() => {
-          setloadingFunc(false);
-          handleClose();
-          ToasterSuccess("Purchased Successfully", 1500);
-        }, 1500);
+    if (showRegister) {
+      if (!stripeCardStatus?.error) {
+        const paymentMethodID = stripeCardStatus?.paymentMethod?.id || "";
+        if (paymentMethodID !== "") {
+          setloadingFunc(true); // Start loading
+          data["paymentMethodID"] = stripeCardStatus?.paymentMethod?.id || "";
+          console.log(data);
+          setTimeout(() => {
+            setloadingFunc(false);
+            handleClose();
+            ToasterSuccess("Purchased Successfully", 1500);
+          }, 1500);
+        }
+      }
+    } else {
+      if (addCardAction) {
+        console.log("Add Card Call");
+      } else {
+        console.log("Normal Call");
       }
     }
+  };
+
+  const handleSubmitDirect = () => {
+    setAddCardAction(false);
+    setCardRequired(true);
+    if (!showRegister) {
+      setCardRequired(false);
+    }
+    handleSubmit(onSubmit)();
+  };
+
+  const handleSubmitCardDetail = () => {
+    setCardRequired(true);
+    setAddCardAction(true);
+    handleSubmit(onSubmit)();
   };
 
   return (
@@ -132,6 +171,7 @@ function PurchaseModalDialog({
               stripeCardStatus={stripeCardStatus}
               setStripeCardStatus={setStripeCardStatus}
               isSubmitted={isSubmitted}
+              cardRequired={cardRequired}
             />
             {showBillingInformation && (
               <BillingAddress
@@ -140,7 +180,13 @@ function PurchaseModalDialog({
                 formStyle={Style}
               />
             )}
-            {!showRegister && <CardList register={register} errors={errors} />}
+            {!showRegister && (
+              <CardList
+                register={register}
+                errors={errors}
+                handleSubmitCardDetail={handleSubmitCardDetail}
+              />
+            )}
             {showRegister && (
               <>
                 <CreatePassword
@@ -156,7 +202,7 @@ function PurchaseModalDialog({
         <Modal.Footer className={Style.purchaseFooter}>
           <button
             className={Style.purchaseformButton}
-            onClick={handleSubmit(onSubmit)}
+            onClick={handleSubmitDirect}
           >
             <span className={Style.purchasebtnText}>
               Pay ${`${purchaseTotal}`}

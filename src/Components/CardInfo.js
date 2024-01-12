@@ -11,6 +11,7 @@ function CardInfo({
   stripeCardStatus,
   setStripeCardStatus,
   isSubmitted,
+  cardRequired,
 }) {
   return (
     <div className={Style.billingContainer}>
@@ -41,6 +42,7 @@ function CardInfo({
           stripeCardStatus={stripeCardStatus}
           setStripeCardStatus={setStripeCardStatus}
           isSubmitted={isSubmitted}
+          cardRequired={cardRequired}
         />
       </div>
     </div>

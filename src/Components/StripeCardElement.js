@@ -13,6 +13,7 @@ function StripeCardComponent({
   stripeCardStatus,
   setStripeCardStatus,
   isSubmitted,
+  cardRequired,
 }) {
   const elements = useElements();
   const stripe = useStripe();
@@ -34,7 +35,7 @@ function StripeCardComponent({
 
     setStripeCardStatus(payload);
 
-    console.log("[PaymentMethod]", payload);
+    // console.log("[PaymentMethod]", payload);
   };
 
   return (
@@ -52,10 +53,13 @@ function StripeCardComponent({
           setStripeCardStatus({ status: true });
         }}
       />
-      {isSubmitted && Object.keys(stripeCardStatus).length === 0 && (
-        <p className={Style.cardError}>This field is required</p>
-      )}
-      {isSubmitted &&
+      {cardRequired &&
+        isSubmitted &&
+        Object.keys(stripeCardStatus).length === 0 && (
+          <p className={Style.cardError}>This field is required</p>
+        )}
+      {cardRequired &&
+        isSubmitted &&
         Object.keys(stripeCardStatus).length > 0 &&
         stripeCardStatus?.error && (
           <p className={Style.cardError}>{stripeCardStatus?.error?.message}</p>
@@ -79,6 +83,7 @@ function StripeCardElement({
   stripeCardStatus,
   setStripeCardStatus,
   isSubmitted,
+  cardRequired,
 }) {
   return (
     <div className={Style.stripeContainer}>
@@ -88,6 +93,7 @@ function StripeCardElement({
           stripeCardStatus={stripeCardStatus}
           setStripeCardStatus={setStripeCardStatus}
           isSubmitted={isSubmitted}
+          cardRequired={cardRequired}
         />
       </Elements>
     </div>
