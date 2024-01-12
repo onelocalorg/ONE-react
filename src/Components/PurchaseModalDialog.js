@@ -59,7 +59,11 @@ function PurchaseModalDialog({ hideFunc, purchaseTotal }) {
       >
         <Modal.Header>
           <div className={Style.modalHeader}>
-            <div className={Style.closeIcon} onClick={handleClose}>
+            <div
+              className={Style.closeIcon}
+              onClick={handleClose}
+              aria-hidden="true"
+            >
               <img src={closeIcon} alt="close" />
             </div>
             <div className={Style.modalTitleContainer}>

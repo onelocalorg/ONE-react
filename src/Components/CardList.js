@@ -5,8 +5,8 @@ function CardList({ register }) {
   return (
     <div className={Style.cardListContainer}>
       <div className={Style.addIcon}>
-        <div>
-          <img src={AddIcon} />
+        <div className={Style.imgContainer}>
+          <img src={AddIcon} alt="Add" />
         </div>
       </div>
       <div className={Style.cardList}>

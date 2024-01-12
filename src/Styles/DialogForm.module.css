@@ -65,7 +65,7 @@
 }
 
 .inputField {
-  font-family: Average Sans;
+  font-family: "Average Sans", sans-serif;
   background-color: #cbcaca;
   padding: 10px 15px;
   border: none;
@@ -74,7 +74,7 @@
   width: 100%;
   border-radius: 8px;
   margin: 10px 0 0px 0;
-  height: 30px;
+  height: 32px;
 }
 
 .error {
@@ -84,7 +84,7 @@
 }
 
 .modalTitle {
-  font-family: Average Sans;
+  font-family: "Average Sans", sans-serif;
   font-size: 14px;
 }
 
@@ -107,7 +107,7 @@
 }
 
 .fieldHeading {
-  font-family: Average Sans;
+  font-family: "Average Sans", sans-serif;
   font-size: 14px;
   font-weight: 400;
   line-height: 21px;
@@ -122,7 +122,6 @@
 }
 
 .purchaseformButton {
-  width: 100%;
   background-color: #0e80e8;
   height: 58px;
   color: #ffffff;
@@ -197,5 +196,9 @@
       margin-top: 5%;
     }
     padding-left: 6px !important;
+  }
+
+  .inputField {
+    height: 30px;
   }
 }
