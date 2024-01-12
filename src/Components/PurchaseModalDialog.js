@@ -12,6 +12,7 @@ import CardList from "./CardList";
 import CreatePassword from "./CreatePassword";
 import ReferedBy from "./ReferedBy";
 import InputComponent from "./InputComponent";
+import ToasterSuccess from "./ToasterSuccess";
 const errorRequired = "This field is required";
 
 function PurchaseModalDialog({
@@ -22,6 +23,7 @@ function PurchaseModalDialog({
   setShowBillingInformation,
   userEmail,
   activePurchaseStep,
+  setloadingFunc,
 }) {
   const [stripeCardStatus, setStripeCardStatus] = useState({});
   const handleClose = () => {
@@ -63,8 +65,14 @@ function PurchaseModalDialog({
     if (!stripeCardStatus?.error) {
       const paymentMethodID = stripeCardStatus?.paymentMethod?.id || "";
       if (paymentMethodID !== "") {
+        setloadingFunc(true); // Start loading
         data["paymentMethodID"] = stripeCardStatus?.paymentMethod?.id || "";
         console.log(data);
+        setTimeout(() => {
+          setloadingFunc(false);
+          handleClose();
+          ToasterSuccess("Purchased Successfully", 1500);
+        }, 1500);
       }
     }
   };
