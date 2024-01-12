@@ -235,9 +235,8 @@ const EventPage = () => {
             <img src={logo} alt="logo" className={Style.oneLogo} />
             <h2 className={Style.brand}>NE</h2>
           </div>
-          <div className={Style.userCover}>
-            <HeaderUserComponent headerClass={Style} />
-          </div>
+
+          <HeaderUserComponent headerClass={Style} />
         </div>
         <div className={Style.dataContainer}>
           <div>
