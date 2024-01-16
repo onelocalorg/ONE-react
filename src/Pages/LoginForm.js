@@ -5,18 +5,28 @@ import InputComponent from "../Components/InputComponent";
 import style from "../Styles/LoginForm.module.css";
 import ButtonComponent from "../Components/ButtonComponent";
 import ToasterComponent from "../Components/ToasterComponent";
-import { logInApi } from "../api/services";
+import { logInApi, loginWithEmailApi } from "../api/services";
 import ToasterSuccess from "./../Components/ToasterSuccess";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import Loader from "../Components/Loader";
 import defaultStyle from "../Styles/InputComponent.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserData } from "../Redux/slices/UserSlice";
 
 const LoginForm = () => {
+  const userInfo = useSelector((state) => state?.userInfo);
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  useEffect(() => {
+    if (userInfo?.userData) {
+      navigate("/");
+    }
+  }, []);
 
   useEffect(() => {
     const errorMsg = Object.values(errors).map((item) => item.message);
@@ -32,10 +42,19 @@ const LoginForm = () => {
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      const response = await logInApi(data);
-
-      if (response.success === true) {
+      const response = await loginWithEmailApi(data);
+      if (response?.success === true) {
+        // Data set
+        dispatch(setUserData({ profile_image: response?.data?.pic }));
+        localStorage.setItem(
+          "user_info",
+          JSON.stringify({
+            profile_image: response?.data?.data?.pic || "",
+          })
+        );
         handleSuccessfulLogin();
+      } else {
+        ToasterComponent(response?.message || "wrong email or password", 3000);
       }
     } catch (error) {
       ToasterComponent("wrong email or password", 3000);
@@ -47,7 +66,8 @@ const LoginForm = () => {
   const handleSuccessfulLogin = () => {
     ToasterSuccess("Login Successfully", 1500);
     setTimeout(() => {
-      navigate("/dashboard");
+      // navigate("/dashboard");
+      navigate("/");
     }, 1000);
   };
 
