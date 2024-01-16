@@ -7,9 +7,12 @@ import InputComponent from "./InputComponent";
 import Style from "../Styles/DialogForm.module.css";
 import nextarrow from "../images/next-arrow.svg";
 import closeIcon from "../images/close-icon.svg";
-import { getUserByEmail, logInApi } from "../api/services";
+import { getUserByEmail, loginWithEmailApi } from "../api/services";
 import ToasterSuccess from "./ToasterSuccess";
 import ToasterError from "./ToasterComponent";
+import ToasterComponent from "./ToasterComponent";
+import { setUserData } from "../Redux/slices/UserSlice";
+import { useDispatch } from "react-redux";
 
 function EmailModalDialog({
   hideFunc,
@@ -21,6 +24,7 @@ function EmailModalDialog({
   setActivePurchaseStep,
 }) {
   const [activeStep, setActiveStep] = useState(0);
+  const dispatch = useDispatch();
 
   const handleClose = () => {
     hideFunc(false);
@@ -31,7 +35,14 @@ function EmailModalDialog({
       email: yup.string().required("Email is required").email("Invalid Email"),
     }),
     yup.object({
-      password: yup.string().required("Password is required"),
+      password: yup
+        .string()
+        .required("Password is required")
+        .min(8, "password must be at least 8 characters")
+        .matches(
+          /^(?=.*[A-Za-z])(?=.*\d).+$/,
+          "Password must contain at least 1 letter and 1 number"
+        ),
     }),
   ];
 
@@ -52,11 +63,22 @@ function EmailModalDialog({
 
   const onSubmit = async (data) => {
     setloadingFunc(true);
-    const response = await logInApi(data);
+    const response = await loginWithEmailApi(data);
 
     setloadingFunc(false);
-    purchaseFunc(true);
-    handleClose();
+    if (response?.success) {
+      dispatch(setUserData({ profile_image: response?.data?.data?.pic }));
+      localStorage.setItem(
+        "user_info",
+        JSON.stringify({
+          profile_image: response?.data?.data?.pic || "",
+        })
+      );
+      purchaseFunc(true);
+      handleClose();
+    } else {
+      ToasterComponent(response?.message || "Invalid password", 3000);
+    }
   };
 
   const handleNext = async () => {
@@ -132,11 +154,14 @@ function EmailModalDialog({
                   name={"password"}
                   className={Style.inputField}
                 />
-                {errors.password && errors.password.type === "required" && (
-                  <div role="alert" className={Style.error}>
-                    This is required
-                  </div>
-                )}
+                {errors.password &&
+                  (errors.password.type === "required" ||
+                    errors.password.type === "min" ||
+                    errors.password.type === "matches") && (
+                    <div role="alert" className={Style.error}>
+                      {errors?.password?.message}
+                    </div>
+                  )}
               </div>
             )}
           </form>

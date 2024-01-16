@@ -45,7 +45,8 @@ axiosClient.interceptors.response.use(
         // If URL is "/auth/refresh-tokens", navigate to "/dashboard"
         // console.log("Navigating to dashboard");
         localStorage.clear();
-        window.location.href = "/dashboard";
+        // window.location.href = "/dashboard";
+        window.location.href = "/";
         return Promise.reject(error);
       }
     }
