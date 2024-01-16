@@ -112,6 +112,7 @@ const EventPage = () => {
       return;
     } else {
       setActivePurchaseStep(1);
+      setShowBillingInformation(false);
       setShowPurchseDialog(true);
       return;
     }
