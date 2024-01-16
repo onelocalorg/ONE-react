@@ -64,10 +64,9 @@ function EmailModalDialog({
   const onSubmit = async (data) => {
     setloadingFunc(true);
     const response = await loginWithEmailApi(data);
-
     setloadingFunc(false);
     if (response?.success) {
-      dispatch(setUserData({ profile_image: response?.data?.data?.pic }));
+      dispatch(setUserData({ profile_image: response?.data?.pic }));
       localStorage.setItem(
         "user_info",
         JSON.stringify({

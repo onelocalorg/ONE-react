@@ -41,18 +41,33 @@ const HeaderUserComponent = ({ headerClass, calledFromClass }) => {
     <div className={Style.userMainDiv}>
       <div className={headerClass.userCover}>
         {userInfo?.userData ? (
-          <img
-            src={user}
-            alt="user"
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              cursor: "pointer",
-            }}
-            onClick={toggleDropdown}
-            aria-hidden="true"
-          />
+          userInfo?.userData?.profile_image ? (
+            <img
+              src={userInfo?.userData?.profile_image}
+              alt="user"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                cursor: "pointer",
+              }}
+              onClick={toggleDropdown}
+              aria-hidden="true"
+            />
+          ) : (
+            <img
+              src={user}
+              alt="user"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                cursor: "pointer",
+              }}
+              onClick={toggleDropdown}
+              aria-hidden="true"
+            />
+          )
         ) : (
           <NavLink to={"/login"} className={headerClass.menubarLink}>
             <img
