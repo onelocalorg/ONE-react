@@ -216,7 +216,7 @@ function PurchaseModalDialog({
             </span>
           </button>
           {showRegister && (
-            <div>
+            <div className={Style.termsSection}>
               <input type="radio" id="terms" defaultChecked />
               <label htmlFor="terms" className={Style.termLable}>
                 I agree to the{" "}

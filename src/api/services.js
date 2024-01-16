@@ -113,11 +113,11 @@ export const subscriptionsPlansApi = async () => {
 
 export const getUserByEmail = async (email) => {
   try {
-    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    const response = await axiosClient.post(`/web/auth/checkEmail`, {
+      email,
+    });
 
-    const response = { data: { isAvailable: false } };
-    await delay(2000);
-    return response.data;
+    return response?.data;
   } catch (error) {
     console.log(error);
     return error;

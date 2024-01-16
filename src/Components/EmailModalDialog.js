@@ -8,6 +8,8 @@ import Style from "../Styles/DialogForm.module.css";
 import nextarrow from "../images/next-arrow.svg";
 import closeIcon from "../images/close-icon.svg";
 import { getUserByEmail, logInApi } from "../api/services";
+import ToasterSuccess from "./ToasterSuccess";
+import ToasterError from "./ToasterComponent";
 
 function EmailModalDialog({
   hideFunc,
@@ -67,7 +69,7 @@ function EmailModalDialog({
       const response = await getUserByEmail(formValues?.email);
 
       setloadingFunc(false);
-      if (response?.isAvailable) {
+      if (response?.data?.exists) {
         setActivePurchaseStep(1); //For Already avaiable user
         setShowRegister(false);
         setShowBillingInformation(false);
@@ -77,6 +79,7 @@ function EmailModalDialog({
         purchaseFunc(true);
         setShowBillingInformation(true);
         handleClose();
+        ToasterError(response?.message || "Something went wrong", 3000);
       }
     }
   };
