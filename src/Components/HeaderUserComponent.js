@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { CiLogout } from "react-icons/ci";
 import { logOutPanel } from "../Redux/thunk/userThunk";
 
-const HeaderUserComponent = ({ headerClass }) => {
+const HeaderUserComponent = ({ headerClass, calledFromClass }) => {
   const userInfo = useSelector((state) => state?.userInfo);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
@@ -65,7 +65,7 @@ const HeaderUserComponent = ({ headerClass }) => {
       </div>
       <div className={Style.dropdown} ref={optionMenu}>
         {isDropdownOpen && (
-          <ul className={Style.dropdownMenu}>
+          <ul className={`${Style.dropdownMenu} ${calledFromClass || ""}`}>
             <li onClick={handleLogout} aria-hidden="true">
               <CiLogout />
               <span className={Style.menuOption}>Logout</span>

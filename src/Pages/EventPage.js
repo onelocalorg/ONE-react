@@ -236,7 +236,10 @@ const EventPage = () => {
             <h2 className={Style.brand}>NE</h2>
           </div>
 
-          <HeaderUserComponent headerClass={Style} />
+          <HeaderUserComponent
+            headerClass={Style}
+            calledFromClass="eventDetailHeader"
+          />
         </div>
         <div className={Style.dataContainer}>
           <div>

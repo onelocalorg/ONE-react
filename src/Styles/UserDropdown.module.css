@@ -55,4 +55,8 @@
   .dropdownMenu {
     left: -56px;
   }
+
+  .dropdownMenu[class~="eventDetailHeader"] {
+    left: -10px;
+  }
 }
