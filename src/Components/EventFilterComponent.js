@@ -42,17 +42,12 @@ function EventFilterComponent({
         </div>
 
         <div className={Style.upperHeader}>
-          <div
-            className={Style.brandText}
-            onClick={goToHomePage}
-            style={{ cursor: "pointer" }}
-          >
+          <div className={Style.brandText} onClick={goToHomePage}>
             <img src={logo} alt="logo" className={Style.oneLogo} />
             <div className={Style.brand}>NE</div>
           </div>
-          <div className={Style.userCover}>
-            <HeaderUserComponent headerClass={Style} />
-          </div>
+
+          <HeaderUserComponent headerClass={Style} />
         </div>
       </div>
       <div className={Style.filterdiv}>
