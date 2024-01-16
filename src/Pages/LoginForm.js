@@ -68,6 +68,7 @@ const LoginForm = () => {
             placeholder={"email"}
             register={register}
             inputRef={"email"}
+            name={"email"}
             registerOptions={{
               required: "Enter Valid Email",
               maxLength: 80,
@@ -82,6 +83,7 @@ const LoginForm = () => {
             placeholder={"Password"}
             register={register}
             inputRef={"password"}
+            name={"password"}
             registerOptions={{
               required: "Length between 6 to 12",
               minLength: 6,
