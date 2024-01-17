@@ -1,0 +1,63 @@
+.dropdown {
+  position: relative;
+  display: inline-block;
+  z-index: 20;
+}
+
+.dropdownToggle {
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+}
+
+.dropdownMenu {
+  top: 10px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  left: 0;
+  background-color: #a493b7;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100px;
+  color: #fff;
+  border-radius: 5px;
+}
+
+.dropdownMenu li {
+  padding: 5px 10px;
+  cursor: pointer;
+  position: relative;
+}
+
+.dropdownMenu li:hover {
+  background-color: #857894;
+  color: #fff;
+}
+
+.userMainDiv {
+  display: flex;
+  flex-direction: column;
+}
+
+.menuOption {
+  margin-left: 5px;
+}
+
+@media only screen and (max-width: 768px) {
+  .dropdownMenu {
+    left: -15px;
+  }
+}
+
+@media only screen and (max-width: 431px) {
+  .dropdownMenu {
+    left: -56px;
+  }
+
+  .dropdownMenu[class~="eventDetailHeader"] {
+    left: -10px;
+  }
+}

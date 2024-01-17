@@ -110,3 +110,43 @@ export const subscriptionsPlansApi = async () => {
     console.log(error);
   }
 };
+
+export const getUserByEmail = async (email) => {
+  try {
+    const response = await axiosClient.post(`/web/auth/checkEmail`, {
+      email,
+    });
+
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
+export const loginWithEmailApi = async (data) => {
+  try {
+    const response = await axiosClient.post("/web/auth/login", data);
+
+    //to store refrence token
+    if (response?.data) {
+      const access_token = response?.data?.data?.access_token;
+      const refresh_token = response?.data?.data?.refresh_token;
+      localStorage.setItem("access_token", access_token);
+      localStorage.setItem("refresh_token", refresh_token);
+    }
+
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getCardListAPI = async () => {
+  try {
+    const response = await axiosClient.get("/subscriptions/cards");
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

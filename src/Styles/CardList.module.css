@@ -1,0 +1,31 @@
+.cardListContainer {
+  width: 100%;
+}
+
+.addIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.cardListItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 7px 20px;
+  line-height: 19px;
+}
+
+.cardList {
+  margin-top: 25px;
+}
+
+.inputLabel {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.imgContainer {
+  cursor: pointer;
+}

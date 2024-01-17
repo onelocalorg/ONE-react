@@ -1,0 +1,28 @@
+.stripeContainer {
+  width: 100%;
+}
+
+.StripeElementInput {
+  display: block;
+  margin: 10px 0 6px 0;
+  max-width: 500px;
+  padding: 7px 15px;
+  font-size: 1em;
+  border: none !important;
+  outline: 0;
+  border-radius: 4px;
+  background: white;
+  background-color: #cbcaca !important;
+}
+
+.cardError {
+  font-family: "Average Sans", sans-serif;
+  color: red;
+  font-size: 11px;
+  margin: 0px 21px 0px 15px;
+}
+
+/* Responsive */
+
+@media only screen and (max-width: 431px) {
+}

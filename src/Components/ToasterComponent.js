@@ -1,9 +1,8 @@
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 
-const ToasterComponent = (i,time) => {
-
+const ToasterComponent = (i, time) => {
   toast.error(i, {
     position: "top-right",
     autoClose: time,
@@ -13,7 +12,7 @@ const ToasterComponent = (i,time) => {
     draggable: true,
     progress: undefined,
     theme: "light",
-    });
-}
+  });
+};
 
-export default ToasterComponent
+export default ToasterComponent;
