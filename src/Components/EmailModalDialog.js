@@ -77,7 +77,7 @@ function EmailModalDialog({
       localStorage.setItem(
         "user_info",
         JSON.stringify({
-          profile_image: response?.data?.data?.pic || "",
+          profile_image: response?.data?.pic || "",
         })
       );
       purchaseFunc(true);
