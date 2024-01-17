@@ -141,3 +141,12 @@ export const loginWithEmailApi = async (data) => {
     console.log(error);
   }
 };
+
+export const getCardListAPI = async () => {
+  try {
+    const response = await axiosClient.get("/subscriptions/cards");
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

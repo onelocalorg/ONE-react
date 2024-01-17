@@ -14,6 +14,7 @@ import ReferedBy from "./ReferedBy";
 import InputComponent from "./InputComponent";
 import ToasterSuccess from "./ToasterSuccess";
 import { REQUIRED_FIELD_MESSAGE } from "../utils/FieldLabels";
+import { getCardListAPI } from "../api/services";
 
 function PurchaseModalDialog({
   hideFunc,
@@ -29,6 +30,8 @@ function PurchaseModalDialog({
   const [addCardAction, setAddCardAction] = useState(false);
   const [cardRequired, setCardRequired] = useState(false);
   const [submitFormType, setSubmitFormType] = useState(null);
+  const [cardList, setCardList] = useState([]);
+
   const handleClose = () => {
     hideFunc(false);
   };
@@ -72,14 +75,26 @@ function PurchaseModalDialog({
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitted },
   } = useForm({
     resolver: yupResolver(currentValidationSchema),
     defaultValues: {
-      savedcard: "33",
+      savedcard: "",
       email: userEmail,
     },
   });
+
+  useEffect(() => {
+    async function getCardList() {
+      setloadingFunc(true);
+      const res = await getCardListAPI();
+      setloadingFunc(false);
+      setCardList(res?.data?.cards || []);
+      reset({ savedcard: res?.data?.default_source || "" }); //Set card value
+    }
+    getCardList();
+  }, []);
 
   const onSubmit = async (data) => {
     if (showRegister) {
@@ -195,6 +210,7 @@ function PurchaseModalDialog({
                 register={register}
                 errors={errors}
                 handleSubmitCardDetail={handleSubmitCardDetail}
+                cardData={cardList}
               />
             )}
             {showRegister && (

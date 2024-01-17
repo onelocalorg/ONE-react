@@ -1,7 +1,9 @@
+import { useEffect, useState } from "react";
 import Style from "../Styles/CardList.module.css";
 import AddIcon from "../images/add-icon.svg";
 import InputComponent from "./InputComponent";
-function CardList({ register, handleSubmitCardDetail }) {
+
+function CardList({ register, handleSubmitCardDetail, cardData }) {
   return (
     <div className={Style.cardListContainer}>
       <div className={Style.addIcon}>
@@ -10,69 +12,32 @@ function CardList({ register, handleSubmitCardDetail }) {
         </div>
       </div>
       <div className={Style.cardList}>
-        <div className={Style.cardListItem}>
-          <div>
+        {cardData.map((card) => (
+          <div className={Style.cardListItem} key={card?.cardId}>
             <div>
-              <InputComponent
-                type={"radio"}
-                register={register}
-                inputRef={"savedcard"}
-                name={"savedcard"}
-                // id={ticketitem.id}
-                id="html"
-                value={"33"}
-                style={{ height: "18px" }}
-              />
+              <div>
+                <InputComponent
+                  type={"radio"}
+                  register={register}
+                  inputRef={"savedcard"}
+                  name={"savedcard"}
+                  id={card.cardId}
+                  value={card.cardId}
+                  style={{ height: "18px" }}
+                />
 
-              <label htmlFor="html" className={Style.inputLabel}>
-                Visa - 0127
-              </label>
+                <label htmlFor="html" className={Style.inputLabel}>
+                  {`${card?.brand} - ${card?.last4}`}
+                </label>
+              </div>
+            </div>
+            <div>
+              exp{" "}
+              {card?.exp_month < 10 ? `0${card?.exp_month}` : card?.exp_month}/
+              {card?.exp_year.toString().substr(-2)}
             </div>
           </div>
-          <div>exp 04/24</div>
-        </div>
-        <div className={Style.cardListItem}>
-          <div>
-            <div>
-              <InputComponent
-                type={"radio"}
-                register={register}
-                inputRef={"savedcard"}
-                name={"savedcard"}
-                // id={ticketitem.id}
-                id="html1"
-                value="11"
-                style={{ height: "18px" }}
-              />
-
-              <label htmlFor="html1" className={Style.inputLabel}>
-                Visa - 0127
-              </label>
-            </div>
-          </div>
-          <div>exp 04/24</div>
-        </div>
-        <div className={Style.cardListItem}>
-          <div>
-            <div>
-              <InputComponent
-                type={"radio"}
-                register={register}
-                inputRef={"savedcard"}
-                name={"savedcard"}
-                // id={ticketitem.id}
-                id="html2"
-                value="22"
-                style={{ height: "18px" }}
-              />
-
-              <label htmlFor="html2" className={Style.inputLabel}>
-                Visa - 0127
-              </label>
-            </div>
-          </div>
-          <div>exp 04/24</div>
-        </div>
+        ))}
       </div>
     </div>
   );
