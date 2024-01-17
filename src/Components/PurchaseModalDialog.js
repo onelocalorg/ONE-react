@@ -103,6 +103,7 @@ function PurchaseModalDialog({
         if (paymentMethodID !== "") {
           setloadingFunc(true); // Start loading
           data["paymentMethodID"] = stripeCardStatus?.paymentMethod?.id || "";
+          // console.log(data);
           console.log(data);
           setTimeout(() => {
             setloadingFunc(false);
