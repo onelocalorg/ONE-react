@@ -13,6 +13,7 @@ import CreatePassword from "./CreatePassword";
 import ReferedBy from "./ReferedBy";
 import InputComponent from "./InputComponent";
 import ToasterSuccess from "./ToasterSuccess";
+import ToasterError from "./ToasterComponent";
 import { REQUIRED_FIELD_MESSAGE } from "../utils/FieldLabels";
 import { getCardListAPI } from "../api/services";
 
@@ -90,8 +91,12 @@ function PurchaseModalDialog({
       setloadingFunc(true);
       const res = await getCardListAPI();
       setloadingFunc(false);
-      setCardList(res?.data?.cards || []);
-      reset({ savedcard: res?.data?.default_source || "" }); //Set card value
+      if (res) {
+        setCardList(res?.data?.cards || []);
+        reset({ savedcard: res?.data?.default_source || "" }); //Set card value
+      } else {
+        ToasterError(res?.message || "No card found", 2000);
+      }
     }
     getCardList();
   }, []);
@@ -230,6 +235,7 @@ function PurchaseModalDialog({
           <button
             className={Style.purchaseformButton}
             onClick={handleSubmitDirect}
+            disabled={!cardList.length}
           >
             <span className={Style.purchasebtnText}>
               Pay ${`${purchaseTotal}`}
