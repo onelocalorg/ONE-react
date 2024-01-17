@@ -108,7 +108,7 @@ const LoginForm = () => {
         <div className={style.inputWrapper}>
           <InputComponent
             type={"email"}
-            placeholder={"email"}
+            placeholder={"Email"}
             register={register}
             inputRef={"email"}
             name={"email"}
