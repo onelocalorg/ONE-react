@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const token = localStorage.getItem("access_token");
+console.log("====");
 
 export const axiosClient = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
