@@ -99,9 +99,9 @@ const LoginForm = () => {
   return (
     <div className={style.loginForm}>
       <div>
-        <h2 className={style.h2}>
+        {/* <h2 className={style.h2}>
           Welcome to <span>Admin</span>
-        </h2>
+        </h2> */}
         <h3 className={style.h3}>Login</h3>
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className={style.formBox}>
