@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -28,6 +28,7 @@ function PurchaseModalDialog({
   const [stripeCardStatus, setStripeCardStatus] = useState({});
   const [addCardAction, setAddCardAction] = useState(false);
   const [cardRequired, setCardRequired] = useState(false);
+  const [submitFormType, setSubmitFormType] = useState(null);
   const handleClose = () => {
     hideFunc(false);
   };
@@ -104,19 +105,25 @@ function PurchaseModalDialog({
     }
   };
 
+  useEffect(() => {
+    if (submitFormType) {
+      handleSubmit(onSubmit)();
+    }
+  }, [submitFormType]);
+
   const handleSubmitDirect = () => {
+    setSubmitFormType("direct");
     setAddCardAction(false);
     setCardRequired(true);
     if (!showRegister) {
       setCardRequired(false);
     }
-    handleSubmit(onSubmit)();
   };
 
   const handleSubmitCardDetail = () => {
+    setSubmitFormType("add_card");
     setCardRequired(true);
     setAddCardAction(true);
-    handleSubmit(onSubmit)();
   };
 
   return (
