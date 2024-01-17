@@ -1,12 +1,20 @@
 import axios from "axios";
 
-const token = localStorage.getItem("access_token");
-console.log("====");
+// const token = localStorage.getItem("access_token");
 
 export const axiosClient = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
-  headers: { "X-Custom-Header": "foobar", Authorization: `Bearer ${token}` },
+  headers: { "X-Custom-Header": "foobar" },
 });
+
+axiosClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem("access_token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 axiosClient.interceptors.response.use(
   function (response) {
     // console.log(response);
