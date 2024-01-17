@@ -5,22 +5,43 @@ import InputComponent from "../Components/InputComponent";
 import style from "../Styles/LoginForm.module.css";
 import ButtonComponent from "../Components/ButtonComponent";
 import ToasterComponent from "../Components/ToasterComponent";
-import { logInApi, loginWithEmailApi } from "../api/services";
+import { loginWithEmailApi } from "../api/services";
 import ToasterSuccess from "./../Components/ToasterSuccess";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import Loader from "../Components/Loader";
 import defaultStyle from "../Styles/InputComponent.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserData } from "../Redux/slices/UserSlice";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+const fieldRequired = "This field is required";
 
 const LoginForm = () => {
   const userInfo = useSelector((state) => state?.userInfo);
   const dispatch = useDispatch();
+
+  const validationSchema = yup.object().shape({
+    email: yup.string().required(fieldRequired).email("Invalid Email"),
+    password: yup
+      .string()
+      .required(fieldRequired)
+      .min(8, "password must be at least 8 characters")
+      .matches(
+        /^(?=.*[A-Za-z])(?=.*\d).+$/,
+        "Password must contain at least 1 letter and 1 number"
+      ),
+  });
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    resolver: yupResolver(validationSchema),
+  });
+
+  console.log("errors", errors);
 
   useEffect(() => {
     if (userInfo?.userData) {
@@ -29,10 +50,10 @@ const LoginForm = () => {
   }, []);
 
   useEffect(() => {
-    const errorMsg = Object.values(errors).map((item) => item.message);
-    errorMsg.slice(0, 1).forEach((errorMessage) => {
-      ToasterComponent(errorMessage, 3000);
-    });
+    // const errorMsg = Object.values(errors).map((item) => item.message);
+    // errorMsg.slice(0, 1).forEach((errorMessage) => {
+    //   ToasterComponent(errorMessage, 3000);
+    // });
   }, [errors]);
 
   const navigate = useNavigate();
@@ -43,6 +64,7 @@ const LoginForm = () => {
     setIsLoading(true);
     try {
       const response = await loginWithEmailApi(data);
+      console.log("response", response);
       if (response?.success === true) {
         // Data set
         dispatch(setUserData({ profile_image: response?.data?.pic }));
@@ -54,10 +76,13 @@ const LoginForm = () => {
         );
         handleSuccessfulLogin();
       } else {
-        ToasterComponent(response?.message || "wrong email or password", 3000);
+        ToasterComponent(
+          response?.message || "Incorrect email or password",
+          3000
+        );
       }
     } catch (error) {
-      ToasterComponent("wrong email or password", 3000);
+      ToasterComponent("Incorrect email or password", 3000);
     } finally {
       setIsLoading(false);
     }
@@ -95,6 +120,15 @@ const LoginForm = () => {
             }}
             className={defaultStyle.input}
           />
+          <div>
+            {errors.email &&
+              (errors.email.type === "required" ||
+                errors.email.type === "email") && (
+                <div role="alert" className={style.error}>
+                  {errors?.email?.message}
+                </div>
+              )}
+          </div>
         </div>
 
         <div className={style.inputWrapper}>
@@ -122,12 +156,20 @@ const LoginForm = () => {
               <AiOutlineEye className="eye" />
             )}
           </button>
+          {errors.password &&
+            (errors.password.type === "required" ||
+              errors.password.type === "min" ||
+              errors.password.type === "matches") && (
+              <div role="alert" className={style.error}>
+                {errors?.password?.message}
+              </div>
+            )}
         </div>
-        <span>
+        {/* <span>
           <Link className={style.forgotlink} to={"/forgot"}>
             Forgot Password?
           </Link>
-        </span>
+        </span> */}
         <ButtonComponent type={"submit"} cta={"Submit"} />
         {isLoading && <Loader />}
       </form>
