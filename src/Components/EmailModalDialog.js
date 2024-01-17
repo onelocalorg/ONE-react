@@ -10,9 +10,9 @@ import closeIcon from "../images/close-icon.svg";
 import { getUserByEmail, loginWithEmailApi } from "../api/services";
 import ToasterSuccess from "./ToasterSuccess";
 import ToasterError from "./ToasterComponent";
-import ToasterComponent from "./ToasterComponent";
 import { setUserData } from "../Redux/slices/UserSlice";
 import { useDispatch } from "react-redux";
+import { REQUIRED_FIELD_MESSAGE } from "../utils/FieldLabels";
 
 function EmailModalDialog({
   hideFunc,
@@ -32,12 +32,19 @@ function EmailModalDialog({
 
   const validationSchema = [
     yup.object({
-      email: yup.string().required("Email is required").email("Invalid Email"),
+      email: yup
+        .string()
+        .required(REQUIRED_FIELD_MESSAGE)
+        .email("Invalid Email"),
     }),
     yup.object({
+      email: yup
+        .string()
+        .required(REQUIRED_FIELD_MESSAGE)
+        .email("Invalid Email"),
       password: yup
         .string()
-        .required("Password is required")
+        .required(REQUIRED_FIELD_MESSAGE)
         .min(8, "password must be at least 8 characters")
         .matches(
           /^(?=.*[A-Za-z])(?=.*\d).+$/,
@@ -76,7 +83,7 @@ function EmailModalDialog({
       purchaseFunc(true);
       handleClose();
     } else {
-      ToasterComponent(response?.message || "Invalid password", 3000);
+      ToasterError(response?.message || "Invalid password", 3000);
     }
   };
 
@@ -105,6 +112,15 @@ function EmailModalDialog({
     }
   };
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    if (activeStep === 0) {
+      handleNext();
+    } else if (activeStep === 1) {
+      handleSubmit(onSubmit)();
+    }
+  };
+
   return (
     <div className="module-dialog">
       <Modal
@@ -124,7 +140,7 @@ function EmailModalDialog({
           </div>
         </Modal.Header>
         <Modal.Body>
-          <form>
+          <form onSubmit={handleFormSubmit}>
             <div>
               <InputComponent
                 type={"text"}
@@ -163,6 +179,9 @@ function EmailModalDialog({
                   )}
               </div>
             )}
+            <button type="submit" style={{ display: "none" }}>
+              Submit
+            </button>
           </form>
         </Modal.Body>
         <Modal.Footer>

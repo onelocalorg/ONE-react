@@ -41,8 +41,6 @@ const LoginForm = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  console.log("errors", errors);
-
   useEffect(() => {
     if (userInfo?.userData) {
       navigate("/");

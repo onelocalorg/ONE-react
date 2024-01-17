@@ -13,7 +13,7 @@ import CreatePassword from "./CreatePassword";
 import ReferedBy from "./ReferedBy";
 import InputComponent from "./InputComponent";
 import ToasterSuccess from "./ToasterSuccess";
-const errorRequired = "This field is required";
+import { REQUIRED_FIELD_MESSAGE } from "../utils/FieldLabels";
 
 function PurchaseModalDialog({
   hideFunc,
@@ -33,12 +33,12 @@ function PurchaseModalDialog({
   };
 
   const billingValidation = yup.object({
-    nameoncard: yup.string().required(errorRequired),
-    country: yup.string().required(errorRequired),
-    address1: yup.string().required(errorRequired),
-    city: yup.string().required(errorRequired),
-    state: yup.string().required(errorRequired),
-    zip: yup.string().required(errorRequired),
+    nameoncard: yup.string().required(REQUIRED_FIELD_MESSAGE),
+    country: yup.string().required(REQUIRED_FIELD_MESSAGE),
+    address1: yup.string().required(REQUIRED_FIELD_MESSAGE),
+    city: yup.string().required(REQUIRED_FIELD_MESSAGE),
+    state: yup.string().required(REQUIRED_FIELD_MESSAGE),
+    zip: yup.string().required(REQUIRED_FIELD_MESSAGE),
   });
 
   const loggedInValidation = showBillingInformation
@@ -47,17 +47,20 @@ function PurchaseModalDialog({
 
   const validationSchema = [
     yup.object({
-      email: yup.string().required(errorRequired).email("Invalid Email"),
-      nameoncard: yup.string().required(errorRequired),
-      country: yup.string().required(errorRequired),
-      address1: yup.string().required(errorRequired),
-      city: yup.string().required(errorRequired),
-      state: yup.string().required(errorRequired),
-      zip: yup.string().required(errorRequired),
-      password: yup.string().required(errorRequired),
+      email: yup
+        .string()
+        .required(REQUIRED_FIELD_MESSAGE)
+        .email("Invalid Email"),
+      nameoncard: yup.string().required(REQUIRED_FIELD_MESSAGE),
+      country: yup.string().required(REQUIRED_FIELD_MESSAGE),
+      address1: yup.string().required(REQUIRED_FIELD_MESSAGE),
+      city: yup.string().required(REQUIRED_FIELD_MESSAGE),
+      state: yup.string().required(REQUIRED_FIELD_MESSAGE),
+      zip: yup.string().required(REQUIRED_FIELD_MESSAGE),
+      password: yup.string().required(REQUIRED_FIELD_MESSAGE),
       confirmpassword: yup
         .string()
-        .required(errorRequired)
+        .required(REQUIRED_FIELD_MESSAGE)
         .oneOf([yup.ref("password")], "Password do not match"),
     }),
     loggedInValidation,
