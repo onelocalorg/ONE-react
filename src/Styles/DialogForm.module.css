@@ -10,6 +10,7 @@
   display: flex;
   justify-content: center;
   position: relative;
+  outline: 0;
 }
 
 .arrowIcon {
@@ -61,6 +62,9 @@
   }
   [class~="modal-body"] {
     padding: 0 1rem;
+  }
+  [type~="radio"] {
+    outline: 0;
   }
 }
 
@@ -132,6 +136,7 @@
   align-items: center;
   display: flex;
   justify-content: center;
+  outline: 0;
 }
 
 .purchaseFooter {
