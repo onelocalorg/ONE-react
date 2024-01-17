@@ -17,3 +17,7 @@
 hr {
   margin: 0.5rem 0 !important;
 }
+
+.Toastify__toast-body > div:last-child {
+  font-size: 0.9rem;
+}
