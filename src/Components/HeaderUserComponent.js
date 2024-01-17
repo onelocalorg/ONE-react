@@ -5,6 +5,7 @@ import user from "../images/user.png";
 import { useDispatch, useSelector } from "react-redux";
 import { CiLogout } from "react-icons/ci";
 import { logOutPanel } from "../Redux/thunk/userThunk";
+import ToasterSuccess from "./ToasterSuccess";
 
 const HeaderUserComponent = ({ headerClass, calledFromClass }) => {
   const userInfo = useSelector((state) => state?.userInfo);
@@ -34,6 +35,7 @@ const HeaderUserComponent = ({ headerClass, calledFromClass }) => {
   const handleLogout = () => {
     dispatch(logOutPanel());
     setIsDropdownOpen(false);
+    ToasterSuccess("Logout Successfully", 1000);
     navigate("/");
   };
 
