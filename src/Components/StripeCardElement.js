@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import {
   Elements,
   CardElement,
@@ -35,9 +35,9 @@ function StripeCardComponent({
 
     const payload = await stripe.createToken(elements.getElement(CardElement));
 
-    // setStripeCardStatus(payload);
+    setStripeCardStatus(payload);
 
-    console.log("[PaymentMethod]", payload);
+    // console.log("[PaymentMethod]", payload);
   };
 
   return (

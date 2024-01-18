@@ -15,7 +15,11 @@ import InputComponent from "./InputComponent";
 import ToasterSuccess from "./ToasterSuccess";
 import ToasterError from "./ToasterComponent";
 import { REQUIRED_FIELD_MESSAGE } from "../utils/AppConstants";
-import { getCardListAPI } from "../api/services";
+import {
+  addNewCardAPI,
+  appendNewCardAPI,
+  getCardListAPI,
+} from "../api/services";
 import { useSelector } from "react-redux";
 
 function PurchaseModalDialog({
@@ -105,6 +109,13 @@ function PurchaseModalDialog({
     }
   }, []);
 
+  const setUpdatedCardList = (response) => {
+    if (response?.success) {
+      setCardList(response?.data?.cards || []);
+      setShowBillingInformation(false);
+    }
+  };
+
   const onSubmit = async (data) => {
     if (showRegister) {
       if (!stripeCardStatus?.error) {
@@ -121,13 +132,25 @@ function PurchaseModalDialog({
           }, 1500);
         }
       }
-    } else {
-      if (addCardAction) {
-        console.log("Add Card Call");
+    } else if (addCardAction) {
+      setloadingFunc(true);
+      if (cardList.length === 0) {
+        const response = await addNewCardAPI({
+          token: stripeCardStatus?.token?.id,
+        });
+        setloadingFunc(false);
+        setUpdatedCardList(response);
       } else {
-        console.log("Normal Call");
+        const response = await appendNewCardAPI({
+          token: stripeCardStatus?.token?.id,
+        });
+        setloadingFunc(false);
+        setUpdatedCardList(response);
       }
+    } else {
+      console.log("Normal Call");
     }
+    setSubmitFormType(null);
   };
 
   useEffect(() => {
