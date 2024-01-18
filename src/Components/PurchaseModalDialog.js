@@ -49,11 +49,11 @@ function PurchaseModalDialog({
 
   const billingValidation = yup.object({
     nameoncard: yup.string().required(REQUIRED_FIELD_MESSAGE),
-    country: yup.string().required(REQUIRED_FIELD_MESSAGE),
-    address1: yup.string().required(REQUIRED_FIELD_MESSAGE),
-    city: yup.string().required(REQUIRED_FIELD_MESSAGE),
-    state: yup.string().required(REQUIRED_FIELD_MESSAGE),
-    zip: yup.string().required(REQUIRED_FIELD_MESSAGE),
+    // country: yup.string().required(REQUIRED_FIELD_MESSAGE),
+    // address1: yup.string().required(REQUIRED_FIELD_MESSAGE),
+    // city: yup.string().required(REQUIRED_FIELD_MESSAGE),
+    // state: yup.string().required(REQUIRED_FIELD_MESSAGE),
+    // zip: yup.string().required(REQUIRED_FIELD_MESSAGE),
   });
 
   const loggedInValidation = showBillingInformation
@@ -67,11 +67,11 @@ function PurchaseModalDialog({
         .required(REQUIRED_FIELD_MESSAGE)
         .email("Invalid Email"),
       nameoncard: yup.string().required(REQUIRED_FIELD_MESSAGE),
-      country: yup.string().required(REQUIRED_FIELD_MESSAGE),
-      address1: yup.string().required(REQUIRED_FIELD_MESSAGE),
-      city: yup.string().required(REQUIRED_FIELD_MESSAGE),
-      state: yup.string().required(REQUIRED_FIELD_MESSAGE),
-      zip: yup.string().required(REQUIRED_FIELD_MESSAGE),
+      // country: yup.string().required(REQUIRED_FIELD_MESSAGE),
+      // address1: yup.string().required(REQUIRED_FIELD_MESSAGE),
+      // city: yup.string().required(REQUIRED_FIELD_MESSAGE),
+      // state: yup.string().required(REQUIRED_FIELD_MESSAGE),
+      // zip: yup.string().required(REQUIRED_FIELD_MESSAGE),
       password: yup.string().required(REQUIRED_FIELD_MESSAGE),
       confirmpassword: yup
         .string()
@@ -195,7 +195,7 @@ function PurchaseModalDialog({
       // form submission until Stripe.js has loaded.
       return;
     }
-
+    setloadingFunc(true);
     const payloadCreate = await stripe.createToken(
       elements.getElement(CardElement),
       {
