@@ -13,7 +13,7 @@ function CardList({ register, handleSubmitCardDetail, cardData }) {
       </div>
       <div className={Style.cardList}>
         {cardData.map((card) => (
-          <div className={Style.cardListItem} key={card?.cardId}>
+          <div className={Style.cardListItem} key={card?.id}>
             <div>
               <div className={Style.inputSelect}>
                 <InputComponent
@@ -21,12 +21,12 @@ function CardList({ register, handleSubmitCardDetail, cardData }) {
                   register={register}
                   inputRef={"savedcard"}
                   name={"savedcard"}
-                  id={card.cardId}
-                  value={card.cardId}
+                  id={card?.id}
+                  value={card?.id}
                   style={{ height: "18px" }}
                 />
 
-                <label htmlFor={card.cardId} className={Style.inputLabel}>
+                <label htmlFor={card?.id} className={Style.inputLabel}>
                   {`${card?.brand} - ${card?.last4}`}
                 </label>
               </div>
