@@ -10,7 +10,7 @@ import BillingAddress from "./BillingAddress";
 import CardInfo from "./CardInfo";
 import CardList from "./CardList";
 import CreatePassword from "./CreatePassword";
-import ReferedBy from "./ReferedBy";
+// import ReferedBy from "./ReferedBy";
 import InputComponent from "./InputComponent";
 import ToasterSuccess from "./ToasterSuccess";
 import ToasterError from "./ToasterComponent";
@@ -226,7 +226,7 @@ function PurchaseModalDialog({
                   errors={errors}
                   formStyle={Style}
                 />
-                <ReferedBy register={register} formStyle={Style} />
+                {/* <ReferedBy register={register} formStyle={Style} /> */}
               </>
             )}
           </form>
