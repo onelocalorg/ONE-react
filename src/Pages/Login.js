@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import style from "../Styles/Login.module.css";
 import LoginForm from "./LoginForm";
-import SigninImage from '../images/Login.svg'
+import SigninImage from "../images/Login.svg";
+import { useScrollToTop } from "../hooks/useScrollToTop";
 
 const Login = () => {
+  const scrollToTop = useScrollToTop();
+
+  useEffect(() => {
+    scrollToTop(); // Automatically scroll to top when the component is mounted
+  }, []);
+
   return (
     <div className={style.container}>
       <div className={style.mainDiv}>
