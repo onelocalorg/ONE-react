@@ -21,6 +21,7 @@ import {
   getCardListAPI,
 } from "../api/services";
 import { useSelector } from "react-redux";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 
 function PurchaseModalDialog({
   hideFunc,
@@ -39,6 +40,9 @@ function PurchaseModalDialog({
   const [cardList, setCardList] = useState([]);
   const [cardComponent, setCardComponent] = useState(null);
   const userInfo = useSelector((state) => state?.userInfo);
+
+  const elements = useElements();
+  const stripe = useStripe();
 
   const handleClose = () => {
     hideFunc(false);
@@ -84,6 +88,7 @@ function PurchaseModalDialog({
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors, isSubmitted },
   } = useForm({
     resolver: yupResolver(currentValidationSchema),
@@ -92,6 +97,8 @@ function PurchaseModalDialog({
       email: userEmail,
     },
   });
+
+  const formVal = watch();
 
   const getCardList = async () => {
     setloadingFunc(true);
@@ -115,7 +122,7 @@ function PurchaseModalDialog({
     if (response?.success) {
       getCardList();
       setShowBillingInformation(false);
-      cardComponent.clear(); //Clear card field
+      elements.getElement(CardElement).clear(); //Clear card field
     }
   };
 
@@ -176,10 +183,40 @@ function PurchaseModalDialog({
     }
   };
 
-  const handleSubmitCardDetail = () => {
+  const handleSubmitCardDetail = async () => {
     setSubmitFormType("add_card");
     setCardRequired(true);
     setAddCardAction(true);
+    setShowBillingInformation(true);
+
+    // Card token create
+    if (!stripe || !elements) {
+      // Stripe.js has not loaded yet. Make sure to disable
+      // form submission until Stripe.js has loaded.
+      return;
+    }
+
+    const payloadCreate = await stripe.createToken(
+      elements.getElement(CardElement),
+      {
+        name: formVal?.nameoncard || "",
+        address_line1: formVal?.address1 || "",
+        address_line2: formVal?.address2 || "",
+        address_city: formVal?.city || "",
+        address_state: formVal?.state || "",
+        address_zip: formVal?.zip || "",
+        address_country: formVal?.country || "",
+      }
+    );
+
+    setStripeCardStatus(payloadCreate);
+    // End of code token create
+    if (
+      Object.keys(errors).length > 0 ||
+      (payloadCreate?.error && Object.keys(payloadCreate?.error).length > 0)
+    ) {
+      setSubmitFormType(null);
+    }
   };
 
   return (

@@ -1,11 +1,6 @@
 import React, { useRef } from "react";
-import {
-  Elements,
-  CardElement,
-  useElements,
-  useStripe,
-} from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+
 import Style from "../Styles/StripeCard.module.css";
 
 function StripeCardComponent({
@@ -51,7 +46,7 @@ function StripeCardComponent({
           showBillingFunc(true);
         }}
         onBlur={() => {
-          buttonRef.current.click();
+          // buttonRef.current.click();
         }}
         onChange={() => {
           setStripeCardStatus({ status: true });
@@ -80,8 +75,6 @@ function StripeCardComponent({
   );
 }
 
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
-
 function StripeCardElement({
   showBillingFunc,
   stripeCardStatus,
@@ -92,16 +85,14 @@ function StripeCardElement({
 }) {
   return (
     <div className={Style.stripeContainer}>
-      <Elements stripe={stripePromise}>
-        <StripeCardComponent
-          showBillingFunc={showBillingFunc}
-          stripeCardStatus={stripeCardStatus}
-          setStripeCardStatus={setStripeCardStatus}
-          isSubmitted={isSubmitted}
-          cardRequired={cardRequired}
-          setCardComponent={setCardComponent}
-        />
-      </Elements>
+      <StripeCardComponent
+        showBillingFunc={showBillingFunc}
+        stripeCardStatus={stripeCardStatus}
+        setStripeCardStatus={setStripeCardStatus}
+        isSubmitted={isSubmitted}
+        cardRequired={cardRequired}
+        setCardComponent={setCardComponent}
+      />
     </div>
   );
 }

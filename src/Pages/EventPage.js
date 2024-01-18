@@ -27,6 +27,10 @@ import UserConfirmDialog from "../Components/EmailModalDialog";
 import PurchaseModalDialog from "../Components/PurchaseModalDialog";
 import { useSelector } from "react-redux";
 import { useScrollToTop } from "../hooks/useScrollToTop";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
 
 const EventPage = () => {
   const { eventId } = useParams();
@@ -494,16 +498,18 @@ const EventPage = () => {
         />
       )}
       {showPurchseDialog && (
-        <PurchaseModalDialog
-          hideFunc={setShowPurchseDialog}
-          purchaseTotal={taxAmount?.total}
-          setloadingFunc={setloading}
-          showRegister={showRegister}
-          showBillingInformation={showBillingInformation}
-          setShowBillingInformation={setShowBillingInformation}
-          userEmail={userEmail}
-          activePurchaseStep={activePurchaseStep}
-        />
+        <Elements stripe={stripePromise}>
+          <PurchaseModalDialog
+            hideFunc={setShowPurchseDialog}
+            purchaseTotal={taxAmount?.total}
+            setloadingFunc={setloading}
+            showRegister={showRegister}
+            showBillingInformation={showBillingInformation}
+            setShowBillingInformation={setShowBillingInformation}
+            userEmail={userEmail}
+            activePurchaseStep={activePurchaseStep}
+          />
+        </Elements>
       )}
     </>
   );
