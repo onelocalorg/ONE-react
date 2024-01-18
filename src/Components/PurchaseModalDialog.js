@@ -16,6 +16,7 @@ import ToasterSuccess from "./ToasterSuccess";
 import ToasterError from "./ToasterComponent";
 import { REQUIRED_FIELD_MESSAGE } from "../utils/AppConstants";
 import { getCardListAPI } from "../api/services";
+import { useSelector } from "react-redux";
 
 function PurchaseModalDialog({
   hideFunc,
@@ -32,6 +33,7 @@ function PurchaseModalDialog({
   const [cardRequired, setCardRequired] = useState(false);
   const [submitFormType, setSubmitFormType] = useState(null);
   const [cardList, setCardList] = useState([]);
+  const userInfo = useSelector((state) => state?.userInfo);
 
   const handleClose = () => {
     hideFunc(false);
@@ -87,18 +89,20 @@ function PurchaseModalDialog({
   });
 
   useEffect(() => {
-    async function getCardList() {
-      setloadingFunc(true);
-      const res = await getCardListAPI();
-      setloadingFunc(false);
-      if (res) {
-        setCardList(res?.data?.cards || []);
-        reset({ savedcard: res?.data?.default_source || "" }); //Set card value
-      } else {
-        ToasterError(res?.message || "No card found", 2000);
+    if (userInfo?.userData) {
+      async function getCardList() {
+        setloadingFunc(true);
+        const res = await getCardListAPI();
+        setloadingFunc(false);
+        if (res) {
+          setCardList(res?.data?.cards || []);
+          reset({ savedcard: res?.data?.default_source || "" }); //Set card value
+        } else {
+          ToasterError(res?.message || "No card found", 2000);
+        }
       }
+      getCardList();
     }
-    getCardList();
   }, []);
 
   const onSubmit = async (data) => {
