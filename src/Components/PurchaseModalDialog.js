@@ -37,6 +37,7 @@ function PurchaseModalDialog({
   const [cardRequired, setCardRequired] = useState(false);
   const [submitFormType, setSubmitFormType] = useState(null);
   const [cardList, setCardList] = useState([]);
+  const [cardComponent, setCardComponent] = useState(null);
   const userInfo = useSelector((state) => state?.userInfo);
 
   const handleClose = () => {
@@ -92,27 +93,29 @@ function PurchaseModalDialog({
     },
   });
 
+  const getCardList = async () => {
+    setloadingFunc(true);
+    const res = await getCardListAPI();
+    setloadingFunc(false);
+    if (res) {
+      setCardList(res?.data?.cards || []);
+      reset({ savedcard: res?.data?.default_source || "" }); //Set card value
+    } else {
+      ToasterError(res?.message || "No card found", 2000);
+    }
+  };
+
   useEffect(() => {
     if (userInfo?.userData) {
-      async function getCardList() {
-        setloadingFunc(true);
-        const res = await getCardListAPI();
-        setloadingFunc(false);
-        if (res) {
-          setCardList(res?.data?.cards || []);
-          reset({ savedcard: res?.data?.default_source || "" }); //Set card value
-        } else {
-          ToasterError(res?.message || "No card found", 2000);
-        }
-      }
       getCardList();
     }
   }, []);
 
   const setUpdatedCardList = (response) => {
     if (response?.success) {
-      setCardList(response?.data?.cards || []);
+      getCardList();
       setShowBillingInformation(false);
+      cardComponent.clear(); //Clear card field
     }
   };
 
@@ -134,6 +137,7 @@ function PurchaseModalDialog({
       }
     } else if (addCardAction) {
       setloadingFunc(true);
+
       if (cardList.length === 0) {
         const response = await addNewCardAPI({
           token: stripeCardStatus?.token?.id,
@@ -230,6 +234,7 @@ function PurchaseModalDialog({
               setStripeCardStatus={setStripeCardStatus}
               isSubmitted={isSubmitted}
               cardRequired={cardRequired}
+              setCardComponent={setCardComponent}
             />
             {showBillingInformation && (
               <BillingAddress
