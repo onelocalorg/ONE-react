@@ -7,6 +7,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import Style from "../Styles/StripeCard.module.css";
+import { STRIPE_PUBLIC_KEY } from "../utils/AppConstants";
 
 function StripeCardComponent({
   showBillingFunc,
@@ -78,7 +79,7 @@ function StripeCardComponent({
   );
 }
 
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
+const stripePromise = loadStripe(STRIPE_PUBLIC_KEY);
 
 function StripeCardElement({
   showBillingFunc,

@@ -14,7 +14,7 @@ import CreatePassword from "./CreatePassword";
 import InputComponent from "./InputComponent";
 import ToasterSuccess from "./ToasterSuccess";
 import ToasterError from "./ToasterComponent";
-import { REQUIRED_FIELD_MESSAGE } from "../utils/FieldLabels";
+import { REQUIRED_FIELD_MESSAGE } from "../utils/AppConstants";
 import { getCardListAPI } from "../api/services";
 
 function PurchaseModalDialog({
