@@ -38,7 +38,6 @@ function PurchaseModalDialog({
   const [cardRequired, setCardRequired] = useState(false);
   const [submitFormType, setSubmitFormType] = useState(null);
   const [cardList, setCardList] = useState([]);
-  const [cardComponent, setCardComponent] = useState(null);
   const userInfo = useSelector((state) => state?.userInfo);
 
   const elements = useElements();
@@ -275,7 +274,6 @@ function PurchaseModalDialog({
               setStripeCardStatus={setStripeCardStatus}
               isSubmitted={isSubmitted}
               cardRequired={cardRequired}
-              setCardComponent={setCardComponent}
             />
             {showBillingInformation && (
               <BillingAddress

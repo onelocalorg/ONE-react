@@ -12,7 +12,6 @@ function CardInfo({
   setStripeCardStatus,
   isSubmitted,
   cardRequired,
-  setCardComponent,
 }) {
   return (
     <div className={Style.billingContainer}>
@@ -44,7 +43,6 @@ function CardInfo({
           setStripeCardStatus={setStripeCardStatus}
           isSubmitted={isSubmitted}
           cardRequired={cardRequired}
-          setCardComponent={setCardComponent}
         />
       </div>
     </div>

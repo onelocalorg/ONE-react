@@ -9,7 +9,6 @@ function StripeCardComponent({
   setStripeCardStatus,
   isSubmitted,
   cardRequired,
-  setCardComponent,
 }) {
   const elements = useElements();
   const stripe = useStripe();
@@ -32,7 +31,6 @@ function StripeCardComponent({
     const payload = await stripe.createToken(elements.getElement(CardElement));
 
     setStripeCardStatus(payload);
-    setCardComponent(elements.getElement(CardElement));
 
     // console.log("[PaymentMethod]", payload);
   };
@@ -81,7 +79,6 @@ function StripeCardElement({
   setStripeCardStatus,
   isSubmitted,
   cardRequired,
-  setCardComponent,
 }) {
   return (
     <div className={Style.stripeContainer}>
@@ -91,7 +88,6 @@ function StripeCardElement({
         setStripeCardStatus={setStripeCardStatus}
         isSubmitted={isSubmitted}
         cardRequired={cardRequired}
-        setCardComponent={setCardComponent}
       />
     </div>
   );
