@@ -136,20 +136,24 @@ function PurchaseModalDialog({
         }
       }
     } else if (addCardAction) {
-      setloadingFunc(true);
-
       if (cardList.length === 0) {
-        const response = await addNewCardAPI({
-          token: stripeCardStatus?.token?.id,
-        });
-        setloadingFunc(false);
-        setUpdatedCardList(response);
+        if (stripeCardStatus?.token) {
+          setloadingFunc(true);
+          const response = await addNewCardAPI({
+            token: stripeCardStatus?.token?.id,
+          });
+          setloadingFunc(false);
+          setUpdatedCardList(response);
+        }
       } else {
-        const response = await appendNewCardAPI({
-          token: stripeCardStatus?.token?.id,
-        });
-        setloadingFunc(false);
-        setUpdatedCardList(response);
+        if (stripeCardStatus?.token) {
+          setloadingFunc(true);
+          const response = await appendNewCardAPI({
+            token: stripeCardStatus?.token?.id,
+          });
+          setloadingFunc(false);
+          setUpdatedCardList(response);
+        }
       }
     } else {
       console.log("Normal Call");
