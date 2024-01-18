@@ -28,14 +28,16 @@ function StripeCardComponent({
       return;
     }
 
-    const payload = await stripe.createPaymentMethod({
-      type: "card",
-      card: elements.getElement(CardElement),
-    });
+    // const payload = await stripe.createPaymentMethod({
+    //   type: "card",
+    //   card: elements.getElement(CardElement),
+    // });
 
-    setStripeCardStatus(payload);
+    const payload = await stripe.createToken(elements.getElement(CardElement));
 
-    // console.log("[PaymentMethod]", payload);
+    // setStripeCardStatus(payload);
+
+    console.log("[PaymentMethod]", payload);
   };
 
   return (
