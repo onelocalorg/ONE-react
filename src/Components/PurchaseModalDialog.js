@@ -232,6 +232,31 @@ function PurchaseModalDialog({
     return payloadCreate;
   };
 
+  const validateSubmitData = async (itemType) => {
+    // Check Form Error
+    if (Object.keys(errors).length > 0) {
+      setSubmitFormType(null);
+      setloadingFunc(false);
+      return;
+    }
+
+    // Card token create for direct register
+    setloadingFunc(true);
+    const createCardResponse = await handleCreateCard();
+
+    // Check card Error
+    if (
+      createCardResponse?.error &&
+      Object.keys(createCardResponse?.error).length > 0
+    ) {
+      setSubmitFormType(null);
+      setloadingFunc(false);
+    } else {
+      setloadingFunc(true);
+      setSubmitFormType(itemType);
+    }
+  };
+
   const handleSubmitDirect = async () => {
     setSubmitFormType("other"); //Just for trigger submit for validation show
 
@@ -243,28 +268,7 @@ function PurchaseModalDialog({
       elements.getElement(CardElement).clear(); //Clear card field
       setSubmitFormType("direct");
     } else {
-      // Check Form Error
-      if (Object.keys(errors).length > 0) {
-        setSubmitFormType(null);
-        setloadingFunc(false);
-        return;
-      }
-
-      // Card token create for direct register
-      setloadingFunc(true);
-      const createCardResponse = await handleCreateCard();
-
-      // Check card Error
-      if (
-        createCardResponse?.error &&
-        Object.keys(createCardResponse?.error).length > 0
-      ) {
-        setSubmitFormType(null);
-        setloadingFunc(false);
-      } else {
-        setloadingFunc(true);
-        setSubmitFormType("direct");
-      }
+      validateSubmitData("direct");
     }
   };
 
@@ -273,29 +277,7 @@ function PurchaseModalDialog({
     setCardRequired(true);
     setAddCardAction(true);
     setShowBillingInformation(true);
-
-    // Check Form Error
-    if (Object.keys(errors).length > 0) {
-      setSubmitFormType(null);
-      setloadingFunc(false);
-      return;
-    }
-
-    //Card token create
-    setloadingFunc(true);
-    const createCardResponse = await handleCreateCard();
-
-    // End of code token create
-    if (
-      createCardResponse?.error &&
-      Object.keys(createCardResponse?.error).length > 0
-    ) {
-      setSubmitFormType(null);
-      setloadingFunc(false);
-    } else {
-      setloadingFunc(true);
-      setSubmitFormType("add_card");
-    }
+    validateSubmitData("add_card");
   };
 
   return (
