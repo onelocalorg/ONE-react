@@ -76,7 +76,14 @@ function PurchaseModalDialog({
       // city: yup.string().required(REQUIRED_FIELD_MESSAGE),
       // state: yup.string().required(REQUIRED_FIELD_MESSAGE),
       // zip: yup.string().required(REQUIRED_FIELD_MESSAGE),
-      password: yup.string().required(REQUIRED_FIELD_MESSAGE),
+      password: yup
+        .string()
+        .required(REQUIRED_FIELD_MESSAGE)
+        .min(8, "password must be at least 8 characters")
+        .matches(
+          /^(?=.*[A-Za-z])(?=.*\d).+$/,
+          "Password must contain at least 1 letter and 1 number"
+        ),
       confirmpassword: yup
         .string()
         .required(REQUIRED_FIELD_MESSAGE)
@@ -146,10 +153,9 @@ function PurchaseModalDialog({
   };
 
   const registerNewUser = async (data) => {
-    const paymentMethodID = stripeCardStatus?.paymentMethod?.id || "";
-    if (paymentMethodID !== "") {
-      setloadingFunc(true); // Start loading
-      data["paymentMethodID"] = stripeCardStatus?.paymentMethod?.id || "";
+    const paymentCard = stripeCardStatus?.token?.card?.id;
+    if (paymentCard !== "") {
+      data["payment_source"] = paymentCard;
       console.log(data);
       setTimeout(() => {
         setloadingFunc(false);
@@ -181,8 +187,8 @@ function PurchaseModalDialog({
   const onSubmit = async (data) => {
     if (submitFormType === "direct" || submitFormType === "add_card") {
       if (showRegister) {
-        if (!stripeCardStatus?.error) {
-          registerNewUser(data);
+        if (stripeCardStatus?.token) {
+          // registerNewUser(data);
         }
       } else if (addCardAction) {
         if (stripeCardStatus?.token) {
@@ -237,14 +243,21 @@ function PurchaseModalDialog({
       elements.getElement(CardElement).clear(); //Clear card field
       setSubmitFormType("direct");
     } else {
+      // Check Form Error
+      if (Object.keys(errors).length > 0) {
+        setSubmitFormType(null);
+        setloadingFunc(false);
+        return;
+      }
+
       // Card token create for direct register
       setloadingFunc(true);
       const createCardResponse = await handleCreateCard();
-      // End of code token create
+
+      // Check card Error
       if (
-        Object.keys(errors).length > 0 ||
-        (createCardResponse?.error &&
-          Object.keys(createCardResponse?.error).length > 0)
+        createCardResponse?.error &&
+        Object.keys(createCardResponse?.error).length > 0
       ) {
         setSubmitFormType(null);
         setloadingFunc(false);
@@ -261,15 +274,21 @@ function PurchaseModalDialog({
     setAddCardAction(true);
     setShowBillingInformation(true);
 
+    // Check Form Error
+    if (Object.keys(errors).length > 0) {
+      setSubmitFormType(null);
+      setloadingFunc(false);
+      return;
+    }
+
     //Card token create
     setloadingFunc(true);
     const createCardResponse = await handleCreateCard();
 
     // End of code token create
     if (
-      Object.keys(errors).length > 0 ||
-      (createCardResponse?.error &&
-        Object.keys(createCardResponse?.error).length > 0)
+      createCardResponse?.error &&
+      Object.keys(createCardResponse?.error).length > 0
     ) {
       setSubmitFormType(null);
       setloadingFunc(false);
@@ -335,6 +354,7 @@ function PurchaseModalDialog({
               setStripeCardStatus={setStripeCardStatus}
               isSubmitted={isSubmitted}
               cardRequired={cardRequired}
+              setloadingFunc={setloadingFunc}
             />
             {showBillingInformation && (
               <BillingAddress

@@ -14,11 +14,14 @@ function CreatePassword({ register, errors, formStyle }) {
           name={"password"}
           className={formStyle.inputField}
         />
-        {errors.password && errors.password.type === "required" && (
-          <div role="alert" className={formStyle.error}>
-            {errors?.password?.message}
-          </div>
-        )}
+        {errors.password &&
+          (errors.password.type === "required" ||
+            errors.password.type === "min" ||
+            errors.password.type === "matches") && (
+            <div role="alert" className={formStyle.error}>
+              {errors?.password?.message}
+            </div>
+          )}
       </div>
       <div>
         <InputComponent
