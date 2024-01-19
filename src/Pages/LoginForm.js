@@ -62,7 +62,6 @@ const LoginForm = () => {
     setIsLoading(true);
     try {
       const response = await loginWithEmailApi(data);
-      console.log("response", response);
       if (response?.success === true) {
         // Data set
         dispatch(setUserData({ profile_image: response?.data?.pic }));
