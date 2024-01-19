@@ -1,6 +1,7 @@
 import InputComponent from "./InputComponent";
 import Style from "../Styles/CardInfo.module.css";
 import StripeCardElement from "./StripeCardElement";
+import { useEffect } from "react";
 
 function CardInfo({
   register,
@@ -12,7 +13,13 @@ function CardInfo({
   setStripeCardStatus,
   isSubmitted,
   cardRequired,
+  setloadingFunc,
 }) {
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      setloadingFunc(false);
+    }
+  }, [errors]);
   return (
     <div className={Style.billingContainer}>
       {showBillingInformation && (

@@ -335,6 +335,7 @@ function PurchaseModalDialog({
               setStripeCardStatus={setStripeCardStatus}
               isSubmitted={isSubmitted}
               cardRequired={cardRequired}
+              setloadingFunc={setloadingFunc}
             />
             {showBillingInformation && (
               <BillingAddress
