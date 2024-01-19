@@ -18,10 +18,12 @@ import { REQUIRED_FIELD_MESSAGE } from "../utils/AppConstants";
 import {
   addNewCardAPI,
   appendNewCardAPI,
+  submitPurchaseData,
   getCardListAPI,
 } from "../api/services";
 import { useSelector } from "react-redux";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import { useNavigate } from "react-router-dom";
 
 function PurchaseModalDialog({
   hideFunc,
@@ -32,6 +34,8 @@ function PurchaseModalDialog({
   userEmail,
   activePurchaseStep,
   setloadingFunc,
+  ticketFormVal,
+  ticketData,
 }) {
   const [stripeCardStatus, setStripeCardStatus] = useState({});
   const [addCardAction, setAddCardAction] = useState(false);
@@ -39,7 +43,7 @@ function PurchaseModalDialog({
   const [submitFormType, setSubmitFormType] = useState(null);
   const [cardList, setCardList] = useState([]);
   const userInfo = useSelector((state) => state?.userInfo);
-
+  const navigate = useNavigate();
   const elements = useElements();
   const stripe = useStripe();
 
@@ -155,6 +159,25 @@ function PurchaseModalDialog({
     }
   };
 
+  const submitBuyData = async () => {
+    const linktoTicketPurchase = ticketData.find(
+      (item) => item.price === Number(ticketFormVal.ticket)
+    );
+    setloadingFunc(true);
+    const responseData = await submitPurchaseData(
+      linktoTicketPurchase?.id,
+      ticketFormVal?.quantity,
+      formVal?.savedcard
+    );
+    setloadingFunc(false);
+    if (responseData.success) {
+      navigate("/payment-successfull");
+    } else {
+      hideFunc(false);
+      ToasterError(responseData?.message || "Something went wrong", 1500);
+    }
+  };
+
   const onSubmit = async (data) => {
     if (submitFormType === "direct" || submitFormType === "add_card") {
       if (showRegister) {
@@ -168,6 +191,7 @@ function PurchaseModalDialog({
         }
       } else {
         console.log("Normal Call");
+        submitBuyData();
       }
       setSubmitFormType(null);
     }
@@ -211,6 +235,7 @@ function PurchaseModalDialog({
       setCardRequired(false);
       setShowBillingInformation(false);
       elements.getElement(CardElement).clear(); //Clear card field
+      setSubmitFormType("direct");
     } else {
       // Card token create for direct register
       setloadingFunc(true);

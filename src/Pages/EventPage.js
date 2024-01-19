@@ -508,6 +508,8 @@ const EventPage = () => {
             setShowBillingInformation={setShowBillingInformation}
             userEmail={userEmail}
             activePurchaseStep={activePurchaseStep}
+            ticketFormVal={formVal}
+            ticketData={ticketData}
           />
         </Elements>
       )}
