@@ -24,8 +24,18 @@
 .inputLabel {
   margin-left: 10px;
   cursor: pointer;
+  font-size: 14px;
+}
+
+.cardExpiredLbl {
+  font-size: 14px;
 }
 
 .imgContainer {
   cursor: pointer;
+}
+
+.inputSelect {
+  display: flex;
+  align-items: center;
 }

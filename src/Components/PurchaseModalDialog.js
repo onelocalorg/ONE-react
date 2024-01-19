@@ -10,12 +10,18 @@ import BillingAddress from "./BillingAddress";
 import CardInfo from "./CardInfo";
 import CardList from "./CardList";
 import CreatePassword from "./CreatePassword";
-import ReferedBy from "./ReferedBy";
+// import ReferedBy from "./ReferedBy";
 import InputComponent from "./InputComponent";
 import ToasterSuccess from "./ToasterSuccess";
 import ToasterError from "./ToasterComponent";
-import { REQUIRED_FIELD_MESSAGE } from "../utils/FieldLabels";
-import { getCardListAPI } from "../api/services";
+import { REQUIRED_FIELD_MESSAGE } from "../utils/AppConstants";
+import {
+  addNewCardAPI,
+  appendNewCardAPI,
+  getCardListAPI,
+} from "../api/services";
+import { useSelector } from "react-redux";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 
 function PurchaseModalDialog({
   hideFunc,
@@ -32,6 +38,10 @@ function PurchaseModalDialog({
   const [cardRequired, setCardRequired] = useState(false);
   const [submitFormType, setSubmitFormType] = useState(null);
   const [cardList, setCardList] = useState([]);
+  const userInfo = useSelector((state) => state?.userInfo);
+
+  const elements = useElements();
+  const stripe = useStripe();
 
   const handleClose = () => {
     hideFunc(false);
@@ -39,11 +49,11 @@ function PurchaseModalDialog({
 
   const billingValidation = yup.object({
     nameoncard: yup.string().required(REQUIRED_FIELD_MESSAGE),
-    country: yup.string().required(REQUIRED_FIELD_MESSAGE),
-    address1: yup.string().required(REQUIRED_FIELD_MESSAGE),
-    city: yup.string().required(REQUIRED_FIELD_MESSAGE),
-    state: yup.string().required(REQUIRED_FIELD_MESSAGE),
-    zip: yup.string().required(REQUIRED_FIELD_MESSAGE),
+    // country: yup.string().required(REQUIRED_FIELD_MESSAGE),
+    // address1: yup.string().required(REQUIRED_FIELD_MESSAGE),
+    // city: yup.string().required(REQUIRED_FIELD_MESSAGE),
+    // state: yup.string().required(REQUIRED_FIELD_MESSAGE),
+    // zip: yup.string().required(REQUIRED_FIELD_MESSAGE),
   });
 
   const loggedInValidation = showBillingInformation
@@ -57,11 +67,11 @@ function PurchaseModalDialog({
         .required(REQUIRED_FIELD_MESSAGE)
         .email("Invalid Email"),
       nameoncard: yup.string().required(REQUIRED_FIELD_MESSAGE),
-      country: yup.string().required(REQUIRED_FIELD_MESSAGE),
-      address1: yup.string().required(REQUIRED_FIELD_MESSAGE),
-      city: yup.string().required(REQUIRED_FIELD_MESSAGE),
-      state: yup.string().required(REQUIRED_FIELD_MESSAGE),
-      zip: yup.string().required(REQUIRED_FIELD_MESSAGE),
+      // country: yup.string().required(REQUIRED_FIELD_MESSAGE),
+      // address1: yup.string().required(REQUIRED_FIELD_MESSAGE),
+      // city: yup.string().required(REQUIRED_FIELD_MESSAGE),
+      // state: yup.string().required(REQUIRED_FIELD_MESSAGE),
+      // zip: yup.string().required(REQUIRED_FIELD_MESSAGE),
       password: yup.string().required(REQUIRED_FIELD_MESSAGE),
       confirmpassword: yup
         .string()
@@ -77,6 +87,7 @@ function PurchaseModalDialog({
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors, isSubmitted },
   } = useForm({
     resolver: yupResolver(currentValidationSchema),
@@ -86,43 +97,79 @@ function PurchaseModalDialog({
     },
   });
 
-  useEffect(() => {
-    async function getCardList() {
-      setloadingFunc(true);
-      const res = await getCardListAPI();
-      setloadingFunc(false);
-      if (res) {
-        setCardList(res?.data?.cards || []);
-        reset({ savedcard: res?.data?.default_source || "" }); //Set card value
-      } else {
-        ToasterError(res?.message || "No card found", 2000);
-      }
+  const formVal = watch();
+
+  const getCardList = async () => {
+    setloadingFunc(true);
+    const res = await getCardListAPI();
+    setloadingFunc(false);
+    if (res) {
+      setCardList(res?.data?.cards || []);
+      reset({ savedcard: res?.data?.default_source || "" }); //Set card value
+    } else {
+      ToasterError(res?.message || "No card found", 2000);
     }
-    getCardList();
+  };
+
+  useEffect(() => {
+    if (userInfo?.userData) {
+      getCardList();
+    }
   }, []);
 
-  const onSubmit = async (data) => {
-    if (showRegister) {
-      if (!stripeCardStatus?.error) {
-        const paymentMethodID = stripeCardStatus?.paymentMethod?.id || "";
-        if (paymentMethodID !== "") {
-          setloadingFunc(true); // Start loading
-          data["paymentMethodID"] = stripeCardStatus?.paymentMethod?.id || "";
-          // console.log(data);
-          console.log(data);
-          setTimeout(() => {
-            setloadingFunc(false);
-            handleClose();
-            ToasterSuccess("Purchased Successfully", 1500);
-          }, 1500);
-        }
-      }
+  const setUpdatedCardList = (response) => {
+    if (response?.success) {
+      getCardList();
+      setShowBillingInformation(false);
+      elements.getElement(CardElement).clear(); //Clear card field
+    }
+  };
+
+  const addAppendCard = async () => {
+    if (cardList.length === 0) {
+      const response = await addNewCardAPI({
+        token: stripeCardStatus?.token?.id,
+      });
+      setloadingFunc(false);
+      setUpdatedCardList(response);
     } else {
-      if (addCardAction) {
-        console.log("Add Card Call");
+      const response = await appendNewCardAPI({
+        token: stripeCardStatus?.token?.id,
+      });
+      setloadingFunc(false);
+      setUpdatedCardList(response);
+    }
+  };
+
+  const registerNewUser = async (data) => {
+    const paymentMethodID = stripeCardStatus?.paymentMethod?.id || "";
+    if (paymentMethodID !== "") {
+      setloadingFunc(true); // Start loading
+      data["paymentMethodID"] = stripeCardStatus?.paymentMethod?.id || "";
+      console.log(data);
+      setTimeout(() => {
+        setloadingFunc(false);
+        handleClose();
+        ToasterSuccess("Purchased Successfully", 1500);
+      }, 1500);
+    }
+  };
+
+  const onSubmit = async (data) => {
+    if (submitFormType === "direct" || submitFormType === "add_card") {
+      if (showRegister) {
+        if (!stripeCardStatus?.error) {
+          registerNewUser(data);
+        }
+      } else if (addCardAction) {
+        if (stripeCardStatus?.token) {
+          setloadingFunc(true);
+          addAppendCard();
+        }
       } else {
         console.log("Normal Call");
       }
+      setSubmitFormType(null);
     }
   };
 
@@ -136,15 +183,52 @@ function PurchaseModalDialog({
     setSubmitFormType("direct");
     setAddCardAction(false);
     setCardRequired(true);
+    setShowBillingInformation(false);
+    elements.getElement(CardElement).clear(); //Clear card field
     if (!showRegister) {
       setCardRequired(false);
     }
   };
 
-  const handleSubmitCardDetail = () => {
-    setSubmitFormType("add_card");
+  const handleSubmitCardDetail = async () => {
+    setSubmitFormType("other"); //Just for trigger submit for validation show
     setCardRequired(true);
     setAddCardAction(true);
+    setShowBillingInformation(true);
+
+    // Card token create
+    if (!stripe || !elements) {
+      // Stripe.js has not loaded yet. Make sure to disable
+      // form submission until Stripe.js has loaded.
+      return;
+    }
+    setloadingFunc(true);
+    const payloadCreate = await stripe.createToken(
+      elements.getElement(CardElement),
+      {
+        name: formVal?.nameoncard || "",
+        address_line1: formVal?.address1 || "",
+        address_line2: formVal?.address2 || "",
+        address_city: formVal?.city || "",
+        address_state: formVal?.state || "",
+        address_zip: formVal?.zip || "",
+        address_country: formVal?.country || "",
+      }
+    );
+
+    setStripeCardStatus(payloadCreate);
+
+    // End of code token create
+    if (
+      Object.keys(errors).length > 0 ||
+      (payloadCreate?.error && Object.keys(payloadCreate?.error).length > 0)
+    ) {
+      setSubmitFormType(null);
+      setloadingFunc(false);
+    } else {
+      setloadingFunc(true);
+      setSubmitFormType("add_card");
+    }
   };
 
   return (
@@ -226,7 +310,7 @@ function PurchaseModalDialog({
                   errors={errors}
                   formStyle={Style}
                 />
-                <ReferedBy register={register} formStyle={Style} />
+                {/* <ReferedBy register={register} formStyle={Style} /> */}
               </>
             )}
           </form>

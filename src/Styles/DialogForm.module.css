@@ -65,6 +65,7 @@
   }
   [type~="radio"] {
     outline: 0;
+    margin-top: 2px;
   }
 }
 

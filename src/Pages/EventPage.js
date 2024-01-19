@@ -26,6 +26,11 @@ import HeaderUserComponent from "../Components/HeaderUserComponent";
 import UserConfirmDialog from "../Components/EmailModalDialog";
 import PurchaseModalDialog from "../Components/PurchaseModalDialog";
 import { useSelector } from "react-redux";
+import { useScrollToTop } from "../hooks/useScrollToTop";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
 
 const EventPage = () => {
   const { eventId } = useParams();
@@ -36,6 +41,7 @@ const EventPage = () => {
   const [showBillingInformation, setShowBillingInformation] = useState(false);
   const [activePurchaseStep, setActivePurchaseStep] = useState(0); //0 - new register, 1- already user email available
   const userInfo = useSelector((state) => state?.userInfo);
+  const scrollToTop = useScrollToTop();
 
   const onLastPage = () => {
     navigate("/");
@@ -77,11 +83,8 @@ const EventPage = () => {
   const [error, setError] = useState(null);
   useEffect(() => {
     // Scroll to top as some time it shows in middle of after image section when comes to detail page
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth",
-    });
+    scrollToTop();
+
     const fetchEventData = async () => {
       if (eventId) {
         try {
@@ -495,16 +498,18 @@ const EventPage = () => {
         />
       )}
       {showPurchseDialog && (
-        <PurchaseModalDialog
-          hideFunc={setShowPurchseDialog}
-          purchaseTotal={taxAmount?.total}
-          setloadingFunc={setloading}
-          showRegister={showRegister}
-          showBillingInformation={showBillingInformation}
-          setShowBillingInformation={setShowBillingInformation}
-          userEmail={userEmail}
-          activePurchaseStep={activePurchaseStep}
-        />
+        <Elements stripe={stripePromise}>
+          <PurchaseModalDialog
+            hideFunc={setShowPurchseDialog}
+            purchaseTotal={taxAmount?.total}
+            setloadingFunc={setloading}
+            showRegister={showRegister}
+            showBillingInformation={showBillingInformation}
+            setShowBillingInformation={setShowBillingInformation}
+            userEmail={userEmail}
+            activePurchaseStep={activePurchaseStep}
+          />
+        </Elements>
       )}
     </>
   );

@@ -4,7 +4,7 @@ import Style from "../Styles/BillingAddress.module.css";
 function BillingAddress({ register, errors, formStyle }) {
   return (
     <div className={Style.billingContainer}>
-      <div className={formStyle.fieldHeading}>Billing address *</div>
+      <div className={formStyle.fieldHeading}>Billing address </div>
       <div>
         <InputComponent
           type={"text"}

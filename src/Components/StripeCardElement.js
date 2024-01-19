@@ -1,11 +1,6 @@
-import React, { useRef, useState } from "react";
-import {
-  Elements,
-  CardElement,
-  useElements,
-  useStripe,
-} from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
+import React, { useRef } from "react";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+
 import Style from "../Styles/StripeCard.module.css";
 
 function StripeCardComponent({
@@ -28,10 +23,12 @@ function StripeCardComponent({
       return;
     }
 
-    const payload = await stripe.createPaymentMethod({
-      type: "card",
-      card: elements.getElement(CardElement),
-    });
+    // const payload = await stripe.createPaymentMethod({
+    //   type: "card",
+    //   card: elements.getElement(CardElement),
+    // });
+
+    const payload = await stripe.createToken(elements.getElement(CardElement));
 
     setStripeCardStatus(payload);
 
@@ -47,7 +44,7 @@ function StripeCardComponent({
           showBillingFunc(true);
         }}
         onBlur={() => {
-          buttonRef.current.click();
+          // buttonRef.current.click();
         }}
         onChange={() => {
           setStripeCardStatus({ status: true });
@@ -76,8 +73,6 @@ function StripeCardComponent({
   );
 }
 
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
-
 function StripeCardElement({
   showBillingFunc,
   stripeCardStatus,
@@ -87,15 +82,13 @@ function StripeCardElement({
 }) {
   return (
     <div className={Style.stripeContainer}>
-      <Elements stripe={stripePromise}>
-        <StripeCardComponent
-          showBillingFunc={showBillingFunc}
-          stripeCardStatus={stripeCardStatus}
-          setStripeCardStatus={setStripeCardStatus}
-          isSubmitted={isSubmitted}
-          cardRequired={cardRequired}
-        />
-      </Elements>
+      <StripeCardComponent
+        showBillingFunc={showBillingFunc}
+        stripeCardStatus={stripeCardStatus}
+        setStripeCardStatus={setStripeCardStatus}
+        isSubmitted={isSubmitted}
+        cardRequired={cardRequired}
+      />
     </div>
   );
 }
