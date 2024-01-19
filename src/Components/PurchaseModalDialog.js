@@ -125,41 +125,46 @@ function PurchaseModalDialog({
     }
   };
 
+  const addAppendCard = async () => {
+    if (cardList.length === 0) {
+      const response = await addNewCardAPI({
+        token: stripeCardStatus?.token?.id,
+      });
+      setloadingFunc(false);
+      setUpdatedCardList(response);
+    } else {
+      const response = await appendNewCardAPI({
+        token: stripeCardStatus?.token?.id,
+      });
+      setloadingFunc(false);
+      setUpdatedCardList(response);
+    }
+  };
+
+  const registerNewUser = async (data) => {
+    const paymentMethodID = stripeCardStatus?.paymentMethod?.id || "";
+    if (paymentMethodID !== "") {
+      setloadingFunc(true); // Start loading
+      data["paymentMethodID"] = stripeCardStatus?.paymentMethod?.id || "";
+      console.log(data);
+      setTimeout(() => {
+        setloadingFunc(false);
+        handleClose();
+        ToasterSuccess("Purchased Successfully", 1500);
+      }, 1500);
+    }
+  };
+
   const onSubmit = async (data) => {
     if (submitFormType === "direct" || submitFormType === "add_card") {
       if (showRegister) {
         if (!stripeCardStatus?.error) {
-          const paymentMethodID = stripeCardStatus?.paymentMethod?.id || "";
-          if (paymentMethodID !== "") {
-            setloadingFunc(true); // Start loading
-            data["paymentMethodID"] = stripeCardStatus?.paymentMethod?.id || "";
-            console.log(data);
-            setTimeout(() => {
-              setloadingFunc(false);
-              handleClose();
-              ToasterSuccess("Purchased Successfully", 1500);
-            }, 1500);
-          }
+          registerNewUser(data);
         }
       } else if (addCardAction) {
-        if (cardList.length === 0) {
-          if (stripeCardStatus?.token) {
-            setloadingFunc(true);
-            const response = await addNewCardAPI({
-              token: stripeCardStatus?.token?.id,
-            });
-            setloadingFunc(false);
-            setUpdatedCardList(response);
-          }
-        } else {
-          if (stripeCardStatus?.token) {
-            setloadingFunc(true);
-            const response = await appendNewCardAPI({
-              token: stripeCardStatus?.token?.id,
-            });
-            setloadingFunc(false);
-            setUpdatedCardList(response);
-          }
+        if (stripeCardStatus?.token) {
+          setloadingFunc(true);
+          addAppendCard();
         }
       } else {
         console.log("Normal Call");
@@ -178,13 +183,15 @@ function PurchaseModalDialog({
     setSubmitFormType("direct");
     setAddCardAction(false);
     setCardRequired(true);
+    setShowBillingInformation(false);
+    elements.getElement(CardElement).clear(); //Clear card field
     if (!showRegister) {
       setCardRequired(false);
     }
   };
 
   const handleSubmitCardDetail = async () => {
-    setSubmitFormType("other");
+    setSubmitFormType("other"); //Just for trigger submit for validation show
     setCardRequired(true);
     setAddCardAction(true);
     setShowBillingInformation(true);
