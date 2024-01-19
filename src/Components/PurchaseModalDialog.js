@@ -317,6 +317,7 @@ function PurchaseModalDialog({
                     inputRef={"email"}
                     name={"email"}
                     className={Style.inputField}
+                    disabled={true}
                   />
                   {errors.email && errors.email.type === "required" && (
                     <div role="alert" className={Style.error}>
