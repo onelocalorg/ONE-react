@@ -176,3 +176,19 @@ export const appendNewCardAPI = async (data) => {
     console.log(error);
   }
 };
+
+export const submitPurchaseData = async (ticketId, quantity, payment_card) => {
+  try {
+    const response = await axiosClient.post(
+      `/tickets/web/${ticketId}/${quantity}`,
+      {
+        isPaymentLink: true,
+        payment_source: payment_card,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};

@@ -18,10 +18,12 @@ import { REQUIRED_FIELD_MESSAGE } from "../utils/AppConstants";
 import {
   addNewCardAPI,
   appendNewCardAPI,
+  submitPurchaseData,
   getCardListAPI,
 } from "../api/services";
 import { useSelector } from "react-redux";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import { useNavigate } from "react-router-dom";
 
 function PurchaseModalDialog({
   hideFunc,
@@ -32,6 +34,8 @@ function PurchaseModalDialog({
   userEmail,
   activePurchaseStep,
   setloadingFunc,
+  ticketFormVal,
+  ticketData,
 }) {
   const [stripeCardStatus, setStripeCardStatus] = useState({});
   const [addCardAction, setAddCardAction] = useState(false);
@@ -39,7 +43,7 @@ function PurchaseModalDialog({
   const [submitFormType, setSubmitFormType] = useState(null);
   const [cardList, setCardList] = useState([]);
   const userInfo = useSelector((state) => state?.userInfo);
-
+  const navigate = useNavigate();
   const elements = useElements();
   const stripe = useStripe();
 
@@ -155,6 +159,25 @@ function PurchaseModalDialog({
     }
   };
 
+  const submitBuyData = async () => {
+    const linktoTicketPurchase = ticketData.find(
+      (item) => item.price === Number(ticketFormVal.ticket)
+    );
+    setloadingFunc(true);
+    const responseData = await submitPurchaseData(
+      linktoTicketPurchase?.id,
+      ticketFormVal?.quantity,
+      formVal?.savedcard
+    );
+    setloadingFunc(false);
+    if (responseData.success) {
+      navigate("/payment-successfull");
+    } else {
+      hideFunc(false);
+      ToasterError(responseData?.message || "Something went wrong", 1500);
+    }
+  };
+
   const onSubmit = async (data) => {
     if (submitFormType === "direct" || submitFormType === "add_card") {
       if (showRegister) {
@@ -168,6 +191,7 @@ function PurchaseModalDialog({
         }
       } else {
         console.log("Normal Call");
+        submitBuyData();
       }
       setSubmitFormType(null);
     }
@@ -179,30 +203,13 @@ function PurchaseModalDialog({
     }
   }, [submitFormType]);
 
-  const handleSubmitDirect = () => {
-    setSubmitFormType("direct");
-    setAddCardAction(false);
-    setCardRequired(true);
-    setShowBillingInformation(false);
-    elements.getElement(CardElement).clear(); //Clear card field
-    if (!showRegister) {
-      setCardRequired(false);
-    }
-  };
-
-  const handleSubmitCardDetail = async () => {
-    setSubmitFormType("other"); //Just for trigger submit for validation show
-    setCardRequired(true);
-    setAddCardAction(true);
-    setShowBillingInformation(true);
-
-    // Card token create
+  const handleCreateCard = async () => {
     if (!stripe || !elements) {
       // Stripe.js has not loaded yet. Make sure to disable
       // form submission until Stripe.js has loaded.
-      return;
+      return { error: { success: false } };
     }
-    setloadingFunc(true);
+
     const payloadCreate = await stripe.createToken(
       elements.getElement(CardElement),
       {
@@ -215,13 +222,54 @@ function PurchaseModalDialog({
         address_country: formVal?.country || "",
       }
     );
-
     setStripeCardStatus(payloadCreate);
+    return payloadCreate;
+  };
+
+  const handleSubmitDirect = async () => {
+    setSubmitFormType("other"); //Just for trigger submit for validation show
+
+    setAddCardAction(false);
+    setCardRequired(true);
+    if (!showRegister) {
+      setCardRequired(false);
+      setShowBillingInformation(false);
+      elements.getElement(CardElement).clear(); //Clear card field
+      setSubmitFormType("direct");
+    } else {
+      // Card token create for direct register
+      setloadingFunc(true);
+      const createCardResponse = await handleCreateCard();
+      // End of code token create
+      if (
+        Object.keys(errors).length > 0 ||
+        (createCardResponse?.error &&
+          Object.keys(createCardResponse?.error).length > 0)
+      ) {
+        setSubmitFormType(null);
+        setloadingFunc(false);
+      } else {
+        setloadingFunc(true);
+        setSubmitFormType("direct");
+      }
+    }
+  };
+
+  const handleSubmitCardDetail = async () => {
+    setSubmitFormType("other"); //Just for trigger submit for validation show
+    setCardRequired(true);
+    setAddCardAction(true);
+    setShowBillingInformation(true);
+
+    //Card token create
+    setloadingFunc(true);
+    const createCardResponse = await handleCreateCard();
 
     // End of code token create
     if (
       Object.keys(errors).length > 0 ||
-      (payloadCreate?.error && Object.keys(payloadCreate?.error).length > 0)
+      (createCardResponse?.error &&
+        Object.keys(createCardResponse?.error).length > 0)
     ) {
       setSubmitFormType(null);
       setloadingFunc(false);
@@ -319,7 +367,7 @@ function PurchaseModalDialog({
           <button
             className={Style.purchaseformButton}
             onClick={handleSubmitDirect}
-            disabled={!cardList.length}
+            disabled={!cardList.length && !showRegister}
           >
             <span className={Style.purchasebtnText}>
               Pay ${`${purchaseTotal}`}
