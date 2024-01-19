@@ -150,3 +150,29 @@ export const getCardListAPI = async () => {
     console.log(error);
   }
 };
+
+export const addNewCardAPI = async (data) => {
+  try {
+    const response = await axiosClient.post(
+      "/subscriptions/cards/create",
+      data
+    );
+
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const appendNewCardAPI = async (data) => {
+  try {
+    const response = await axiosClient.post(
+      "/subscriptions/cards/append",
+      data
+    );
+
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

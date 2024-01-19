@@ -12,7 +12,7 @@ import ToasterSuccess from "./ToasterSuccess";
 import ToasterError from "./ToasterComponent";
 import { setUserData } from "../Redux/slices/UserSlice";
 import { useDispatch } from "react-redux";
-import { REQUIRED_FIELD_MESSAGE } from "../utils/FieldLabels";
+import { REQUIRED_FIELD_MESSAGE } from "../utils/AppConstants";
 
 function EmailModalDialog({
   hideFunc,
