@@ -192,3 +192,32 @@ export const submitPurchaseData = async (ticketId, quantity, payment_card) => {
     return error;
   }
 };
+
+export const userRegistrationWithPayment = async (payloadData) => {
+  const {
+    email,
+    password,
+    cpassword,
+    token,
+    ticketId,
+    quantity,
+    payment_source,
+  } = payloadData;
+
+  try {
+    const response = await axiosClient.post(`/web/auth/signup`, {
+      email,
+      password,
+      cpassword,
+      token,
+      ticketId,
+      quantity,
+      isPaymentLink: true,
+      payment_source,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
