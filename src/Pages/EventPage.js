@@ -111,6 +111,7 @@ const EventPage = () => {
       setActivePurchaseStep(1);
       setShowBillingInformation(false);
       setShowPurchseDialog(true);
+      setShowRegister(false);
       return;
     }
 

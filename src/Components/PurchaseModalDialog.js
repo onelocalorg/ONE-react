@@ -177,24 +177,30 @@ function PurchaseModalDialog({
 
       if (
         responseData?.success &&
-        responseData?.data?.paymentSummary &&
-        Object.keys(responseData?.data?.paymentSummary || {}).length
+        Object.keys(responseData?.data?.userDetail || {}).length
       ) {
         // Data set
-        dispatch(setUserData({ profile_image: responseData?.data?.pic }));
+        dispatch(
+          setUserData({ profile_image: responseData?.data?.userDetail?.pic })
+        );
         localStorage.setItem(
           "user_info",
           JSON.stringify({
-            profile_image: responseData?.data?.pic || "",
+            profile_image: responseData?.data?.userDetail?.pic || "",
           })
         );
+      }
 
+      if (
+        responseData?.success &&
+        responseData?.data?.paymentSummary &&
+        Object.keys(responseData?.data?.paymentSummary || {}).length
+      ) {
         ToasterSuccess(responseData?.message || "Success", 1500);
 
         navigate("/payment-successfull");
       } else if (
         responseData?.success &&
-        !responseData?.data?.paymentSummary &&
         !Object.keys(responseData?.data?.paymentSummary || {}).length
       ) {
         hideFunc(false);
