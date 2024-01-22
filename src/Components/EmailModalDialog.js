@@ -163,19 +163,21 @@ function EmailModalDialog({
             </div>
 
             {activeStep === 1 && (
-              <div className={Style.inputDiv}>
-                <InputComponent
-                  type={showPassword ? "text" : "password"}
-                  placeholder={"Password"}
-                  register={register}
-                  inputRef={"password"}
-                  name={"password"}
-                  className={Style.inputField}
-                />
-                <PasswordEyeComponent
-                  showStatus={showPassword}
-                  setShowStatus={setShowPassword}
-                />
+              <div>
+                <div className={Style.inputDiv}>
+                  <InputComponent
+                    type={showPassword ? "text" : "password"}
+                    placeholder={"Password"}
+                    register={register}
+                    inputRef={"password"}
+                    name={"password"}
+                    className={Style.inputField}
+                  />
+                  <PasswordEyeComponent
+                    showStatus={showPassword}
+                    setShowStatus={setShowPassword}
+                  />
+                </div>
                 {errors.password &&
                   (errors.password.type === "required" ||
                     errors.password.type === "min" ||
