@@ -1,10 +1,12 @@
 .loginForm {
   width: 100%;
   flex-grow: 1;
-  padding: 15px;
+  padding: 30px 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  border: 1px solid #db9791;
+  border-radius: 20px;
 }
 
 .formBox {
@@ -81,4 +83,15 @@
   color: red;
   font-size: 11px;
   margin: 4px 21px 0px 15px;
+}
+
+@media only screen and (max-width: 431px) {
+  .loginForm {
+    padding: 20px 20px;
+  }
+
+  .h3 {
+    color: #171717;
+    font-size: 25px;
+  }
 }
