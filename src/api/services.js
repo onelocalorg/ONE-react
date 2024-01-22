@@ -192,3 +192,41 @@ export const submitPurchaseData = async (ticketId, quantity, payment_card) => {
     return error;
   }
 };
+
+export const userRegistrationWithPayment = async (payloadData) => {
+  const {
+    email,
+    password,
+    cpassword,
+    token,
+    ticketId,
+    quantity,
+    payment_source,
+  } = payloadData;
+
+  try {
+    const response = await axiosClient.post(`/web/auth/signup`, {
+      email,
+      password,
+      cpassword,
+      token,
+      ticketId,
+      quantity,
+      isPaymentLink: true,
+      payment_source,
+    });
+
+    //to store refrence token for login after register
+    if (response?.data) {
+      const access_token = response?.data?.data?.userDetail?.access_token;
+      const refresh_token = response?.data?.data?.userDetail?.refresh_token;
+      localStorage.setItem("access_token", access_token);
+      localStorage.setItem("refresh_token", refresh_token);
+    }
+
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};

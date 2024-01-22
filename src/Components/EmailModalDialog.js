@@ -149,6 +149,7 @@ function EmailModalDialog({
                 inputRef={"email"}
                 name={"email"}
                 className={Style.inputField}
+                disabled={activeStep === 1}
               />
               {errors.email &&
                 (errors.email.type === "required" ||
