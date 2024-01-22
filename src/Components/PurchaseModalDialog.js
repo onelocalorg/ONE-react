@@ -175,7 +175,11 @@ function PurchaseModalDialog({
 
       setloadingFunc(false);
 
-      if (responseData.success) {
+      if (
+        responseData?.success &&
+        responseData?.data?.paymentSummary &&
+        Object.keys(responseData?.data?.paymentSummary || {}).length
+      ) {
         // Data set
         dispatch(setUserData({ profile_image: responseData?.data?.pic }));
         localStorage.setItem(
@@ -188,6 +192,13 @@ function PurchaseModalDialog({
         ToasterSuccess(responseData?.message || "Success", 1500);
 
         navigate("/payment-successfull");
+      } else if (
+        responseData?.success &&
+        !responseData?.data?.paymentSummary &&
+        !Object.keys(responseData?.data?.paymentSummary || {}).length
+      ) {
+        hideFunc(false);
+        ToasterError(responseData?.message || "Something went wrong", 1500);
       } else {
         // hideFunc(false);
         ToasterError(responseData?.message || "Something went wrong", 1500);
