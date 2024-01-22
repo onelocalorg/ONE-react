@@ -189,7 +189,7 @@ function PurchaseModalDialog({
 
         navigate("/payment-successfull");
       } else {
-        hideFunc(false);
+        // hideFunc(false);
         ToasterError(responseData?.message || "Something went wrong", 1500);
       }
     }
