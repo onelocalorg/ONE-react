@@ -5,7 +5,9 @@ import axios from "axios";
 export const axiosClient = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
   headers: { "X-Custom-Header": "foobar" },
-  validateStatus: false, //Added for fix 409 response code not allow to read data show undefined response
+  validateStatus: function (status) {
+    return (status >= 200 && status < 300) || status === 409; // default
+  }, //Added for fix 409 response code not allow to read data show undefined response
 });
 
 axiosClient.interceptors.request.use((config) => {
