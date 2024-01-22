@@ -20,10 +20,12 @@ import {
   appendNewCardAPI,
   submitPurchaseData,
   getCardListAPI,
+  userRegistrationWithPayment,
 } from "../api/services";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useNavigate } from "react-router-dom";
+import { setUserData } from "../Redux/slices/UserSlice";
 
 function PurchaseModalDialog({
   hideFunc,
@@ -46,6 +48,7 @@ function PurchaseModalDialog({
   const navigate = useNavigate();
   const elements = useElements();
   const stripe = useStripe();
+  const dispatch = useDispatch();
 
   const handleClose = () => {
     hideFunc(false);
@@ -153,15 +156,42 @@ function PurchaseModalDialog({
   };
 
   const registerNewUser = async (data) => {
-    const paymentCard = stripeCardStatus?.token?.card?.id;
+    const paymentCard = stripeCardStatus?.token;
     if (paymentCard !== "") {
-      data["payment_source"] = paymentCard;
-      console.log(data);
-      setTimeout(() => {
-        setloadingFunc(false);
-        handleClose();
-        ToasterSuccess("Purchased Successfully", 1500);
-      }, 1500);
+      const linktoTicketPurchase = ticketData.find(
+        (item) => item.price === Number(ticketFormVal.ticket)
+      );
+
+      const responseData = await userRegistrationWithPayment({
+        email: userEmail,
+        password: data?.password,
+        cpassword: data?.confirmpassword,
+        token: stripeCardStatus?.token?.id,
+        ticketId: linktoTicketPurchase?.id,
+        quantity: ticketFormVal?.quantity,
+        isPaymentLink: true,
+        payment_source: stripeCardStatus?.token?.card?.id,
+      });
+
+      setloadingFunc(false);
+
+      if (responseData.success) {
+        // Data set
+        dispatch(setUserData({ profile_image: responseData?.data?.pic }));
+        localStorage.setItem(
+          "user_info",
+          JSON.stringify({
+            profile_image: responseData?.data?.pic || "",
+          })
+        );
+
+        ToasterSuccess(responseData?.message || "Success", 1500);
+
+        navigate("/payment-successfull");
+      } else {
+        // hideFunc(false);
+        ToasterError(responseData?.message || "Something went wrong", 1500);
+      }
     }
   };
 
@@ -188,7 +218,7 @@ function PurchaseModalDialog({
     if (submitFormType === "direct" || submitFormType === "add_card") {
       if (showRegister) {
         if (stripeCardStatus?.token) {
-          // registerNewUser(data);
+          registerNewUser(data);
         }
       } else if (addCardAction) {
         if (stripeCardStatus?.token) {
@@ -196,7 +226,6 @@ function PurchaseModalDialog({
           addAppendCard();
         }
       } else {
-        console.log("Normal Call");
         submitBuyData();
       }
       setSubmitFormType(null);
@@ -317,6 +346,7 @@ function PurchaseModalDialog({
                     inputRef={"email"}
                     name={"email"}
                     className={Style.inputField}
+                    disabled={true}
                   />
                   {errors.email && errors.email.type === "required" && (
                     <div role="alert" className={Style.error}>

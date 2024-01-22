@@ -39,7 +39,7 @@ function StripeCardComponent({
     <>
       <CardElement
         className={`card ${Style.StripeElementInput}`}
-        options={{ hidePostalCode: true }}
+        options={{ hidePostalCode: true, disableLink: true }}
         onFocus={() => {
           showBillingFunc(true);
         }}

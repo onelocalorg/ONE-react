@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import logo from "../images/logo.svg";
-import user from "../images/user.png";
 import moment from "moment";
 import calendarIcon from "../images/Group 33778.svg";
 import locationIcon from "../images/Group 18184.svg";
@@ -22,13 +20,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import ToasterComponent from "../Components/ToasterComponent";
 import InputWithPlusAndMinusComponent from "../Components/InputWithPlusMinusComp";
 import NotFound from "./NotFound";
-import HeaderUserComponent from "../Components/HeaderUserComponent";
 import UserConfirmDialog from "../Components/EmailModalDialog";
 import PurchaseModalDialog from "../Components/PurchaseModalDialog";
 import { useSelector } from "react-redux";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import HeaderComponent from "../Components/HeaderComponent";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
 
@@ -44,10 +42,6 @@ const EventPage = () => {
   const scrollToTop = useScrollToTop();
 
   const onLastPage = () => {
-    navigate("/");
-  };
-
-  const goToHomePage = () => {
     navigate("/");
   };
 
@@ -224,27 +218,7 @@ const EventPage = () => {
   return (
     <>
       <div className={Style.mainDiv}>
-        <div className={Style.navHeader}>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: "7px",
-              flexGrow: "1",
-              cursor: "pointer",
-            }}
-            onClick={goToHomePage}
-          >
-            <img src={logo} alt="logo" className={Style.oneLogo} />
-            <h2 className={Style.brand}>NE</h2>
-          </div>
-
-          <HeaderUserComponent
-            headerClass={Style}
-            calledFromClass="eventDetailHeader"
-          />
-        </div>
+        <HeaderComponent />
         <div className={Style.dataContainer}>
           <div>
             <button className={Style.backButton} onClick={onLastPage}>
