@@ -13,6 +13,7 @@ import ToasterError from "./ToasterComponent";
 import { setUserData } from "../Redux/slices/UserSlice";
 import { useDispatch } from "react-redux";
 import { REQUIRED_FIELD_MESSAGE } from "../utils/AppConstants";
+import PasswordEyeComponent from "./PasswordEye";
 
 function EmailModalDialog({
   hideFunc,
@@ -24,6 +25,7 @@ function EmailModalDialog({
   setActivePurchaseStep,
 }) {
   const [activeStep, setActiveStep] = useState(0);
+  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
 
   const handleClose = () => {
@@ -161,14 +163,18 @@ function EmailModalDialog({
             </div>
 
             {activeStep === 1 && (
-              <div>
+              <div className={Style.inputDiv}>
                 <InputComponent
-                  type={"password"}
+                  type={showPassword ? "text" : "password"}
                   placeholder={"Password"}
                   register={register}
                   inputRef={"password"}
                   name={"password"}
                   className={Style.inputField}
+                />
+                <PasswordEyeComponent
+                  showStatus={showPassword}
+                  setShowStatus={setShowPassword}
                 />
                 {errors.password &&
                   (errors.password.type === "required" ||
