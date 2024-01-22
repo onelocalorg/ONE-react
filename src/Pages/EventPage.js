@@ -218,7 +218,7 @@ const EventPage = () => {
   return (
     <>
       <div className={Style.mainDiv}>
-        <HeaderComponent HeaderStyle={Style} />
+        <HeaderComponent />
         <div className={Style.dataContainer}>
           <div>
             <button className={Style.backButton} onClick={onLastPage}>
