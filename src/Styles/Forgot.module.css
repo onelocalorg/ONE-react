@@ -6,7 +6,7 @@
   align-items: center;
 }
 
-.mainDiv {
+/* .mainDiv {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -14,13 +14,28 @@
   width: 100%;
   margin: auto;
   /* background-color: #171717; */
-  border: 1px solid #7a40f2f2;
+/*border: 1px solid #7a40f2f2;
   color: #fff;
   min-height: 600px;
   flex-wrap: wrap;
   border-radius: 20px;
   overflow: hidden;
   flex-direction: row-reverse;
+} */
+
+.mainDiv {
+  width: 100%;
+  min-height: inherit;
+  background-color: #e6e6e6;
+  display: flex;
+  flex-direction: column;
+}
+
+.formContainer {
+  margin: 200px auto auto auto !important;
+  width: 100%;
+  min-width: 500px;
+  max-width: 500px;
 }
 
 .leftDiv {
@@ -54,5 +69,12 @@
   .rightDiv {
     padding: 20px;
     min-height: 510px;
+  }
+
+  .formContainer {
+    width: 90%;
+    min-width: revert;
+    max-width: revert;
+    margin: 150px auto auto auto !important;
   }
 }
