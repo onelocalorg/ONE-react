@@ -14,18 +14,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUserData } from "../Redux/slices/UserSlice";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
-const fieldRequired = "This field is required";
+import { REQUIRED_FIELD_MESSAGE } from "../utils/AppConstants";
 
 const LoginForm = () => {
   const userInfo = useSelector((state) => state?.userInfo);
   const dispatch = useDispatch();
 
   const validationSchema = yup.object().shape({
-    email: yup.string().required(fieldRequired).email("Invalid Email"),
+    email: yup.string().required(REQUIRED_FIELD_MESSAGE).email("Invalid Email"),
     password: yup
       .string()
-      .required(fieldRequired)
+      .required(REQUIRED_FIELD_MESSAGE)
       .min(8, "password must be at least 8 characters")
       .matches(
         /^(?=.*[A-Za-z])(?=.*\d).+$/,
@@ -162,12 +161,14 @@ const LoginForm = () => {
               </div>
             )}
         </div>
-        {/* <span>
-          <Link className={style.forgotlink} to={"/forgot"}>
-            Forgot Password?
-          </Link>
-        </span> */}
-        <ButtonComponent type={"submit"} cta={"Submit"} />
+        <div className={style.ButtonLink}>
+          <ButtonComponent type={"submit"} cta={"Submit"} />
+          <span>
+            {/* <Link className={style.forgotlink} to={"/forgot"}>
+              Forgot Password?
+            </Link> */}
+          </span>
+        </div>
         {isLoading && <Loader />}
       </form>
     </div>
