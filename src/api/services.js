@@ -239,3 +239,15 @@ export const forgotPasswordApi = async (data) => {
     console.log(error);
   }
 };
+
+export const resetPasswordApi = async (token, data) => {
+  try {
+    const response = await axiosClient.post(
+      `/auth/reset-password/?token=${token}`,
+      data
+    );
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

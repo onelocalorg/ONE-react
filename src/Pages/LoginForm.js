@@ -46,12 +46,12 @@ const LoginForm = () => {
     }
   }, []);
 
-  useEffect(() => {
-    // const errorMsg = Object.values(errors).map((item) => item.message);
-    // errorMsg.slice(0, 1).forEach((errorMessage) => {
-    //   ToasterComponent(errorMessage, 3000);
-    // });
-  }, [errors]);
+  // useEffect(() => {
+  //   const errorMsg = Object.values(errors).map((item) => item.message);
+  //   errorMsg.slice(0, 1).forEach((errorMessage) => {
+  //     ToasterComponent(errorMessage, 3000);
+  //   });
+  // }, [errors]);
 
   const navigate = useNavigate();
 
@@ -164,9 +164,9 @@ const LoginForm = () => {
         <div className={style.ButtonLink}>
           <ButtonComponent type={"submit"} cta={"Submit"} />
           <span>
-            {/* <Link className={style.forgotlink} to={"/forgot"}>
+            <Link className={style.forgotlink} to={"/forgot"}>
               Forgot Password?
-            </Link> */}
+            </Link>
           </span>
         </div>
         {isLoading && <Loader />}
