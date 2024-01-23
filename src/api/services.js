@@ -230,3 +230,12 @@ export const userRegistrationWithPayment = async (payloadData) => {
     return error;
   }
 };
+
+export const forgotPasswordApi = async (data) => {
+  try {
+    const response = await axiosClient.post("/auth/forgot-password", data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
