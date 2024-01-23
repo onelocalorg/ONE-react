@@ -204,7 +204,7 @@ function PurchaseModalDialog({
         !Object.keys(responseData?.data?.paymentSummary || {}).length
       ) {
         hideFunc(false);
-        ToasterError(responseData?.message || "Something went wrong", 1500);
+        ToasterError(responseData?.message || "Something went wrong", 3500);
       } else {
         // hideFunc(false);
         ToasterError(responseData?.message || "Something went wrong", 1500);
