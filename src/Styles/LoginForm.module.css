@@ -42,14 +42,14 @@
 }
 
 .forgotlink {
-  color: #fff;
+  color: #6f1111;
   text-decoration: none;
   cursor: pointer;
   transition: all 1s ease;
 }
 
 .forgotlink:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .passIcon {
@@ -83,6 +83,12 @@
   color: red;
   font-size: 11px;
   margin: 4px 21px 0px 15px;
+}
+
+.ButtonLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 @media only screen and (max-width: 431px) {
