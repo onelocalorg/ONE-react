@@ -103,17 +103,18 @@ const EventPage = () => {
     }
   };
   const onSubmit = async (data) => {
-    if (!userInfo?.userData) {
-      setActivePurchaseStep(0);
-      setShowLoginDialog(true);
-      return;
-    } else {
-      setActivePurchaseStep(1);
-      setShowBillingInformation(false);
-      setShowPurchseDialog(true);
-      setShowRegister(false);
-      return;
-    }
+    // Always ask for email password when try to buy for security reason.
+    // if (!userInfo?.userData) {
+    setActivePurchaseStep(0);
+    setShowLoginDialog(true);
+    return;
+    // } else {
+    //   setActivePurchaseStep(1);
+    //   setShowBillingInformation(false);
+    //   setShowPurchseDialog(true);
+    //   setShowRegister(false);
+    //   return;
+    // }
 
     try {
       setloading(true); // Start loading
