@@ -7,12 +7,27 @@ import ToasterError from "../Components/ToasterComponent";
 import { resetPasswordApi } from "../api/services";
 import ToasterSuccess from "../Components/ToasterSuccess";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import defaultStyle from "../Styles/InputComponent.module.css";
 import { REQUIRED_FIELD_MESSAGE } from "../utils/AppConstants";
+import { IoChevronBackSharp } from "react-icons/io5";
 import Loader from "../Components/Loader";
+
+const EyeToggleButton = ({ show, setShow }) => (
+  <button
+    className={style.passIcon}
+    type="button"
+    onClick={() => setShow((prev) => !prev)}
+  >
+    {show ? (
+      <AiOutlineEyeInvisible className="eye" />
+    ) : (
+      <AiOutlineEye className="eye" />
+    )}
+  </button>
+);
 
 const ResetPass = () => {
   const [show, setShow] = useState(false);
@@ -72,20 +87,6 @@ const ResetPass = () => {
     }
   };
 
-  const EyeToggleButton = ({ show, setShow }) => (
-    <button
-      className={style.passIcon}
-      type="button"
-      onClick={() => setShow((prev) => !prev)}
-    >
-      {show ? (
-        <AiOutlineEyeInvisible className="eye" />
-      ) : (
-        <AiOutlineEye className="eye" />
-      )}
-    </button>
-  );
-
   return (
     <div className={style.loginForm}>
       <div>
@@ -141,8 +142,15 @@ const ResetPass = () => {
               </div>
             )}
         </div>
-
-        <ButtonComponent type={"submit"} cta={"Submit"} />
+        <div className={style.ButtonLink}>
+          <ButtonComponent type={"submit"} cta={"Submit"} />
+          <span>
+            <Link className={style.loginLink} to={"/login"}>
+              <IoChevronBackSharp className={style.backIcon} />
+              Back to Login
+            </Link>
+          </span>
+        </div>
       </form>
       {isLoading && <Loader />}
     </div>

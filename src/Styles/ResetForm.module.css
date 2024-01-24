@@ -69,6 +69,7 @@
   display: flex;
   flex-wrap: nowrap;
   position: relative;
+  flex-direction: column;
 }
 
 .ButtonLink {
@@ -99,13 +100,6 @@
   color: red;
   font-size: 11px;
   margin: 4px 21px 0px 15px;
-}
-
-.inputWrapper {
-  display: flex;
-  flex-wrap: nowrap;
-  position: relative;
-  flex-direction: column;
 }
 
 @media only screen and (max-width: 431px) {

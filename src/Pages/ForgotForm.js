@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { IoChevronBackSharp } from "react-icons/io5";
 import InputComponent from "../Components/InputComponent";
@@ -36,10 +36,10 @@ const ForgotForm = () => {
     try {
       const response = await forgotPasswordApi(data);
       if (response?.success) {
-        ToasterSuccess(response?.message || "", 1500);
+        ToasterSuccess(response?.message || "", 3000);
         reset();
       } else {
-        ToasterError(response?.message || "", 1500);
+        ToasterError(response?.message || "", 2500);
       }
     } catch (error) {
       ToasterError("Something went wrong");
