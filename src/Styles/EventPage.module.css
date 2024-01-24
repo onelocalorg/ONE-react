@@ -309,6 +309,8 @@
   }
   .right {
     padding: 0;
+    width: 100%;
+    min-width: 100%;
   }
 }
 @media only screen and (max-width: 768px) {
