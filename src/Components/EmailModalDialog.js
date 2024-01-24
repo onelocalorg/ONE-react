@@ -12,7 +12,7 @@ import ToasterSuccess from "./ToasterSuccess";
 import ToasterError from "./ToasterComponent";
 import { setUserData } from "../Redux/slices/UserSlice";
 import { useDispatch } from "react-redux";
-import { REQUIRED_FIELD_MESSAGE } from "../utils/AppConstants";
+import { EMAIL_FORMAT, REQUIRED_FIELD_MESSAGE } from "../utils/AppConstants";
 import PasswordEyeComponent from "./PasswordEye";
 
 function EmailModalDialog({
@@ -37,13 +37,15 @@ function EmailModalDialog({
       email: yup
         .string()
         .required(REQUIRED_FIELD_MESSAGE)
-        .email("Invalid Email"),
+        .email("Invalid Email")
+        .matches(EMAIL_FORMAT, "Invalid Email"),
     }),
     yup.object({
       email: yup
         .string()
         .required(REQUIRED_FIELD_MESSAGE)
-        .email("Invalid Email"),
+        .email("Invalid Email")
+        .matches(EMAIL_FORMAT, "Invalid Email"),
       password: yup
         .string()
         .required(REQUIRED_FIELD_MESSAGE)
@@ -155,7 +157,8 @@ function EmailModalDialog({
               />
               {errors.email &&
                 (errors.email.type === "required" ||
-                  errors.email.type === "email") && (
+                  errors.email.type === "email" ||
+                  errors.email.type === "matches") && (
                   <div role="alert" className={Style.error}>
                     {errors?.email?.message}
                   </div>
