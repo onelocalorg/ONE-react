@@ -14,14 +14,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUserData } from "../Redux/slices/UserSlice";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { REQUIRED_FIELD_MESSAGE } from "../utils/AppConstants";
+import { EMAIL_FORMAT, REQUIRED_FIELD_MESSAGE } from "../utils/AppConstants";
 
 const LoginForm = () => {
   const userInfo = useSelector((state) => state?.userInfo);
   const dispatch = useDispatch();
 
   const validationSchema = yup.object().shape({
-    email: yup.string().required(REQUIRED_FIELD_MESSAGE).email("Invalid Email"),
+    email: yup
+      .string()
+      .required(REQUIRED_FIELD_MESSAGE)
+      .email("Invalid Email")
+      .matches(EMAIL_FORMAT, "Invalid Email"),
     password: yup
       .string()
       .required(REQUIRED_FIELD_MESSAGE)
@@ -105,7 +109,7 @@ const LoginForm = () => {
       <form onSubmit={handleSubmit(onSubmit)} className={style.formBox}>
         <div className={style.inputWrapper}>
           <InputComponent
-            type={"email"}
+            type={"text"}
             placeholder={"Email"}
             register={register}
             inputRef={"email"}
@@ -119,7 +123,8 @@ const LoginForm = () => {
           <div>
             {errors.email &&
               (errors.email.type === "required" ||
-                errors.email.type === "email") && (
+                errors.email.type === "email" ||
+                errors.email.type === "matches") && (
                 <div role="alert" className={style.error}>
                   {errors?.email?.message}
                 </div>
