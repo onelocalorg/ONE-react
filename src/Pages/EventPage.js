@@ -450,9 +450,13 @@ const EventPage = () => {
                 <div className={Style.descDiv}>
                   <div className={Style.aboutEventText}>About Event</div>
                   <div className={Style.aboutEventDetail}>
-                    {eventData?.about
-                      ? eventData?.about
-                      : "No description available"}
+                    {eventData?.about ? (
+                      <span
+                        dangerouslySetInnerHTML={{ __html: eventData?.about }}
+                      />
+                    ) : (
+                      "No description available"
+                    )}
                   </div>
                 </div>
               </div>
