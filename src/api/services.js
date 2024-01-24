@@ -230,3 +230,24 @@ export const userRegistrationWithPayment = async (payloadData) => {
     return error;
   }
 };
+
+export const forgotPasswordApi = async (data) => {
+  try {
+    const response = await axiosClient.post("/auth/forgot-password", data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const resetPasswordApi = async (token, data) => {
+  try {
+    const response = await axiosClient.post(
+      `/auth/reset-password/?token=${token}`,
+      data
+    );
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

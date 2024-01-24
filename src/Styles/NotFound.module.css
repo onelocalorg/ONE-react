@@ -1,0 +1,57 @@
+.mainDiv {
+  width: 100%;
+  min-height: inherit;
+  background-color: #e6e6e6;
+  display: flex;
+  flex-direction: column;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 200px auto auto auto !important;
+  width: 100%;
+  min-width: 500px;
+  max-width: 500px;
+}
+
+.backBtn {
+  background: #6f1111;
+  color: #fff;
+  border-radius: 10px;
+  border: none;
+  margin: 30px 0;
+  padding: 10px;
+  width: 250px;
+  text-transform: uppercase;
+}
+
+.imageStyle {
+  width: 100%;
+}
+
+.notFoundTitle {
+  font-size: 35px;
+}
+
+@media only screen and (max-width: 1648px) {
+  .formContainer {
+    margin: 150px auto auto auto !important;
+    min-height: 400px;
+  }
+}
+
+@media only screen and (max-width: 431px) {
+  .formContainer {
+    width: 90%;
+    min-width: revert;
+    max-width: revert;
+    margin: 100px auto auto auto !important;
+  }
+
+  .notFoundTitle {
+    font-size: 25px;
+  }
+}
