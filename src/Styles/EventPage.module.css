@@ -20,6 +20,7 @@
 }
 .left {
   min-width: 350px;
+  max-width: 350px;
   flex-shrink: 0;
 }
 .right {
@@ -276,8 +277,8 @@
 }
 
 .aboutEventDetail {
-  font-size: 16px;
-  font-weight: 300;
+  font-size: 1rem;
+  /* font-weight: 300; */
 }
 .labelText {
   font-size: 14px;
