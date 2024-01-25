@@ -33,6 +33,7 @@
   width: 100%;
   margin: auto;
   height: 263px;
+  min-height: 263px;
   object-fit: cover;
 }
 
