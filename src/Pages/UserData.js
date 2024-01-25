@@ -75,7 +75,7 @@ function UserData() {
   const fetchFirstData = async () => {
     try {
       setIsLoading(true);
-      setFilterData("");
+      // setFilterData("");
       setItems([]);
       setSearch(true);
       setPagination({
