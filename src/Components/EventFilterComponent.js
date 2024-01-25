@@ -6,6 +6,8 @@ import logo from "../images/logo.svg";
 import searchIcon from "../images/Search.svg";
 import { useNavigate } from "react-router-dom";
 import HeaderUserComponent from "./HeaderUserComponent";
+import { IoMdClose } from "react-icons/io";
+
 function EventFilterComponent({
   startDate,
   endDate,
@@ -26,6 +28,10 @@ function EventFilterComponent({
     navigate("/");
   };
 
+  const handleClearSearch = () => {
+    setFilterData("");
+  };
+
   return (
     <>
       <div className={Style.navHeader}>
@@ -36,9 +42,16 @@ function EventFilterComponent({
             className={Style.filter}
             placeholder="Search"
             onChange={getFilterOutPut}
-            disabled={!filter}
+            // disabled={!filter}
             value={filterData}
           />
+          {filterData ? (
+            <span onClick={handleClearSearch} className={Style.clearIcon}>
+              <IoMdClose />
+            </span>
+          ) : (
+            <span className={Style.clearIcon}></span>
+          )}
         </div>
 
         <div className={Style.upperHeader}>
