@@ -259,6 +259,14 @@
   flex-basis: 50%;
 }
 
+.clearIcon {
+  cursor: pointer;
+  color: #fff;
+  position: absolute;
+  display: flex;
+  right: 10px;
+}
+
 @media only screen and (max-width: 768px) {
   .headerdiv {
     flex-wrap: wrap;
