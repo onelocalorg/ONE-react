@@ -129,7 +129,7 @@ export const loginWithEmailApi = async (data) => {
     const response = await axiosClient.post("/web/auth/login", data);
 
     //to store refrence token
-    if (response?.data) {
+    if (response?.data?.data) {
       const access_token = response?.data?.data?.access_token;
       const refresh_token = response?.data?.data?.refresh_token;
       localStorage.setItem("access_token", access_token);
@@ -217,7 +217,7 @@ export const userRegistrationWithPayment = async (payloadData) => {
     });
 
     //to store refrence token for login after register
-    if (response?.data) {
+    if (response?.data?.data) {
       const access_token = response?.data?.data?.userDetail?.access_token;
       const refresh_token = response?.data?.data?.userDetail?.refresh_token;
       localStorage.setItem("access_token", access_token);
