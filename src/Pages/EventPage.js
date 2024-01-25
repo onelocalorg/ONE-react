@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
+import * as DOMPurify from "dompurify";
 import calendarIcon from "../images/Group 33778.svg";
 import locationIcon from "../images/Group 18184.svg";
 import proImg from "../images/Oval Copy 5.png";
@@ -452,7 +453,9 @@ const EventPage = () => {
                   <div className={Style.aboutEventDetail}>
                     {eventData?.about ? (
                       <span
-                        dangerouslySetInnerHTML={{ __html: eventData?.about }}
+                        dangerouslySetInnerHTML={{
+                          __html: DOMPurify.sanitize(eventData?.about),
+                        }}
                       />
                     ) : (
                       "No description available"
