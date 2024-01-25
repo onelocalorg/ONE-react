@@ -27,11 +27,13 @@
   flex: 1;
   flex-grow: 1;
   padding: 10px;
+  max-width: 800px;
 }
 .eventImg {
   width: 100%;
   margin: auto;
   height: 263px;
+  min-height: 263px;
   object-fit: cover;
 }
 
@@ -299,6 +301,10 @@
   }
 }
 
+[class~="about-event-detail"] img {
+  width: 100%;
+}
+
 @media only screen and (max-width: 800px) {
   .wrapper {
     flex-wrap: wrap-reverse !important;
@@ -309,6 +315,8 @@
   }
   .right {
     padding: 0;
+    width: 100%;
+    min-width: 100%;
   }
 }
 @media only screen and (max-width: 768px) {
