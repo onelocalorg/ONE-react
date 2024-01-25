@@ -42,6 +42,7 @@ function UserData() {
       const data = {
         start_date: moment(startDate).format("YYYY-MM-DD"),
         end_date: moment(endDate).format("YYYY-MM-DD"),
+        eventName: filterData,
       };
 
       const response = await listEvents(pagination.page, data);
@@ -86,6 +87,7 @@ function UserData() {
       const data = {
         start_date: moment(startDate).format("YYYY-MM-DD"),
         end_date: moment(endDate).format("YYYY-MM-DD"),
+        eventName: filterData,
       };
 
       const response = await listEvents(1, data);
@@ -124,6 +126,7 @@ function UserData() {
     const initialDate = {
       start_date: start_date,
       end_date: end_date,
+      eventName: filterData,
     };
     const fetchDataOfMonth = async () => {
       setIsLoading(true);
@@ -144,16 +147,20 @@ function UserData() {
       setIsLoading(false);
       setItems(dataToShow);
     };
-    fetchDataOfMonth();
-  }, []);
+    // fetchDataOfMonth();
+    const timeoutId = setTimeout(fetchDataOfMonth, 500); // Adjust the delay as needed (e.g., 500 milliseconds)
+    return () => clearTimeout(timeoutId);
+  }, [filterData]);
 
-  const filteredEvents =
-    items &&
-    items.filter((user) => {
-      return (
-        user.name && user.name.toLowerCase().includes(filterData.toLowerCase())
-      );
-    });
+  // const filteredEvents =
+  //   items &&
+  //   items.filter((user) => {
+  //     return (
+  //       user.name && user.name.toLowerCase().includes(filterData.toLowerCase())
+  //     );
+  //   });
+
+  const filteredEvents = items;
 
   return (
     <div className={Style.maindiv}>
