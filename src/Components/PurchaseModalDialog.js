@@ -181,12 +181,16 @@ function PurchaseModalDialog({
       ) {
         // Data set
         dispatch(
-          setUserData({ profile_image: responseData?.data?.userDetail?.pic })
+          setUserData({
+            profile_image: responseData?.data?.userDetail?.pic,
+            userId: responseData?.data?.userDetail?.id,
+          })
         );
         localStorage.setItem(
           "user_info",
           JSON.stringify({
             profile_image: responseData?.data?.userDetail?.pic || "",
+            userId: responseData?.data?.userDetail?.id,
           })
         );
       }

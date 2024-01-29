@@ -67,11 +67,17 @@ const LoginForm = () => {
       const response = await loginWithEmailApi(data);
       if (response?.success === true) {
         // Data set
-        dispatch(setUserData({ profile_image: response?.data?.pic }));
+        dispatch(
+          setUserData({
+            profile_image: response?.data?.pic,
+            userId: response?.data?.id,
+          })
+        );
         localStorage.setItem(
           "user_info",
           JSON.stringify({
             profile_image: response?.data?.pic || "",
+            userId: response?.data?.id,
           })
         );
         handleSuccessfulLogin();

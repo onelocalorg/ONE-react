@@ -77,11 +77,17 @@ function EmailModalDialog({
     const response = await loginWithEmailApi(data);
     setloadingFunc(false);
     if (response?.success) {
-      dispatch(setUserData({ profile_image: response?.data?.pic }));
+      dispatch(
+        setUserData({
+          profile_image: response?.data?.pic,
+          userId: response?.data?.id,
+        })
+      );
       localStorage.setItem(
         "user_info",
         JSON.stringify({
           profile_image: response?.data?.pic || "",
+          userId: response?.data?.id,
         })
       );
       purchaseFunc(true);
