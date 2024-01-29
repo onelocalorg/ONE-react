@@ -118,17 +118,18 @@ function UserData() {
   };
 
   useEffect(() => {
-    const start_date = moment().format("YYYY-MM-DD");
+    // const start_date = moment().format("YYYY-MM-DD");
 
     // Set end_date to one month from today
-    const end_date = moment().add(1, "months").format("YYYY-MM-DD");
+    // const end_date = moment().add(1, "months").format("YYYY-MM-DD");
 
     const initialDate = {
-      start_date: start_date,
-      end_date: end_date,
+      start_date: moment(startDate).format("YYYY-MM-DD"),
+      end_date: moment(endDate).format("YYYY-MM-DD"),
       eventName: filterData,
     };
     const fetchDataOfMonth = async () => {
+      setItems([]); //Clear all data when new search
       setIsLoading(true);
       const res = await listEvents(1, initialDate);
       const dataToShow = res?.data?.events;
