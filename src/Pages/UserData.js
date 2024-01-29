@@ -129,6 +129,7 @@ function UserData() {
       eventName: filterData,
     };
     const fetchDataOfMonth = async () => {
+      setItems([]); //Clear all data when new search
       setIsLoading(true);
       const res = await listEvents(1, initialDate);
       const dataToShow = res?.data?.events;
