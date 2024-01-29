@@ -13,9 +13,11 @@ import locationPin from "../images/map-pin.svg";
 import Card from "../Components/Card";
 
 import Loader from "../Components/Loader";
+import { useScrollToTop } from "../hooks/useScrollToTop";
 
 function UserData() {
   const [isLoading, setIsLoading] = useState(false);
+  const scrollToTop = useScrollToTop();
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(false);
   const [pagination, setPagination] = useState({
@@ -116,6 +118,11 @@ function UserData() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    // Scroll to top as some time it shows in middle page
+    scrollToTop();
+  }, []);
 
   useEffect(() => {
     // const start_date = moment().format("YYYY-MM-DD");
