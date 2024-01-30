@@ -46,6 +46,10 @@
   font-size: 18px;
   font-weight: 500;
   line-height: 25px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
 }
 
 .addWrapper {
