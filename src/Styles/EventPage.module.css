@@ -51,6 +51,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  min-width: 59px;
 }
 .iconDiv > img {
   width: 43px;
@@ -72,6 +73,8 @@
   align-items: center;
   border-radius: 50%;
   background-color: #e3c384;
+  min-width: 59px;
+  min-height: 59px;
 }
 
 .producerInfo {
