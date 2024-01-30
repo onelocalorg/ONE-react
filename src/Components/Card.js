@@ -10,8 +10,8 @@ const Card = ({
   img,
   start_date,
   name,
-  full_address,
   locationPin,
+  address,
 }) => {
   const navigate = useNavigate();
 
@@ -32,7 +32,7 @@ const Card = ({
         <div className={Style.eventName}>{name}</div>
         <div className={Style.addWrapper}>
           <img src={locationPin} alt="location" className={Style.locationPin} />
-          <div className={Style.address}>{full_address}</div>
+          <div className={Style.address}>{address}</div>
         </div>
       </div>
     </div>

@@ -355,8 +355,8 @@ const EventPage = () => {
                         }}
                         className={Style.labelText}
                       >
-                        {/* Label content here */}
-                        {ticketitem.name}-${ticketitem.price}
+                        {/* Label content here */}${ticketitem.price} -{" "}
+                        {ticketitem.name}
                         {ticketitem?.max_quantity_to_show === 0 && (
                           <span
                             style={{
