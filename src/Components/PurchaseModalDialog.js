@@ -116,8 +116,9 @@ function PurchaseModalDialog({
   const getCardList = async () => {
     setloadingFunc(true);
     const res = await getCardListAPI();
+
     setloadingFunc(false);
-    if (res) {
+    if (res?.success) {
       setCardList(res?.data?.cards || []);
       reset({ savedcard: res?.data?.default_source || "" }); //Set card value
     } else {
