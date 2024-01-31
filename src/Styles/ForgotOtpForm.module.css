@@ -1,0 +1,132 @@
+.loginForm {
+  width: 100%;
+  flex-grow: 1;
+  padding: 30px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 1px solid #db9791;
+  border-radius: 20px;
+}
+
+.formBox {
+  display: flex;
+  flex-direction: column;
+  padding: 25px 0;
+  gap: 25px;
+}
+
+.h2 {
+  color: #171717;
+  font-size: 40px;
+}
+
+.h2 span {
+  -webkit-text-stroke: 2px #171717;
+  color: transparent;
+  letter-spacing: 2px;
+  transition: all 0.5s ease;
+}
+
+.h2 span:hover {
+  color: #171717;
+}
+
+.h3 {
+  color: #171717;
+  font-size: 30px;
+}
+
+.input {
+  height: 40px;
+}
+
+.notify span {
+  color: #171717;
+}
+
+.passIcon {
+  border: 0;
+  outline: 0;
+  min-width: 40px;
+  height: 40px;
+  padding: 5px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  position: absolute;
+  right: 0;
+}
+.passIcon .eye {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #171717;
+}
+
+.inputWrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  position: relative;
+}
+
+.ButtonLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.loginLink {
+  color: #6f1111;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 1s ease;
+  display: flex;
+  align-items: center;
+}
+
+.loginLink:hover {
+  text-decoration: none;
+}
+
+.backIcon {
+  font-size: 20px;
+}
+
+.error {
+  font-family: "Average Sans", sans-serif;
+  color: red;
+  font-size: 11px;
+  margin: 4px 21px 0px 15px;
+}
+
+.inputWrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  position: relative;
+  flex-direction: column;
+}
+
+.otpInput {
+  width: 50px !important;
+  text-align: center;
+  height: 40px;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #171717;
+  border: 0;
+  outline: 0;
+  margin-right: 10px;
+  appearance: textfield;
+}
+
+@media only screen and (max-width: 431px) {
+  .loginForm {
+    padding: 20px 20px;
+  }
+
+  .h3 {
+    color: #171717;
+    font-size: 25px;
+  }
+}

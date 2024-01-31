@@ -260,3 +260,17 @@ export const getUserDetails = async (userId) => {
     console.log(error);
   }
 };
+
+export const submitOtpApi = async ({ otp }) => {
+  console.log(otp);
+  return { success: false, message: "Fail" };
+  // try {
+  //   const response = await axiosClient.post(
+  //     `/auth/reset-password/?token=${token}`,
+  //     data
+  //   );
+  //   return response?.data;
+  // } catch (error) {
+  //   console.log(error);
+  // }
+};
