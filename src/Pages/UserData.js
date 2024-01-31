@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { listEvents } from "../api/services";
+import { listEvents, getUserDetails } from "../api/services";
 import Style from "../Styles/UserData.module.css";
 import moment from "moment";
 import EventFilterComponent from "../Components/EventFilterComponent";
@@ -14,8 +14,12 @@ import Card from "../Components/Card";
 
 import Loader from "../Components/Loader";
 import { useScrollToTop } from "../hooks/useScrollToTop";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserData } from "../Redux/slices/UserSlice";
 
 function UserData() {
+  const userInfo = useSelector((state) => state?.userInfo);
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const scrollToTop = useScrollToTop();
   const [items, setItems] = useState([]);
@@ -122,6 +126,33 @@ function UserData() {
   useEffect(() => {
     // Scroll to top as some time it shows in middle page
     scrollToTop();
+
+    // For get lates profile URL as url expires after some time
+    if (userInfo?.userData?.userId) {
+      async function getUserData() {
+        const userResponseData = await getUserDetails(
+          userInfo?.userData?.userId
+        );
+
+        // Data set
+        if (userResponseData?.data) {
+          dispatch(
+            setUserData({
+              profile_image: userResponseData?.data?.pic,
+              userId: userResponseData?.data?.id,
+            })
+          );
+          localStorage.setItem(
+            "user_info",
+            JSON.stringify({
+              profile_image: userResponseData?.data?.pic || "",
+              userId: userResponseData?.data?.id,
+            })
+          );
+        }
+      }
+      getUserData();
+    }
   }, []);
 
   useEffect(() => {

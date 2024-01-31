@@ -251,3 +251,12 @@ export const resetPasswordApi = async (token, data) => {
     console.log(error);
   }
 };
+
+export const getUserDetails = async (userId) => {
+  try {
+    const response = await axiosClient.get(`/users/${userId}`);
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

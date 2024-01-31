@@ -6,7 +6,12 @@ export const axiosClient = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
   headers: { "X-Custom-Header": "foobar" },
   validateStatus: function (status) {
-    return (status >= 200 && status < 300) || status === 409 || status === 500; // default
+    return (
+      (status >= 200 && status < 300) ||
+      status === 401 ||
+      status === 409 ||
+      status === 500
+    ); // default
   }, //Added for fix 409 response code not allow to read data show undefined response
 });
 
