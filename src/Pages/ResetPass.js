@@ -67,8 +67,10 @@ const ResetPass = () => {
     if (data.password === data.confirmpassword) {
       setIsLoading(true);
       try {
-        const response = await resetPasswordApi(finalToken, {
+        const response = await resetPasswordApi({
           password: data?.password,
+          confirmPassword: data?.confirmpassword,
+          otpUniqueKey: finalToken,
         });
 
         if (response?.success) {

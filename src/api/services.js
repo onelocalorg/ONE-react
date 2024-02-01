@@ -240,12 +240,9 @@ export const forgotPasswordApi = async (data) => {
   }
 };
 
-export const resetPasswordApi = async (token, data) => {
+export const resetPasswordApi = async (data) => {
   try {
-    const response = await axiosClient.post(
-      `/auth/reset-password/?token=${token}`,
-      data
-    );
+    const response = await axiosClient.post(`/auth/reset-password/`, data);
     return response?.data;
   } catch (error) {
     console.log(error);
@@ -261,16 +258,11 @@ export const getUserDetails = async (userId) => {
   }
 };
 
-export const submitOtpApi = async ({ otp }) => {
-  console.log(otp);
-  return { success: false, message: "Fail" };
-  // try {
-  //   const response = await axiosClient.post(
-  //     `/auth/reset-password/?token=${token}`,
-  //     data
-  //   );
-  //   return response?.data;
-  // } catch (error) {
-  //   console.log(error);
-  // }
+export const submitOtpApi = async (data) => {
+  try {
+    const response = await axiosClient.post(`/auth/verify-otp`, data);
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
 };

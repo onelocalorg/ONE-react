@@ -8,13 +8,14 @@ import ToasterError from "../Components/ToasterComponent";
 import { forgotPasswordApi } from "../api/services";
 import ToasterSuccess from "../Components/ToasterSuccess";
 import defaultStyle from "../Styles/InputComponent.module.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { REQUIRED_FIELD_MESSAGE } from "../utils/AppConstants";
 import Loader from "../Components/Loader";
 
 const ForgotForm = () => {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const validationSchema = yup.object().shape({
     email: yup.string().required(REQUIRED_FIELD_MESSAGE).email("Invalid Email"),
@@ -23,7 +24,6 @@ const ForgotForm = () => {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema),
@@ -35,9 +35,12 @@ const ForgotForm = () => {
     setIsLoading(true);
     try {
       const response = await forgotPasswordApi(data);
+
       if (response?.success) {
         ToasterSuccess(response?.message || "", 3000);
-        reset();
+        if (response?.data?.token) {
+          navigate(`/forgot-otp?token=${response?.data?.token}`);
+        }
       } else {
         ToasterError(response?.message || "", 2500);
       }

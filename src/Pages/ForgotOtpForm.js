@@ -8,16 +8,21 @@ import ToasterError from "../Components/ToasterComponent";
 import { submitOtpApi } from "../api/services";
 import ToasterSuccess from "../Components/ToasterSuccess";
 
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import Loader from "../Components/Loader";
 import OtpInput from "react-otp-input";
 
 const ForgotOtpForm = () => {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [otp, setOtp] = useState("");
   const numInputs = 6;
+
+  const location = useLocation();
+  let tokenParam = location.search;
+  let finalToken = tokenParam.replace("?token=", "").trim();
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -30,9 +35,10 @@ const ForgotOtpForm = () => {
     setIsSubmitted(false);
 
     try {
-      const response = await submitOtpApi({ otp });
+      const response = await submitOtpApi({ otp, otpUniqueKey: finalToken });
       if (response?.success) {
         ToasterSuccess(response?.message || "", 3000);
+        navigate(`/reset-password?token=${finalToken}`);
       } else {
         ToasterError(response?.message || "", 2500);
       }
