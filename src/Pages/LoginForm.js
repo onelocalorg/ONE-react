@@ -44,6 +44,8 @@ const LoginForm = () => {
     resolver: yupResolver(validationSchema),
   });
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (userInfo?.userData) {
       navigate("/");
@@ -56,8 +58,6 @@ const LoginForm = () => {
   //     ToasterComponent(errorMessage, 3000);
   //   });
   // }, [errors]);
-
-  const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false);
 

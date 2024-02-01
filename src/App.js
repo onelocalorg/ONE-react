@@ -15,6 +15,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import EventPage from "./Pages/EventPage";
 import PaymentSuccessfull from "./Pages/PaymentSuccessfull";
 import PaymentFailed from "./Pages/PaymentFailed";
+import ForgotOtp from "./Pages/ForgotOtp";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             />
           </Route>
           <Route path="/forgot" element={<Forgot />} />
+          <Route path="/forgot-otp" element={<ForgotOtp />} />
           <Route path="/login" element={<Login />} />
           <Route path="/reset-password" element={<Reset />} />
           <Route path="/" element={<UserData />} />

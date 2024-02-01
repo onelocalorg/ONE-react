@@ -1,0 +1,63 @@
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mainDiv {
+  width: 100%;
+  min-height: inherit;
+  background-color: #e6e6e6;
+  display: flex;
+  flex-direction: column;
+}
+
+.formContainer {
+  margin: 200px auto auto auto !important;
+  width: 100%;
+  min-width: 500px;
+  max-width: 500px;
+}
+
+.leftDiv {
+  flex: 1 1 400px;
+  min-height: 600px;
+  padding: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: #7a40f2f2;
+}
+
+.rightDiv {
+  background-color: #171717;
+  flex: 1 1 400px;
+  height: 100%;
+  min-height: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+}
+
+.rightDiv img {
+  width: 100%;
+}
+
+@media only screen and (max-width: 431px) {
+  .leftDiv,
+  .rightDiv {
+    padding: 20px;
+    min-height: 510px;
+  }
+
+  .formContainer {
+    width: 90%;
+    min-width: revert;
+    max-width: revert;
+    margin: 150px auto auto auto !important;
+  }
+}
