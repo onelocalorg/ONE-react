@@ -35,7 +35,7 @@ function CardList({ register, handleSubmitCardDetail, cardData }) {
               <span className={Style.cardExpiredLbl}>
                 exp{" "}
                 {card?.exp_month < 10 ? `0${card?.exp_month}` : card?.exp_month}
-                /{card?.exp_year.toString().substr(-2)}
+                /{card?.exp_year ? card?.exp_year.toString().substr(-2) : ""}
               </span>
             </div>
           </div>
