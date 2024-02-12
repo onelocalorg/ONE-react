@@ -1,5 +1,6 @@
 import React from "react";
 import user from "../images/user.png";
+import currencyIcon from "../images/currency-icon.png";
 import style from "../Styles/MyProfile.module.css";
 
 const MyProfileForm = ({ userInfo }) => {
@@ -16,6 +17,19 @@ const MyProfileForm = ({ userInfo }) => {
   return (
     <div className={style.container}>
       <div className={style.profileImageContainer}>{userProfileImage}</div>
+      <div className={style.profileItem}>
+        <div className={style.profileLable}></div>
+        <div className={style.profileField}>
+          <button className={style.linkPayBtn}>
+            <img
+              src={currencyIcon}
+              alt="currency"
+              className={style.linkPayIcon}
+            />
+            Link Payout Method
+          </button>
+        </div>
+      </div>
       <div className={style.profileItem}>
         <div className={style.profileLable}>Email</div>
         <div className={style.profileField}>
