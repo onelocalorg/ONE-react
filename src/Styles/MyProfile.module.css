@@ -7,7 +7,7 @@
 }
 
 .formContainer {
-  margin: 150px auto auto auto !important;
+  margin: 150px auto 25px auto !important;
   width: 100%;
   min-width: 500px;
   max-width: 500px;
@@ -41,6 +41,7 @@
   display: flex;
   width: 100%;
   margin: 5px;
+  align-items: center;
 }
 
 .profileLable {
@@ -50,6 +51,7 @@
 
 .profileField {
   margin-left: 10px;
+  width: 100%;
 }
 
 .linkPayBtn {
@@ -70,6 +72,25 @@
   margin: 0 4px 0 0;
 }
 
+.inputWrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  position: relative;
+  flex-direction: column;
+}
+
+.formDiv {
+  width: 100%;
+}
+
+.inputField {
+  padding: 0 15px 0 15px;
+}
+
+.profileFieldItem {
+  margin: 20px 5px;
+}
+
 @media only screen and (max-width: 431px) {
   .formContainer {
     min-width: 100%;
@@ -85,5 +106,15 @@
   .profileField {
     display: flex;
     overflow-wrap: anywhere;
+  }
+
+  .profileFieldItem {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .profileInputField {
+    margin-left: 0;
+    margin-top: 5px;
   }
 }
