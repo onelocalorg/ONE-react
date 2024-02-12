@@ -16,6 +16,7 @@ import EventPage from "./Pages/EventPage";
 import PaymentSuccessfull from "./Pages/PaymentSuccessfull";
 import PaymentFailed from "./Pages/PaymentFailed";
 import ForgotOtp from "./Pages/ForgotOtp";
+import MyProfile from "./Pages/MyProfile";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
           <Route path="/payment-successfull" element={<PaymentSuccessfull />} />
           <Route path="/payment-failed" element={<PaymentFailed />} />
           <Route path="/event/:eventId" element={<EventPage />} />
+          <Route path="/my-profile" element={<MyProfile />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <ToastContainer />

@@ -267,6 +267,11 @@
   right: 10px;
 }
 
+.navLink {
+  text-decoration: none;
+  color: #fff;
+}
+
 @media only screen and (max-width: 768px) {
   .headerdiv {
     flex-wrap: wrap;

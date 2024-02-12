@@ -140,6 +140,7 @@ function UserData() {
             setUserData({
               profile_image: userResponseData?.data?.pic,
               userId: userResponseData?.data?.id,
+              ...userResponseData?.data,
             })
           );
           localStorage.setItem(
