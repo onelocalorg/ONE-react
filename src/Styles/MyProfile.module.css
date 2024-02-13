@@ -23,6 +23,14 @@
   align-items: center;
 }
 
+.profileBackContainer {
+  width: 100%;
+}
+
+.profileBackImage {
+  width: 100%;
+}
+
 .profileImageContainer {
   width: 100px;
   height: 100px;

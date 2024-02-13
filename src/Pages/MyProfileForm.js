@@ -3,6 +3,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import user from "../images/user.png";
 import currencyIcon from "../images/currency-icon.png";
+import userbackground from "../images/userbackground.png";
 import style from "../Styles/MyProfile.module.css";
 import { REQUIRED_FIELD_MESSAGE } from "../utils/AppConstants";
 import { useForm } from "react-hook-form";
@@ -93,6 +94,13 @@ const MyProfileForm = ({ userInfo }) => {
 
   return (
     <div className={style.container}>
+      <div className={style.profileBackContainer}>
+        <img
+          src={userbackground}
+          alt="background"
+          className={style.profileBackImage}
+        />
+      </div>
       <div className={style.profileImageContainer}>{userProfileImage}</div>
       {!userInfo?.userData?.isConnectedLinked && (
         <div className={style.profileItem}>
