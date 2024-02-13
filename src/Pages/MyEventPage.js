@@ -24,11 +24,13 @@ import NotFound from "./NotFound";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import HeaderComponent from "../Components/HeaderComponent";
 import { PrivateComponent } from "../Components/PrivateComponent";
+import { useSelector } from "react-redux";
 
 const MyEventPage = () => {
   const { eventId } = useParams();
   const navigate = useNavigate();
   const scrollToTop = useScrollToTop();
+  const userInfo = useSelector((state) => state?.userInfo);
 
   const onLastPage = () => {
     navigate("/my-events");
@@ -95,76 +97,6 @@ const MyEventPage = () => {
 
   const formVal = watch();
 
-  const trakker = watch("ticket");
-
-  useEffect(() => {
-    setValue("quantity", 1);
-    const getDataOfAmountAndTax = async () => {
-      try {
-        if (formVal?.ticket) {
-          setloading(true);
-          const linktoTicketPurchase = ticketData.filter(
-            (item) => item.price === Number(formVal?.ticket)
-          );
-
-          if (linktoTicketPurchase) {
-            const res = await getTaxAndAmout(
-              linktoTicketPurchase[0]?.id,
-              Number(1)
-            );
-            setTaxAmount(res?.data);
-            setConfirmation(res?.success);
-          } else {
-            console.log("no event found");
-          }
-        }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setloading(false);
-      }
-    };
-    if (formVal?.ticket) {
-      getDataOfAmountAndTax();
-    }
-  }, [trakker]);
-
-  const trakkerQuantity = watch("quantity");
-  useEffect(() => {
-    setTaxAmount({});
-    const getDataOfAmountAndTax = async () => {
-      try {
-        if (Number(formVal?.quantity) > 0 && formVal?.ticket) {
-          setloading(true);
-
-          const linktoTicketPurchase = ticketData.filter(
-            (item) => item.price === Number(formVal?.ticket)
-          );
-
-          // API call to get the amount of tickets
-          if (linktoTicketPurchase) {
-            const res = await getTaxAndAmout(
-              linktoTicketPurchase[0]?.id,
-              Number(formVal?.quantity)
-            );
-            setTaxAmount(res?.data);
-            setConfirmation(res?.success);
-          } else {
-            console.log("no event found");
-          }
-        }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setloading(false);
-      }
-    };
-
-    if (Number(formVal?.quantity) > 0 && formVal?.ticket) {
-      getDataOfAmountAndTax();
-    }
-  }, [trakkerQuantity]);
-
   if (error) {
     return <NotFound />;
   }
@@ -228,143 +160,37 @@ const MyEventPage = () => {
                   </div>
                 </div>
               </div>
-              {/* boxes 3  */}
-              <div
-                className={Style.boxes}
-                style={{
-                  width: "90%",
-                }}
-              >
-                <div
-                  className={Style.producerDiv}
-                  style={{ overflow: "hidden" }}
-                >
-                  <img
-                    src={
-                      eventData?.eventProducer?.pic
-                        ? eventData.eventProducer.pic
-                        : proImg
-                    }
-                    alt="producerIcon"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      transition: "opacity 0.3s ease-in-out",
-                      opacity: eventData?.eventProducer?.pic ? 1 : 0.5, // Lower opacity for placeholder
-                    }}
-                  />
-                </div>
-                <div className={Style.producerInfo}>
-                  <div className={Style.proName}>
-                    {eventData ? eventData?.eventProducer?.first_name : ""}{" "}
-                    {eventData ? eventData?.eventProducer?.last_name : ""}
-                  </div>
-                  <div className={Style.timing}>Producer</div>
-                </div>
-              </div>
               <hr />
 
               <form onSubmit={handleSubmit(onSubmit)} className={Style.descDiv}>
-                <div className={Style.desc}>Ticket list</div>
+                <div className={Style.desc}>Tickets:</div>
                 {ticketData &&
                   ticketData?.map((ticketitem) => (
                     <div
                       key={ticketitem.id}
                       style={{
                         display: "flex",
-                        gap: "8px",
+                        gap: "0px",
                         justifyContent: "flex-start",
                         alignItems: "center",
                       }}
                     >
-                      <InputComponent
-                        type={"radio"}
-                        register={register}
-                        inputRef={"ticket"}
-                        name={"ticket"}
-                        id={ticketitem.id}
-                        value={Number(ticketitem?.price)}
-                        style={{ height: "18px" }}
-                        disabled={
-                          ticketitem?.max_quantity_to_show === 0 ? true : false
-                        }
-                      />
-
                       <label
                         htmlFor={ticketitem.id}
-                        style={{
-                          cursor:
-                            ticketitem?.max_quantity_to_show === 0
-                              ? "no-drop"
-                              : "pointer",
-                        }}
                         className={Style.labelText}
                       >
-                        {/* Label content here */}${ticketitem.price} -{" "}
-                        {ticketitem.name}
-                        {ticketitem?.max_quantity_to_show === 0 && (
-                          <span
-                            style={{
-                              fontWeight: "600",
-                              color: "red",
-                              padding: "0 7px",
-                              fontSize: "12px",
-                            }}
-                          >
-                            -- sold out --
-                          </span>
-                        )}
+                        {ticketitem.name} - ${ticketitem.price} - (
+                        {`ends ${moment(ticketitem?.end_date).format(
+                          "ddd, MMM D • h:mm A"
+                        )}`}
+                        )
                       </label>
-
-                      {Number(formVal.ticket) === ticketitem.price && (
-                        <>
-                          <InputWithPlusAndMinusComponent
-                            type="number"
-                            defaultValue={1}
-                            register={register}
-                            inputRef="quantity"
-                            boundary={ticketitem?.max_quantity_to_show}
-                            classNamebtn1={Style.iconCover}
-                            classNamebtn2={Style.iconCover}
-                            className={Style.counterInput}
-                            setValue={setValue}
-                          />
-                        </>
-                      )}
                     </div>
                   ))}
                 <hr />
 
                 <div style={{ display: "flex", flexDirection: "column" }}>
-                  <div className={Style.desc}>Price and Taxes</div>
-                  {confirmation === true && (
-                    <div style={{ padding: "8px 0" }}>
-                      <div className={Style.calcDiv}>
-                        <p className={Style.descDetail}>Ticket Price</p>
-                        <p className={Style.descDetail}>
-                          {taxAmount?.ticket_price} $
-                        </p>
-                      </div>
-                      <div className={Style.calcDiv}>
-                        <p className={Style.descDetail}>Quantity</p>
-                        <p className={Style.descDetail}>
-                          {taxAmount?.quantity}
-                        </p>
-                      </div>
-                      <div className={Style.calcDiv}>
-                        <p className={Style.descDetail}>Service Tax</p>
-                        <p className={Style.descDetail}>
-                          {taxAmount?.service_tax}
-                        </p>
-                      </div>
-                      <hr />
-                      <div className={Style.calcDiv}>
-                        <p className={Style.descDetail}>Total Amount</p>
-                        <p className={Style.descDetail}>{taxAmount?.total} $</p>
-                      </div>
-                    </div>
-                  )}
+                  {/* Blank */}
                 </div>
               </form>
             </div>
