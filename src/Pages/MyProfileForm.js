@@ -33,7 +33,7 @@ const MyProfileForm = ({ userInfo }) => {
       nick_name: userInfo?.userData?.nick_name,
     },
   });
-  console.log("errors", errors);
+
   useEffect(() => {
     setValue("first_name", userInfo?.userData?.first_name);
     setValue("last_name", userInfo?.userData?.last_name);
@@ -88,18 +88,20 @@ const MyProfileForm = ({ userInfo }) => {
   return (
     <div className={style.container}>
       <div className={style.profileImageContainer}>{userProfileImage}</div>
-      <div className={style.profileItem}>
-        <div className={`${style.profileField} ${style.connectBtn}`}>
-          <button className={style.linkPayBtn} onClick={getConnectLink}>
-            <img
-              src={currencyIcon}
-              alt="currency"
-              className={style.linkPayIcon}
-            />
-            Link Payout Method
-          </button>
+      {!userInfo?.userData?.isConnectedLinked && (
+        <div className={style.profileItem}>
+          <div className={`${style.profileField} ${style.connectBtn}`}>
+            <button className={style.linkPayBtn} onClick={getConnectLink}>
+              <img
+                src={currencyIcon}
+                alt="currency"
+                className={style.linkPayIcon}
+              />
+              Link Payout Method
+            </button>
+          </div>
         </div>
-      </div>
+      )}
       {/* <div className={style.profileTitleItem}>
         <div className={style.profileTitle}>
           {`${userInfo?.userData?.first_name || ""} ${
