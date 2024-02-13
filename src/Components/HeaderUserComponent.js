@@ -86,12 +86,12 @@ const HeaderUserComponent = ({ headerClass, calledFromClass }) => {
       <div className={Style.dropdown} ref={optionMenu}>
         {isDropdownOpen && (
           <ul className={`${Style.dropdownMenu} ${calledFromClass || ""}`}>
-            <li aria-hidden="true">
+            {/* <li aria-hidden="true">
               <NavLink to={"/my-profile"} className={headerClass.navLink}>
                 <FaUser />
                 <span className={Style.menuOption}>My Profile</span>
               </NavLink>
-            </li>
+            </li> */}
             <li onClick={handleLogout} aria-hidden="true">
               <CiLogout />
               <span className={Style.menuOption}>Logout</span>
