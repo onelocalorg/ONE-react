@@ -288,3 +288,13 @@ export const myEventsList = async (page, data, userId) => {
     console.log(error);
   }
 };
+
+export const getConnectLinkAPI = async () => {
+  try {
+    const response = await axiosClient.post(`/users/connect-link`);
+
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

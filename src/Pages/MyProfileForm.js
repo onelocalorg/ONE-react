@@ -8,7 +8,7 @@ import { REQUIRED_FIELD_MESSAGE } from "../utils/AppConstants";
 import { useForm } from "react-hook-form";
 import InputComponent from "../Components/InputComponent";
 import defaultStyle from "../Styles/InputComponent.module.css";
-import { updateUserProfileApi } from "../api/services";
+import { getConnectLinkAPI, updateUserProfileApi } from "../api/services";
 import ToasterSuccess from "../Components/ToasterSuccess";
 import ToasterError from "../Components/ToasterComponent";
 import Loader from "../Components/Loader";
@@ -39,6 +39,21 @@ const MyProfileForm = ({ userInfo }) => {
     setValue("last_name", userInfo?.userData?.last_name);
     setValue("nick_name", userInfo?.userData?.nick_name);
   }, [userInfo?.userData]);
+
+  const getConnectLink = async () => {
+    try {
+      setIsLoading(true);
+      const response = await getConnectLinkAPI();
+      const linkUrl = response?.data?.data || "";
+      if (linkUrl != "") {
+        window.open(linkUrl, "_self");
+      }
+    } catch (error) {
+      ToasterError("Something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const onSubmit = async (data) => {
     try {
@@ -74,9 +89,8 @@ const MyProfileForm = ({ userInfo }) => {
     <div className={style.container}>
       <div className={style.profileImageContainer}>{userProfileImage}</div>
       <div className={style.profileItem}>
-        <div className={style.profileLable}></div>
-        <div className={style.profileField}>
-          <button className={style.linkPayBtn}>
+        <div className={`${style.profileField} ${style.connectBtn}`}>
+          <button className={style.linkPayBtn} onClick={getConnectLink}>
             <img
               src={currencyIcon}
               alt="currency"

@@ -85,6 +85,11 @@
   justify-content: center;
 }
 
+.formBtn:hover {
+  background-color: #fff;
+  color: #a493b7;
+}
+
 .linkPayIcon {
   width: 22px;
   height: 13px;
@@ -134,6 +139,13 @@
   color: red;
   font-size: 11px;
   margin: 4px 21px 0px 15px;
+}
+
+.connectBtn {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  margin-bottom: 12px;
 }
 
 @media only screen and (max-width: 431px) {
