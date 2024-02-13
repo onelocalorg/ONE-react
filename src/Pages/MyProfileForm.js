@@ -44,9 +44,14 @@ const MyProfileForm = ({ userInfo }) => {
     try {
       setIsLoading(true);
       const response = await getConnectLinkAPI();
-      const linkUrl = response?.data?.data || "";
-      if (linkUrl != "") {
-        window.open(linkUrl, "_self");
+
+      if (response?.data?.data) {
+        const linkUrl = response?.data?.data || "";
+        if (linkUrl != "") {
+          window.open(linkUrl, "_self");
+        }
+      } else {
+        ToasterError(response?.message || "Something went wrong");
       }
     } catch (error) {
       ToasterError("Something went wrong");
