@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import user from "../images/user.png";
@@ -8,8 +8,13 @@ import { REQUIRED_FIELD_MESSAGE } from "../utils/AppConstants";
 import { useForm } from "react-hook-form";
 import InputComponent from "../Components/InputComponent";
 import defaultStyle from "../Styles/InputComponent.module.css";
+import { updateUserProfileApi } from "../api/services";
+import ToasterSuccess from "../Components/ToasterSuccess";
+import ToasterError from "../Components/ToasterComponent";
+import Loader from "../Components/Loader";
 
 const MyProfileForm = ({ userInfo }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const validationSchema = yup.object().shape({
     first_name: yup.string().required(REQUIRED_FIELD_MESSAGE),
     last_name: yup.string().required(REQUIRED_FIELD_MESSAGE),
@@ -36,7 +41,23 @@ const MyProfileForm = ({ userInfo }) => {
   }, [userInfo?.userData]);
 
   const onSubmit = async (data) => {
-    console.log("Dataaaa", data);
+    try {
+      setIsLoading(true);
+      const response = await updateUserProfileApi(
+        userInfo?.userData?.userId,
+        data
+      );
+
+      if (response?.success) {
+        ToasterSuccess(response?.message || "", 1500);
+      } else {
+        ToasterError(response?.message || "", 1500);
+      }
+    } catch (error) {
+      ToasterError("Something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const userProfileImage = userInfo?.userData?.profile_image ? (
@@ -65,7 +86,7 @@ const MyProfileForm = ({ userInfo }) => {
           </button>
         </div>
       </div>
-      <div className={style.profileTitleItem}>
+      {/* <div className={style.profileTitleItem}>
         <div className={style.profileTitle}>
           {`${userInfo?.userData?.first_name || ""} ${
             userInfo?.userData?.last_name || ""
@@ -76,7 +97,7 @@ const MyProfileForm = ({ userInfo }) => {
         <div className={style.profileSubTitle}>
           {userInfo?.userData?.nick_name || ""}
         </div>
-      </div>
+      </div> */}
       <div className={style.formDiv}>
         <form onSubmit={handleSubmit(onSubmit)} className={style.formBox}>
           <div className={`${style.profileItem} ${style.profileFieldItem}`}>
@@ -88,11 +109,12 @@ const MyProfileForm = ({ userInfo }) => {
                 inputRef={"first_name"}
                 name={"first_name"}
                 className={`${defaultStyle.input} ${style.inputField}`}
-                registerOptions={{
-                  required: "Enter Valid Email",
-                  maxLength: 80,
-                }}
               />
+              {errors.first_name && errors.first_name.type === "required" && (
+                <div role="alert" className={style.error}>
+                  {errors?.first_name?.message}
+                </div>
+              )}
             </div>
             <div className={`${style.profileField} ${style.profileInputField}`}>
               <InputComponent
@@ -102,11 +124,12 @@ const MyProfileForm = ({ userInfo }) => {
                 inputRef={"last_name"}
                 name={"last_name"}
                 className={`${defaultStyle.input} ${style.inputField}`}
-                registerOptions={{
-                  required: "Enter Valid Email",
-                  maxLength: 80,
-                }}
               />
+              {errors.last_name && errors.last_name.type === "required" && (
+                <div role="alert" className={style.error}>
+                  {errors?.last_name?.message}
+                </div>
+              )}
             </div>
           </div>
           <div className={`${style.profileItem} ${style.profileFieldItem}`}>
@@ -132,6 +155,7 @@ const MyProfileForm = ({ userInfo }) => {
           </div>
         </form>
       </div>
+      <div>{isLoading && <Loader />}</div>
     </div>
   );
 };
