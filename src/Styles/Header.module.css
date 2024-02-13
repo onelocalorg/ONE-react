@@ -37,6 +37,11 @@
   overflow: hidden;
 }
 
+.navLink {
+  text-decoration: none;
+  color: #fff;
+}
+
 @media only screen and (max-width: 768px) {
   .brand {
     font-size: 45px;

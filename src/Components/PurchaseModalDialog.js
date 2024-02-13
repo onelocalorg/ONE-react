@@ -185,6 +185,7 @@ function PurchaseModalDialog({
           setUserData({
             profile_image: responseData?.data?.userDetail?.pic,
             userId: responseData?.data?.userDetail?.id,
+            ...responseData?.data?.userDetail,
           })
         );
         localStorage.setItem(
