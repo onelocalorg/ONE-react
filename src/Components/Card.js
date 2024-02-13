@@ -12,11 +12,16 @@ const Card = ({
   name,
   locationPin,
   address,
+  detailType,
 }) => {
   const navigate = useNavigate();
 
   const ticketPage = () => {
-    navigate(`/event/${eventId}`);
+    if (detailType === "my-event") {
+      navigate(`/my-event/${eventId}`);
+    } else {
+      navigate(`/event/${eventId}`);
+    }
   };
 
   return (
