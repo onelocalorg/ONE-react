@@ -11,18 +11,8 @@ import defaultStyle from "../Styles/InputComponent.module.css";
 
 const MyProfileForm = ({ userInfo }) => {
   const validationSchema = yup.object().shape({
-    password: yup
-      .string()
-      .required(REQUIRED_FIELD_MESSAGE)
-      .min(8, "password must be at least 8 characters")
-      .matches(
-        /^(?=.*[A-Za-z])(?=.*\d).+$/,
-        "Password must contain at least 1 letter and 1 number"
-      ),
-    confirmpassword: yup
-      .string()
-      .required(REQUIRED_FIELD_MESSAGE)
-      .oneOf([yup.ref("password")], "Password do not match"),
+    first_name: yup.string().required(REQUIRED_FIELD_MESSAGE),
+    last_name: yup.string().required(REQUIRED_FIELD_MESSAGE),
   });
 
   const {
@@ -33,20 +23,20 @@ const MyProfileForm = ({ userInfo }) => {
   } = useForm({
     resolver: yupResolver(validationSchema),
     defaultValues: {
-      email: userInfo?.userData?.email,
       first_name: userInfo?.userData?.first_name,
       last_name: userInfo?.userData?.last_name,
+      nick_name: userInfo?.userData?.nick_name,
     },
   });
-
+  console.log("errors", errors);
   useEffect(() => {
-    setValue("email", userInfo?.userData?.email);
     setValue("first_name", userInfo?.userData?.first_name);
     setValue("last_name", userInfo?.userData?.last_name);
+    setValue("nick_name", userInfo?.userData?.nick_name);
   }, [userInfo?.userData]);
 
   const onSubmit = async (data) => {
-    console.log("Dataaaa");
+    console.log("Dataaaa", data);
   };
 
   const userProfileImage = userInfo?.userData?.profile_image ? (
@@ -75,44 +65,21 @@ const MyProfileForm = ({ userInfo }) => {
           </button>
         </div>
       </div>
-      <div className={style.profileItem}>
-        <div className={style.profileLable}>Email</div>
-        <div className={style.profileField}>
-          {userInfo?.userData?.email || ""}
-        </div>
-      </div>
-      <div className={style.profileItem}>
-        <div className={style.profileLable}>Name</div>
-        <div className={style.profileField}>
+      <div className={style.profileTitleItem}>
+        <div className={style.profileTitle}>
           {`${userInfo?.userData?.first_name || ""} ${
             userInfo?.userData?.last_name || ""
           }`}
         </div>
       </div>
-      <div className={style.profileItem}>
-        <div className={style.profileLable}>Nick Name</div>
-        <div className={style.profileField}>
+      <div className={style.profileSubTitleItem}>
+        <div className={style.profileSubTitle}>
           {userInfo?.userData?.nick_name || ""}
         </div>
       </div>
       <div className={style.formDiv}>
         <form onSubmit={handleSubmit(onSubmit)} className={style.formBox}>
           <div className={`${style.profileItem} ${style.profileFieldItem}`}>
-            <div className={style.profileLable}>Email</div>
-            <div className={`${style.profileField} ${style.profileInputField}`}>
-              <InputComponent
-                type={"text"}
-                disabled={true}
-                placeholder={"Email"}
-                register={register}
-                inputRef={"email"}
-                name={"email"}
-                className={`${defaultStyle.input} ${style.inputField}`}
-              />
-            </div>
-          </div>
-          <div className={`${style.profileItem} ${style.profileFieldItem}`}>
-            <div className={style.profileLable}>First Name</div>
             <div className={`${style.profileField} ${style.profileInputField}`}>
               <InputComponent
                 type={"text"}
@@ -121,11 +88,12 @@ const MyProfileForm = ({ userInfo }) => {
                 inputRef={"first_name"}
                 name={"first_name"}
                 className={`${defaultStyle.input} ${style.inputField}`}
+                registerOptions={{
+                  required: "Enter Valid Email",
+                  maxLength: 80,
+                }}
               />
             </div>
-          </div>
-          <div className={`${style.profileItem} ${style.profileFieldItem}`}>
-            <div className={style.profileLable}>Last Name</div>
             <div className={`${style.profileField} ${style.profileInputField}`}>
               <InputComponent
                 type={"text"}
@@ -134,8 +102,33 @@ const MyProfileForm = ({ userInfo }) => {
                 inputRef={"last_name"}
                 name={"last_name"}
                 className={`${defaultStyle.input} ${style.inputField}`}
+                registerOptions={{
+                  required: "Enter Valid Email",
+                  maxLength: 80,
+                }}
               />
             </div>
+          </div>
+          <div className={`${style.profileItem} ${style.profileFieldItem}`}>
+            <div className={`${style.profileField} ${style.profileInputField}`}>
+              <InputComponent
+                type={"text"}
+                placeholder={"Nick Name"}
+                register={register}
+                inputRef={"nick_name"}
+                name={"nick_name"}
+                className={`${defaultStyle.input} ${style.inputField}`}
+                registerOptions={{
+                  required: "Enter Valid Email",
+                  maxLength: 80,
+                }}
+              />
+            </div>
+          </div>
+          <div className={style.formBtnDiv}>
+            <button className={style.formBtn} type="submit">
+              Update
+            </button>
           </div>
         </form>
       </div>

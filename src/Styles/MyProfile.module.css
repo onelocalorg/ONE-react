@@ -40,7 +40,7 @@
 .profileItem {
   display: flex;
   width: 100%;
-  margin: 5px;
+  /* margin: 5px; */
   align-items: center;
 }
 
@@ -50,12 +50,12 @@
 }
 
 .profileField {
-  margin-left: 10px;
+  margin: 5px;
   width: 100%;
 }
 
 .linkPayBtn {
-  background-color: #a493b7;
+  background-color: #8058ae;
   border-radius: 15px;
   border: 0;
   outline: 0;
@@ -64,6 +64,27 @@
   color: #fff;
   display: flex;
   align-items: center;
+}
+
+.formBtnDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.formBtn {
+  background-color: #a493b7;
+  border-radius: 15px;
+  border: 0;
+  outline: 0;
+  padding: 8px 12px;
+  font-size: 15px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  width: 40%;
+  justify-content: center;
 }
 
 .linkPayIcon {
@@ -87,8 +108,34 @@
   padding: 0 15px 0 15px;
 }
 
-.profileFieldItem {
-  margin: 20px 5px;
+.profileTitle {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.profileTitleItem {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.profileSubTitleItem {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.profileSubTitle {
+  font-size: 14px;
+}
+
+.error {
+  font-family: "Average Sans", sans-serif;
+  color: red;
+  font-size: 11px;
+  margin: 4px 21px 0px 15px;
 }
 
 @media only screen and (max-width: 431px) {
@@ -106,6 +153,7 @@
   .profileField {
     display: flex;
     overflow-wrap: anywhere;
+    justify-content: center;
   }
 
   .profileFieldItem {
