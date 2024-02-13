@@ -266,3 +266,12 @@ export const submitOtpApi = async (data) => {
     console.log(error);
   }
 };
+
+export const updateUserProfileApi = async (userId, data) => {
+  try {
+    const response = await axiosClient.patch(`/users/${userId}`, data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
