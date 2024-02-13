@@ -4,6 +4,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import user from "../images/user.png";
 import { useDispatch, useSelector } from "react-redux";
 import { CiLogout } from "react-icons/ci";
+import { FaUser } from "react-icons/fa";
 import { logOutPanel } from "../Redux/thunk/userThunk";
 import ToasterSuccess from "./ToasterSuccess";
 
@@ -85,6 +86,12 @@ const HeaderUserComponent = ({ headerClass, calledFromClass }) => {
       <div className={Style.dropdown} ref={optionMenu}>
         {isDropdownOpen && (
           <ul className={`${Style.dropdownMenu} ${calledFromClass || ""}`}>
+            <li aria-hidden="true">
+              <NavLink to={"/my-profile"} className={headerClass.navLink}>
+                <FaUser />
+                <span className={Style.menuOption}>My Profile</span>
+              </NavLink>
+            </li>
             <li onClick={handleLogout} aria-hidden="true">
               <CiLogout />
               <span className={Style.menuOption}>Logout</span>

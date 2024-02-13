@@ -1,0 +1,168 @@
+.mainDiv {
+  width: 100%;
+  min-height: inherit;
+  background-color: #e6e6e6;
+  display: flex;
+  flex-direction: column;
+}
+
+.formContainer {
+  margin: 150px auto 25px auto !important;
+  width: 100%;
+  min-width: 500px;
+  max-width: 500px;
+  border: 1px solid #db9791;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+
+.profileImageContainer {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 15px;
+}
+
+.profileImage {
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profileItem {
+  display: flex;
+  width: 100%;
+  /* margin: 5px; */
+  align-items: center;
+}
+
+.profileLable {
+  font-weight: bold;
+  min-width: 30%;
+}
+
+.profileField {
+  margin: 5px;
+  width: 100%;
+}
+
+.linkPayBtn {
+  background-color: #8058ae;
+  border-radius: 15px;
+  border: 0;
+  outline: 0;
+  padding: 5px 10px 5px 10px;
+  font-size: 13px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+}
+
+.formBtnDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.formBtn {
+  background-color: #a493b7;
+  border-radius: 15px;
+  border: 0;
+  outline: 0;
+  padding: 8px 12px;
+  font-size: 15px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  width: 40%;
+  justify-content: center;
+}
+
+.linkPayIcon {
+  width: 22px;
+  height: 13px;
+  margin: 0 4px 0 0;
+}
+
+.inputWrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  position: relative;
+  flex-direction: column;
+}
+
+.formDiv {
+  width: 100%;
+}
+
+.inputField {
+  padding: 0 15px 0 15px;
+}
+
+.profileTitle {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.profileTitleItem {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.profileSubTitleItem {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.profileSubTitle {
+  font-size: 14px;
+}
+
+.error {
+  font-family: "Average Sans", sans-serif;
+  color: red;
+  font-size: 11px;
+  margin: 4px 21px 0px 15px;
+}
+
+@media only screen and (max-width: 431px) {
+  .formContainer {
+    min-width: 100%;
+  }
+  .profileItem {
+    width: 100%;
+  }
+
+  .profileLable {
+    min-width: auto;
+  }
+
+  .profileField {
+    display: flex;
+    overflow-wrap: anywhere;
+    justify-content: center;
+  }
+
+  .profileFieldItem {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .profileInputField {
+    margin-left: 0;
+    margin-top: 5px;
+  }
+}

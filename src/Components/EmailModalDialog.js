@@ -81,6 +81,7 @@ function EmailModalDialog({
         setUserData({
           profile_image: response?.data?.pic,
           userId: response?.data?.id,
+          ...response?.data,
         })
       );
       localStorage.setItem(
