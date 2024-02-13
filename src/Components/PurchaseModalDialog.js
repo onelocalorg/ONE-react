@@ -422,7 +422,10 @@ function PurchaseModalDialog({
           <button
             className={Style.purchaseformButton}
             onClick={handleSubmitDirect}
-            disabled={!cardList.length && !showRegister}
+            disabled={
+              (!cardList.length || (cardList.length && !cardList[0]?.id)) &&
+              !showRegister
+            }
           >
             <span className={Style.purchasebtnText}>
               Pay ${`${purchaseTotal}`}
