@@ -8,3 +8,13 @@
   outline: 0;
   width: 100%;
 }
+
+.textareaInput {
+  padding: 10px 40px 0 15px;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #171717;
+  border: 0;
+  outline: 0;
+  width: 100%;
+}

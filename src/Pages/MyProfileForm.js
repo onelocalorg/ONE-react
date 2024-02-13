@@ -12,6 +12,7 @@ import { getConnectLinkAPI, updateUserProfileApi } from "../api/services";
 import ToasterSuccess from "../Components/ToasterSuccess";
 import ToasterError from "../Components/ToasterComponent";
 import Loader from "../Components/Loader";
+import TextAreaComponent from "../Components/TextAreaComponent";
 
 const MyProfileForm = ({ userInfo }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -162,13 +163,44 @@ const MyProfileForm = ({ userInfo }) => {
                 inputRef={"nick_name"}
                 name={"nick_name"}
                 className={`${defaultStyle.input} ${style.inputField}`}
-                registerOptions={{
-                  required: "Enter Valid Email",
-                  maxLength: 80,
-                }}
               />
             </div>
           </div>
+          <div className={`${style.profileItem} ${style.profileFieldItem}`}>
+            <div className={`${style.profileField} ${style.profileInputField}`}>
+              <TextAreaComponent
+                placeholder={"Enter a catchphrase"}
+                register={register}
+                inputRef={"about"}
+                name={"about"}
+                className={`${defaultStyle.textareaInput}`}
+              />
+            </div>
+          </div>
+          <div className={`${style.profileItem} ${style.profileFieldItem}`}>
+            <div className={`${style.profileField} ${style.profileInputField}`}>
+              <TextAreaComponent
+                placeholder={"Tell us about yourself!"}
+                register={register}
+                inputRef={"catch_phrase"}
+                name={"catch_phrase"}
+                className={`${defaultStyle.textareaInput}`}
+              />
+            </div>
+          </div>
+          <div className={`${style.profileItem} ${style.profileFieldItem}`}>
+            <div className={`${style.profileField} ${style.profileInputField}`}>
+              <InputComponent
+                type={"text"}
+                placeholder={"Add a skill"}
+                register={register}
+                inputRef={"skills"}
+                name={"skills"}
+                className={`${defaultStyle.input} ${style.inputField}`}
+              />
+            </div>
+          </div>
+
           <div className={style.formBtnDiv}>
             <button className={style.formBtn} type="submit">
               Update
