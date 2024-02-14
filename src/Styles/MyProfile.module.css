@@ -13,7 +13,6 @@
   max-width: 500px;
   border: 1px solid #db9791;
   border-radius: 20px;
-  padding: 20px;
 }
 
 .container {
@@ -29,13 +28,18 @@
 
 .profileBackImage {
   width: 100%;
+  border-radius: 20px 20px 0px 0px;
 }
 
 .profileImageContainer {
-  width: 100px;
-  height: 100px;
+  width: 144px;
+  height: 144px;
   border-radius: 50%;
   margin-bottom: 15px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 0%);
 }
 
 .profileImage {
@@ -113,6 +117,7 @@
 
 .formDiv {
   width: 100%;
+  padding: 20px;
 }
 
 .inputField {
@@ -153,7 +158,36 @@
   justify-content: center;
   align-items: center;
   display: flex;
-  margin-bottom: 12px;
+}
+
+.imageSection {
+  width: 100%;
+  position: relative;
+  margin-bottom: 70px;
+}
+
+.editImageIcon {
+  position: absolute;
+  color: #6f1111;
+  right: 0;
+  cursor: pointer;
+  font-size: 30px;
+  margin: 7px;
+  background: #e6e6e6;
+  border-radius: 50%;
+  padding: 4px;
+}
+
+.editProfileImgIcon {
+  position: absolute;
+  color: #6f1111;
+  right: -8px;
+  cursor: pointer;
+  font-size: 30px;
+  margin: 7px;
+  background: #e6e6e6;
+  border-radius: 50%;
+  padding: 4px;
 }
 
 @media only screen and (max-width: 431px) {
@@ -182,5 +216,22 @@
   .profileInputField {
     margin-left: 0;
     margin-top: 5px;
+  }
+
+  .imageSection {
+    margin-bottom: 50px;
+  }
+
+  .profileImageContainer {
+    width: 90px;
+    height: 90px;
+  }
+
+  .editImageIcon {
+    font-size: 25px;
+  }
+  .editProfileImgIcon {
+    font-size: 25px;
+    right: -13px;
   }
 }

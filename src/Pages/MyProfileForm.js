@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { MdOutlineEdit } from "react-icons/md";
 import user from "../images/user.png";
 import currencyIcon from "../images/currency-icon.png";
 import userbackground from "../images/userbackground.png";
@@ -41,6 +42,10 @@ const MyProfileForm = ({ userInfo }) => {
     setValue("last_name", userInfo?.userData?.last_name);
     setValue("nick_name", userInfo?.userData?.nick_name);
   }, [userInfo?.userData]);
+
+  const handleImageClick = () => {
+    console.log("Calllllllll");
+  };
 
   const getConnectLink = async () => {
     try {
@@ -83,25 +88,43 @@ const MyProfileForm = ({ userInfo }) => {
   };
 
   const userProfileImage = userInfo?.userData?.profile_image ? (
-    <img
-      src={userInfo?.userData?.profile_image}
-      alt="user"
-      className={style.profileImage}
-    />
+    <>
+      <MdOutlineEdit
+        className={style.editProfileImgIcon}
+        onClick={handleImageClick}
+      />
+      <img
+        src={userInfo?.userData?.profile_image}
+        alt="user"
+        className={style.profileImage}
+      />
+    </>
   ) : (
-    <img src={user} alt="user" className={style.profileImage} />
+    <>
+      <MdOutlineEdit
+        className={style.editProfileImgIcon}
+        onClick={handleImageClick}
+      />
+      <img src={user} alt="user" className={style.profileImage} />
+    </>
   );
 
   return (
     <div className={style.container}>
-      <div className={style.profileBackContainer}>
-        <img
-          src={userbackground}
-          alt="background"
-          className={style.profileBackImage}
-        />
+      <div className={style.imageSection}>
+        <div className={style.profileBackContainer}>
+          <MdOutlineEdit
+            className={style.editImageIcon}
+            onClick={handleImageClick}
+          />
+          <img
+            src={userbackground}
+            alt="background"
+            className={style.profileBackImage}
+          />
+        </div>
+        <div className={style.profileImageContainer}>{userProfileImage}</div>
       </div>
-      <div className={style.profileImageContainer}>{userProfileImage}</div>
       {!userInfo?.userData?.isConnectedLinked && (
         <div className={style.profileItem}>
           <div className={`${style.profileField} ${style.connectBtn}`}>
