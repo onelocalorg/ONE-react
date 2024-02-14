@@ -31,6 +31,7 @@
   border-radius: 20px 20px 0px 0px;
   max-height: 144px;
   min-height: 144px;
+  object-fit: cover;
 }
 
 .profileImageContainer {
