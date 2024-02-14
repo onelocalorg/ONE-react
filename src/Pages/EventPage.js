@@ -242,7 +242,7 @@ const EventPage = () => {
                 <div className={Style.infoDiv}>
                   <div className={Style.date}>
                     {eventData
-                      ? moment(eventData?.start_date).format("DD MMMM YYYY")
+                      ? moment(eventData?.start_date).format("MMMM DD, YYYY")
                       : ""}
                   </div>
                   <div className={Style.timing}>

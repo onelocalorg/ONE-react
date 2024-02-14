@@ -1,24 +1,46 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { MdOutlineEdit } from "react-icons/md";
+import { MdCancel } from "react-icons/md";
 import user from "../images/user.png";
 import currencyIcon from "../images/currency-icon.png";
+import userbackground from "../images/userbackground.png";
 import style from "../Styles/MyProfile.module.css";
 import { REQUIRED_FIELD_MESSAGE } from "../utils/AppConstants";
 import { useForm } from "react-hook-form";
 import InputComponent from "../Components/InputComponent";
 import defaultStyle from "../Styles/InputComponent.module.css";
-import { updateUserProfileApi } from "../api/services";
+import {
+  getConnectLinkAPI,
+  updateUserProfileApi,
+  uploadImageAPI,
+} from "../api/services";
 import ToasterSuccess from "../Components/ToasterSuccess";
 import ToasterError from "../Components/ToasterComponent";
 import Loader from "../Components/Loader";
+import TextAreaComponent from "../Components/TextAreaComponent";
+import { setUserData } from "../Redux/slices/UserSlice";
+import { useDispatch } from "react-redux";
+import whitetent from "../images/white-tent.png";
+import playerIcon from "../images/player.png";
 
 const MyProfileForm = ({ userInfo }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+  const [skills, setSkills] = useState([]);
+  const [profileImage, setProfileImage] = useState(null);
+  const [profileCoverImage, setProfileCoverImage] = useState(null);
+  const profilePicInputRef = useRef(null);
+  const profileCoverInputRef = useRef(null);
+  const dispatch = useDispatch();
   const validationSchema = yup.object().shape({
     first_name: yup.string().required(REQUIRED_FIELD_MESSAGE),
     last_name: yup.string().required(REQUIRED_FIELD_MESSAGE),
   });
+
+  const PROFILE_PIC = "pic";
+  const PROFILE_COVER_PIC = "cover_image";
 
   const {
     register,
@@ -30,19 +52,55 @@ const MyProfileForm = ({ userInfo }) => {
     defaultValues: {
       first_name: userInfo?.userData?.first_name,
       last_name: userInfo?.userData?.last_name,
-      nick_name: userInfo?.userData?.nick_name,
+      nick_name: userInfo?.userData?.nick_name || "",
+      about: userInfo?.userData?.about || "",
+      catch_phrase: userInfo?.userData?.catch_phrase || "",
     },
   });
-  console.log("errors", errors);
+
   useEffect(() => {
     setValue("first_name", userInfo?.userData?.first_name);
     setValue("last_name", userInfo?.userData?.last_name);
-    setValue("nick_name", userInfo?.userData?.nick_name);
+    setValue("nick_name", userInfo?.userData?.nick_name || "");
+    setValue("about", userInfo?.userData?.about || "");
+    setValue("catch_phrase", userInfo?.userData?.catch_phrase || "");
+    setSkills(userInfo?.userData?.skills || []);
+    setProfileImage(userInfo?.userData?.profile_image);
+    setProfileCoverImage(userInfo?.userData?.cover_image);
   }, [userInfo?.userData]);
+
+  const handleImageClick = (e, type) => {
+    if (type === PROFILE_PIC) {
+      profilePicInputRef.current.click();
+    } else if (type === PROFILE_COVER_PIC) {
+      profileCoverInputRef.current.click();
+    }
+  };
+
+  const getConnectLink = async () => {
+    try {
+      setIsLoading(true);
+      const response = await getConnectLinkAPI();
+
+      if (response?.data?.data) {
+        const linkUrl = response?.data?.data || "";
+        if (linkUrl != "") {
+          window.open(linkUrl, "_self");
+        }
+      } else {
+        ToasterError(response?.message || "Something went wrong");
+      }
+    } catch (error) {
+      ToasterError("Something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const onSubmit = async (data) => {
     try {
       setIsLoading(true);
+      data["skills"] = skills?.length ? skills.toString() : "";
       const response = await updateUserProfileApi(
         userInfo?.userData?.userId,
         data
@@ -60,32 +118,174 @@ const MyProfileForm = ({ userInfo }) => {
     }
   };
 
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
+  };
+
+  const handleEnterPress = (event) => {
+    if (event.key === "Enter" && inputValue.trim() !== "") {
+      event.preventDefault();
+      setSkills((prevSkills) => [...prevSkills, inputValue.trim()]);
+      setInputValue("");
+    }
+  };
+
+  const handleChipDelete = (skillToDelete) => {
+    setSkills((prevSkills) =>
+      prevSkills.filter((skill) => skill !== skillToDelete)
+    );
+  };
+
+  const handleFileChange = (e, type) => {
+    const selectedFile = e.target.files[0];
+
+    if (selectedFile) {
+      const [fileNameWithoutExtension] = selectedFile["name"].split(".");
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (type === PROFILE_PIC) {
+          setProfileImage(reader.result);
+        } else if (type === PROFILE_COVER_PIC) {
+          setProfileCoverImage(reader.result);
+        }
+
+        handleFileUpload(type, reader.result, fileNameWithoutExtension);
+      };
+      reader.readAsDataURL(selectedFile);
+    }
+  };
+
+  const handleFileUpload = async (upload_key, imgBase64, imgName) => {
+    try {
+      setIsLoading(true);
+      const response = await uploadImageAPI({
+        uploadKey: upload_key,
+        imageName: imgName,
+        base64String: imgBase64,
+        userId: userInfo?.userData?.userId,
+      });
+
+      if (response?.success) {
+        if (upload_key === PROFILE_PIC) {
+          dispatch(
+            setUserData({
+              ...userInfo?.userData,
+              profile_image: response?.data?.imageUrl,
+            })
+          );
+
+          localStorage.setItem(
+            "user_info",
+            JSON.stringify({
+              profile_image: response?.data?.imageUrl || "",
+              userId: userInfo?.userData?.userId,
+            })
+          );
+        } else if (upload_key === PROFILE_COVER_PIC) {
+          dispatch(
+            setUserData({
+              ...userInfo?.userData,
+              cover_image: response?.data?.imageUrl,
+            })
+          );
+        }
+
+        ToasterSuccess(response?.message || "Image uploaded successfully.");
+      } else {
+        ToasterError(response?.message || "Something went wrong");
+      }
+    } catch (error) {
+      ToasterError("Something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const userProfileImage = userInfo?.userData?.profile_image ? (
-    <img
-      src={userInfo?.userData?.profile_image}
-      alt="user"
-      className={style.profileImage}
-    />
+    <>
+      <input
+        type="file"
+        ref={profilePicInputRef}
+        style={{ display: "none" }}
+        onChange={(e) => handleFileChange(e, PROFILE_PIC)}
+      />
+      <MdOutlineEdit
+        className={style.editProfileImgIcon}
+        onClick={(e) => handleImageClick(e, PROFILE_PIC)}
+      />
+      <img src={profileImage} alt="user" className={style.profileImage} />
+    </>
   ) : (
-    <img src={user} alt="user" className={style.profileImage} />
+    <>
+      <input
+        type="file"
+        ref={profilePicInputRef}
+        style={{ display: "none" }}
+        onChange={(e) => handleFileChange(e, PROFILE_PIC)}
+      />
+      <MdOutlineEdit
+        className={style.editProfileImgIcon}
+        onClick={(e) => handleImageClick(e, PROFILE_PIC)}
+      />
+      <img src={user} alt="user" className={style.profileImage} />
+    </>
+  );
+
+  const userProfileCoverImage = userInfo?.userData?.cover_image ? (
+    <>
+      <input
+        type="file"
+        ref={profileCoverInputRef}
+        style={{ display: "none" }}
+        onChange={(e) => handleFileChange(e, PROFILE_COVER_PIC)}
+      />
+      <MdOutlineEdit
+        className={style.editImageIcon}
+        onClick={(e) => handleImageClick(e, PROFILE_COVER_PIC)}
+      />
+      <img
+        src={profileCoverImage}
+        alt="background"
+        className={style.profileBackImage}
+      />
+    </>
+  ) : (
+    <div className={style.blankCover}>
+      <input
+        type="file"
+        ref={profileCoverInputRef}
+        style={{ display: "none" }}
+        onChange={(e) => handleFileChange(e, PROFILE_COVER_PIC)}
+      />
+      <MdOutlineEdit
+        className={style.editImageIcon}
+        onClick={(e) => handleImageClick(e, PROFILE_COVER_PIC)}
+      />
+    </div>
   );
 
   return (
     <div className={style.container}>
-      <div className={style.profileImageContainer}>{userProfileImage}</div>
-      <div className={style.profileItem}>
-        <div className={style.profileLable}></div>
-        <div className={style.profileField}>
-          <button className={style.linkPayBtn}>
-            <img
-              src={currencyIcon}
-              alt="currency"
-              className={style.linkPayIcon}
-            />
-            Link Payout Method
-          </button>
+      <div className={style.imageSection}>
+        <div className={style.profileBackContainer}>
+          {userProfileCoverImage}
         </div>
+        <div className={style.profileImageContainer}>{userProfileImage}</div>
       </div>
+      {!userInfo?.userData?.isConnectedLinked && (
+        <div className={style.profileItem}>
+          <div className={`${style.profileField} ${style.connectBtn}`}>
+            <button className={style.linkPayBtn} onClick={getConnectLink}>
+              <img
+                src={currencyIcon}
+                alt="currency"
+                className={style.linkPayIcon}
+              />
+              Link Payout Method
+            </button>
+          </div>
+        </div>
+      )}
       {/* <div className={style.profileTitleItem}>
         <div className={style.profileTitle}>
           {`${userInfo?.userData?.first_name || ""} ${
@@ -99,6 +299,21 @@ const MyProfileForm = ({ userInfo }) => {
         </div>
       </div> */}
       <div className={style.formDiv}>
+        <div className={`${style.profileItem} ${style.profileFieldItem}`}>
+          <div className={style.memberDiv}>
+            <div className={style.memberLbl}>Membership</div>
+            <div className={style.btnSection}>
+              <button className={`${style.memberbtn} ${style.playerBtn}`}>
+                <img src={playerIcon} className={style.eventPlayerBtnIcon} />
+                Player
+              </button>
+              <button className={`${style.memberbtn} ${style.eventProdBtn}`}>
+                <img src={whitetent} className={style.eventProdBtnIcon} />
+                Event Producer
+              </button>
+            </div>
+          </div>
+        </div>
         <form onSubmit={handleSubmit(onSubmit)} className={style.formBox}>
           <div className={`${style.profileItem} ${style.profileFieldItem}`}>
             <div className={`${style.profileField} ${style.profileInputField}`}>
@@ -141,13 +356,55 @@ const MyProfileForm = ({ userInfo }) => {
                 inputRef={"nick_name"}
                 name={"nick_name"}
                 className={`${defaultStyle.input} ${style.inputField}`}
-                registerOptions={{
-                  required: "Enter Valid Email",
-                  maxLength: 80,
-                }}
               />
             </div>
           </div>
+          <div className={`${style.profileItem} ${style.profileFieldItem}`}>
+            <div className={`${style.profileField} ${style.profileInputField}`}>
+              <TextAreaComponent
+                placeholder={"Enter a catchphrase"}
+                register={register}
+                inputRef={"catch_phrase"}
+                name={"catch_phrase"}
+                className={`${defaultStyle.textareaInput}`}
+              />
+            </div>
+          </div>
+          <div className={`${style.profileItem} ${style.profileFieldItem}`}>
+            <div className={`${style.profileField} ${style.profileInputField}`}>
+              <TextAreaComponent
+                placeholder={"Tell us about yourself!"}
+                register={register}
+                inputRef={"about"}
+                name={"about"}
+                className={`${defaultStyle.textareaInput}`}
+              />
+            </div>
+          </div>
+          <div className={`${style.profileItem} ${style.profileFieldItem}`}>
+            <div className={`${style.profileField} ${style.profileInputField}`}>
+              <input
+                type={"text"}
+                placeholder={"Add a skill"}
+                name={"skills"}
+                className={`${defaultStyle.input} ${style.inputField}`}
+                onKeyDown={handleEnterPress}
+                value={inputValue}
+                onChange={handleInputChange}
+              />
+              <div className={style.skillChipDiv}>
+                {skills.map((skill, index) => (
+                  <span className={style.skillChip} key={index}>
+                    <span>{skill}</span>
+                    <span className={style.chipDelete}>
+                      <MdCancel onClick={() => handleChipDelete(skill)} />
+                    </span>
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
           <div className={style.formBtnDiv}>
             <button className={style.formBtn} type="submit">
               Update

@@ -275,3 +275,36 @@ export const updateUserProfileApi = async (userId, data) => {
     console.log(error);
   }
 };
+
+export const myEventsList = async (page, data, userId) => {
+  try {
+    const response = await axiosClient.post(
+      `/events/list/${userId}?limit=8&page=${page}`,
+      data
+    );
+
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getConnectLinkAPI = async () => {
+  try {
+    const response = await axiosClient.post(`/users/connect-link`);
+
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const uploadImageAPI = async (data) => {
+  try {
+    const response = await axiosClient.post(`/users/upload/file`, data);
+
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
