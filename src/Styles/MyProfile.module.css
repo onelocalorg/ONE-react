@@ -197,7 +197,7 @@
   font-size: 13px;
   background: #c4a479;
   border-radius: 20px;
-  padding: 7px 15px;
+  padding: 7px 10px;
   color: #fff;
   display: flex;
   gap: 2px;
@@ -207,7 +207,7 @@
 .skillChipDiv {
   display: flex;
   flex-wrap: wrap;
-  margin-top: 5px;
+  margin-top: 10px;
   gap: 3px;
 }
 
@@ -220,7 +220,7 @@
 }
 
 .blankCover {
-  min-height: 144px;
+  min-height: 150px;
   background: #6f1111;
   border-radius: 20px 20px 0 0;
 }
@@ -318,5 +318,9 @@
   .editProfileImgIcon {
     font-size: 25px;
     right: -13px;
+  }
+
+  .blankCover {
+    min-height: 120px;
   }
 }
