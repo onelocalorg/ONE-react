@@ -13,7 +13,6 @@
   max-width: 500px;
   border: 1px solid #db9791;
   border-radius: 20px;
-  padding: 20px;
 }
 
 .container {
@@ -23,11 +22,24 @@
   align-items: center;
 }
 
+.profileBackContainer {
+  width: 100%;
+}
+
+.profileBackImage {
+  width: 100%;
+  border-radius: 20px 20px 0px 0px;
+}
+
 .profileImageContainer {
-  width: 100px;
-  height: 100px;
+  width: 144px;
+  height: 144px;
   border-radius: 50%;
   margin-bottom: 15px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 0%);
 }
 
 .profileImage {
@@ -35,6 +47,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border: 2px solid #fff;
 }
 
 .profileItem {
@@ -85,6 +98,11 @@
   justify-content: center;
 }
 
+.formBtn:hover {
+  background-color: #fff;
+  color: #a493b7;
+}
+
 .linkPayIcon {
   width: 22px;
   height: 13px;
@@ -100,6 +118,7 @@
 
 .formDiv {
   width: 100%;
+  padding: 20px;
 }
 
 .inputField {
@@ -136,6 +155,123 @@
   margin: 4px 21px 0px 15px;
 }
 
+.connectBtn {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.imageSection {
+  width: 100%;
+  position: relative;
+  margin-bottom: 80px;
+}
+
+.editImageIcon {
+  position: absolute;
+  color: #6f1111;
+  right: 0;
+  cursor: pointer;
+  font-size: 30px;
+  margin: 7px;
+  background: #e6e6e6;
+  border-radius: 50%;
+  padding: 4px;
+}
+
+.editProfileImgIcon {
+  position: absolute;
+  color: #6f1111;
+  right: -8px;
+  cursor: pointer;
+  font-size: 30px;
+  margin: 7px;
+  background: #e6e6e6;
+  border-radius: 50%;
+  padding: 4px;
+}
+
+.skillChip {
+  font-size: 13px;
+  background: #c4a479;
+  border-radius: 20px;
+  padding: 7px 15px;
+  color: #fff;
+  display: flex;
+  gap: 2px;
+  justify-content: center;
+}
+
+.skillChipDiv {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 5px;
+  gap: 3px;
+}
+
+.chipDelete {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-top: 2px;
+}
+
+.blankCover {
+  min-height: 144px;
+  background: #6f1111;
+  border-radius: 20px 20px 0 0;
+}
+
+.memberDiv {
+  margin: 5px 5px 10px 5px;
+}
+
+.memberLbl {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.memberbtn {
+  font-size: 14px;
+  background: #a5c4aa;
+  outline: 0;
+  color: #fff;
+  border-radius: 20px;
+  border: 1px solid #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.playerBtn {
+  height: 29px;
+  width: 84px;
+}
+.eventProdBtn {
+  height: 29px;
+  width: 139px;
+  margin-left: 5px;
+}
+
+.eventProdBtnIcon {
+  width: 17px;
+  height: 18px;
+  margin-right: 3px;
+}
+
+.eventPlayerBtnIcon {
+  width: 12px;
+  height: 22px;
+  margin-right: 3px;
+}
+
+.btnSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 @media only screen and (max-width: 431px) {
   .formContainer {
     min-width: 100%;
@@ -152,6 +288,7 @@
     display: flex;
     overflow-wrap: anywhere;
     justify-content: center;
+    flex-direction: column;
   }
 
   .profileFieldItem {
@@ -162,5 +299,22 @@
   .profileInputField {
     margin-left: 0;
     margin-top: 5px;
+  }
+
+  .imageSection {
+    margin-bottom: 35px;
+  }
+
+  .profileImageContainer {
+    width: 90px;
+    height: 90px;
+  }
+
+  .editImageIcon {
+    font-size: 25px;
+  }
+  .editProfileImgIcon {
+    font-size: 25px;
+    right: -13px;
   }
 }
