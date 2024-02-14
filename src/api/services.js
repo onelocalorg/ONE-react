@@ -298,3 +298,13 @@ export const getConnectLinkAPI = async () => {
     console.log(error);
   }
 };
+
+export const uploadImageAPI = async (data) => {
+  try {
+    const response = await axiosClient.post(`/users/upload/file`, data);
+
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
