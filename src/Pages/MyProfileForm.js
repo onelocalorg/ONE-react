@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { MdOutlineEdit } from "react-icons/md";
+import { MdCancel } from "react-icons/md";
 import user from "../images/user.png";
 import currencyIcon from "../images/currency-icon.png";
 import userbackground from "../images/userbackground.png";
@@ -18,6 +19,8 @@ import TextAreaComponent from "../Components/TextAreaComponent";
 
 const MyProfileForm = ({ userInfo }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+  const [skills, setSkills] = useState([]);
   const validationSchema = yup.object().shape({
     first_name: yup.string().required(REQUIRED_FIELD_MESSAGE),
     last_name: yup.string().required(REQUIRED_FIELD_MESSAGE),
@@ -33,14 +36,19 @@ const MyProfileForm = ({ userInfo }) => {
     defaultValues: {
       first_name: userInfo?.userData?.first_name,
       last_name: userInfo?.userData?.last_name,
-      nick_name: userInfo?.userData?.nick_name,
+      nick_name: userInfo?.userData?.nick_name || "",
+      about: userInfo?.userData?.about || "",
+      catch_phrase: userInfo?.userData?.catch_phrase || "",
     },
   });
 
   useEffect(() => {
     setValue("first_name", userInfo?.userData?.first_name);
     setValue("last_name", userInfo?.userData?.last_name);
-    setValue("nick_name", userInfo?.userData?.nick_name);
+    setValue("nick_name", userInfo?.userData?.nick_name || "");
+    setValue("about", userInfo?.userData?.about || "");
+    setValue("catch_phrase", userInfo?.userData?.catch_phrase || "");
+    setSkills(userInfo?.userData?.skills || []);
   }, [userInfo?.userData]);
 
   const handleImageClick = () => {
@@ -70,6 +78,7 @@ const MyProfileForm = ({ userInfo }) => {
   const onSubmit = async (data) => {
     try {
       setIsLoading(true);
+      data["skills"] = skills?.length ? skills.toString() : "";
       const response = await updateUserProfileApi(
         userInfo?.userData?.userId,
         data
@@ -85,6 +94,24 @@ const MyProfileForm = ({ userInfo }) => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
+  };
+
+  const handleEnterPress = (event) => {
+    if (event.key === "Enter" && inputValue.trim() !== "") {
+      event.preventDefault();
+      setSkills((prevSkills) => [...prevSkills, inputValue.trim()]);
+      setInputValue("");
+    }
+  };
+
+  const handleChipDelete = (skillToDelete) => {
+    setSkills((prevSkills) =>
+      prevSkills.filter((skill) => skill !== skillToDelete)
+    );
   };
 
   const userProfileImage = userInfo?.userData?.profile_image ? (
@@ -202,8 +229,8 @@ const MyProfileForm = ({ userInfo }) => {
               <TextAreaComponent
                 placeholder={"Enter a catchphrase"}
                 register={register}
-                inputRef={"about"}
-                name={"about"}
+                inputRef={"catch_phrase"}
+                name={"catch_phrase"}
                 className={`${defaultStyle.textareaInput}`}
               />
             </div>
@@ -213,22 +240,33 @@ const MyProfileForm = ({ userInfo }) => {
               <TextAreaComponent
                 placeholder={"Tell us about yourself!"}
                 register={register}
-                inputRef={"catch_phrase"}
-                name={"catch_phrase"}
+                inputRef={"about"}
+                name={"about"}
                 className={`${defaultStyle.textareaInput}`}
               />
             </div>
           </div>
           <div className={`${style.profileItem} ${style.profileFieldItem}`}>
             <div className={`${style.profileField} ${style.profileInputField}`}>
-              <InputComponent
+              <input
                 type={"text"}
                 placeholder={"Add a skill"}
-                register={register}
-                inputRef={"skills"}
                 name={"skills"}
                 className={`${defaultStyle.input} ${style.inputField}`}
+                onKeyDown={handleEnterPress}
+                value={inputValue}
+                onChange={handleInputChange}
               />
+              <div className={style.skillChipDiv}>
+                {skills.map((skill, index) => (
+                  <span className={style.skillChip} key={index}>
+                    <span>{skill}</span>
+                    <span className={style.chipDelete}>
+                      <MdCancel onClick={() => handleChipDelete(skill)} />
+                    </span>
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
 

@@ -190,6 +190,32 @@
   padding: 4px;
 }
 
+.skillChip {
+  font-size: 13px;
+  background: #c4a479;
+  border-radius: 20px;
+  padding: 7px 15px;
+  color: #fff;
+  display: flex;
+  gap: 2px;
+  justify-content: center;
+}
+
+.skillChipDiv {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 5px;
+  gap: 3px;
+}
+
+.chipDelete {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-top: 2px;
+}
+
 @media only screen and (max-width: 431px) {
   .formContainer {
     min-width: 100%;
