@@ -5,7 +5,6 @@ import { MdOutlineEdit } from "react-icons/md";
 import { MdCancel } from "react-icons/md";
 import user from "../images/user.png";
 import currencyIcon from "../images/currency-icon.png";
-import userbackground from "../images/userbackground.png";
 import style from "../Styles/MyProfile.module.css";
 import { REQUIRED_FIELD_MESSAGE } from "../utils/AppConstants";
 import { useForm } from "react-hook-form";
