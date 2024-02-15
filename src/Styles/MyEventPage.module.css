@@ -1,0 +1,418 @@
+.mainDiv {
+  width: 100%;
+  min-height: inherit;
+  background-color: #e6e6e6;
+}
+
+.dataContainer {
+  max-width: 1222px;
+  padding: 15px;
+  width: 95%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 110px;
+}
+.wrapper {
+  display: flex;
+  gap: 15px;
+}
+.left {
+  min-width: 350px;
+  max-width: 350px;
+  flex-shrink: 0;
+}
+.right {
+  flex: 1;
+  flex-grow: 1;
+  padding: 10px;
+  max-width: 800px;
+}
+.eventImg {
+  width: 100%;
+  margin: auto;
+  height: 263px;
+  min-height: 263px;
+  object-fit: cover;
+}
+
+.boxes {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.iconDiv {
+  width: 59px;
+  height: 56px;
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 59px;
+}
+.iconDiv > img {
+  width: 43px;
+  height: 40px;
+}
+.infoDiv {
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.producerDiv {
+  width: 52px;
+  height: 53px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: #e3c384;
+  min-width: 59px;
+  min-height: 59px;
+}
+
+.producerInfo {
+  flex: 1;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.descDiv {
+  width: 100%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.purchase {
+  max-width: 271px;
+  margin: auto;
+  width: 90%;
+  height: 58px;
+  background-color: #a493b7;
+  border-radius: 15px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+  position: relative;
+  border: 0;
+  outline: 0;
+  box-shadow: 0 0 10px #6f7ec940;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.purchase:hover {
+  background-color: #fff;
+  color: #7744b0;
+}
+
+.purchase:hover > .arrowIcon > img {
+  transform: rotate(-45deg);
+}
+
+.arrowIcon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #7744b0;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+
+.arrowIcon > img {
+  transition: transform 0.3s ease;
+  width: 100%;
+  height: 100%;
+}
+
+.date {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.timing {
+  font-size: 12px;
+  font-weight: 300;
+}
+
+.proName {
+  font-size: 15px;
+  font-weight: 400;
+  text-transform: capitalizes;
+}
+
+.desc {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.descDetail {
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.eventName {
+  font-size: 35px;
+  font-weight: 500;
+}
+
+.brand {
+  font-size: 52px;
+  font-weight: 300;
+  letter-spacing: -5px;
+  color: #fff;
+}
+
+.oneLogo {
+  width: 65px;
+  height: 65px;
+}
+.navHeader {
+  width: 100%;
+  height: 100px;
+  /* border-radius: 0 0 10px 10px; */
+  /* overflow: hidden; */
+  overflow: visible;
+  position: fixed;
+  z-index: 5;
+  background-color: #6f1111;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 62px;
+}
+
+.userCover {
+  height: 70px;
+  width: 70px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  overflow: hidden;
+}
+
+.backButton {
+  border: none;
+  outline: none;
+  padding: 5px 10px;
+  border-radius: 10px;
+  background-color: #6f1111;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 400;
+}
+.iconCover {
+  background-color: #bbb8b8;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  border: 0;
+  outline: 0;
+}
+.pointer {
+  cursor: pointer;
+}
+.eventName {
+  margin-bottom: 12.5px;
+}
+
+.counterInput {
+  width: 28px;
+  height: 18px;
+  border: 0;
+  outline: 0;
+  font-size: 12px;
+  border-radius: 4px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.disabled {
+  cursor: no-drop;
+  pointer-events: none;
+}
+
+.calcDiv {
+  display: flex;
+  max-width: 400px;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+.calcDiv p {
+  font-size: 14px;
+}
+.calcDiv p:nth-child(2) {
+  font-weight: 600;
+}
+
+.aboutEventDiv {
+  padding: 8px 0;
+}
+.aboutEventText {
+  font-size: 18px;
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+.aboutEventDetail {
+  font-size: 1rem;
+  /* font-weight: 300; */
+}
+.labelText {
+  font-size: 14px;
+}
+
+.skeletonImg {
+  animation: skeleton-loading 1s linear infinite alternate;
+  width: 100%;
+  height: 263px;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: #e5e4e4;
+  }
+  100% {
+    background-color: #d8d7d7;
+  }
+}
+
+[class~="about-event-detail"] img {
+  width: 100%;
+}
+
+.adminToolBtn {
+  background-color: #ffffff;
+  width: 162.74px;
+  height: 30px;
+  border-radius: 15px;
+  border: 0;
+  outline: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.adminToolBtnIcon {
+  width: 24.31px;
+  height: 21.48px;
+}
+
+.btnDiv {
+  display: flex;
+  gap: 15px;
+}
+
+@media only screen and (max-width: 800px) {
+  .wrapper {
+    flex-wrap: wrap-reverse !important;
+  }
+  .left {
+    width: 100%;
+    min-width: 100%;
+  }
+  .right {
+    padding: 0;
+    width: 100%;
+    min-width: 100%;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .brand {
+    font-size: 45px;
+  }
+  .oneLogo {
+    width: 55px;
+    height: 55px;
+  }
+  .userCover {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+@media only screen and (max-width: 431px) {
+  .boxes {
+    gap: 8px;
+  }
+  .infoDiv {
+    padding: 5px;
+  }
+  .labelText {
+    font-size: 12px;
+  }
+  .eventImg {
+    height: auto;
+    max-height: 250px;
+    min-height: 200px;
+  }
+
+  .brand {
+    font-size: 35px;
+  }
+  .oneLogo {
+    width: 40px;
+    height: 40px;
+  }
+  .userCover {
+    width: 40px;
+    height: 40px;
+  }
+  .eventName {
+    font-size: 20px;
+  }
+  .aboutEventDetail {
+    font-size: 12px;
+  }
+  form .descDetail {
+    font-size: 12px;
+  }
+}
+
+@media only screen and (max-width: 325px) {
+  .infoDiv {
+    padding: 5px;
+  }
+  .brand {
+    font-size: 35px;
+  }
+  .labelText {
+    font-size: 12px;
+  }
+  .oneLogo {
+    width: 40px;
+    height: 40px;
+  }
+  .userCover {
+    width: 40px;
+    height: 40px;
+  }
+}
