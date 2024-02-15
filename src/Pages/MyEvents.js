@@ -16,6 +16,7 @@ import Loader from "../Components/Loader";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserData } from "../Redux/slices/UserSlice";
+import { PrivateComponent } from "../Components/PrivateComponent";
 
 function MyEvents() {
   const userInfo = useSelector((state) => state?.userInfo);
@@ -56,7 +57,7 @@ function MyEvents() {
         data,
         userInfo?.userData?.userId
       );
-      const eventList = response.data.events;
+      const eventList = response.data.results;
 
       if (eventList?.length > 0) {
         setPagination((prev) => ({
@@ -101,7 +102,7 @@ function MyEvents() {
       };
 
       const response = await myEventsList(1, data, userInfo?.userData?.userId);
-      const eventList = response.data.events || [];
+      const eventList = response.data.results || [];
 
       if (eventList?.length > 0) {
         setPagination((prev) => ({
@@ -179,7 +180,8 @@ function MyEvents() {
         initialDate,
         userInfo?.userData?.userId
       );
-      const dataToShow = res?.data?.events || [];
+
+      const dataToShow = res?.data?.results || [];
 
       // On scroll new request was not called so added this lines
       if (dataToShow?.length > 0) {
@@ -195,22 +197,47 @@ function MyEvents() {
       setIsLoading(false);
       setItems(dataToShow);
     };
-    // fetchDataOfMonth();
+
     const timeoutId = setTimeout(fetchDataOfMonth, 500); // Adjust the delay as needed (e.g., 500 milliseconds)
     return () => clearTimeout(timeoutId);
   }, [filterData]);
 
   const filteredEvents = items;
 
+  const dateFilterMessage = (
+    <p style={{ textAlign: "center", fontWeight: "600" }}>
+      Please select a date interval to fetch data
+    </p>
+  );
+
+  const myEventData = filteredEvents.map((event, index) => (
+    <Card
+      eventId={event?.id}
+      key={index}
+      index={index}
+      tent={tent}
+      img={event?.event_image}
+      start_date={event?.start_date}
+      name={event?.name}
+      full_address={event?.full_address}
+      locationPin={locationPin}
+      ticket={event?.tickets}
+      address={event?.address}
+      eventProducer={event?.eventProducer}
+      detailType="my-event"
+    />
+  ));
+
   return (
     <div className={Style.maindiv}>
+      <PrivateComponent />
       <MyEventFilterComponent
         startDate={startDate}
         endDate={endDate}
         setStartDate={setStartDate}
         setEndDate={setEndDate}
         handleSearch={fetchFirstData}
-        filter={items?.length > 0 ? true : false}
+        filter={items?.length > 0}
         // filter={items ? true : false}
         setFilterData={setFilterData}
         filterData={filterData}
@@ -251,27 +278,9 @@ function MyEvents() {
                 No Events Found
               </p>
             ) : items?.length === 0 && !search ? (
-              <p style={{ textAlign: "center", fontWeight: "600" }}>
-                Please select a date interval to fetch data
-              </p>
+              dateFilterMessage
             ) : (
-              filteredEvents.map((event, index) => (
-                <Card
-                  eventId={event?.id}
-                  key={index}
-                  index={index}
-                  tent={tent}
-                  img={event?.event_image}
-                  start_date={event?.start_date}
-                  name={event?.name}
-                  full_address={event?.full_address}
-                  locationPin={locationPin}
-                  ticket={event?.tickets}
-                  address={event?.address}
-                  eventProducer={event?.eventProducer}
-                  detailType="my-event"
-                />
-              ))
+              myEventData
             )}
           </div>
         </InfiniteScroll>

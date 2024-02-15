@@ -177,7 +177,6 @@
   /* overflow: hidden; */
   overflow: visible;
   position: fixed;
-  z-index: 5;
   background-color: #6f1111;
   display: flex;
   justify-content: center;
@@ -191,12 +190,17 @@
   align-items: center;
   gap: 7px;
   flex-grow: 1;
+  flex-shrink: 0;
+  width: 80%;
+  cursor: pointer;
 }
+
 .upperHeader {
   display: flex;
   flex: 1;
   justify-content: space-between;
   align-items: center;
+  flex-basis: 50%;
 }
 .brand {
   font-size: 52px;
@@ -255,9 +259,7 @@
   align-items: center;
   flex-shrink: 0;
   width: 80%;
-}
-.upperHeader {
-  flex-basis: 50%;
+  cursor: pointer;
 }
 
 .clearIcon {
