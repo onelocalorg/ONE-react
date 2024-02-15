@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { myEventsList, getUserDetails } from "../api/services";
 import Style from "../Styles/MyTicketsData.module.css";
@@ -41,6 +41,38 @@ function MyEvents() {
   const [endDate, setEndDate] = useState(oneMonthLater);
   const [search, setSearch] = useState(false);
   const [filterData, setFilterData] = useState("");
+  const [isSticky, setIsSticky] = useState(false);
+  const [activeDiv, setActiveDiv] = useState(0);
+  const containerRef = useRef(null);
+  console.log("activeDiv", activeDiv);
+  const handleScroll = () => {
+    console.log("Callingggg....");
+    const container = containerRef.current;
+    const divs = container.getElementsByClassName("sticky-div");
+    console.log("divs", divs);
+    const scrollTop = container.scrollTop;
+    let activeIndex = 0;
+
+    for (let i = 0; i < divs.length; i++) {
+      const div = divs[i];
+      console.log("Divvvvv", div);
+      const rect = div.getBoundingClientRect();
+
+      if (rect.top <= 200) {
+        activeIndex = i;
+      }
+    }
+
+    setActiveDiv(activeIndex);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const fetchMoreData = async () => {
     try {
@@ -203,6 +235,7 @@ function MyEvents() {
   }, [filterData]);
 
   const filteredEvents = items;
+  console.log("filteredEvents", filteredEvents);
 
   const dateFilterMessage = (
     <p style={{ textAlign: "center", fontWeight: "600" }}>
@@ -210,28 +243,40 @@ function MyEvents() {
     </p>
   );
 
-  const myEventData = filteredEvents.map((event, index) => (
-    <Card
-      eventId={event?.id}
-      key={index}
-      index={index}
-      tent={tent}
-      img={event?.event_image}
-      start_date={event?.start_date}
-      name={event?.name}
-      full_address={event?.full_address}
-      locationPin={locationPin}
-      ticket={event?.tickets}
-      address={event?.address}
-      eventProducer={event?.eventProducer}
-      detailType="my-event"
-    />
+  const myEventData = filteredEvents.map((eventItem, index) => (
+    <>
+      <div
+        className={`sticky-div ${Style.eventSticky} ${
+          index === activeDiv ? Style.stickyDiv : ""
+        }`}
+      >
+        <span className={Style.mainLabel}>{eventItem?.date_title}</span>
+        <span className={Style.subLabel}>({eventItem?.day_title})</span>
+      </div>
+      {eventItem?.events.map((event, index) => (
+        <Card
+          eventId={event?.id}
+          key={index}
+          index={index}
+          tent={tent}
+          img={event?.event_image}
+          start_date={event?.start_date}
+          name={event?.name}
+          full_address={event?.full_address}
+          locationPin={locationPin}
+          ticket={event?.tickets}
+          address={event?.address}
+          eventProducer={event?.eventProducer}
+          detailType="my-event"
+        />
+      ))}
+    </>
   ));
 
   return (
-    <div className={Style.maindiv}>
+    <div className={Style.maindiv} ref={containerRef}>
       <PrivateComponent />
-      <MyEventFilterComponent
+      {/* <MyEventFilterComponent
         startDate={startDate}
         endDate={endDate}
         setStartDate={setStartDate}
@@ -241,7 +286,7 @@ function MyEvents() {
         // filter={items ? true : false}
         setFilterData={setFilterData}
         filterData={filterData}
-      />
+      /> */}
       {isLoading && <Loader />}
       {!items?.length && !isLoading ? (
         <p
@@ -250,6 +295,7 @@ function MyEvents() {
           No Events Found
         </p>
       ) : null}
+
       {items?.length ? (
         <InfiniteScroll
           className={Style.infinitescroll}
