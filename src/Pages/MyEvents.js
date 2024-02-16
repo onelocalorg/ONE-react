@@ -42,28 +42,24 @@ function MyEvents() {
   const [search, setSearch] = useState(false);
   const [filterData, setFilterData] = useState("");
   const [isSticky, setIsSticky] = useState(false);
-  const [activeDiv, setActiveDiv] = useState(0);
+  const [activeDiv, setActiveDiv] = useState(null);
   const containerRef = useRef(null);
-  console.log("activeDiv", activeDiv);
+
   const handleScroll = () => {
-    console.log("Callingggg....");
     const container = containerRef.current;
     const divs = container.getElementsByClassName("sticky-div");
-    console.log("divs", divs);
-    const scrollTop = container.scrollTop;
-    let activeIndex = 0;
+
+    let activeIndex = null;
 
     for (let i = 0; i < divs.length; i++) {
       const div = divs[i];
-      console.log("Divvvvv", div);
       const rect = div.getBoundingClientRect();
 
-      if (rect.top <= 200) {
+      if (rect.top <= 130) {
         activeIndex = i;
+        setActiveDiv(activeIndex);
       }
     }
-
-    setActiveDiv(activeIndex);
   };
 
   useEffect(() => {
@@ -235,28 +231,30 @@ function MyEvents() {
   }, [filterData]);
 
   const filteredEvents = items;
-  console.log("filteredEvents", filteredEvents);
 
   const dateFilterMessage = (
     <p style={{ textAlign: "center", fontWeight: "600" }}>
       Please select a date interval to fetch data
     </p>
   );
-
+  console.log("filteredEvents", filteredEvents);
   const myEventData = filteredEvents.map((eventItem, index) => (
-    <>
-      <div
-        className={`sticky-div ${Style.eventSticky} ${
-          index === activeDiv ? Style.stickyDiv : ""
-        }`}
-      >
-        <span className={Style.mainLabel}>{eventItem?.date_title}</span>
-        <span className={Style.subLabel}>({eventItem?.day_title})</span>
+    <div key={index}>
+      <div>
+        <div
+          className={`sticky-div ${Style.eventSticky} ${
+            index === activeDiv ? Style.stickyDiv : ""
+          } ${index}-index`}
+        >
+          <span className={Style.mainLabel}>{eventItem?.date_title}</span>
+          <span className={Style.subLabel}>({eventItem?.day_title})</span>
+        </div>
       </div>
-      {eventItem?.events.map((event, index) => (
+
+      {eventItem?.events.map((event, indexinner) => (
         <Card
           eventId={event?.id}
-          key={index}
+          key={indexinner}
           index={index}
           tent={tent}
           img={event?.event_image}
@@ -270,13 +268,13 @@ function MyEvents() {
           detailType="my-event"
         />
       ))}
-    </>
+    </div>
   ));
 
   return (
     <div className={Style.maindiv} ref={containerRef}>
       <PrivateComponent />
-      {/* <MyEventFilterComponent
+      <MyEventFilterComponent
         startDate={startDate}
         endDate={endDate}
         setStartDate={setStartDate}
@@ -286,7 +284,7 @@ function MyEvents() {
         // filter={items ? true : false}
         setFilterData={setFilterData}
         filterData={filterData}
-      /> */}
+      />
       {isLoading && <Loader />}
       {!items?.length && !isLoading ? (
         <p

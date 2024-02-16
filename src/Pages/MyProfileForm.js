@@ -83,7 +83,7 @@ const MyProfileForm = ({ userInfo }) => {
 
       if (response?.data?.data) {
         const linkUrl = response?.data?.data || "";
-        if (linkUrl != "") {
+        if (linkUrl !== "") {
           window.open(linkUrl, "_self");
         }
       } else {
@@ -303,11 +303,19 @@ const MyProfileForm = ({ userInfo }) => {
             <div className={style.memberLbl}>Membership</div>
             <div className={style.btnSection}>
               <button className={`${style.memberbtn} ${style.playerBtn}`}>
-                <img src={playerIcon} className={style.eventPlayerBtnIcon} />
+                <img
+                  src={playerIcon}
+                  className={style.eventPlayerBtnIcon}
+                  alt="player"
+                />
                 Player
               </button>
               <button className={`${style.memberbtn} ${style.eventProdBtn}`}>
-                <img src={whitetent} className={style.eventProdBtnIcon} />
+                <img
+                  src={whitetent}
+                  className={style.eventProdBtnIcon}
+                  alt="tent"
+                />
                 Event Producer
               </button>
             </div>

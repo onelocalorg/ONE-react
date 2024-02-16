@@ -53,10 +53,8 @@ const MyEventPage = () => {
   }, [errors]);
   const [eventData, setEventData] = useState({});
   const [ticketData, setTicketData] = useState([]);
-  const [taxAmount, setTaxAmount] = useState({});
-  const [confirmation, setConfirmation] = useState(false);
 
-  const [loading, setloading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -70,22 +68,18 @@ const MyEventPage = () => {
           setEventData(response?.data);
           setTicketData(response?.data?.tickets);
         } catch (error) {
-          setloading(false);
+          setLoading(false);
           setError(error.message);
           console.log(error);
         } finally {
-          setloading(false);
+          setLoading(false);
         }
       }
     };
 
     fetchEventData();
   }, [eventId]);
-  const navigateToTicketPurchase = (link) => {
-    if (link) {
-      window.open(link, "_self");
-    }
-  };
+
   const onSubmit = async (data) => {};
 
   const formVal = watch();
@@ -105,7 +99,11 @@ const MyEventPage = () => {
               {"< back"}
             </button>
             <button className={Style.adminToolBtn}>
-              <img src={ticketIcon} className={Style.adminToolBtnIcon} />
+              <img
+                src={ticketIcon}
+                className={Style.adminToolBtnIcon}
+                alt="ticket"
+              />
               {"Admin Tools"}
             </button>
           </div>
