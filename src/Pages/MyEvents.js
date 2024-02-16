@@ -41,34 +41,72 @@ function MyEvents() {
   const [endDate, setEndDate] = useState(oneMonthLater);
   const [search, setSearch] = useState(false);
   const [filterData, setFilterData] = useState("");
-  const [isSticky, setIsSticky] = useState(false);
-  const [activeDiv, setActiveDiv] = useState(null);
   const containerRef = useRef(null);
 
-  const handleScroll = () => {
-    const container = containerRef.current;
-    const divs = container.getElementsByClassName("sticky-div");
-
-    let activeIndex = null;
-
-    for (let i = 0; i < divs.length; i++) {
-      const div = divs[i];
-      const rect = div.getBoundingClientRect();
-
-      if (rect.top <= 130) {
-        activeIndex = i;
-        setActiveDiv(activeIndex);
-      }
-    }
-  };
-
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
+    // For make sticky date bar when scroll functionality
+    const $stickies = document.querySelectorAll(".followMeBar");
+
+    const load = function (stickies) {
+      if (stickies.length > 0) {
+        stickies.forEach(function (sticky) {
+          const $thisSticky = sticky;
+          const $parent = document.createElement("div");
+          $parent.classList.add("followWrap");
+          $thisSticky.parentNode.insertBefore($parent, $thisSticky);
+          $parent.appendChild($thisSticky);
+          $thisSticky.dataset.originalPosition = $thisSticky.offsetTop;
+          $thisSticky.dataset.originalHeight = $thisSticky.offsetHeight;
+          $parent.style.height = $thisSticky.offsetHeight + "px";
+        });
+
+        window.removeEventListener("scroll", _whenScrolling);
+        window.addEventListener("scroll", _whenScrolling);
+      }
+    };
+
+    const _whenScrolling = function () {
+      $stickies.forEach(function (sticky, i) {
+        const $thisSticky = sticky;
+        const $stickyPosition =
+          parseInt($thisSticky.dataset.originalPosition, 10) - 100;
+
+        if ($stickyPosition <= window.scrollY) {
+          const $nextSticky = $stickies[i + 1];
+
+          const $nextStickyPosition = $nextSticky
+            ? $nextSticky.dataset.originalPosition -
+              (parseInt($thisSticky.dataset.originalHeight, 10) + 500)
+            : 0;
+
+          $thisSticky.classList.add("fixed");
+          if ($nextSticky && $thisSticky.offsetTop >= $nextStickyPosition) {
+            $thisSticky.classList.add("absolute");
+            $thisSticky.style.top = $nextStickyPosition + "px";
+          }
+        } else {
+          const $prevSticky = $stickies[i - 1];
+
+          $thisSticky.classList.remove("fixed");
+
+          if (
+            $prevSticky &&
+            window.scrollY <=
+              $stickyPosition - parseInt($thisSticky.dataset.originalHeight, 10)
+          ) {
+            $prevSticky.classList.remove("absolute");
+            $prevSticky.removeAttribute("style");
+          }
+        }
+      });
+    };
+
+    load($stickies);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", _whenScrolling);
     };
-  }, []);
+  }, [items]); //Update on every new data set
 
   const fetchMoreData = async () => {
     try {
@@ -237,20 +275,15 @@ function MyEvents() {
       Please select a date interval to fetch data
     </p>
   );
-  console.log("filteredEvents", filteredEvents);
+
   const myEventData = filteredEvents.map((eventItem, index) => (
-    <div key={index}>
+    <React.Fragment key={index}>
       <div>
-        <div
-          className={`sticky-div ${Style.eventSticky} ${
-            index === activeDiv ? Style.stickyDiv : ""
-          } ${index}-index`}
-        >
+        <div className={`${Style.eventSticky} followMeBar`}>
           <span className={Style.mainLabel}>{eventItem?.date_title}</span>
           <span className={Style.subLabel}>({eventItem?.day_title})</span>
         </div>
       </div>
-
       {eventItem?.events.map((event, indexinner) => (
         <Card
           eventId={event?.id}
@@ -268,7 +301,7 @@ function MyEvents() {
           detailType="my-event"
         />
       ))}
-    </div>
+    </React.Fragment>
   ));
 
   return (
