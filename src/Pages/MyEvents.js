@@ -276,33 +276,51 @@ function MyEvents() {
     </p>
   );
 
-  const myEventData = filteredEvents.map((eventItem, index) => (
-    <React.Fragment key={index}>
-      <div>
-        <div className={`${Style.eventSticky} followMeBar`}>
-          <span className={Style.mainLabel}>{eventItem?.date_title}</span>
-          <span className={Style.subLabel}>({eventItem?.day_title})</span>
-        </div>
-      </div>
-      {eventItem?.events.map((event, indexinner) => (
-        <Card
-          eventId={event?.id}
-          key={indexinner}
-          index={index}
-          tent={tent}
-          img={event?.event_image}
-          start_date={event?.start_date}
-          name={event?.name}
-          full_address={event?.full_address}
-          locationPin={locationPin}
-          ticket={event?.tickets}
-          address={event?.address}
-          eventProducer={event?.eventProducer}
-          detailType="my-event"
-        />
-      ))}
-    </React.Fragment>
+  const myEventData = filteredEvents.map((event, index) => (
+    <Card
+      eventId={event?.id}
+      key={index}
+      index={index}
+      tent={tent}
+      img={event?.event_image}
+      start_date={event?.start_date}
+      name={event?.name}
+      full_address={event?.full_address}
+      locationPin={locationPin}
+      ticket={event?.tickets}
+      address={event?.address}
+      eventProducer={event?.eventProducer}
+      detailType="my-event"
+    />
   ));
+
+  // const myEventData = filteredEvents.map((eventItem, index) => (
+  //   <React.Fragment key={index}>
+  //     <div>
+  //       <div className={`${Style.eventSticky} followMeBar`}>
+  //         <span className={Style.mainLabel}>{eventItem?.date_title}</span>
+  //         <span className={Style.subLabel}>({eventItem?.day_title})</span>
+  //       </div>
+  //     </div>
+  //     {eventItem?.events.map((event, indexinner) => (
+  //       <Card
+  //         eventId={event?.id}
+  //         key={indexinner}
+  //         index={index}
+  //         tent={tent}
+  //         img={event?.event_image}
+  //         start_date={event?.start_date}
+  //         name={event?.name}
+  //         full_address={event?.full_address}
+  //         locationPin={locationPin}
+  //         ticket={event?.tickets}
+  //         address={event?.address}
+  //         eventProducer={event?.eventProducer}
+  //         detailType="my-event"
+  //       />
+  //     ))}
+  //   </React.Fragment>
+  // ));
 
   return (
     <div className={Style.maindiv} ref={containerRef}>
@@ -335,7 +353,7 @@ function MyEvents() {
           hasMore={hasMore}
           loader={
             filterData === "" ? (
-              <h5 style={{ textAlign: "center" }}>Loading...</h5>
+              <h5 style={{ textAlign: "center" }}>{null}</h5>
             ) : null
           }
           minHeight={"inherit"}
