@@ -331,6 +331,140 @@
   gap: 15px;
 }
 
+.financialSection {
+  border: 1px solid #b4b5b6;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.financeItem {
+  border-bottom: 1px solid #a9a9a9;
+  margin: 0 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.payoutSection {
+  margin-top: 20px;
+}
+
+.financeLbl {
+  margin: 5px 10px;
+}
+
+.itemAmt {
+  font-weight: 500;
+}
+
+.sendPayoutSection {
+  text-align: right;
+  margin: 10px 20px 0 20px;
+}
+
+.itemBtn {
+  border: 0;
+  outline: 0;
+  background-color: #8058ae;
+  color: #fff;
+  font-size: 10px;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.itemBtnText {
+  margin-left: 5px;
+}
+
+.itemBtnIcon {
+  height: 13px;
+  width: 22px;
+}
+
+.payNoteText {
+  font-size: 8px;
+  margin-left: 44%;
+  text-align: left;
+  margin-top: 3px;
+}
+
+.listContainer {
+  margin: 0 20px 20px 20px;
+}
+
+.listHead {
+  font-size: 14px;
+}
+
+.noExpense {
+  font-size: 10px;
+}
+
+.expenseItem {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 3px;
+  justify-content: space-between;
+}
+
+.expenseItemImg {
+  width: 24px;
+  height: 24px;
+}
+
+.expenseItemTitle {
+  font-size: 12px;
+}
+.expenseItemSubTitle {
+  font-size: 10px;
+  margin-left: 10px;
+}
+
+.profileIcon {
+  margin-top: 4px;
+}
+
+.expenseItemLeft {
+  display: flex;
+}
+
+.expenseItemTotalLine {
+  border: 1px solid #a9a9a9;
+  margin: 5px 0;
+}
+.expenseItemTotal {
+  display: flex;
+  justify-content: end;
+  margin-right: 30px;
+  font-weight: 500;
+}
+
+.addExpenseBtn {
+  background-color: #dcb16c;
+  border: 0;
+  outline: 0;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 10px;
+  padding: 7px 8px;
+  width: 74px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.addItemBtnText {
+  margin-left: 4px;
+}
+
+.BtnContainer {
+  margin-top: 5px;
+}
+
+.uniqueViewDiv {
+  margin-top: -10px;
+}
+
 @media only screen and (max-width: 800px) {
   .wrapper {
     flex-wrap: wrap-reverse !important;
@@ -395,6 +529,9 @@
   form .descDetail {
     font-size: 12px;
   }
+  .payNoteText {
+    margin-left: 47%;
+  }
 }
 
 @media only screen and (max-width: 325px) {
@@ -414,5 +551,8 @@
   .userCover {
     width: 40px;
     height: 40px;
+  }
+  .payNoteText {
+    margin-left: 25%;
   }
 }

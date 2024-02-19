@@ -5,8 +5,8 @@ import DOMPurify from "dompurify";
 import calendarIcon from "../images/Group 33778.svg";
 import locationIcon from "../images/Group 18184.svg";
 import ticketIcon from "../images/ticket-icon.png";
+import payoutIcon from "../images/payout-icon.png";
 import { singleEvents } from "../api/services";
-
 import Style from "../Styles/MyEventPage.module.css";
 import Loader from "../Components/Loader";
 import { useForm } from "react-hook-form";
@@ -18,6 +18,8 @@ import { useScrollToTop } from "../hooks/useScrollToTop";
 import HeaderComponent from "../Components/HeaderComponent";
 import { PrivateComponent } from "../Components/PrivateComponent";
 import { useSelector } from "react-redux";
+import ExpenseItemComponent from "../Components/ExpenseItemComponent";
+import FinanceAddBtn from "../Components/FinanceAddBtn";
 
 const MyEventPage = () => {
   const { eventId } = useParams();
@@ -79,6 +81,14 @@ const MyEventPage = () => {
 
     fetchEventData();
   }, [eventId]);
+
+  function showExpenseAdd() {
+    console.log("Called showExpenseAdd");
+  }
+
+  function showPayoutAdd() {
+    console.log("Called showPayoutAdd");
+  }
 
   const onSubmit = async (data) => {};
 
@@ -188,6 +198,88 @@ const MyEventPage = () => {
                   {/* Blank */}
                 </div>
               </form>
+              <div className={Style.uniqueViewDiv}>
+                <div>
+                  <div>Unique Views: 3</div>
+                  <hr />
+                </div>
+              </div>
+              <div className={Style.financialSection}>
+                <div className={Style.financeLbl}>Financials</div>
+                <div>
+                  <div className={Style.financeItem}>
+                    <span>Revenue</span>
+                    <span className={Style.itemAmt}>$10</span>
+                  </div>
+                  <div className={Style.financeItem}>
+                    <span>Expenses</span>
+                    <span className={Style.itemAmt}>$0</span>
+                  </div>
+                  <div className={Style.financeItem}>
+                    <span>Profit</span>
+                    <span className={Style.itemAmt}>$10.00</span>
+                  </div>
+                  <div
+                    className={`${Style.financeItem} ${Style.payoutSection}`}
+                  >
+                    <span>Payouts</span>
+                    <span className={Style.itemAmt}>$6</span>
+                  </div>
+                  <div className={Style.financeItem}>
+                    <span>Remaining</span>
+                    <span className={Style.itemAmt}>$4.00</span>
+                  </div>
+                  <div className={Style.sendPayoutSection}>
+                    <span className={Style.itemAmt}>
+                      <button className={Style.itemBtn}>
+                        <img
+                          src={payoutIcon}
+                          alt="payout"
+                          className={Style.itemBtnIcon}
+                        />
+                        <span className={Style.itemBtnText}>Send Payouts</span>
+                      </button>
+                      <div className={Style.payNoteText}>
+                        Payout can be sent 3 days after the event. All refunds
+                        must happen within this time before a payout can be
+                        sent.
+                      </div>
+                    </span>
+                  </div>
+                </div>
+                <div className={Style.listContainer}>
+                  <div>
+                    <div className={Style.listHead}>Expenses</div>
+                    <div className={Style.noExpense}>No expenses yet</div>
+                    <ExpenseItemComponent
+                      title={"Bob Jones (sound gear)"}
+                      subTitle1={`Payout for Garden Party`}
+                      subTitle2={`on July 14, 2023`}
+                    />
+                    <FinanceAddBtn addAction={showExpenseAdd} />
+                    <div className={Style.expenseItemTotalLine}></div>
+                    <div className={Style.expenseItemTotal}>$0.00</div>
+                  </div>
+                  <div className={Style.payoutItemSection}>
+                    <div>Payouts</div>
+                    <ExpenseItemComponent
+                      title={"Bob Jones (sound gear)"}
+                      subTitle1={`Payout for Garden Party`}
+                      subTitle2={`on July 14, 2023`}
+                      itemAmt={"5.00"}
+                    />
+                    <ExpenseItemComponent
+                      title={"Bob Jones (sound gear)"}
+                      subTitle1={`Payout for Garden Party`}
+                      subTitle2={`on July 14, 2023`}
+                      itemAmt={""}
+                    />
+                    <FinanceAddBtn addAction={showPayoutAdd} />
+                    <div className={Style.expenseItemTotalLine}></div>
+                    <div className={Style.expenseItemTotal}>$6.00</div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div className={Style.right}>
               {eventData?.event_image ? (
