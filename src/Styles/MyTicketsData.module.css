@@ -177,7 +177,6 @@
   /* overflow: hidden; */
   overflow: visible;
   position: fixed;
-  z-index: 5;
   background-color: #6f1111;
   display: flex;
   justify-content: center;
@@ -191,12 +190,17 @@
   align-items: center;
   gap: 7px;
   flex-grow: 1;
+  flex-shrink: 0;
+  width: 80%;
+  cursor: pointer;
 }
+
 .upperHeader {
   display: flex;
   flex: 1;
   justify-content: space-between;
   align-items: center;
+  flex-basis: 50%;
 }
 .brand {
   font-size: 52px;
@@ -255,9 +259,7 @@
   align-items: center;
   flex-shrink: 0;
   width: 80%;
-}
-.upperHeader {
-  flex-basis: 50%;
+  cursor: pointer;
 }
 
 .clearIcon {
@@ -271,6 +273,57 @@
 .navLink {
   text-decoration: none;
   color: #fff;
+}
+
+.stickyDiv {
+  position: fixed;
+  top: 130px;
+  width: 100%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.eventSticky {
+  min-width: 500px;
+  max-width: 500px;
+  margin: auto;
+  background-color: #f6b716;
+  padding-left: 20px;
+  border-radius: 20px;
+}
+
+.mainLabel {
+  font-size: 20px;
+  color: #fff;
+}
+.subLabel {
+  font-size: 12px;
+  color: #fff;
+  padding-left: 10px;
+}
+
+[class~="followMeBar"] {
+  min-width: 500px;
+  max-width: 500px;
+  margin: auto;
+  background-color: #f6b716;
+  padding-left: 20px;
+  border-radius: 20px;
+}
+
+[class~="followMeBar"][class~="fixed"] {
+  position: fixed;
+  width: 100%;
+  box-sizing: border-box;
+  top: 130px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+[class~="followMeBar"][class~="fixed"][class~="absolute"] {
+  position: absolute;
 }
 
 @media only screen and (max-width: 768px) {
@@ -382,5 +435,19 @@
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
+  }
+
+  .eventSticky {
+    width: 95%;
+    min-width: 95%;
+  }
+
+  [class~="followMeBar"][class~="fixed"] {
+    top: 112px;
+    width: 95%;
+  }
+
+  .infinitescroll {
+    margin-top: 85px;
   }
 }
