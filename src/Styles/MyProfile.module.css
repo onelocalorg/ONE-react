@@ -9,8 +9,8 @@
 .formContainer {
   margin: 150px auto 25px auto !important;
   width: 100%;
-  min-width: 500px;
-  max-width: 500px;
+  min-width: 600px;
+  max-width: 600px;
   border: 1px solid #db9791;
   border-radius: 20px;
 }
@@ -29,8 +29,9 @@
 .profileBackImage {
   width: 100%;
   border-radius: 20px 20px 0px 0px;
-  max-height: 144px;
-  min-height: 144px;
+  max-height: 177px;
+  min-height: 177px;
+  object-fit: cover;
 }
 
 .profileImageContainer {
@@ -50,6 +51,8 @@
   height: 100%;
   object-fit: cover;
   border: 2px solid #fff;
+  min-width: 100%;
+  min-height: 100%;
 }
 
 .profileItem {
@@ -197,7 +200,7 @@
   font-size: 13px;
   background: #c4a479;
   border-radius: 20px;
-  padding: 7px 15px;
+  padding: 7px 10px;
   color: #fff;
   display: flex;
   gap: 2px;
@@ -207,7 +210,7 @@
 .skillChipDiv {
   display: flex;
   flex-wrap: wrap;
-  margin-top: 5px;
+  margin-top: 10px;
   gap: 3px;
 }
 
@@ -220,7 +223,7 @@
 }
 
 .blankCover {
-  min-height: 144px;
+  min-height: 150px;
   background: #6f1111;
   border-radius: 20px 20px 0 0;
 }
@@ -274,6 +277,17 @@
   align-items: center;
 }
 
+@media only screen and (max-width: 1300px) {
+  .formContainer {
+    min-width: 500px;
+    max-width: 500px;
+  }
+
+  .profileBackImage {
+    max-height: 144px;
+    min-height: 144px;
+  }
+}
 @media only screen and (max-width: 431px) {
   .formContainer {
     min-width: 100%;
@@ -318,5 +332,14 @@
   .editProfileImgIcon {
     font-size: 25px;
     right: -13px;
+  }
+
+  .blankCover {
+    min-height: 120px;
+  }
+
+  .profileBackImage {
+    max-height: 110px;
+    min-height: 110px;
   }
 }

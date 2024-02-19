@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { myEventsList, getUserDetails } from "../api/services";
 import Style from "../Styles/MyTicketsData.module.css";
@@ -16,6 +16,7 @@ import Loader from "../Components/Loader";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserData } from "../Redux/slices/UserSlice";
+import { PrivateComponent } from "../Components/PrivateComponent";
 
 function MyEvents() {
   const userInfo = useSelector((state) => state?.userInfo);
@@ -40,6 +41,72 @@ function MyEvents() {
   const [endDate, setEndDate] = useState(oneMonthLater);
   const [search, setSearch] = useState(false);
   const [filterData, setFilterData] = useState("");
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    // For make sticky date bar when scroll functionality
+    const $stickies = document.querySelectorAll(".followMeBar");
+
+    const load = function (stickies) {
+      if (stickies.length > 0) {
+        stickies.forEach(function (sticky) {
+          const $thisSticky = sticky;
+          const $parent = document.createElement("div");
+          $parent.classList.add("followWrap");
+          $thisSticky.parentNode.insertBefore($parent, $thisSticky);
+          $parent.appendChild($thisSticky);
+          $thisSticky.dataset.originalPosition = $thisSticky.offsetTop;
+          $thisSticky.dataset.originalHeight = $thisSticky.offsetHeight;
+          $parent.style.height = $thisSticky.offsetHeight + "px";
+        });
+
+        window.removeEventListener("scroll", _whenScrolling);
+        window.addEventListener("scroll", _whenScrolling);
+      }
+    };
+
+    const _whenScrolling = function () {
+      $stickies.forEach(function (sticky, i) {
+        const $thisSticky = sticky;
+        const $stickyPosition =
+          parseInt($thisSticky.dataset.originalPosition, 10) - 100;
+
+        if ($stickyPosition <= window.scrollY) {
+          const $nextSticky = $stickies[i + 1];
+
+          const $nextStickyPosition = $nextSticky
+            ? $nextSticky.dataset.originalPosition -
+              (parseInt($thisSticky.dataset.originalHeight, 10) + 500)
+            : 0;
+
+          $thisSticky.classList.add("fixed");
+          if ($nextSticky && $thisSticky.offsetTop >= $nextStickyPosition) {
+            $thisSticky.classList.add("absolute");
+            $thisSticky.style.top = $nextStickyPosition + "px";
+          }
+        } else {
+          const $prevSticky = $stickies[i - 1];
+
+          $thisSticky.classList.remove("fixed");
+
+          if (
+            $prevSticky &&
+            window.scrollY <=
+              $stickyPosition - parseInt($thisSticky.dataset.originalHeight, 10)
+          ) {
+            $prevSticky.classList.remove("absolute");
+            $prevSticky.removeAttribute("style");
+          }
+        }
+      });
+    };
+
+    load($stickies);
+
+    return () => {
+      window.removeEventListener("scroll", _whenScrolling);
+    };
+  }, [items]); //Update on every new data set
 
   const fetchMoreData = async () => {
     try {
@@ -56,7 +123,7 @@ function MyEvents() {
         data,
         userInfo?.userData?.userId
       );
-      const eventList = response.data.events;
+      const eventList = response.data.results;
 
       if (eventList?.length > 0) {
         setPagination((prev) => ({
@@ -101,7 +168,7 @@ function MyEvents() {
       };
 
       const response = await myEventsList(1, data, userInfo?.userData?.userId);
-      const eventList = response.data.events || [];
+      const eventList = response.data.results || [];
 
       if (eventList?.length > 0) {
         setPagination((prev) => ({
@@ -179,7 +246,8 @@ function MyEvents() {
         initialDate,
         userInfo?.userData?.userId
       );
-      const dataToShow = res?.data?.events || [];
+
+      const dataToShow = res?.data?.results || [];
 
       // On scroll new request was not called so added this lines
       if (dataToShow?.length > 0) {
@@ -195,22 +263,75 @@ function MyEvents() {
       setIsLoading(false);
       setItems(dataToShow);
     };
-    // fetchDataOfMonth();
+
     const timeoutId = setTimeout(fetchDataOfMonth, 500); // Adjust the delay as needed (e.g., 500 milliseconds)
     return () => clearTimeout(timeoutId);
   }, [filterData]);
 
   const filteredEvents = items;
 
+  const dateFilterMessage = (
+    <p style={{ textAlign: "center", fontWeight: "600" }}>
+      Please select a date interval to fetch data
+    </p>
+  );
+
+  const myEventData = filteredEvents.map((event, index) => (
+    <Card
+      eventId={event?.id}
+      key={index}
+      index={index}
+      tent={tent}
+      img={event?.event_image}
+      start_date={event?.start_date}
+      name={event?.name}
+      full_address={event?.full_address}
+      locationPin={locationPin}
+      ticket={event?.tickets}
+      address={event?.address}
+      eventProducer={event?.eventProducer}
+      detailType="my-event"
+    />
+  ));
+
+  // const myEventData = filteredEvents.map((eventItem, index) => (
+  //   <React.Fragment key={index}>
+  //     <div>
+  //       <div className={`${Style.eventSticky} followMeBar`}>
+  //         <span className={Style.mainLabel}>{eventItem?.date_title}</span>
+  //         <span className={Style.subLabel}>({eventItem?.day_title})</span>
+  //       </div>
+  //     </div>
+  //     {eventItem?.events.map((event, indexinner) => (
+  //       <Card
+  //         eventId={event?.id}
+  //         key={indexinner}
+  //         index={index}
+  //         tent={tent}
+  //         img={event?.event_image}
+  //         start_date={event?.start_date}
+  //         name={event?.name}
+  //         full_address={event?.full_address}
+  //         locationPin={locationPin}
+  //         ticket={event?.tickets}
+  //         address={event?.address}
+  //         eventProducer={event?.eventProducer}
+  //         detailType="my-event"
+  //       />
+  //     ))}
+  //   </React.Fragment>
+  // ));
+
   return (
-    <div className={Style.maindiv}>
+    <div className={Style.maindiv} ref={containerRef}>
+      <PrivateComponent />
       <MyEventFilterComponent
         startDate={startDate}
         endDate={endDate}
         setStartDate={setStartDate}
         setEndDate={setEndDate}
         handleSearch={fetchFirstData}
-        filter={items?.length > 0 ? true : false}
+        filter={items?.length > 0}
         // filter={items ? true : false}
         setFilterData={setFilterData}
         filterData={filterData}
@@ -223,6 +344,7 @@ function MyEvents() {
           No Events Found
         </p>
       ) : null}
+
       {items?.length ? (
         <InfiniteScroll
           className={Style.infinitescroll}
@@ -231,7 +353,7 @@ function MyEvents() {
           hasMore={hasMore}
           loader={
             filterData === "" ? (
-              <h5 style={{ textAlign: "center" }}>Loading...</h5>
+              <h5 style={{ textAlign: "center" }}>{null}</h5>
             ) : null
           }
           minHeight={"inherit"}
@@ -251,27 +373,9 @@ function MyEvents() {
                 No Events Found
               </p>
             ) : items?.length === 0 && !search ? (
-              <p style={{ textAlign: "center", fontWeight: "600" }}>
-                Please select a date interval to fetch data
-              </p>
+              dateFilterMessage
             ) : (
-              filteredEvents.map((event, index) => (
-                <Card
-                  eventId={event?.id}
-                  key={index}
-                  index={index}
-                  tent={tent}
-                  img={event?.event_image}
-                  start_date={event?.start_date}
-                  name={event?.name}
-                  full_address={event?.full_address}
-                  locationPin={locationPin}
-                  ticket={event?.tickets}
-                  address={event?.address}
-                  eventProducer={event?.eventProducer}
-                  detailType="my-event"
-                />
-              ))
+              myEventData
             )}
           </div>
         </InfiniteScroll>

@@ -4,22 +4,15 @@ import moment from "moment";
 import DOMPurify from "dompurify";
 import calendarIcon from "../images/Group 33778.svg";
 import locationIcon from "../images/Group 18184.svg";
-import proImg from "../images/Oval Copy 5.png";
-import arrow from "../images/Shape.svg";
-import {
-  getAmountOfTickets,
-  getTaxAndAmout,
-  singleEvents,
-} from "../api/services";
+import ticketIcon from "../images/ticket-icon.png";
+import { singleEvents } from "../api/services";
 
-import Style from "../Styles/EventPage.module.css";
+import Style from "../Styles/MyEventPage.module.css";
 import Loader from "../Components/Loader";
 import { useForm } from "react-hook-form";
-import InputComponent from "../Components/InputComponent";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ToasterComponent from "../Components/ToasterComponent";
-import InputWithPlusAndMinusComponent from "../Components/InputWithPlusMinusComp";
 import NotFound from "./NotFound";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import HeaderComponent from "../Components/HeaderComponent";
@@ -60,10 +53,8 @@ const MyEventPage = () => {
   }, [errors]);
   const [eventData, setEventData] = useState({});
   const [ticketData, setTicketData] = useState([]);
-  const [taxAmount, setTaxAmount] = useState({});
-  const [confirmation, setConfirmation] = useState(false);
 
-  const [loading, setloading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -77,22 +68,18 @@ const MyEventPage = () => {
           setEventData(response?.data);
           setTicketData(response?.data?.tickets);
         } catch (error) {
-          setloading(false);
+          setLoading(false);
           setError(error.message);
           console.log(error);
         } finally {
-          setloading(false);
+          setLoading(false);
         }
       }
     };
 
     fetchEventData();
   }, [eventId]);
-  const navigateToTicketPurchase = (link) => {
-    if (link) {
-      window.open(link, "_self");
-    }
-  };
+
   const onSubmit = async (data) => {};
 
   const formVal = watch();
@@ -107,9 +94,17 @@ const MyEventPage = () => {
         <PrivateComponent />
         <HeaderComponent />
         <div className={Style.dataContainer}>
-          <div>
+          <div className={Style.btnDiv}>
             <button className={Style.backButton} onClick={onLastPage}>
               {"< back"}
+            </button>
+            <button className={Style.adminToolBtn}>
+              <img
+                src={ticketIcon}
+                className={Style.adminToolBtnIcon}
+                alt="ticket"
+              />
+              {"Admin Tools"}
             </button>
           </div>
           <div className={Style.wrapper}>
