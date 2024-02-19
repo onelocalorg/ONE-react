@@ -191,6 +191,39 @@
   position: relative;
 }
 
+.dialogItem {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.dialogItemLabel {
+  font-size: 14px;
+  min-width: 70px;
+}
+
+.payoutBtn {
+  border: 0;
+  outline: 0;
+  width: 66px;
+  border-radius: 20px;
+  margin-left: 10px;
+  background-color: #6f1111;
+  color: #fff;
+}
+
+.photoBtn {
+  width: 70px;
+  font-size: 10px;
+  border-radius: 5px;
+  padding: 3px;
+  border: 0;
+  background-color: #6f1111;
+  color: #fff;
+}
+
 /* Responsive */
 @media only screen and (max-width: 768px) {
   .modalItem {
