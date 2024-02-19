@@ -395,27 +395,92 @@ const EventPage = () => {
                   {confirmation === true && (
                     <div style={{ padding: "8px 0" }}>
                       <div className={Style.calcDiv}>
-                        <p className={Style.descDetail}>Ticket Price</p>
-                        <p className={Style.descDetail}>
+                        <p
+                          className={`${Style.descDetail} ${Style.descDetailLbl}`}
+                        >
+                          Sub Total
+                        </p>
+                        <p
+                          className={`${Style.descDetail} ${Style.descDetailVal}`}
+                        >
+                          $
+                          {taxAmount?.sub_total
+                            ? Number(taxAmount?.sub_total).toFixed(2)
+                            : "0.00"}
+                        </p>
+                      </div>
+                      <div className={Style.calcDiv}>
+                        <p
+                          className={`${Style.descDetail} ${Style.descDetailLbl}`}
+                        >
+                          Platform Fee
+                        </p>
+                        <p
+                          className={`${Style.descDetail} ${Style.descDetailVal}`}
+                        >
+                          $
+                          {taxAmount?.platformFee
+                            ? taxAmount?.platformFee
+                            : "0.00"}
+                        </p>
+                      </div>
+                      <div className={Style.calcDiv}>
+                        <p
+                          className={`${Style.descDetail} ${Style.descDetailLbl}`}
+                        >
+                          Sales Tax
+                        </p>
+                        <p
+                          className={`${Style.descDetail} ${Style.descDetailVal}`}
+                        >
+                          ${taxAmount?.salesTax ? taxAmount?.salesTax : "0.00"}
+                        </p>
+                      </div>
+                      <div className={Style.calcDiv}>
+                        <p
+                          className={`${Style.descDetail} ${Style.descDetailLbl}`}
+                        >
+                          Payment Fee
+                        </p>
+                        <p
+                          className={`${Style.descDetail} ${Style.descDetailVal}`}
+                        >
+                          $
+                          {taxAmount?.paymentFee
+                            ? taxAmount?.paymentFee
+                            : "0.00"}
+                        </p>
+                      </div>
+                      {/* <div className={Style.calcDiv}>
+                        <p className={`${Style.descDetail}`}>Ticket Price</p>
+                        <p className={`${Style.descDetail}`}>
                           {taxAmount?.ticket_price} $
                         </p>
                       </div>
                       <div className={Style.calcDiv}>
-                        <p className={Style.descDetail}>Quantity</p>
-                        <p className={Style.descDetail}>
+                        <p className={`${Style.descDetail}`}>Quantity</p>
+                        <p className={`${Style.descDetail}`}>
                           {taxAmount?.quantity}
                         </p>
-                      </div>
+                      </div> 
                       <div className={Style.calcDiv}>
-                        <p className={Style.descDetail}>Service Tax</p>
-                        <p className={Style.descDetail}>
+                        <p className={`${Style.descDetail}`}>Service Tax</p>
+                        <p className={`${Style.descDetail}`}>
                           {taxAmount?.service_tax}
                         </p>
-                      </div>
+                      </div>*/}
                       <hr />
                       <div className={Style.calcDiv}>
-                        <p className={Style.descDetail}>Total Amount</p>
-                        <p className={Style.descDetail}>{taxAmount?.total} $</p>
+                        <p
+                          className={`${Style.descDetail} ${Style.descDetailLbl}`}
+                        >
+                          Total
+                        </p>
+                        <p
+                          className={`${Style.descDetail} ${Style.descDetailVal}`}
+                        >
+                          ${taxAmount?.total ? taxAmount?.total : "0.00"}
+                        </p>
                       </div>
                     </div>
                   )}
