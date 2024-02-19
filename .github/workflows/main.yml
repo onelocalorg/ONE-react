@@ -4,7 +4,7 @@ name: React CI CD
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ develop ]
+    branches: [ main ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -22,14 +22,14 @@ jobs:
     - name: Deploy using ssh
       uses: appleboy/ssh-action@master
       with:
-        host: ${{ secrets.ONE_HOST_DEV }}
+        host: ${{ secrets.ONE_HOST }}
         username: ${{ secrets.ONE_USER }}
         key: ${{ secrets.ONE_KEY }}
         port: ${{ secrets.ONE_PORT }}
         script: |
           cd /var/www/onelocal/event-admin-react/ONE-react
           pwd
-          git pull origin develop
+          git pull origin main
           git status
           export NVM_DIR=~/.nvm
           source ~/.nvm/nvm.sh
