@@ -9,8 +9,8 @@
 .formContainer {
   margin: 150px auto 25px auto !important;
   width: 100%;
-  min-width: 500px;
-  max-width: 500px;
+  min-width: 600px;
+  max-width: 600px;
   border: 1px solid #db9791;
   border-radius: 20px;
 }
@@ -29,8 +29,8 @@
 .profileBackImage {
   width: 100%;
   border-radius: 20px 20px 0px 0px;
-  max-height: 144px;
-  min-height: 144px;
+  max-height: 177px;
+  min-height: 177px;
   object-fit: cover;
 }
 
@@ -277,6 +277,17 @@
   align-items: center;
 }
 
+@media only screen and (max-width: 1300px) {
+  .formContainer {
+    min-width: 500px;
+    max-width: 500px;
+  }
+
+  .profileBackImage {
+    max-height: 144px;
+    min-height: 144px;
+  }
+}
 @media only screen and (max-width: 431px) {
   .formContainer {
     min-width: 100%;
@@ -325,5 +336,10 @@
 
   .blankCover {
     min-height: 120px;
+  }
+
+  .profileBackImage {
+    max-height: 110px;
+    min-height: 110px;
   }
 }
