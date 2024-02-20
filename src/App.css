@@ -27,3 +27,27 @@ hr {
   border: 1px;
   border-radius: 20.96px;
 }
+
+.modal-dialog .modal-header {
+  border-bottom: none;
+  padding: 10px 1rem 0px 1rem;
+}
+.modal-dialog .modal-footer {
+  border-top: none;
+}
+.modal-dialog .btn-close {
+  font-size: 12px;
+}
+.modal-dialog .modal-body {
+  padding: 0 1rem;
+}
+.modal-dialog input[type="radio"] {
+  outline: 0;
+  margin-top: 2px;
+}
+
+@media only screen and (max-width: 431px) {
+  .modal .modal-dialog {
+    margin-top: 20%;
+  }
+}

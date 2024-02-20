@@ -46,14 +46,12 @@ function EmailModalDialog({
         .required(REQUIRED_FIELD_MESSAGE)
         .email("Invalid Email")
         .matches(EMAIL_FORMAT, "Invalid Email"),
-      password: yup
-        .string()
-        .required(REQUIRED_FIELD_MESSAGE)
-        .min(8, "password must be at least 8 characters")
-        .matches(
-          /^(?=.*[A-Za-z])(?=.*\d).+$/,
-          "Password must contain at least 1 letter and 1 number"
-        ),
+      password: yup.string().required(REQUIRED_FIELD_MESSAGE),
+      // .min(8, "password must be at least 8 characters")
+      // .matches(
+      //   /^(?=.*[A-Za-z])(?=.*\d).+$/,
+      //   "Password must contain at least 1 letter and 1 number"
+      // ),
     }),
   ];
 
