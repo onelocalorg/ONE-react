@@ -45,11 +45,11 @@
     margin-top: 10%;
   }
 
-  [class~="modal-content"] {
+  /* [class~="modal-content"] {
     border: 1px;
     border-radius: 20.96px;
     background-color: #d9d9d9;
-  }
+  } */
   [class~="modal-header"] {
     border-bottom: none;
     padding: 10px 1rem 0px 1rem;
