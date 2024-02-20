@@ -20,12 +20,15 @@ import { PrivateComponent } from "../Components/PrivateComponent";
 import { useSelector } from "react-redux";
 import ExpenseItemComponent from "../Components/ExpenseItemComponent";
 import FinanceAddBtn from "../Components/FinanceAddBtn";
+import PayoutModalDialog from "../Components/PayoutModalDialog";
 
 const MyEventPage = () => {
   const { eventId } = useParams();
   const navigate = useNavigate();
   const scrollToTop = useScrollToTop();
   const userInfo = useSelector((state) => state?.userInfo);
+  const [showPayoutModal, setShowPayoutModal] = useState(false);
+  const [addPayoutType, setAddPayoutType] = useState(null);
 
   const onLastPage = () => {
     navigate("/my-events");
@@ -83,11 +86,19 @@ const MyEventPage = () => {
   }, [eventId]);
 
   function showExpenseAdd() {
+    setAddPayoutType("expense");
+    // setShowPayoutModal(true);
     console.log("Called showExpenseAdd");
   }
 
   function showPayoutAdd() {
+    setAddPayoutType("payout");
+    // setShowPayoutModal(true);
     console.log("Called showPayoutAdd");
+  }
+
+  function hideFunc() {
+    setShowPayoutModal(false);
   }
 
   const onSubmit = async (data) => {};
@@ -198,13 +209,16 @@ const MyEventPage = () => {
                   {/* Blank */}
                 </div>
               </form>
-              <div className={Style.uniqueViewDiv}>
+              <div className={Style.uniqueViewDiv} style={{ display: "none" }}>
                 <div>
                   <div>Unique Views: 3</div>
                   <hr />
                 </div>
               </div>
-              <div className={Style.financialSection}>
+              <div
+                className={Style.financialSection}
+                style={{ display: "none" }}
+              >
                 <div className={Style.financeLbl}>Financials</div>
                 <div>
                   <div className={Style.financeItem}>
@@ -313,7 +327,9 @@ const MyEventPage = () => {
           </div>
         </div>
       </div>
-
+      {showPayoutModal && (
+        <PayoutModalDialog addPayoutType={addPayoutType} hideFunc={hideFunc} />
+      )}
       {loading && <Loader />}
     </>
   );

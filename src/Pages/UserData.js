@@ -16,6 +16,7 @@ import Loader from "../Components/Loader";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserData } from "../Redux/slices/UserSlice";
+import ViewAppModalDialog from "../Components/ViewAppModalDialog";
 
 function UserData() {
   const userInfo = useSelector((state) => state?.userInfo);
@@ -24,12 +25,33 @@ function UserData() {
   const scrollToTop = useScrollToTop();
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(false);
+  const [showAppViewOption, setShowAppViewOption] = useState(false);
   const [pagination, setPagination] = useState({
     totalData: 0,
     page: 1,
     totalPage: 3,
   });
   const { page, totalPage } = pagination;
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
+
+  useEffect(() => {
+    const appViewOption = localStorage.getItem("app_view_option");
+    // if (!appViewOption) {
+    setShowAppViewOption(true);
+    // }
+    const handleResize = () => {
+      setIsMobileOrTablet(window.innerWidth <= 767);
+    };
+
+    // Initial check on mount
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const currentDate = new Date();
   const oneMonthLater = new Date(
@@ -40,6 +62,11 @@ function UserData() {
   const [endDate, setEndDate] = useState(oneMonthLater);
   const [search, setSearch] = useState(false);
   const [filterData, setFilterData] = useState("");
+
+  const handleCloseAppViewDialog = () => {
+    setShowAppViewOption(false);
+    localStorage.setItem("app_view_option", false);
+  };
 
   const fetchMoreData = async () => {
     try {
@@ -275,6 +302,11 @@ function UserData() {
           </div>
         </InfiniteScroll>
       ) : null}
+      <div>
+        {isMobileOrTablet && showAppViewOption && (
+          <ViewAppModalDialog hideFunc={handleCloseAppViewDialog} />
+        )}
+      </div>
     </div>
   );
 }
