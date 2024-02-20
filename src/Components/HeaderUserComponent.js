@@ -5,6 +5,7 @@ import user from "../images/user.png";
 import { useDispatch, useSelector } from "react-redux";
 import { CiLogout } from "react-icons/ci";
 import { FaUser } from "react-icons/fa";
+import { FaCalendarAlt } from "react-icons/fa";
 import { logOutPanel } from "../Redux/thunk/userThunk";
 import ToasterSuccess from "./ToasterSuccess";
 
@@ -90,6 +91,12 @@ const HeaderUserComponent = ({ headerClass, calledFromClass }) => {
               <NavLink to={"/my-profile"} className={headerClass.navLink}>
                 <FaUser />
                 <span className={Style.menuOption}>My Profile</span>
+              </NavLink>
+            </li>
+            <li aria-hidden="true">
+              <NavLink to={"/my-events"} className={headerClass.navLink}>
+                <FaCalendarAlt />
+                <span className={Style.menuOption}>My Events</span>
               </NavLink>
             </li>
             <li onClick={handleLogout} aria-hidden="true">
