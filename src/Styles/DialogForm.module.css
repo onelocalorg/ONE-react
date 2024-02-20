@@ -224,6 +224,51 @@
   color: #fff;
 }
 
+.viewAppDialogItem {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.viewAppBtn {
+  border: 0;
+  outline: 0;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+  border-radius: 20px;
+  height: 30px;
+  width: 100%;
+}
+
+.viewBtn {
+  background-color: #0e80e8;
+}
+
+.downloadAppBtn {
+  background-color: #b69727;
+}
+
+.continueAppBtn {
+  background-color: #6e1111;
+}
+
+.viewAppSubItem {
+  width: 100%;
+  text-align: center;
+}
+
+.viewAppBellIcon {
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+.alreadyText {
+  font-size: 24px;
+  font-weight: 400;
+}
+
 /* Responsive */
 @media only screen and (max-width: 768px) {
   .modalItem {
@@ -259,5 +304,10 @@
 
   .inputField {
     height: 30px;
+  }
+
+  .alreadyText {
+    font-size: 20px;
+    font-weight: 400;
   }
 }
