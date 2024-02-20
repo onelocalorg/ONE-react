@@ -209,13 +209,16 @@ const MyEventPage = () => {
                   {/* Blank */}
                 </div>
               </form>
-              <div className={Style.uniqueViewDiv}>
+              <div className={Style.uniqueViewDiv} style={{ display: "none" }}>
                 <div>
                   <div>Unique Views: 3</div>
                   <hr />
                 </div>
               </div>
-              <div className={Style.financialSection}>
+              <div
+                className={Style.financialSection}
+                style={{ display: "none" }}
+              >
                 <div className={Style.financeLbl}>Financials</div>
                 <div>
                   <div className={Style.financeItem}>
