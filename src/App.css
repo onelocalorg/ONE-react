@@ -21,3 +21,9 @@ hr {
 .Toastify__toast-body > div:last-child {
   font-size: 0.9rem;
 }
+
+.modal-dialog .modal-content {
+  background-color: #d9d9d9;
+  border: 1px;
+  border-radius: 20.96px;
+}
