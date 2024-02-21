@@ -23,6 +23,7 @@ import { setUserData } from "../Redux/slices/UserSlice";
 import { useDispatch } from "react-redux";
 import whitetent from "../images/white-tent.png";
 import playerIcon from "../images/player.png";
+import backgroundDefault from "../images/background-default.png";
 
 const MyProfileForm = ({ userInfo }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -200,6 +201,16 @@ const MyProfileForm = ({ userInfo }) => {
     }
   };
 
+  const handleError = (event, type) => {
+    // Handle image loading error
+    if (type === "backgroundImg") {
+      event.target.src = backgroundDefault;
+    } else {
+      event.target.src = user;
+    }
+    event.target.onerror = null; // To avoid infinite loop in case the backup image also fails
+  };
+
   const userProfileImage = userInfo?.userData?.profile_image ? (
     <>
       <input
@@ -212,7 +223,12 @@ const MyProfileForm = ({ userInfo }) => {
         className={style.editProfileImgIcon}
         onClick={(e) => handleImageClick(e, PROFILE_PIC)}
       />
-      <img src={profileImage} alt="user" className={style.profileImage} />
+      <img
+        src={profileImage}
+        alt="user"
+        className={style.profileImage}
+        onError={(e) => handleError(e, "profileImg")}
+      />
     </>
   ) : (
     <>
@@ -246,6 +262,7 @@ const MyProfileForm = ({ userInfo }) => {
         src={profileCoverImage}
         alt="background"
         className={style.profileBackImage}
+        onError={(e) => handleError(e, "backgroundImg")}
       />
     </>
   ) : (
@@ -392,7 +409,7 @@ const MyProfileForm = ({ userInfo }) => {
             <div className={`${style.profileField} ${style.profileInputField}`}>
               <input
                 type={"text"}
-                placeholder={"Add a skill (Press Enter to add)"}
+                placeholder={"Add a skill (Press enter to add)"}
                 name={"skills"}
                 className={`${defaultStyle.input} ${style.inputField}`}
                 onKeyDown={handleEnterPress}
