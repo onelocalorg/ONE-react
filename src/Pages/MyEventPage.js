@@ -142,12 +142,15 @@ const MyEventPage = () => {
                 </div>
                 <div className={Style.infoDiv}>
                   <div className={Style.date}>
-                    {eventData
+                    {/* {eventData
                       ? moment(eventData?.start_date).format("MMMM DD, YYYY")
+                      : ""} */}
+                    {eventData?.start_date_label
+                      ? eventData?.start_date_label
                       : ""}
                   </div>
                   <div className={Style.timing}>
-                    {eventData
+                    {/* {eventData
                       ? moment(eventData?.start_date).format("ddd")
                       : ""}
                     ,{" "}
@@ -157,6 +160,9 @@ const MyEventPage = () => {
                     -{" "}
                     {eventData
                       ? moment(eventData?.end_date).format("hh:mm A")
+                      : ""} */}
+                    {eventData?.start_date_label
+                      ? `${eventData?.start_day_label}, ${eventData?.start_time_label} - ${eventData?.end_time_label}`
                       : ""}
                   </div>
                 </div>
