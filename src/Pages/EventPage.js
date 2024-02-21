@@ -45,6 +45,11 @@ const EventPage = () => {
   const onLastPage = () => {
     navigate("/");
   };
+  const handleRedirectProfile = () => {
+    if (userInfo?.userData?.userId === eventData?.eventProducer?.id) {
+      navigate("/my-profile");
+    }
+  };
 
   const schema = yup.object().shape({
     ticket: yup.string().required("Do check ticket before buy"),
@@ -280,7 +285,12 @@ const EventPage = () => {
                 className={Style.boxes}
                 style={{
                   width: "90%",
+                  cursor:
+                    userInfo?.userData?.userId === eventData?.eventProducer?.id
+                      ? "pointer"
+                      : "auto",
                 }}
+                onClick={handleRedirectProfile}
               >
                 <div
                   className={Style.producerDiv}
