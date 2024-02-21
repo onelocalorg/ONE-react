@@ -24,6 +24,7 @@
 
 .profileBackContainer {
   width: 100%;
+  min-height: 177px;
 }
 
 .profileBackImage {
@@ -287,6 +288,10 @@
     max-height: 144px;
     min-height: 144px;
   }
+
+  .profileBackContainer {
+    min-height: 144px;
+  }
 }
 @media only screen and (max-width: 431px) {
   .formContainer {
@@ -341,6 +346,10 @@
 
   .profileBackImage {
     max-height: 110px;
+    min-height: 110px;
+  }
+
+  .profileBackContainer {
     min-height: 110px;
   }
 }

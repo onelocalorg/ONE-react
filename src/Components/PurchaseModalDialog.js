@@ -142,17 +142,38 @@ function PurchaseModalDialog({
 
   const addAppendCard = async () => {
     if (cardList.length === 0) {
-      const response = await addNewCardAPI({
-        token: stripeCardStatus?.token?.id,
-      });
-      setloadingFunc(false);
-      setUpdatedCardList(response);
+      try {
+        const response = await addNewCardAPI({
+          token: stripeCardStatus?.token?.id,
+        });
+        if (response?.success) {
+          setloadingFunc(false);
+          setUpdatedCardList(response);
+        } else {
+          ToasterError(response?.message || "Invalid Card", 2000);
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setloadingFunc(false);
+      }
     } else {
-      const response = await appendNewCardAPI({
-        token: stripeCardStatus?.token?.id,
-      });
-      setloadingFunc(false);
-      setUpdatedCardList(response);
+      try {
+        const response = await appendNewCardAPI({
+          token: stripeCardStatus?.token?.id,
+        });
+
+        if (response?.success) {
+          setloadingFunc(false);
+          setUpdatedCardList(response);
+        } else {
+          ToasterError(response?.message || "Invalid Card", 2000);
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setloadingFunc(false);
+      }
     }
   };
 
