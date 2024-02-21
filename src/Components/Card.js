@@ -13,6 +13,8 @@ const Card = ({
   locationPin,
   address,
   detailType,
+  start_date_label,
+  start_time_label,
 }) => {
   const navigate = useNavigate();
 
@@ -32,7 +34,8 @@ const Card = ({
 
       <div className={Style.infoDiv}>
         <div className={Style.dateTime}>
-          {moment(start_date).format("ddd, MMM D - h:mm A")}
+          {/* {moment(start_date).format("ddd, MMM D - h:mm A")} */}
+          {`${start_date_label} - ${start_time_label}`}
         </div>
         <div className={Style.eventName}>{name}</div>
         <div className={Style.addWrapper}>

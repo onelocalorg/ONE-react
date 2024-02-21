@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { listEvents, getUserDetails } from "../api/services";
 import Style from "../Styles/UserData.module.css";
+import "../Styles/UserDataList.css";
 import moment from "moment";
 import EventFilterComponent from "../Components/EventFilterComponent";
 
@@ -79,7 +80,8 @@ function UserData() {
       };
 
       const response = await listEvents(pagination.page, data);
-      const eventList = response.data.events;
+      // const eventList = response.data.events;
+      const eventList = response?.data?.results;
 
       if (eventList.length > 0) {
         setPagination((prev) => ({
@@ -124,7 +126,8 @@ function UserData() {
       };
 
       const response = await listEvents(1, data);
-      const eventList = response.data.events;
+      // const eventList = response.data.events;
+      const eventList = response?.data?.results;
 
       if (eventList.length > 0) {
         setPagination((prev) => ({
@@ -198,7 +201,9 @@ function UserData() {
       setItems([]); //Clear all data when new search
       setIsLoading(true);
       const res = await listEvents(1, initialDate);
-      const dataToShow = res?.data?.events;
+
+      // const dataToShow = res?.data?.events;
+      const dataToShow = res?.data?.results;
 
       // On scroll new request was not called so added this lines
       if (dataToShow.length > 0) {
@@ -228,6 +233,52 @@ function UserData() {
   //   });
 
   const filteredEvents = items;
+
+  // const appEventData = filteredEvents.map((event, index) => (
+  //   <Card
+  //     eventId={event?.id}
+  //     key={index}
+  //     index={index}
+  //     tent={tent}
+  //     img={event?.event_image}
+  //     start_date={event?.start_date}
+  //     name={event?.name}
+  //     full_address={event?.full_address}
+  //     locationPin={locationPin}
+  //     ticket={event?.tickets}
+  //     address={event?.address}
+  //     eventProducer={event?.eventProducer}
+  //   />
+  // ));
+
+  const appEventData = filteredEvents.map((eventItem, index) => (
+    <React.Fragment key={index}>
+      <div>
+        <div className={`${Style.eventSticky} followMeBar`}>
+          <span className={Style.mainLabel}>{eventItem?.date_title}</span>
+          <span className={Style.subLabel}>({eventItem?.day_title})</span>
+        </div>
+      </div>
+      {eventItem?.events.map((event, indexinner) => (
+        <Card
+          eventId={event?.id}
+          key={indexinner}
+          indexinner={index}
+          tent={tent}
+          img={event?.event_image}
+          start_date={event?.start_date}
+          name={event?.name}
+          full_address={event?.full_address}
+          locationPin={locationPin}
+          ticket={event?.tickets}
+          address={event?.address}
+          start_date_label={event?.start_date_label}
+          start_time_label={event?.start_time_label}
+          eventProducer={event?.eventProducer}
+        />
+      ))}
+    </React.Fragment>
+  ));
 
   return (
     <div className={Style.maindiv}>
@@ -282,22 +333,7 @@ function UserData() {
                 Please select a date interval to fetch data
               </p>
             ) : (
-              filteredEvents.map((event, index) => (
-                <Card
-                  eventId={event?.id}
-                  key={index}
-                  index={index}
-                  tent={tent}
-                  img={event?.event_image}
-                  start_date={event?.start_date}
-                  name={event?.name}
-                  full_address={event?.full_address}
-                  locationPin={locationPin}
-                  ticket={event?.tickets}
-                  address={event?.address}
-                  eventProducer={event?.eventProducer}
-                />
-              ))
+              appEventData
             )}
           </div>
         </InfiniteScroll>
