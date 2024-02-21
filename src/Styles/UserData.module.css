@@ -274,6 +274,25 @@
   align-items: center;
 }
 
+.eventSticky {
+  min-width: 500px;
+  max-width: 500px;
+  margin: auto;
+  background-color: #f6b716;
+  padding-left: 20px;
+  border-radius: 20px;
+}
+
+.mainLabel {
+  font-size: 20px;
+  color: #fff;
+}
+.subLabel {
+  font-size: 12px;
+  color: #fff;
+  padding-left: 10px;
+}
+
 @media only screen and (max-width: 768px) {
   .headerdiv {
     flex-wrap: wrap;
@@ -383,5 +402,10 @@
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
+  }
+
+  .eventSticky {
+    width: 95%;
+    min-width: 95%;
   }
 }

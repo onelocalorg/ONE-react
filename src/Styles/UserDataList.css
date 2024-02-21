@@ -1,0 +1,29 @@
+.followMeBar {
+  min-width: 500px;
+  max-width: 500px;
+  margin: auto;
+  background-color: #bf820a;
+  padding-left: 20px;
+  border-radius: 20px;
+}
+
+.followMeBar.fixed {
+  position: fixed;
+  width: 100%;
+  box-sizing: border-box;
+  top: 130px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.followMeBar.fixed.absolute {
+  position: absolute;
+}
+
+@media only screen and (max-width: 431px) {
+  .followMeBar.fixed {
+    top: 112px;
+    width: 95%;
+  }
+}
