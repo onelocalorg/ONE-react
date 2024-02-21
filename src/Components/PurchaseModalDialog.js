@@ -141,7 +141,7 @@ function PurchaseModalDialog({
   };
 
   const addAppendCard = async () => {
-    if (cardList.length === 0) {
+    if (cardList.length === 0 || (cardList.length && !cardList[0]?.id)) {
       try {
         const response = await addNewCardAPI({
           token: stripeCardStatus?.token?.id,
