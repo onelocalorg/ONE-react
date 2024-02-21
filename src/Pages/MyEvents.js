@@ -291,6 +291,8 @@ function MyEvents() {
       address={event?.address}
       eventProducer={event?.eventProducer}
       detailType="my-event"
+      start_date_label={event?.start_date_label}
+      start_time_label={event?.start_time_label}
     />
   ));
 

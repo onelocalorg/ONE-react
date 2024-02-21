@@ -392,7 +392,7 @@ const MyProfileForm = ({ userInfo }) => {
             <div className={`${style.profileField} ${style.profileInputField}`}>
               <input
                 type={"text"}
-                placeholder={"Add a skill"}
+                placeholder={"Add a skill (Press Enter to add)"}
                 name={"skills"}
                 className={`${defaultStyle.input} ${style.inputField}`}
                 onKeyDown={handleEnterPress}

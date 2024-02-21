@@ -250,35 +250,51 @@ function UserData() {
   //     eventProducer={event?.eventProducer}
   //   />
   // ));
+  const itemUniqueArray = [];
+  const appEventData = filteredEvents.map((eventItem, index) => {
+    // Create Unique Key for separation
+    const dateTimeKey = `${eventItem?.date_title} ${eventItem?.day_title}`;
+    let stringWithoutSpacesAndCommas = dateTimeKey.replace(/[\s,]/g, " ");
+    let resultString = stringWithoutSpacesAndCommas
+      .split(" ")
+      .join("")
+      .toLowerCase();
+    itemUniqueArray.push(resultString);
+    let occurrences = itemUniqueArray.filter(
+      (item) => item === resultString
+    ).length;
 
-  const appEventData = filteredEvents.map((eventItem, index) => (
-    <React.Fragment key={index}>
-      <div>
-        <div className={`${Style.eventSticky} followMeBar`}>
-          <span className={Style.mainLabel}>{eventItem?.date_title}</span>
-          <span className={Style.subLabel}>({eventItem?.day_title})</span>
-        </div>
-      </div>
-      {eventItem?.events.map((event, indexinner) => (
-        <Card
-          eventId={event?.id}
-          key={indexinner}
-          indexinner={index}
-          tent={tent}
-          img={event?.event_image}
-          start_date={event?.start_date}
-          name={event?.name}
-          full_address={event?.full_address}
-          locationPin={locationPin}
-          ticket={event?.tickets}
-          address={event?.address}
-          start_date_label={event?.start_date_label}
-          start_time_label={event?.start_time_label}
-          eventProducer={event?.eventProducer}
-        />
-      ))}
-    </React.Fragment>
-  ));
+    return (
+      <React.Fragment key={index}>
+        {occurrences == 1 && (
+          <div>
+            <div className={`${Style.eventSticky} followMeBar`}>
+              <span className={Style.mainLabel}>{eventItem?.date_title}</span>
+              <span className={Style.subLabel}>({eventItem?.day_title})</span>
+            </div>
+          </div>
+        )}
+        {eventItem?.events.map((event, indexinner) => (
+          <Card
+            eventId={event?.id}
+            key={indexinner}
+            indexinner={index}
+            tent={tent}
+            img={event?.event_image}
+            start_date={event?.start_date}
+            name={event?.name}
+            full_address={event?.full_address}
+            locationPin={locationPin}
+            ticket={event?.tickets}
+            address={event?.address}
+            start_date_label={event?.start_date_label}
+            start_time_label={event?.start_time_label}
+            eventProducer={event?.eventProducer}
+          />
+        ))}
+      </React.Fragment>
+    );
+  });
 
   return (
     <div className={Style.maindiv}>
