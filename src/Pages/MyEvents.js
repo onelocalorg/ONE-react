@@ -128,9 +128,9 @@ function MyEvents() {
       if (eventList?.length > 0) {
         setPagination((prev) => ({
           ...prev,
-          totalData: response.data.totalEvents,
+          totalData: response.data.totalResults,
           page: prev.page + 1,
-          totalPage: response.data.totalPage,
+          totalPage: response.data.totalPages,
         }));
       }
 
@@ -173,12 +173,12 @@ function MyEvents() {
       if (eventList?.length > 0) {
         setPagination((prev) => ({
           ...prev,
-          totalData: response.data.totalEvents,
+          totalData: response.data.totalResults,
           page: 2,
-          totalPage: response.data.totalPage,
+          totalPage: response.data.totalPages,
         }));
 
-        setHasMore(2 < response?.data?.totalPage + 1);
+        setHasMore(2 < response?.data?.totalPages + 1);
       }
 
       if (!eventList || eventList?.length === 0) {
@@ -253,9 +253,9 @@ function MyEvents() {
       if (dataToShow?.length > 0) {
         setPagination((prev) => ({
           ...prev,
-          totalData: res?.data?.totalEvents,
+          totalData: res?.data?.totalResults,
           page: 2,
-          totalPage: res?.data?.totalPage,
+          totalPage: res?.data?.totalPages,
         }));
       }
       setHasMore(page < totalPage + 1);
