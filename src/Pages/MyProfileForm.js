@@ -82,8 +82,8 @@ const MyProfileForm = ({ userInfo }) => {
       setIsLoading(true);
       const response = await getConnectLinkAPI();
 
-      if (response?.data?.data) {
-        const linkUrl = response?.data?.data || "";
+      if (response?.data) {
+        const linkUrl = response?.data || "";
         if (linkUrl !== "") {
           window.open(linkUrl, "_self");
         }
@@ -288,9 +288,10 @@ const MyProfileForm = ({ userInfo }) => {
         </div>
         <div className={style.profileImageContainer}>{userProfileImage}</div>
       </div>
-      {!userInfo?.userData?.isConnectedLinked && (
-        <div className={style.profileItem}>
-          <div className={`${style.profileField} ${style.connectBtn}`}>
+
+      <div className={style.profileItem}>
+        <div className={`${style.profileField} ${style.connectBtn}`}>
+          {!userInfo?.userData?.isConnectedLinked ? (
             <button className={style.linkPayBtn} onClick={getConnectLink}>
               <img
                 src={currencyIcon}
@@ -299,9 +300,19 @@ const MyProfileForm = ({ userInfo }) => {
               />
               Link Payout Method
             </button>
-          </div>
+          ) : (
+            <button className={style.linkPayBtn}>
+              <img
+                src={currencyIcon}
+                alt="currency"
+                className={style.linkPayIcon}
+              />
+              Payout Method Connected
+            </button>
+          )}
         </div>
-      )}
+      </div>
+
       {/* <div className={style.profileTitleItem}>
         <div className={style.profileTitle}>
           {`${userInfo?.userData?.first_name || ""} ${
