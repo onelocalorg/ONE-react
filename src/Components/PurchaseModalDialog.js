@@ -241,7 +241,7 @@ function PurchaseModalDialog({
 
   const submitBuyData = async () => {
     const linktoTicketPurchase = ticketData.find(
-      (item) => item.price === Number(ticketFormVal.ticket)
+      (item) => item.id === ticketFormVal.ticket
     );
     setloadingFunc(true);
     const responseData = await submitPurchaseData(
