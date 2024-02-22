@@ -82,8 +82,8 @@ const MyProfileForm = ({ userInfo }) => {
       setIsLoading(true);
       const response = await getConnectLinkAPI();
 
-      if (response?.data?.data) {
-        const linkUrl = response?.data?.data || "";
+      if (response?.data) {
+        const linkUrl = response?.data || "";
         if (linkUrl !== "") {
           window.open(linkUrl, "_self");
         }
