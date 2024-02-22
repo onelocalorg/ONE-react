@@ -157,7 +157,7 @@ const EventPage = () => {
         if (formVal?.ticket) {
           setloading(true);
           const linktoTicketPurchase = ticketData.filter(
-            (item) => item.price === Number(formVal?.ticket)
+            (item) => item.id === formVal?.ticket
           );
 
           if (linktoTicketPurchase) {
@@ -191,7 +191,7 @@ const EventPage = () => {
           setloading(true);
 
           const linktoTicketPurchase = ticketData.filter(
-            (item) => item.price === Number(formVal?.ticket)
+            (item) => item.id === formVal?.ticket
           );
 
           // API call to get the amount of tickets
@@ -354,7 +354,8 @@ const EventPage = () => {
                         inputRef={"ticket"}
                         name={"ticket"}
                         id={ticketitem.id}
-                        value={Number(ticketitem?.price)}
+                        // value={Number(ticketitem?.price)}
+                        value={ticketitem?.id}
                         style={{ height: "18px" }}
                         disabled={
                           ticketitem?.max_quantity_to_show === 0 ? true : false
@@ -387,7 +388,7 @@ const EventPage = () => {
                         )}
                       </label>
 
-                      {Number(formVal.ticket) === ticketitem.price && (
+                      {formVal.ticket === ticketitem.id && (
                         <>
                           <InputWithPlusAndMinusComponent
                             type="number"
