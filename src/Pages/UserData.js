@@ -18,6 +18,7 @@ import { useScrollToTop } from "../hooks/useScrollToTop";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserData } from "../Redux/slices/UserSlice";
 import ViewAppModalDialog from "../Components/ViewAppModalDialog";
+import { deleteCookie, getCookie, setCookie } from "../utils/CookieManager";
 
 function UserData() {
   const userInfo = useSelector((state) => state?.userInfo);
@@ -36,10 +37,26 @@ function UserData() {
   const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
 
   useEffect(() => {
-    const appViewOption = localStorage.getItem("app_view_option");
-    // if (!appViewOption) {
-    setShowAppViewOption(true);
-    // }
+    // Show app popup once in a hour
+    const appViewflag = getCookie("app_view_option");
+    if (appViewflag) {
+      const expirationTime = 60; // 1 hour in minutes
+      const currentTime = new Date().getTime();
+      const cookieExpirationTime =
+        parseInt(appViewflag) + expirationTime * 60 * 1000;
+
+      if (currentTime < cookieExpirationTime) {
+        setShowAppViewOption(false);
+      } else {
+        setShowAppViewOption(true);
+        deleteCookie("app_view_option");
+      }
+    } else {
+      const currentTime = new Date().getTime();
+      setCookie("app_view_option", currentTime, 60); // Set cookie to expire in 1 hour
+    }
+
+    //
     const handleResize = () => {
       setIsMobileOrTablet(window.innerWidth <= 767);
     };
