@@ -40,7 +40,7 @@ function UserData() {
     // Show app popup once in a hour
     const appViewflag = getCookie("app_view_option");
     if (appViewflag) {
-      const expirationTime = 60; // 1 hour in minutes
+      const expirationTime = 120; // 1 hour in minutes
       const currentTime = new Date().getTime();
       const cookieExpirationTime =
         parseInt(appViewflag) + expirationTime * 60 * 1000;
