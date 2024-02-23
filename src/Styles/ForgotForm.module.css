@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border: 1px solid #db9791;
+  border: 1px solid #a5c4aa;
   border-radius: 20px;
 }
 
@@ -18,7 +18,7 @@
 }
 
 .h2 {
-  color: #171717;
+  /* color: #171717; */
   font-size: 40px;
 }
 
@@ -30,11 +30,11 @@
 }
 
 .h2 span:hover {
-  color: #171717;
+  /* color: #171717; */
 }
 
 .h3 {
-  color: #171717;
+  /* color: #171717; */
   font-size: 30px;
 }
 
@@ -43,7 +43,7 @@
 }
 
 .notify span {
-  color: #171717;
+  /* color: #171717; */
 }
 
 .passIcon {
@@ -78,7 +78,8 @@
 }
 
 .loginLink {
-  color: #6f1111;
+  /* color: #6f1111; */
+  color: #fff;
   text-decoration: none;
   cursor: pointer;
   transition: all 1s ease;
@@ -114,7 +115,7 @@
   }
 
   .h3 {
-    color: #171717;
+    /* color: #171717; */
     font-size: 25px;
   }
 }

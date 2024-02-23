@@ -45,7 +45,10 @@ function MyEventFilterComponent({ setFilterData, filterData }) {
       <div className={Style.upperHeader}>
         <div className={Style.brandText} onClick={goToHomePage}>
           <img src={logo} alt="logo" className={Style.oneLogo} />
-          <div className={Style.brand}>NE</div>
+          <div>
+            <div className={Style.brand}>NE</div>
+            <div className={Style.subBrand}>Boulder, CO</div>
+          </div>
         </div>
 
         <HeaderUserComponent headerClass={Style} />
