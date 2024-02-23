@@ -23,7 +23,12 @@ const HeaderComponent = () => {
         aria-hidden="true"
       >
         <img src={logo} alt="logo" className={HeaderStyle.oneLogo} />
-        <h2 className={HeaderStyle.brand}>NE</h2>
+        {/* <h2 className={HeaderStyle.brand}>NE</h2>
+        <div className={HeaderStyle.subBrand}>Boulder, CO</div> */}
+        <div>
+          <div className={HeaderStyle.brand}>NE</div>
+          <div className={HeaderStyle.subBrand}>Boulder, CO</div>
+        </div>
       </div>
 
       <HeaderUserComponent
