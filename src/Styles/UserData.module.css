@@ -177,7 +177,7 @@
   overflow: visible;
   position: fixed;
   z-index: 5;
-  background-color: #6f1111;
+  background-color: #003333;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -204,6 +204,7 @@
   color: #fff;
   flex-shrink: 0;
   font-family: "Noto Sans", sans-serif;
+  line-height: 52px;
 }
 
 .userCover {
@@ -227,11 +228,12 @@
   justify-content: center;
   align-items: center;
   gap: 8px;
-  background: rgba(255, 255, 255, 0.25);
+  /* background: rgba(255, 255, 255, 0.25); */
+  background: #194747;
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   backdrop-filter: blur(1.5px);
   -webkit-backdrop-filter: blur(1.5px);
-  border-radius: 10px;
+  border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   padding: 8px 8px;
 }
@@ -291,6 +293,13 @@
   font-size: 12px;
   color: #fff;
   padding-left: 10px;
+}
+
+.subBrand {
+  font-size: 14px;
+  letter-spacing: normal;
+  font-weight: 400;
+  font-family: "Average Sans";
 }
 
 @media only screen and (max-width: 768px) {

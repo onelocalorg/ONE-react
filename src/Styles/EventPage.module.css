@@ -1,7 +1,7 @@
 .mainDiv {
   width: 100%;
   min-height: inherit;
-  background-color: #e6e6e6;
+  /* background-color: #e6e6e6; */
 }
 
 .dataContainer {
@@ -193,7 +193,7 @@
   overflow: visible;
   position: fixed;
   z-index: 5;
-  background-color: #6f1111;
+  /* background-color: #6f1111; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -251,6 +251,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  color: #212529;
 }
 
 .disabled {

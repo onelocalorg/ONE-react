@@ -1,6 +1,6 @@
 :root {
   --primary-color: #7a40f2f2;
-  --background-color-main: #f2f8fd;
+  --background-color-main: #003333;
 }
 
 .App {
@@ -10,8 +10,9 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #e6e6e6;
+  background-color: #003333;
   overflow-y: auto;
+  color: #fff;
 }
 
 hr {

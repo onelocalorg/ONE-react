@@ -6,7 +6,7 @@
   overflow: visible;
   position: fixed;
   z-index: 5;
-  background-color: #6f1111;
+  background-color: #003333;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,6 +23,15 @@
   font-weight: 300;
   letter-spacing: -5px;
   color: #fff;
+  line-height: 52px;
+  font-family: "Noto Sans", sans-serif;
+}
+
+.subBrand {
+  font-size: 14px;
+  letter-spacing: normal;
+  font-weight: 400;
+  font-family: "Average Sans";
 }
 
 .userCover {
