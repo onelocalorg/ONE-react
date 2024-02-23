@@ -237,9 +237,10 @@ function UserData() {
       setItems(dataToShow);
     };
     // fetchDataOfMonth();
+
     const timeoutId = setTimeout(fetchDataOfMonth, 500); // Adjust the delay as needed (e.g., 500 milliseconds)
     return () => clearTimeout(timeoutId);
-  }, [filterData]);
+  }, [filterData, startDate, endDate]);
   // comment
   // const filteredEvents =
   //   items &&
