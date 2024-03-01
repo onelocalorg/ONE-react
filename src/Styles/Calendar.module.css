@@ -1,0 +1,88 @@
+.calendarContainer {
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  /* gap: 15px; */
+  cursor: pointer;
+  margin-top: 10px;
+  flex-direction: column;
+}
+
+.dateContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+}
+
+.calndarIcon {
+  width: 33.6px;
+  height: 33.6px;
+}
+
+.hiddenDateSection {
+  width: 65%;
+  margin: auto;
+  height: 0;
+}
+
+.dateText {
+  font-size: 24px;
+}
+
+@media only screen and (max-width: 1300px) {
+  .hiddenDateSection {
+    width: 80%;
+  }
+
+  .dateText {
+    font-size: 20px;
+  }
+
+  .calndarIconImg {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media only screen and (max-width: 431px) {
+  .hiddenDateSection {
+    width: 100%;
+  }
+  .calendarContainer {
+    gap: 10px;
+    font-size: 18px;
+    margin-top: 10px;
+  }
+
+  .dateText {
+    font-size: 14px;
+  }
+
+  .calndarIconImg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .dateContainer {
+    gap: 12px;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  .calendarContainer {
+    margin-top: 30px;
+  }
+
+  .dateText {
+    font-size: 13px;
+  }
+  .calndarIconImg {
+    width: 25px;
+    height: 25px;
+  }
+
+  .dateContainer {
+    gap: 10px;
+  }
+}

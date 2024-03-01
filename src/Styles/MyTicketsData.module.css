@@ -177,7 +177,7 @@
   /* overflow: hidden; */
   overflow: visible;
   position: fixed;
-  /* background-color: #6f1111; */
+  background-color: #003333;
   display: flex;
   justify-content: center;
   align-items: center;

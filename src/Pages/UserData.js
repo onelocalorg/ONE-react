@@ -27,7 +27,7 @@ function UserData() {
   const scrollToTop = useScrollToTop();
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(false);
-  const [showAppViewOption, setShowAppViewOption] = useState(false);
+  const [showAppViewOption, setShowAppViewOption] = useState(true);
   const [pagination, setPagination] = useState({
     totalData: 0,
     page: 1,
@@ -39,8 +39,9 @@ function UserData() {
   useEffect(() => {
     // Show app popup once in a hour
     const appViewflag = getCookie("app_view_option");
+    const expirationTime = 120; // hours in minutes
+
     if (appViewflag) {
-      const expirationTime = 120; // 1 hour in minutes
       const currentTime = new Date().getTime();
       const cookieExpirationTime =
         parseInt(appViewflag) + expirationTime * 60 * 1000;
@@ -53,7 +54,7 @@ function UserData() {
       }
     } else {
       const currentTime = new Date().getTime();
-      setCookie("app_view_option", currentTime, 60); // Set cookie to expire in 1 hour
+      setCookie("app_view_option", currentTime, expirationTime); // Set cookie to expire in 1 hour
     }
 
     //
@@ -237,9 +238,10 @@ function UserData() {
       setItems(dataToShow);
     };
     // fetchDataOfMonth();
+
     const timeoutId = setTimeout(fetchDataOfMonth, 500); // Adjust the delay as needed (e.g., 500 milliseconds)
     return () => clearTimeout(timeoutId);
-  }, [filterData]);
+  }, [filterData, startDate, endDate]);
   // comment
   // const filteredEvents =
   //   items &&

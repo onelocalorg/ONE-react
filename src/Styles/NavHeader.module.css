@@ -1,0 +1,180 @@
+.navHeader {
+  width: 100%;
+  height: 100px;
+  overflow: visible;
+  position: fixed;
+  z-index: 5;
+  background-color: #003333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 62px;
+  z-index: 999;
+}
+
+.filterContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  background: #194747;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(1.5px);
+  -webkit-backdrop-filter: blur(1.5px);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 8px 8px;
+}
+
+.filter {
+  background-color: transparent;
+  border: 0;
+  outline: 0;
+  color: #fff;
+  font-size: 14px;
+}
+
+.filter::placeholder {
+  color: #fff;
+  font-size: 14px;
+}
+
+.clearIcon {
+  cursor: pointer;
+  color: #fff;
+  position: absolute;
+  display: flex;
+  right: 10px;
+}
+
+.upperHeader {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  align-items: center;
+  flex-basis: 50%;
+}
+
+.brandText {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  flex-grow: 1;
+  flex-shrink: 0;
+  width: 80%;
+}
+
+.oneLogo {
+  width: 65px;
+  height: 65px;
+}
+
+.brand {
+  font-size: 52px;
+  font-weight: 300;
+  letter-spacing: -5px;
+  color: #fff;
+  flex-shrink: 0;
+  font-family: "Noto Sans", sans-serif;
+  line-height: 52px;
+}
+
+.subBrand {
+  font-size: 14px;
+  letter-spacing: normal;
+  font-weight: 400;
+  font-family: "Average Sans";
+}
+
+.userCover {
+  height: 70px;
+  width: 70px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  overflow: hidden;
+}
+
+.navLink {
+  text-decoration: none;
+  color: #fff;
+  display: flex;
+  align-items: center;
+}
+
+@media only screen and (max-width: 768px) {
+  .navHeader {
+    padding: 0 30px;
+    flex-wrap: wrap-reverse;
+  }
+
+  .filterContainer {
+    width: 150px;
+    flex-basis: auto;
+    margin: auto;
+    justify-content: flex-start;
+    margin-right: 10px;
+  }
+
+  .upperHeader {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .brandText {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .oneLogo {
+    width: 55px;
+    height: 55px;
+  }
+
+  .brand {
+    font-size: 45px;
+  }
+
+  .userCover {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+@media only screen and (max-width: 431px) {
+  .navHeader {
+    padding: 20px 10px;
+    height: auto;
+    gap: 10px;
+    flex-wrap: wrap-reverse;
+  }
+
+  .filterContainer {
+    width: 150px;
+    flex-basis: auto;
+    margin: auto;
+    justify-content: flex-start;
+  }
+
+  .oneLogo {
+    width: 40px;
+    height: 40px;
+  }
+
+  .brand {
+    font-size: 35px;
+  }
+
+  .userCover {
+    width: 40px;
+    height: 40px;
+  }
+}
