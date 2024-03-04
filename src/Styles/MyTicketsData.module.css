@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -163,36 +165,49 @@
   border: 2px solid #db9791;
 }
 
+.BounderWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
 .searchdiv {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   min-height: 82px;
 }
+.nav {
+  position: fixed;
+  width: 100%;
+  background-color: #003333;
+  z-index: 999;
+}
 
 .navHeader {
-  width: 100%;
+  max-width: 1222px;
+  width: 96%;
+  margin: auto;
   height: 100px;
-  /* border-radius: 0 0 10px 10px; */
-  /* overflow: hidden; */
   overflow: visible;
-  position: fixed;
-  background-color: #003333;
+  /* position: fixed; */
+  z-index: 5;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0 62px;
-  z-index: 999;
+  padding: 0 42px;
 }
 .brandText {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 7px;
+  gap: 2px;
   flex-grow: 1;
   flex-shrink: 0;
   width: 80%;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 .upperHeader {
@@ -208,8 +223,8 @@
   letter-spacing: -5px;
   color: #fff;
   flex-shrink: 0;
-  font-family: "Noto Sans", sans-serif;
   line-height: 52px;
+  font-family: "Be Vietnam Pro", sans-serif !important;
 }
 
 .subBrand {
@@ -217,6 +232,8 @@
   letter-spacing: normal;
   font-weight: 400;
   font-family: "Average Sans";
+  margin-top: -6px;
+  white-space: nowrap;
 }
 
 .userCover {
@@ -256,6 +273,7 @@
   outline: 0;
   color: #fff;
   font-size: 14px;
+  width: 100%;
 }
 
 .filter::placeholder {
@@ -361,7 +379,7 @@
     flex-basis: auto;
     margin: auto;
     justify-content: flex-start;
-    margin-right: 10px;
+    /* margin-right: 10px; */
   }
   .upperHeader {
     display: flex;
@@ -396,11 +414,22 @@
     gap: 10px;
     flex-wrap: wrap-reverse;
   }
+
+  .filter::placeholder {
+    color: #fff;
+    font-size: 10px;
+  }
+
+  .filter {
+    font-size: 10px;
+  }
   .filterContainer {
     width: 150px;
     flex-basis: auto;
     margin: auto;
     justify-content: flex-start;
+    padding: 4px 4px;
+    gap: 4px;
   }
   .userCover {
     width: 40px;
@@ -446,6 +475,10 @@
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
+  }
+  .subBrand {
+    font-size: 10px;
+    margin-top: -15px;
   }
 
   .eventSticky {

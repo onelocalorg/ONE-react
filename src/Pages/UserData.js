@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { listEvents, getUserDetails } from "../api/services";
+import {
+  listEvents,
+  getUserDetails,
+  getRecentJoinedUsers,
+} from "../api/services";
 import Style from "../Styles/UserData.module.css";
 import "../Styles/UserDataList.css";
 import moment from "moment";
@@ -19,6 +23,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUserData } from "../Redux/slices/UserSlice";
 import ViewAppModalDialog from "../Components/ViewAppModalDialog";
 import { deleteCookie, getCookie, setCookie } from "../utils/CookieManager";
+import HeaderFiltersComponent from "../Components/HeaderFiltersComponent";
+
+//icons for buttonbadge
+import eventicon from "../images/icons-badge/Events.svg";
+import orgs from "../images/icons-badge/Orgs.svg";
+import sharing from "../images/icons-badge/Sharing.svg";
+import services from "../images/icons-badge/Services.svg";
+import roles from "../images/icons-badge/Roles.svg";
+import products from "../images/icons-badge/Products.svg";
+import people from "../images/icons-badge/People.svg";
+import resources from "../images/icons-badge/Resources.svg";
+import groups from "../images/icons-badge/GroupIcon.svg";
+import project from "../images/icons-badge/Projects.svg";
+import UserBadgeComponent from "../Components/UserBadgeComponent";
 
 function UserData() {
   const userInfo = useSelector((state) => state?.userInfo);
@@ -81,6 +99,9 @@ function UserData() {
   const [endDate, setEndDate] = useState(oneMonthLater);
   const [search, setSearch] = useState(false);
   const [filterData, setFilterData] = useState("");
+  const [recentJoinedusers, setrecentJoinedusers] = useState([
+    { status: "pending", data: [] },
+  ]);
 
   const handleCloseAppViewDialog = () => {
     setShowAppViewOption(false);
@@ -315,6 +336,79 @@ function UserData() {
     );
   });
 
+  const headerFilterData = [
+    { id: 0, label: "Events", icon: eventicon, bgColor: "#CB5555", to: "/" },
+    { id: 1, label: "Orgs", icon: orgs, bgColor: "#BF820A", to: "/orgs" },
+    {
+      id: 2,
+      label: "Sharing",
+      icon: sharing,
+      bgColor: "#197127",
+      to: "/sharing",
+    },
+    {
+      id: 3,
+      label: "Services",
+      icon: services,
+      bgColor: "#0E80E8",
+      to: "/services",
+    },
+    { id: 4, label: "Roles", icon: roles, bgColor: "#6AB79D", to: "/roles" },
+    {
+      id: 5,
+      label: "Products",
+      icon: products,
+      bgColor: "#7744B0",
+      to: "/products",
+    },
+    {
+      id: 6,
+      label: "People",
+      icon: people,
+      bgColor: "#BE72A4",
+      to: "/peoples",
+    },
+    {
+      id: 7,
+      label: "Resources",
+      icon: resources,
+      bgColor: "#8B491A",
+      to: "/resources",
+    },
+    { id: 8, label: "Gropus", icon: groups, bgColor: "#E8B635", to: "/groups" },
+    {
+      id: 9,
+      label: "Projects",
+      icon: project,
+      bgColor: "#CB5601",
+      to: "/projects",
+    },
+  ];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (
+          localStorage.getItem("loggedIn") === "true" ||
+          localStorage.getItem("loggedIn") === true
+        ) {
+          const data1 = {
+            user_lat: Number(localStorage.getItem("lat")),
+            user_long: Number(localStorage.getItem("lang")),
+          };
+          const data = await getRecentJoinedUsers(data1);
+          setrecentJoinedusers({
+            status: data?.success ? "fullfilled" : "pending",
+            data: data?.data,
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <div className={Style.maindiv}>
       <EventFilterComponent
@@ -327,7 +421,11 @@ function UserData() {
         // filter={items ? true : false}
         setFilterData={setFilterData}
         filterData={filterData}
+        child={<HeaderFiltersComponent data={headerFilterData} />}
+        recentUserData={recentJoinedusers?.data}
+        recentUserStatus={recentJoinedusers?.status}
       />
+
       {isLoading && <Loader />}
       {!items.length && !isLoading ? (
         <p

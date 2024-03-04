@@ -52,3 +52,7 @@ hr {
     margin-top: 20%;
   }
 }
+
+.bagde.active {
+  border: 3px solid #fff;
+}

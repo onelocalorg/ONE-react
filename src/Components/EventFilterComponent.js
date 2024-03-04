@@ -9,6 +9,8 @@ import HeaderUserComponent from "./HeaderUserComponent";
 import { IoMdClose } from "react-icons/io";
 import CalendarFilterComponent from "./CalendarFilterComponent";
 import NavHeaderComponent from "./NavHeaderComponent";
+import UserBadgeComponent from "./UserBadgeComponent";
+import { useSelector } from "react-redux";
 
 function EventFilterComponent({
   startDate,
@@ -19,6 +21,9 @@ function EventFilterComponent({
   filter,
   setFilterData,
   filterData,
+  child,
+  recentUserData,
+  recentUserStatus,
 }) {
   const navigate = useNavigate();
 
@@ -34,6 +39,9 @@ function EventFilterComponent({
     setFilterData("");
   };
 
+  const userInfo = useSelector((state) => state?.userInfo);
+  console.log(userInfo);
+
   return (
     <>
       <NavHeaderComponent
@@ -41,6 +49,18 @@ function EventFilterComponent({
         filterData={filterData}
       />
       <div className={Style.filterdiv}>
+        <>{child}</>
+        <div className={Style.userJoined}>
+          {userInfo?.userData !== null &&
+            recentUserStatus === "fullfilled" &&
+            recentUserData.map((user) => (
+              <UserBadgeComponent
+                src={user?.pic}
+                key={user?.user_unique_id}
+                recentUserId={user?.id}
+              />
+            ))}
+        </div>
         <CalendarFilterComponent
           startDate={startDate}
           endDate={endDate}
