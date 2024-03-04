@@ -15,7 +15,7 @@ const HeaderComponent = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          gap: "7px",
+          gap: "0px",
           flexGrow: "1",
           cursor: "pointer",
         }}
@@ -25,9 +25,19 @@ const HeaderComponent = () => {
         <img src={logo} alt="logo" className={HeaderStyle.oneLogo} />
         {/* <h2 className={HeaderStyle.brand}>NE</h2>
         <div className={HeaderStyle.subBrand}>Boulder, CO</div> */}
-        <div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            marginLeft: "-0.5px",
+          }}
+        >
           <div className={HeaderStyle.brand}>NE</div>
-          <div className={HeaderStyle.subBrand}>Boulder, CO</div>
+          <div className={HeaderStyle.subBrand} style={{ marginTop: "-6px" }}>
+            Boulder, CO
+          </div>
         </div>
       </div>
 

@@ -23,7 +23,10 @@ function MyEventFilterComponent({ setFilterData, filterData }) {
 
   return (
     <div className={Style.navHeader}>
-      <div className={Style.filterContainer}>
+      <div
+        className={Style.filterContainer}
+        style={{ flex: "1", justifyContent: "flex-start" }}
+      >
         <img src={searchIcon} alt="search.." />
         <input
           type="text"
@@ -31,6 +34,7 @@ function MyEventFilterComponent({ setFilterData, filterData }) {
           placeholder="Search"
           onChange={getFilterOutPut}
           // disabled={!filter}
+          style={{ width: "100%" }}
           value={filterData}
         />
         {filterData ? (
@@ -42,15 +46,41 @@ function MyEventFilterComponent({ setFilterData, filterData }) {
         )}
       </div>
 
-      <div className={Style.upperHeader}>
-        <div className={Style.brandText} onClick={goToHomePage}>
+      <div
+        className={Style.upperHeader}
+        style={{ flex: "1", justifyContent: "center" }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "0px",
+            cursor: "pointer",
+          }}
+          onClick={goToHomePage}
+          aria-hidden="true"
+        >
           <img src={logo} alt="logo" className={Style.oneLogo} />
-          <div>
+          {/* <h2 className={Style.brand}>NE</h2>
+        <div className={Style.subBrand}>Boulder, CO</div> */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              marginLeft: "-0.5px",
+            }}
+          >
             <div className={Style.brand}>NE</div>
-            <div className={Style.subBrand}>Boulder, CO</div>
+            <div className={Style.subBrand} style={{ marginTop: "-6px" }}>
+              Boulder, CO
+            </div>
           </div>
         </div>
-
+      </div>
+      <div style={{ flex: "1" }}>
         <HeaderUserComponent headerClass={Style} />
       </div>
     </div>

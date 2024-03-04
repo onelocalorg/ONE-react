@@ -21,6 +21,7 @@ import { useSelector } from "react-redux";
 import ExpenseItemComponent from "../Components/ExpenseItemComponent";
 import FinanceAddBtn from "../Components/FinanceAddBtn";
 import PayoutModalDialog from "../Components/PayoutModalDialog";
+import arrow from "../images/Shape.svg";
 
 const MyEventPage = () => {
   const { eventId } = useParams();
@@ -210,6 +211,19 @@ const MyEventPage = () => {
                     </div>
                   ))}
                 <hr />
+                <button
+                  type="button"
+                  className={Style.purchase}
+                  style={{
+                    marginTop: "10px",
+                    // pointerEvents: !confirmation ? "none" : "",
+                  }}
+                >
+                  <span>ADMIN TOOLS</span>
+                  <span className={Style.arrowIcon}>
+                    <img src={arrow} alt="arrow" />
+                  </span>
+                </button>
 
                 <div style={{ display: "flex", flexDirection: "column" }}>
                   {/* Blank */}
@@ -329,6 +343,19 @@ const MyEventPage = () => {
                   </div>
                 </div>
               </div>
+              <button
+                type="submit"
+                className={Style.purchase}
+                style={{
+                  marginTop: "10px",
+                  // pointerEvents: !confirmation ? "none" : "",
+                }}
+              >
+                <span>ADMIN TOOLS</span>
+                <span className={Style.arrowIcon}>
+                  <img src={arrow} alt="arrow" />
+                </span>
+              </button>
             </div>
           </div>
         </div>
