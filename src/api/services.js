@@ -127,13 +127,25 @@ export const getUserByEmail = async (email) => {
 export const loginWithEmailApi = async (data) => {
   try {
     const response = await axiosClient.post("/web/auth/login", data);
+    console.log(response?.data?.data);
+    console.log(response?.data?.data?.location);
+    console.log(response?.data?.data?.location?.coordinates[0], "lang");
+    console.log(response?.data?.data?.location?.coordinates[1], "lat");
 
     //to store refrence token
     if (response?.data?.data) {
       const access_token = response?.data?.data?.access_token;
+      const lang = response?.data?.data?.location?.coordinates[0];
+      const lat = response?.data?.data?.location?.coordinates[1];
       const refresh_token = response?.data?.data?.refresh_token;
       localStorage.setItem("access_token", access_token);
       localStorage.setItem("refresh_token", refresh_token);
+      localStorage.setItem("lang", lang);
+      localStorage.setItem("lat", lat);
+      localStorage.setItem(
+        "loggedIn",
+        response?.data?.data?.access_token !== "" ? true : false
+      );
     }
 
     return response?.data;
@@ -303,6 +315,24 @@ export const uploadImageAPI = async (data) => {
   try {
     const response = await axiosClient.post(`/users/upload/file`, data);
 
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getRecentJoinedUsers = async (data) => {
+  try {
+    const response = await axiosClient.post(`/users/recently-joined`, data);
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getSingleUserDetails = async (id) => {
+  try {
+    const response = await axiosClient.get(`/users/userprofile/${id}`);
     return response?.data;
   } catch (error) {
     console.log(error);

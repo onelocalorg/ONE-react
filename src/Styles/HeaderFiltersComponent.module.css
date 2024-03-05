@@ -1,0 +1,39 @@
+.Wrapper {
+  max-width: 1095px;
+  width: 96%;
+  margin: auto;
+  display: flex;
+  gap: 5px;
+  justify-content: flex-start;
+  align-items: center;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  padding: 10px 8px;
+}
+
+.Wrapper::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome, Safari and Opera */
+}
+
+.font {
+  font-size: 14px;
+  line-height: 21px;
+  font-weight: 400;
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+}
+
+.btn {
+  border: 1px solid #fff;
+  border-radius: 20px;
+  color: #fff;
+  padding: 5px 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  text-decoration: none;
+}

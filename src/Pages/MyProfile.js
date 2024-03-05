@@ -11,6 +11,7 @@ import { PrivateComponent } from "../Components/PrivateComponent";
 const MyProfile = () => {
   const scrollToTop = useScrollToTop();
   const userInfo = useSelector((state) => state?.userInfo);
+  console.log(userInfo);
   const dispatch = useDispatch();
 
   useEffect(() => {

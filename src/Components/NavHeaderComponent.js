@@ -24,9 +24,9 @@ function NavHeaderComponent({ setFilterData, filterData }) {
   };
 
   return (
-    <div>
+    <div className={Style.nav}>
       <div className={Style.navHeader}>
-        <div className={Style.filterContainer}>
+        <div className={Style.filterContainer} style={{ flex: "1" }}>
           <img src={searchIcon} alt="search.." />
           <input
             type="text"
@@ -44,20 +44,20 @@ function NavHeaderComponent({ setFilterData, filterData }) {
           )}
         </div>
 
-        <div className={Style.upperHeader}>
-          <div className={Style.brandText} onClick={goToHomePage}>
-            <img src={logo} alt="logo" className={Style.oneLogo} />
-            <div>
-              <div className={Style.brand}>NE</div>
-              <div className={Style.subBrand}>Boulder, CO</div>
-            </div>
+        <div
+          className={Style.brandText}
+          onClick={goToHomePage}
+          style={{ flex: "1" }}
+        >
+          <img src={logo} alt="logo" className={Style.oneLogo} />
+          <div className={Style.BounderWrapper}>
+            <div className={Style.brand}>NE</div>
+            <div className={Style.subBrand}>Boulder, CO</div>
           </div>
-
+        </div>
+        <div style={{ flex: "1" }}>
           <HeaderUserComponent headerClass={Style} />
         </div>
-      </div>
-      <div>
-        <div>Somethinggggg</div>
       </div>
     </div>
   );
