@@ -37,3 +37,38 @@
   gap: 3px;
   text-decoration: none;
 }
+
+@media only screen and (max-width: 768px) {
+  .Wrapper {
+    padding: 10px 0px;
+  }
+  .btn {
+    border: 1px solid #fff;
+    border-radius: 20px;
+    color: #fff;
+    padding: 4px 10px;
+    gap: 3px;
+    font-size: 12px;
+  }
+
+  .icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media only screen and (max-width: 431px) {
+  .btn {
+    border: 0.5px solid #fff;
+    border-radius: 20px;
+    color: #fff;
+    padding: 4px 8px;
+    gap: 3px;
+    font-size: 10px;
+  }
+
+  .icon {
+    width: 13px;
+    height: 13px;
+  }
+}
