@@ -56,3 +56,9 @@ hr {
 .bagde.active {
   border: 3px solid #fff;
 }
+
+@media only screen and (max-width: 768px) {
+  .bagde.active {
+    border: 2px solid #fff;
+  }
+}

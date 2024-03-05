@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import style from "../Styles/UserBadgeComponent.module.css";
 
 const UserBadgeComponent = ({ src, recentUserId }) => {
   const navigate = useNavigate();
@@ -9,17 +10,7 @@ const UserBadgeComponent = ({ src, recentUserId }) => {
   };
   return (
     <>
-      <img
-        onClick={ticketPage}
-        src={src}
-        style={{
-          width: "80px",
-          height: "80px",
-          borderRadius: "50%",
-          flexShrink: 0,
-          cursor: "pointer",
-        }}
-      />
+      <img onClick={ticketPage} src={src} className={style.userbadge} />
     </>
   );
 };
