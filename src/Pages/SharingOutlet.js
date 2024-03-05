@@ -25,8 +25,9 @@ import ViewAppModalDialog from "../Components/ViewAppModalDialog";
 import { deleteCookie, getCookie, setCookie } from "../utils/CookieManager";
 import HeaderFiltersComponent from "../Components/HeaderFiltersComponent";
 import headerFilterData from "../utils/ButtonbadgeData";
+import ComingsoonPage from "./ComingsoonPage";
 
-function UserData() {
+function SharingOutLet({ children }) {
   const userInfo = useSelector((state) => state?.userInfo);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -344,8 +345,9 @@ function UserData() {
           No Events Found
         </p>
       ) : null}
+      {children}
 
-      {items.length ? (
+      {/* {items.length ? (
         <InfiniteScroll
           className={Style.infinitescroll}
           dataLength={items.length}
@@ -381,7 +383,7 @@ function UserData() {
             )}
           </div>
         </InfiniteScroll>
-      ) : null}
+      ) : null} */}
       <div>
         {isMobileOrTablet && showAppViewOption && (
           <ViewAppModalDialog hideFunc={handleCloseAppViewDialog} />
@@ -391,4 +393,4 @@ function UserData() {
   );
 }
 
-export default UserData;
+export default SharingOutLet;

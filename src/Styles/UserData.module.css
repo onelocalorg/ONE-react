@@ -18,6 +18,8 @@
   width: 96%;
   margin: auto;
   padding: 8px 6px;
+  justify-content: center;
+  align-items: center;
 }
 
 .userJoined::-webkit-scrollbar {

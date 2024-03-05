@@ -1,28 +1,22 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getSingleUserDetails } from "../api/services";
+import JoinedProfileForm from "./JoinedProfileForm";
+import { PrivateComponent } from "../Components/PrivateComponent";
+import HeaderComponent from "../Components/HeaderComponent";
+import style from "../Styles/MyProfile.module.css";
 
 const JoinedUser = () => {
   const params = useParams();
-  console.log(params);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (params?.recentUserId !== "") {
-          const data = await getSingleUserDetails(params?.recentUserId);
-          console.log(data?.data);
-        } else {
-          console.log(params?.recentUserId);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
 
-    fetchData();
-  }, []);
-
-  return <div>{params?.recentUserId}</div>;
+  return (
+    <div className={style.mainDiv}>
+      <PrivateComponent />
+      <HeaderComponent />
+      <JoinedProfileForm params={params} />
+      {/* {params?.recentUserId} */}
+    </div>
+  );
 };
 
 export default JoinedUser;
