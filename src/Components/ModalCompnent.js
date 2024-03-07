@@ -1,16 +1,24 @@
 import Modal from "react-bootstrap/Modal";
 import Style from "../Styles/DialogForm.module.css";
 
-function ModalComponent({ show, hideFunc, header, body, footer }) {
+function ModalComponent({
+  show,
+  hideFunc,
+  header,
+  body,
+  footer,
+  className,
+  wrapperClassname,
+}) {
   return (
-    <div className="module-dialog">
+    <div className={`module-dialog ${wrapperClassname}`}>
       <Modal
         show={show}
         onHide={hideFunc}
-        className={Style.modalItem}
-        backdrop="static"
+        // backdrop="static"
+        className={className}
       >
-        <Modal.Header>{header}</Modal.Header>
+        <Modal.Header closeButton>{header}</Modal.Header>
         <Modal.Body>{body}</Modal.Body>
         <Modal.Footer>{footer}</Modal.Footer>
       </Modal>

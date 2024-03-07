@@ -34,6 +34,8 @@ import ModalComponent from "../Components/ModalCompnent";
 import Card from "../Components/Card";
 import locationPin from "../images/map-pin.svg";
 import tent from "../images/Vector.png";
+import "../App.css";
+import CreateTicketComponent from "../Components/CreateTicketComponent";
 
 const AdminToolsPage = () => {
   const { adminId } = useParams();
@@ -80,7 +82,6 @@ const AdminToolsPage = () => {
 
   const [eventImage, setEventImage] = useState("");
   const [eventImageToUpdate, setEventImageToUpdtate] = useState([]);
-  console.log(eventImage, "77");
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -224,9 +225,6 @@ const AdminToolsPage = () => {
 
   ///edit ticket modal form submit
 
-  const editTicketHandle = (dataOfeditForm) => {
-    console.log(dataOfeditForm);
-  };
   return (
     <>
       <div className={Style.mainDiv}>
@@ -341,7 +339,7 @@ const AdminToolsPage = () => {
               </div>
               <hr />
 
-              <div className={Style.descDiv}>
+              <div className={`${Style.descDiv} refer`}>
                 <div
                   className={`${Style.desc}`}
                   style={{ display: "flex", gap: "10px" }}
@@ -352,46 +350,6 @@ const AdminToolsPage = () => {
                     <img src={AddSvg} alt="addIcon" />
                   </div>
                 </div>
-                <ModalComponent
-                  hideFunc={addNewTicketModalOpen}
-                  show={showModalTicket}
-                  header={
-                    <div className={`${Style.modalTicketHeader}`}>
-                      <h2 className={`${Style.headerTitle}`}>Ticket Edit</h2>
-                      <div
-                        className={`${Style.pointernone} ${Style.cardWrapper}`}
-                      >
-                        <Card
-                          eventId={adminId}
-                          key={0}
-                          tent={tent}
-                          img={eventData?.event_image}
-                          start_date={eventData?.start_date}
-                          name={eventData?.name}
-                          full_address={eventData?.full_address}
-                          locationPin={locationPin}
-                          ticket={eventData?.tickets}
-                          address={eventData?.address}
-                          start_date_label={eventData?.start_date_label}
-                          start_time_label={eventData?.start_time_label}
-                          eventProducer={eventData?.eventProducer}
-                        />
-                      </div>
-                    </div>
-                  }
-                  body={
-                    <form
-                      onSubmit={handleSubmit(editTicketHandle)}
-                      className={`${Style.formTicketEdit}`}
-                    >
-                      <div>
-                        <h2 className={`${Style.editTicketHeader}`}>
-                          Ticket Name
-                        </h2>
-                      </div>
-                    </form>
-                  }
-                />
 
                 {ticketData &&
                   ticketData?.map((ticketitem) => (
@@ -608,6 +566,43 @@ const AdminToolsPage = () => {
         <PayoutModalDialog addPayoutType={addPayoutType} hideFunc={hideFunc} />
       )}
       {loading && <Loader />}
+      <ModalComponent
+        hideFunc={addNewTicketModalOpen}
+        show={showModalTicket}
+        // className={`${Style.wModal}`}
+        wrapperClassname={` ${Style.wModal}`}
+        header={
+          <div className={`${Style.modalTicketHeader}`}>
+            <h2 className={`${Style.headerTitle}`}>Add Ticket</h2>
+            <div className={`${Style.pointernone} ${Style.cardWrapper}`}>
+              <Card
+                eventId={adminId}
+                key={0}
+                tent={tent}
+                img={eventData?.event_image}
+                start_date={eventData?.start_date}
+                name={eventData?.name}
+                full_address={eventData?.full_address}
+                locationPin={locationPin}
+                ticket={eventData?.tickets}
+                address={eventData?.address}
+                start_date_label={eventData?.start_date_label}
+                start_time_label={eventData?.start_time_label}
+                eventProducer={eventData?.eventProducer}
+              />
+            </div>
+          </div>
+        }
+        body={
+          <CreateTicketComponent
+            adminId={adminId}
+            Style={Style}
+            eventData={eventData}
+            hideModal={addNewTicketModalOpen}
+            setLoading={setLoading}
+          />
+        }
+      />
     </>
   );
 };

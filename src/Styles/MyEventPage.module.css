@@ -734,13 +734,102 @@
 /* //edit ticket header text style` */
 
 .formTicketEdit {
-  width: 97% !important;
-  margin: auto !important;
   padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .editTicketHeader {
   font-size: 16px;
   font-weight: 500;
   line-height: 21.79px;
+}
+
+.boxWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+}
+
+.inputStyliing {
+  background-color: #d1d1d1;
+  border: 1px solid #333333;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 21.79px;
+  padding-inline: 15px;
+  border-radius: 10px;
+  min-height: 41px;
+}
+
+.currencyDiv > input {
+  padding-left: 25px !important;
+}
+
+.currency {
+  position: absolute;
+  top: 62%;
+  transform: translateY(-25%);
+  left: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 21.79px;
+}
+
+.saveBtn {
+  background-color: #684f85;
+  border: 0;
+  outline: 0;
+  width: 90%;
+  margin: auto;
+  display: block;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  height: 58px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  position: relative;
+  margin-top: 20px;
+}
+
+.saveIcon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 20px;
+  background-color: #a493b7;
+  border-radius: 50%;
+  padding: 5px;
+}
+
+.saveIcon > img {
+  width: 23px;
+  height: 23px;
+}
+
+.wModal {
+  max-width: 363px !important;
+}
+
+.refer .module-dialog {
+  max-width: 363px !important;
+}
+
+.datePickerWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.datePickerWrapper img {
+  margin-right: 10px;
+}
+
+.datePickerWrapper input {
+  background-color: transparent;
+  border: 0;
+  outline: 0;
+  /* display: none; */
 }

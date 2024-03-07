@@ -19,7 +19,7 @@ function DateTimePicker({ date, setDate }) {
       onChange={handleChange}
       showTimeSelect
       dateFormat="MMM d, yyyy h:mm aa" // This format is for display purposes
-      // timeIntervals={1} // Uncomment if you want to select every minute
+      timeIntervals={1} // Uncomment if you want to select every minute
     />
   );
 }

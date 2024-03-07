@@ -358,3 +358,21 @@ export const adminToolUpdate = async (adminId, data) => {
     console.log(error);
   }
 };
+
+export const createTicket = async (data) => {
+  try {
+    const response = await axiosClient.post(`/tickets`, data);
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateTicket = async (ticketId, data) => {
+  try {
+    const response = await axiosClient.patch(`/tickets/${ticketId}`, data);
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

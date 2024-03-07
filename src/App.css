@@ -66,3 +66,13 @@ hr {
 .display-none {
   display: none !important;
 }
+
+.refer .modal-dialog {
+  max-width: 363px !important;
+}
+
+.btn-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
