@@ -3,7 +3,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import {
   listEvents,
   getUserDetails,
-  getRecentJoinedUsers,
+  getFilterBadgeButtons,
 } from "../api/services";
 import Style from "../Styles/UserData.module.css";
 import "../Styles/UserDataList.css";
@@ -258,6 +258,25 @@ function UserData() {
   //   });
 
   const filteredEvents = items;
+  const [filterBtnBadge, setFilterBtnBadge] = useState([]);
+
+  // useEffect(() => {
+  //   const fetchBadgeData = async () => {
+  //     try {
+  //       if (
+  //         localStorage.getItem("loggedIn") === "true" ||
+  //         localStorage.getItem("loggedIn") === true
+  //       ) {
+  //         const data = await getFilterBadgeButtons();
+  //         // console.log(data?.data);
+  //         // setFilterBtnBadge(data?.data);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   };
+  //   fetchBadgeData();
+  // }, []);
 
   // const appEventData = filteredEvents.map((event, index) => (
   //   <Card

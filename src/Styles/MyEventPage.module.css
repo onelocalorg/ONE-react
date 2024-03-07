@@ -557,3 +557,279 @@
     margin-left: 25%;
   }
 }
+
+/* style for admin tools */
+.wfull {
+  width: 100%;
+}
+
+.outline {
+  outline: 0 !important;
+}
+
+.pointernone {
+  pointer-events: none;
+}
+
+.bgGray {
+  background-color: #d1d1d1;
+}
+
+.bgTransparent {
+  background-color: transparent !important;
+  border: 0;
+  outline: 0;
+}
+
+.border {
+  border: 1px solid #a9a9a9;
+}
+
+.textBlack {
+  color: #000000;
+}
+
+.elipsisTicket {
+  width: 90%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.customTextarea {
+  width: 100%; /* Adjust width as needed */
+  min-height: 70px; /* Adjust height as needed or make it auto */
+  resize: none; /* Prevents resizing */
+  overflow: hidden; /* Keeps the content from overflowing */
+  outline: none; /* Removes the outline on focus */
+  border: 1px solid #ccc; /* Mimics typical input border; adjust as needed */
+  border-radius: 4px; /* Rounds the corners slightly; adjust as needed */
+  padding: 8px; /* Adds some padding inside the textarea; adjust as needed */
+}
+
+.paddingMargin0 {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+}
+.paadingX7 {
+  padding: 0px 7px;
+}
+.flexGrow1 {
+  flex-grow: 1;
+}
+
+.borderOutline {
+  border: 0 !important;
+  outline: 0 !important;
+}
+
+.height {
+  height: 100% !important;
+}
+
+.borderRadius10 {
+  border-radius: 10px;
+}
+
+.posRelative {
+  position: relative;
+}
+
+.dNone {
+  display: none;
+}
+
+.top10 {
+  top: 20px;
+}
+
+.left10 {
+  left: 20px;
+}
+
+.posAbsolute {
+  position: absolute;
+}
+
+.aboutEventDiv::-webkit-scrollbar {
+  width: 5px;
+}
+
+.aboutEventDiv::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(46, 43, 43, 0.3);
+}
+
+.aboutEventDiv::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #3d3131;
+  outline: 1px solid slategrey;
+}
+
+.aboutEventStyle {
+  height: 500px;
+  overflow-y: auto;
+  padding-inline: 7px;
+}
+
+/* add ticket modal css */
+
+.modalTicketHeader {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.headerTitle {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32.69px;
+}
+
+.cardWrapper img:nth-child(1) {
+  width: 32px !important;
+  height: 27px !important;
+}
+.cardWrapper img:nth-child(2) {
+  width: 79px !important;
+  height: 92px !important;
+}
+.cardWrapper div div div:last-child img {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+.cardWrapper div div:nth-child(1) {
+  font-size: 13px !important;
+  line-height: 17.71px !important;
+  font-weight: 300 !important;
+}
+.cardWrapper div div:nth-child(2) {
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  line-height: 20.43px !important;
+}
+
+.cardWrapper div div div:last-child {
+  gap: 7.5px !important;
+}
+.cardWrapper div div div:last-child div {
+  font-size: 13px !important;
+  line-height: 17.71px !important;
+  font-weight: 300 !important;
+}
+.cardWrapper > div {
+  min-height: auto !important;
+  gap: 8px !important;
+  width: 97% !important;
+  margin: auto !important;
+  padding: 5px !important;
+  border-width: 3px !important;
+}
+
+/* //edit ticket header text style` */
+
+.formTicketEdit {
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.editTicketHeader {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 21.79px;
+}
+
+.boxWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+}
+
+.inputStyliing {
+  background-color: #d1d1d1;
+  border: 1px solid #333333;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 21.79px;
+  padding-inline: 15px;
+  border-radius: 10px;
+  min-height: 41px;
+}
+
+.currencyDiv > input {
+  padding-left: 25px !important;
+}
+
+.currency {
+  position: absolute;
+  top: 62%;
+  transform: translateY(-25%);
+  left: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 21.79px;
+}
+
+.saveBtn {
+  background-color: #684f85;
+  border: 0;
+  outline: 0;
+  width: 90%;
+  margin: auto;
+  display: block;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  height: 58px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  position: relative;
+  margin-top: 20px;
+}
+
+.saveIcon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 20px;
+  background-color: #a493b7;
+  border-radius: 50%;
+  padding: 5px;
+}
+
+.saveIcon > img {
+  width: 23px;
+  height: 23px;
+}
+
+.wModal {
+  max-width: 363px !important;
+}
+
+.refer .module-dialog {
+  max-width: 363px !important;
+}
+
+.datePickerWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.datePickerWrapper img {
+  margin-right: 10px;
+}
+
+.datePickerWrapper input {
+  background-color: transparent;
+  border: 0;
+  outline: 0;
+  /* display: none; */
+}
