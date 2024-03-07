@@ -22,6 +22,7 @@ import MyEventPage from "./Pages/MyEventPage";
 import JoinedUser from "./Pages/JoinedUser";
 import SharingOutLet from "./Pages/SharingOutlet";
 import ComingsoonPage from "./Pages/ComingsoonPage";
+import AdminToolsPage from "./Pages/AdminToolsPage";
 
 function App() {
   return (
@@ -123,6 +124,10 @@ function App() {
           <Route path="/my-profile" element={<MyProfile />} />
           <Route path="/my-events" element={<MyEvents />} />
           <Route path="/my-event/:eventId" element={<MyEventPage />} />
+          <Route
+            path="/my-event/admintool/:adminId"
+            element={<AdminToolsPage />}
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <ToastContainer />

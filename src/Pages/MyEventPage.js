@@ -21,6 +21,7 @@ import { useSelector } from "react-redux";
 import ExpenseItemComponent from "../Components/ExpenseItemComponent";
 import FinanceAddBtn from "../Components/FinanceAddBtn";
 import PayoutModalDialog from "../Components/PayoutModalDialog";
+import proImg from "../images/Oval Copy 5.png";
 import arrow from "../images/Shape.svg";
 
 const MyEventPage = () => {
@@ -104,11 +105,20 @@ const MyEventPage = () => {
 
   const onSubmit = async (data) => {};
 
+  const navigateToAdminToolsPage = () => {
+    navigate(`/my-event/admintool/${eventId}`);
+  };
+
   const formVal = watch();
 
   if (error) {
     return <NotFound />;
   }
+  const handleRedirectProfile = () => {
+    if (userInfo?.userData?.userId === eventData?.eventProducer?.id) {
+      navigate("/my-profile");
+    }
+  };
 
   return (
     <>
@@ -183,6 +193,48 @@ const MyEventPage = () => {
                   </div>
                 </div>
               </div>
+              <div
+                className={Style.boxes}
+                style={{
+                  width: "90%",
+                  cursor:
+                    userInfo?.userData?.userId === eventData?.eventProducer?.id
+                      ? "pointer"
+                      : "auto",
+                }}
+                onClick={handleRedirectProfile}
+              >
+                <div
+                  className={Style.producerDiv}
+                  style={{ overflow: "hidden" }}
+                >
+                  <img
+                    src={
+                      eventData?.eventProducer?.pic
+                        ? eventData.eventProducer.pic
+                        : proImg
+                    }
+                    alt="producerIcon"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      transition: "opacity 0.3s ease-in-out",
+                      opacity: eventData?.eventProducer?.pic ? 1 : 0.5, // Lower opacity for placeholder
+                    }}
+                  />
+                </div>
+                <div className={Style.producerInfo}>
+                  <div className={Style.proName}>
+                    {eventData ? eventData?.eventProducer?.first_name : ""}{" "}
+                    {eventData ? eventData?.eventProducer?.last_name : ""}
+                  </div>
+                  <div className={Style.timing}>
+                    {/* {eventData ? eventData?.eventProducer?.user_type : ""} */}
+                    Producer
+                  </div>
+                </div>
+              </div>
               <hr />
 
               <form onSubmit={handleSubmit(onSubmit)} className={Style.descDiv}>
@@ -214,6 +266,7 @@ const MyEventPage = () => {
                 <button
                   type="button"
                   className={Style.purchase}
+                  onClick={navigateToAdminToolsPage}
                   style={{
                     marginTop: "10px",
                     // pointerEvents: !confirmation ? "none" : "",
@@ -344,8 +397,9 @@ const MyEventPage = () => {
                 </div>
               </div>
               <button
-                type="submit"
+                type="button"
                 className={Style.purchase}
+                onClick={navigateToAdminToolsPage}
                 style={{
                   marginTop: "10px",
                   // pointerEvents: !confirmation ? "none" : "",

@@ -12,7 +12,7 @@ import project from "../images/icons-badge/Projects.svg";
 
 const headerFilterData = [
   {
-    id: 0,
+    _id: 0,
     label: "Events",
     icon: eventicon,
     bgColor: "#CB5555",

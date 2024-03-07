@@ -10,22 +10,22 @@ const TextAreaComponent = ({
   name,
   className,
   disabled,
-  rows,
-  cols,
+  // rows,
+  // cols,
 }) => {
   return (
     <>
       <textarea
         placeholder={placeholder}
-        {...register(inputRef)}
-        style={{ style }}
         value={value}
+        style={{ style }}
         id={id}
         name={name}
         className={className}
         disabled={disabled}
-        rows={rows || "3"}
-        cols={cols || "50"}
+        {...register(inputRef)}
+        // rows={rows || "3"}
+        // cols={cols || "50"}
       />
     </>
   );

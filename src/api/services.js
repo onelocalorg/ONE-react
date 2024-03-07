@@ -338,3 +338,23 @@ export const getSingleUserDetails = async (id) => {
     console.log(error);
   }
 };
+
+export const getFilterBadgeButtons = async () => {
+  try {
+    const response = await axiosClient.get(`/web/resources`);
+    console.log(response);
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const adminToolUpdate = async (adminId, data) => {
+  try {
+    const response = await axiosClient.patch(`/events/${adminId}`, data);
+    console.log(response);
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

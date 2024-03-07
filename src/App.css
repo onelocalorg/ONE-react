@@ -62,3 +62,7 @@ hr {
     border: 2px solid #fff;
   }
 }
+
+.display-none {
+  display: none !important;
+}
