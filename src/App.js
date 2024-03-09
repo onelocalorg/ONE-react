@@ -23,6 +23,7 @@ import JoinedUser from "./Pages/JoinedUser";
 import SharingOutLet from "./Pages/SharingOutlet";
 import ComingsoonPage from "./Pages/ComingsoonPage";
 import AdminToolsPage from "./Pages/AdminToolsPage";
+import PostList from "./Pages/PostList";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/reset-password" element={<Reset />} />
           <Route path="/" element={<UserData />}></Route>
+          <Route path="/postlist" element={<PostList />}></Route>
           <Route
             path="/orgs"
             element={
