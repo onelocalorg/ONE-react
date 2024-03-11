@@ -376,3 +376,16 @@ export const updateTicket = async (ticketId, data) => {
     console.log(error);
   }
 };
+
+export const getPostListAPI = async (page, data) => {
+  try {
+    const response = await axiosClient.post(
+      `/posts/list?limit=10&page=${page}`,
+      data
+    );
+
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

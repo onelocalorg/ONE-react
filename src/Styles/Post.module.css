@@ -1,0 +1,50 @@
+.cardMainDiv {
+  max-width: 352px;
+  width: 100%;
+  min-height: 85px;
+  background-color: #fff;
+  margin: auto;
+  border-radius: 16px;
+  border: 2px solid #db9791;
+  padding: 10px;
+  display: flex;
+  cursor: pointer;
+  color: #212529;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.profileImg {
+  width: 33px;
+  height: 34px;
+}
+
+.topSection {
+  display: flex;
+  gap: 5px;
+}
+
+.inputBox {
+  width: 300px;
+  height: 30.72px;
+  border-radius: 20px;
+  background-color: #dedede;
+  outline: 0;
+  border: 0;
+  padding-left: 10px;
+  font-size: 14px;
+}
+
+.separaterLine {
+  border: 1px solid #a9a9a9;
+}
+
+.bottomSection {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 400;
+}

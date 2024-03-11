@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import moment from "moment";
 import MainLayoutlet from "./MainLayoutlet";
 import Style from "../Styles/UserData.module.css";
-import Card from "../Components/Card";
+import PostStyle from "../Styles/Post.module.css";
+import PostListTopCard from "../Components/PostListTopCard";
 import { useScrollToTop } from "../hooks/useScrollToTop";
-import { listEvents } from "../api/services";
-import tent from "../images/Vector.png";
-import locationPin from "../images/map-pin.svg";
+import { getPostListAPI } from "../api/services";
 
 function PostList() {
   const scrollToTop = useScrollToTop();
@@ -40,16 +39,16 @@ function PostList() {
   const getPostData = async (fetchMore, startPage) => {
     try {
       setIsLoading(true);
-      const response = await listEvents(startPage, filterParams);
+      const response = await getPostListAPI(startPage, filterParams);
       const resultData = response?.data?.results;
 
       if (fetchMore) {
         if (resultData.length > 0) {
           setPagination((prev) => ({
             ...prev,
-            totalData: response.data.totalEvents,
+            totalData: response.data.totalResults,
             page: prev.page + 1,
-            totalPage: response.data.totalPage,
+            totalPage: response.data.totalPages,
           }));
         }
 
@@ -63,9 +62,9 @@ function PostList() {
         if (resultData.length > 0) {
           setPagination((prev) => ({
             ...prev,
-            totalData: response?.data?.totalEvents,
+            totalData: response?.data?.totalResults,
             page: 2,
-            totalPage: response?.data?.totalPage,
+            totalPage: response?.data?.totalPages,
           }));
         }
 
@@ -104,26 +103,15 @@ function PostList() {
     return () => clearTimeout(timeoutId);
   }, [filterData, startDate, endDate]);
 
-  const appEventData = postItems.map((eventItem, index) => {
+  const appEventData = postItems.map((postItem, index) => {
     return (
       <React.Fragment key={index}>
-        {eventItem?.events.map((event, indexinner) => (
-          <Card
-            eventId={event?.id}
-            key={indexinner}
-            tent={tent}
-            img={event?.event_image}
-            start_date={event?.start_date}
-            name={event?.name}
-            full_address={event?.full_address}
-            locationPin={locationPin}
-            ticket={event?.tickets}
-            address={event?.address}
-            start_date_label={event?.start_date_label}
-            start_time_label={event?.start_time_label}
-            eventProducer={event?.eventProducer}
-          />
-        ))}
+        {index === 0 && (
+          <div>
+            <PostListTopCard />
+          </div>
+        )}
+        <div>{postItem?.content}</div>
       </React.Fragment>
     );
   });
