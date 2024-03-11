@@ -87,7 +87,7 @@ const AdminToolsPage = () => {
 
   const [eventImage, setEventImage] = useState("");
   const [editTicketId, setEditTicketId] = useState("");
-  const [eventImageToUpdate, setEventImageToUpdtate] = useState([]);
+  const [eventImageToUpdate, setEventImageToUpdtate] = useState(null);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -176,7 +176,7 @@ const AdminToolsPage = () => {
         : `${data.mainAddress?.geometry.location.lng()}`
     );
     formData.append("event_type", "VF");
-    if (eventImageToUpdate) {
+    if (eventImageToUpdate && eventImageToUpdate !== null) {
       formData.append("event_image", eventImageToUpdate);
     }
 
