@@ -4,21 +4,29 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import saveBtn from "../images/Change Button.svg";
-import { adminToolUpdate, createTicket, singleEvents } from "../api/services";
+import {
+  adminToolUpdate,
+  createTicket,
+  singleEvents,
+  updateTicket,
+} from "../api/services";
 import ToasterComponent from "./ToasterComponent";
 import DatePickerHookForm from "./DatePickerHookForm";
 import calender from "../images/calender.svg";
-import ToasterSuccess from "./ToasterSuccess";
 import Loader from "./Loader";
+import ToasterSuccess from "./ToasterSuccess";
 
-const CreateTicketComponent = ({
+const EditTicketComponent = ({
   Style,
   hideModal,
   eventData,
   adminId,
+  ticketitem,
   setTicketData,
 }) => {
   const [loading, setLoading] = useState(false);
+  console.log(loading);
+
   const schema = yup.object().shape({
     name: yup.string(),
     quantity: yup.number(),
@@ -27,63 +35,52 @@ const CreateTicketComponent = ({
     price: yup.number(),
   });
 
-  const data = eventData || {};
-  const ticketData = eventData && eventData?.tickets;
-  const idArray = ticketData.map((item) => item.id).join(",");
+  const ticketData = ticketitem && ticketitem;
+  const ticketExistingData = eventData && eventData?.tickets;
+  const idArray = ticketExistingData.map((item) => item.id).join(",");
+  console.log(idArray);
 
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     control,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      start_date: new Date(data?.start_date),
-      end_date: new Date(data?.end_date),
+      name: ticketData?.name,
+      quantity: ticketData?.quantity,
+      price: ticketData?.price,
+      start_date: new Date(ticketData?.start_date),
+      end_date: new Date(ticketData?.end_date),
     },
   });
 
-  const createTicketHandle = async (dataOfCreateFrom) => {
-    // Early return if dataOfCreateFrom is not provided
-    setLoading(true); // Start loading
-
+  const editTicketHandle = async (dataOfCreateFrom) => {
+    setLoading(true);
     try {
       const dataToCreate = {
         ...dataOfCreateFrom,
         start_date: new Date(dataOfCreateFrom?.start_date).toISOString(),
         end_date: new Date(dataOfCreateFrom?.end_date).toISOString(),
+        price: `${dataOfCreateFrom?.price}`,
       };
 
-      // Await the creation of the ticket
-      const createResponse = await createTicket(dataToCreate);
-
-      // Construct the new ID list
-      const id = idArray + "," + createResponse?.data?.id;
-      const formData = new FormData();
-      formData.append("tickets", `${id}`);
-      formData.append("event_lng", `${eventData?.location?.coordinates[0]}`);
-      formData.append("event_lat", `${eventData?.location?.coordinates[1]}`);
-
-      // Await the admin tool update
-      const updateResponse = await adminToolUpdate(adminId, formData);
-
-      if (updateResponse.code === 200) {
-        ToasterSuccess(`${updateResponse.message}`, 2000);
+      const res = await updateTicket(ticketitem?.id, dataToCreate);
+      if (res.code === 200) {
         const response = await singleEvents(adminId);
         setTicketData(response?.data?.tickets);
+        ToasterSuccess("Ticket Updated Successfully", 2000);
         hideModal();
-      } else if (
-        updateResponse.success === false ||
-        updateResponse.code === "false"
-      ) {
-        ToasterComponent(`${updateResponse.message}`, 2000);
+      } else if (res.success === false || res.code === "false") {
+        ToasterComponent(`${res.message}`, 2000);
       }
     } catch (error) {
-      console.error(error);
-      ToasterComponent("An error occurred.", 2000);
+      console.log(error);
     } finally {
-      setLoading(false); // End loading
+      setLoading(false);
     }
   };
 
@@ -92,7 +89,7 @@ const CreateTicketComponent = ({
   return (
     <>
       <form
-        onSubmit={handleSubmit(createTicketHandle)}
+        onSubmit={handleSubmit(editTicketHandle)}
         className={`${Style.formTicketEdit}`}
       >
         <div className={`${Style.boxWrapper}`}>
@@ -165,4 +162,4 @@ const CreateTicketComponent = ({
   );
 };
 
-export default CreateTicketComponent;
+export default EditTicketComponent;

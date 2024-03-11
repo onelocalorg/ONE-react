@@ -36,6 +36,9 @@ import locationPin from "../images/map-pin.svg";
 import tent from "../images/Vector.png";
 import "../App.css";
 import CreateTicketComponent from "../Components/CreateTicketComponent";
+import DatePickerHookForm from "../Components/DatePickerHookForm";
+import ReactQuillEditor from "../Components/ReactQuillEditor";
+import EditTicketComponent from "../Components/EditTicketComponent";
 
 const AdminToolsPage = () => {
   const { adminId } = useParams();
@@ -44,7 +47,8 @@ const AdminToolsPage = () => {
   const [eventData, setEventData] = useState({});
   const [ticketData, setTicketData] = useState([]);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  console.log(loading);
   const [error, setError] = useState(null);
 
   const userInfo = useSelector((state) => state?.userInfo);
@@ -71,6 +75,7 @@ const AdminToolsPage = () => {
     handleSubmit,
     setValue,
     watch,
+    control,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -81,6 +86,7 @@ const AdminToolsPage = () => {
   });
 
   const [eventImage, setEventImage] = useState("");
+  const [editTicketId, setEditTicketId] = useState("");
   const [eventImageToUpdate, setEventImageToUpdtate] = useState([]);
 
   const handleFileChange = (e) => {
@@ -99,8 +105,8 @@ const AdminToolsPage = () => {
     }
   };
 
-  const formVal = watch("mainAddress");
-  console.log(formVal, "sdg");
+  const formVal = watch();
+  // console.log(formVal, "sdg");
 
   useEffect(() => {
     // Scroll to top as some time it shows in middle of after image section when comes to detail page
@@ -109,26 +115,17 @@ const AdminToolsPage = () => {
     const fetchEventData = async () => {
       if (adminId) {
         try {
+          setLoading(true);
           const response = await singleEvents(adminId);
           setEventData(response?.data);
           setTicketData(response?.data?.tickets);
           setValue("name", response?.data?.name);
-          setValue(
-            "startDate",
-            `${moment(response?.data?.start_date).format(
-              "MMM - DD - YYYY (hh:mm A)"
-            )}`
-          );
-          setValue(
-            "endDate",
-            `${moment(response?.data?.end_date).format(
-              "MMM - DD - YYYY (hh:mm A)"
-            )}`
-          );
           setValue("full_address", "");
           setValue("address", response?.data?.address);
           setValue("confirmationMail", response?.data?.email_confirmation_body);
           setValue("aboutEvent", response?.data?.about);
+          setValue("start_date", new Date(response?.data?.start_date));
+          setValue("end_date", new Date(response?.data?.end_date));
           setEventImage(response?.data?.event_image);
         } catch (error) {
           setLoading(false);
@@ -143,30 +140,28 @@ const AdminToolsPage = () => {
     fetchEventData();
   }, [adminId]);
 
+  const hideModalFunc = () => {
+    setEditTicketId("");
+  };
+
   console.log(errors);
 
-  const onSubmit = (data) => {
-    const formatString = "MMM - DD - YYYY (hh:mm A)";
-
+  const onSubmit = async (data) => {
+    setLoading(true);
     // Convert the parsed date to ISO 8601 UTC format
     const formData = new FormData();
     formData.append("name", data.name);
     formData.append("about", data.aboutEvent);
     formData.append("address", data.address);
     formData.append("email_confirmation_body", data.confirmationMail);
-    formData.append(
-      "start_date",
-      moment(data.startDate, formatString).utc().format()
-    );
-    formData.append(
-      "end_date",
-      moment(data.endDate, formatString).utc().format()
-    );
+    formData.append("start_date", new Date(data.start_date).toISOString());
+    formData.append("end_date", new Date(data.end_date).toISOString());
     formData.append(
       "full_address",
       Object.keys(data?.mainAddress || {}).length === 0
         ? "-"
-        : `${data.mainAddress?.name}, ${data?.mainAddress?.formatted_address}`
+        : `${data?.mainAddress?.formatted_address}`
+      // : `${data.mainAddress?.name}, ${data?.mainAddress?.formatted_address}`
     );
     formData.append(
       "event_lat",
@@ -186,14 +181,15 @@ const AdminToolsPage = () => {
     }
 
     try {
-      adminToolUpdate(adminId, formData).then((res) => {
-        console.log(res);
-        if (res.code === 200) {
-          ToasterSuccess(`${res.message}`, 2000);
-        }
-      });
+      const res = await adminToolUpdate(adminId, formData); // Wait for the promise to resolve
+      console.log(res);
+      if (res.code === 200) {
+        ToasterSuccess(`${res.message}`, 2000);
+      }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -271,13 +267,22 @@ const AdminToolsPage = () => {
                   <div className={Style.date} style={{ color: "black" }}>
                     Start Date
                   </div>
-                  <InputComponent
+                  {/* <InputComponent
                     type={"text"}
                     className={`${Style.timing} ${Style.outline} ${Style.pointernone} ${Style.bgTransparent} ${Style.textBlack}`}
                     inputRef={"startDate"}
                     register={register}
                     placeholder={"start date"}
-                  />
+                  /> */}
+                  {eventData?.start_date && (
+                    <DatePickerHookForm
+                      control={control}
+                      className={`${Style.wfull} ${Style.bgTransparent}`}
+                      name="start_date"
+                      maxDate={new Date(eventData.end_date)}
+                      minDate={new Date(eventData.start_date)}
+                    />
+                  )}
                 </div>
               </div>
               {/*box1.1*/}
@@ -294,13 +299,23 @@ const AdminToolsPage = () => {
                   <div className={Style.date} style={{ color: "black" }}>
                     End Date
                   </div>
-                  <InputComponent
+                  {/* <InputComponent
                     type={"text"}
                     className={`${Style.timing} ${Style.outline} ${Style.pointernone} ${Style.bgTransparent} ${Style.textBlack}`}
                     inputRef={"endDate"}
                     register={register}
                     placeholder={"end date"}
-                  />
+                  /> */}
+                  {eventData?.end_date && (
+                    <DatePickerHookForm
+                      control={control}
+                      className={`${Style.wfull} ${Style.bgTransparent}`}
+                      // start_date={end_date}
+                      name="end_date"
+                      maxDate={new Date(eventData?.end_date)}
+                      minDate={new Date(eventData?.start_date)}
+                    />
+                  )}
                 </div>
               </div>
               {/* boxes 2  */}
@@ -376,17 +391,38 @@ const AdminToolsPage = () => {
                         src={EditIcon}
                         alt="editIcon"
                         style={{ cursor: "pointer" }}
+                        onClick={() => setEditTicketId(ticketitem.id)}
                       />
                     </div>
                   ))}
                 <hr />
                 <div className={Style.desc}>Confirmation Mail:</div>
-
+                {/* 
                 <TextAreaComponent
                   className={`${Style.timing} ${Style.outline} ${Style.customTextarea} `}
                   inputRef={"confirmationMail"}
                   register={register}
                   placeholder={"address"}
+                /> */}
+                <ReactQuillEditor
+                  control={control}
+                  id={"confirmationMail"}
+                  name={"confirmationMail"}
+                  modules={{
+                    toolbar: {
+                      container: [
+                        ["bold", "italic", "underline", "strike"],
+                        [
+                          { list: "ordered" },
+                          { list: "bullet" },
+                          { indent: "-1" },
+                          { indent: "+1" },
+                        ],
+                        ["link"],
+                        ["clean"],
+                      ],
+                    },
+                  }}
                 />
                 <hr />
                 <button
@@ -532,11 +568,31 @@ const AdminToolsPage = () => {
                       //     __html: DOMPurify.sanitize(eventData?.about),
                       //   }}
                       // />
-                      <TextAreaComponent
-                        type={"text"}
-                        className={`${Style.aboutEventDiv} ${Style.bgGray} ${Style.textBlack} ${Style.aboutEventStyle} ${Style.wfull}`}
-                        inputRef={"aboutEvent"}
-                        register={register}
+                      // <TextAreaComponent
+                      //   type={"text"}
+                      //   className={`${Style.aboutEventDiv} ${Style.bgGray} ${Style.textBlack} ${Style.aboutEventStyle} ${Style.wfull}`}
+                      //   inputRef={"aboutEvent"}
+                      //   register={register}
+                      // />
+                      <ReactQuillEditor
+                        id={"aboutEvent"}
+                        control={control}
+                        name={"aboutEvent"}
+                        modules={{
+                          toolbar: {
+                            container: [
+                              ["bold", "italic", "underline", "strike"],
+                              [
+                                { list: "ordered" },
+                                { list: "bullet" },
+                                { indent: "-1" },
+                                { indent: "+1" },
+                              ],
+                              ["link", "image"],
+                              ["clean"],
+                            ],
+                          },
+                        }}
                       />
                     ) : (
                       "No description available"
@@ -547,7 +603,7 @@ const AdminToolsPage = () => {
               <button
                 type="button"
                 className={Style.purchase}
-                // onClick={navigateToAdminToolsPage}
+                onClick={handleSubmit(onSubmit)}
                 style={{
                   marginTop: "10px",
                   // pointerEvents: !confirmation ? "none" : "",
@@ -566,6 +622,52 @@ const AdminToolsPage = () => {
         <PayoutModalDialog addPayoutType={addPayoutType} hideFunc={hideFunc} />
       )}
       {loading && <Loader />}
+      {ticketData &&
+        ticketData?.map((ticketitem) =>
+          editTicketId === ticketitem.id ? (
+            <ModalComponent
+              key={ticketitem.id}
+              hideFunc={hideModalFunc}
+              show={ticketitem.id === editTicketId}
+              // className={`${Style.wModal}`}
+              wrapperClassname={` ${Style.wModal}`}
+              header={
+                <div className={`${Style.modalTicketHeader}`}>
+                  <h2 className={`${Style.headerTitle}`}>Edit Ticket</h2>
+                  <div className={`${Style.pointernone} ${Style.cardWrapper}`}>
+                    <Card
+                      eventId={adminId}
+                      key={0}
+                      tent={tent}
+                      img={eventData?.event_image}
+                      start_date={eventData?.start_date}
+                      name={eventData?.name}
+                      full_address={eventData?.full_address}
+                      locationPin={locationPin}
+                      ticket={eventData?.tickets}
+                      address={eventData?.address}
+                      start_date_label={eventData?.start_date_label}
+                      start_time_label={eventData?.start_time_label}
+                      eventProducer={eventData?.eventProducer}
+                    />
+                  </div>
+                </div>
+              }
+              body={
+                <EditTicketComponent
+                  ticketitem={ticketitem}
+                  adminId={adminId}
+                  Style={Style}
+                  eventData={eventData}
+                  hideModal={hideModalFunc}
+                  setTicketData={setTicketData}
+                />
+              }
+            />
+          ) : (
+            ""
+          )
+        )}
       <ModalComponent
         hideFunc={addNewTicketModalOpen}
         show={showModalTicket}
@@ -599,7 +701,7 @@ const AdminToolsPage = () => {
             Style={Style}
             eventData={eventData}
             hideModal={addNewTicketModalOpen}
-            setLoading={setLoading}
+            setTicketData={setTicketData}
           />
         }
       />
