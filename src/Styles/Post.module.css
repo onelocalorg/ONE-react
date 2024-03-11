@@ -160,3 +160,17 @@
   margin: 1px 0px;
   cursor: pointer;
 }
+
+@media only screen and (max-width: 768px) {
+}
+
+@media only screen and (max-width: 431px) {
+  .topCardMainDiv {
+    width: 95%;
+    margin: auto;
+  }
+  .postCardMainDiv {
+    width: 95%;
+    margin: auto;
+  }
+}
