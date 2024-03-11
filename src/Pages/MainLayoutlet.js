@@ -5,6 +5,7 @@ import Style from "../Styles/UserData.module.css";
 import CalendarFilterComponent from "../Components/CalendarFilterComponent";
 import RecentUserList from "./RecentUsersList";
 import DataListComponent from "../Components/DataListComponent";
+import HeaderFiltersComponent from "../Components/HeaderFiltersComponent";
 
 function MainLayoutlet({
   startDate,
@@ -28,6 +29,7 @@ function MainLayoutlet({
         filterData={filterData}
       />
       <div className={Style.filterdiv}>
+        <HeaderFiltersComponent />
         <RecentUserList />
         <CalendarFilterComponent
           startDate={startDate}
