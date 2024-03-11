@@ -176,13 +176,12 @@ const AdminToolsPage = () => {
         : `${data.mainAddress?.geometry.location.lng()}`
     );
     formData.append("event_type", "VF");
-    if (eventImageToUpdate.length > 0) {
+    if (eventImageToUpdate) {
       formData.append("event_image", eventImageToUpdate);
     }
 
     try {
       const res = await adminToolUpdate(adminId, formData); // Wait for the promise to resolve
-      console.log(res);
       if (res.code === 200) {
         ToasterSuccess(`${res.message}`, 2000);
       }
