@@ -34,7 +34,7 @@ function PostList() {
   const filterParams = {
     start_date: moment(startDate).format("YYYY-MM-DD"),
     end_date: moment(endDate).format("YYYY-MM-DD"),
-    eventName: filterData,
+    searchtext: filterData,
   };
 
   const getPostData = async (fetchMore, startPage) => {

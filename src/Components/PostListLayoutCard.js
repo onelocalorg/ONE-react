@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PostStyle from "../Styles/Post.module.css";
 import profileImg from "../images/post-profile-default.png";
 import likeImg from "../images/like-img.svg";
@@ -6,6 +6,11 @@ import likeImgOutline from "../images/like-img-outline.svg";
 import commentImg from "../images/comment-img.svg";
 
 function PostListLayoutCard({ postData }) {
+  const [showAddComment, setShowAddComment] = useState(false);
+
+  const handleAddComment = () => {
+    setShowAddComment(!showAddComment);
+  };
   return (
     <div className={PostStyle.postCardMainDiv}>
       <div className={PostStyle.authorSection}>
@@ -70,8 +75,22 @@ function PostListLayoutCard({ postData }) {
             className={PostStyle.likeSectionImg}
           />
         </div>
-        <div className={PostStyle.likeCommentRightSection}>Comment</div>
+        <div
+          className={PostStyle.likeCommentRightSection}
+          onClick={handleAddComment}
+        >
+          Comment
+        </div>
       </div>
+      {showAddComment && (
+        <div className={PostStyle.commentBox}>
+          <textarea
+            className={PostStyle.commentBoxInput}
+            placeholder="Make a comment"
+          />
+          <button className={PostStyle.commentBoxBtn}>Add Comment</button>
+        </div>
+      )}
     </div>
   );
 }
