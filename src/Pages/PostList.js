@@ -6,6 +6,7 @@ import PostStyle from "../Styles/Post.module.css";
 import PostListTopCard from "../Components/PostListTopCard";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { getPostListAPI } from "../api/services";
+import PostListLayoutCard from "../Components/PostListLayoutCard";
 
 function PostList() {
   const scrollToTop = useScrollToTop();
@@ -111,7 +112,7 @@ function PostList() {
             <PostListTopCard />
           </div>
         )}
-        <div>{postItem?.content}</div>
+        <PostListLayoutCard postData={postItem} />
       </React.Fragment>
     );
   });

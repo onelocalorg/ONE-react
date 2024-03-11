@@ -4,7 +4,7 @@ import profileImg from "../images/post-profile-default.png";
 
 function PostListTopCard() {
   return (
-    <div className={PostStyle.cardMainDiv}>
+    <div className={PostStyle.topCardMainDiv}>
       <div className={PostStyle.topSection}>
         <img src={profileImg} alt="event" className={PostStyle.profileImg} />
         <input
