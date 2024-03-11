@@ -352,7 +352,6 @@ export const getFilterBadgeButtons = async () => {
 export const adminToolUpdate = async (adminId, data) => {
   try {
     const response = await axiosClient.patch(`/events/${adminId}`, data);
-    console.log(response);
     return response?.data;
   } catch (error) {
     console.log(error);
