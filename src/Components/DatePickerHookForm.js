@@ -4,8 +4,8 @@ import { Controller } from "react-hook-form";
 import "react-datepicker/dist/react-datepicker.css"; // Don't forget to import the CSS
 
 const DatePickerHookForm = ({
-  start_date,
-  setStartDate,
+  // start_date,
+  // setStartDate,
   control,
   name = "datepicker", // Default name if not provided
   className,
@@ -21,15 +21,15 @@ const DatePickerHookForm = ({
     <Controller
       control={control}
       name={name}
-      defaultValue={start_date}
+      // defaultValue={start_date}
       render={({ field }) => (
         <DatePicker
           {...field}
           selected={field.value}
-          onChange={(date) => {
-            field.onChange(date);
-            setStartDate(date);
-          }}
+          // onChange={(date) => {
+          //   field.onChange(date);
+          //   // setStartDate(date);
+          // }}
           className={className}
           dateFormat={dateFormat}
           showTimeSelect={showTimeSelect}

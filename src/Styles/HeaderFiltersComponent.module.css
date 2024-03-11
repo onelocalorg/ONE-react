@@ -1,5 +1,6 @@
 .Wrapper {
-  width: 1095px;
+  max-width: 1095px;
+  width: 99%;
   margin: auto;
   display: flex;
   gap: 3px;
