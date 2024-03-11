@@ -39,22 +39,20 @@ const AddressMapApiComponent = ({
   };
 
   return (
-    <>
-      <Autocomplete
-        className={parentStyle}
-        onLoad={(autocomplete) => {
-          google.maps.event.addListener(autocomplete, "place_changed", () => {
+    <Autocomplete
+      className={parentStyle}
+      onLoad={(autocomplete) => {
+        window.google.maps.event.addListener(
+          autocomplete,
+          "place_changed",
+          () => {
             handlePlaceChanged(autocomplete);
-          });
-        }}
-      >
-        <input
-          type="text"
-          placeholder={placeholder}
-          className={`${className}`}
-        />
-      </Autocomplete>
-    </>
+          }
+        );
+      }}
+    >
+      <input type="text" placeholder={placeholder} className={`${className}`} />
+    </Autocomplete>
   );
 };
 
