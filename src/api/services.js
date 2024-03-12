@@ -388,3 +388,14 @@ export const getPostListAPI = async (page, data) => {
     console.log(error);
   }
 };
+
+export const getPayout = async (eventId) => {
+  try {
+    const response = await axiosClient.get(
+      `/events/event-financial/${eventId}`
+    );
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

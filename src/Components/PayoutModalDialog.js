@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -6,9 +5,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import InputComponent from "./InputComponent";
 import Style from "../Styles/DialogForm.module.css";
 import closeIcon from "../images/close-icon.svg";
-import ToasterSuccess from "./ToasterSuccess";
-import ToasterError from "./ToasterComponent";
-import { setUserData } from "../Redux/slices/UserSlice";
 import { useDispatch } from "react-redux";
 import { EMAIL_FORMAT, REQUIRED_FIELD_MESSAGE } from "../utils/AppConstants";
 
@@ -45,10 +41,8 @@ function PayoutModalDialog({ hideFunc, addPayoutType, setloadingFunc }) {
   ];
 
   const {
-    trigger,
     register,
     handleSubmit,
-    getValues,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -84,7 +78,7 @@ function PayoutModalDialog({ hideFunc, addPayoutType, setloadingFunc }) {
           </div>
         </Modal.Header>
         <Modal.Body>
-          <form onSubmit={handleFormSubmit}>
+          <form onSubmit={handleSubmit(handleFormSubmit)}>
             <div className={Style.dialogItem}>
               <div className={Style.dialogItemLabel}>Who:</div>
               <div style={{ width: "100%" }}>

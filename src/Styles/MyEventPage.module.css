@@ -312,14 +312,91 @@
   background-color: #ffffff;
   width: 162.74px;
   height: 30px;
+  margin: auto;
   border-radius: 15px;
   border: 0;
   outline: 0;
-  /* display: flex; */
-  display: none;
+  display: flex;
+  /* display: none; */
   justify-content: center;
   align-items: center;
   gap: 8px;
+  margin-bottom: 10px;
+}
+
+.checkIns {
+  margin-bottom: 10px !important;
+  border: 0;
+  outline: 0;
+  max-width: 331px;
+  display: block;
+  width: 85%;
+  margin: auto;
+  background-color: #eab9b4;
+  font-size: 13px;
+  font-weight: 400;
+  color: #000;
+  height: 35px;
+  border-radius: 20px;
+}
+
+/* toggleSwitchStyles.css */
+.toggleswitch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  transform: scale(0.6);
+}
+
+.toggleswitchCheckbox {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggleswitchSlider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.toggleswitchCheckbox:checked + .toggleswitchSlider {
+  background-color: #50ac30;
+}
+
+.toggleswitchSlider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+.toggleswitchCheckbox:checked + .toggleswitchSlider:before {
+  transform: translateX(26px);
+}
+
+.switchWraper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fontLabel {
+  font-family: "Average Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
 }
 
 .adminToolBtnIcon {
