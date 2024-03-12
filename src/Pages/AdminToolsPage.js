@@ -272,7 +272,7 @@ const AdminToolsPage = () => {
           <form onSubmit={handleSubmit(onSubmit)} className={Style.wrapper}>
             <div className={Style.left}>
               {/* //event name */}
-              <button className={Style.adminToolBtn}>
+              <button className={Style.adminToolBtn} type="button">
                 <img
                   src={ticketIcon}
                   className={Style.adminToolBtnIcon}
