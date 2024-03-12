@@ -352,6 +352,7 @@ function UserData() {
         // filter={items ? true : false}
         setFilterData={setFilterData}
         filterData={filterData}
+        isCalenderVisible={true}
         child={<HeaderFiltersComponent data={headerFilterData} />}
       />
 
