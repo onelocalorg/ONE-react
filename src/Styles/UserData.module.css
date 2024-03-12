@@ -18,14 +18,15 @@
   width: 96%;
   margin: auto;
   padding: 8px 6px;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 }
 
 @media only screen and (max-width: 768px) {
   .userJoined {
-    gap: 8px;
-    justify-content: center;
+    gap: 4px;
+    justify-content: flex-start;
+    padding: 0px 0px;
   }
 }
 @media only screen and (max-width: 431px) {
