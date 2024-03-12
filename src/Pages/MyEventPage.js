@@ -130,14 +130,6 @@ const MyEventPage = () => {
             <button className={Style.backButton} onClick={onLastPage}>
               {"< back"}
             </button>
-            <button className={Style.adminToolBtn}>
-              <img
-                src={ticketIcon}
-                className={Style.adminToolBtnIcon}
-                alt="ticket"
-              />
-              {"Admin Tools"}
-            </button>
           </div>
           <div className={Style.wrapper}>
             <div className={Style.left}>
@@ -282,7 +274,7 @@ const MyEventPage = () => {
                   {/* Blank */}
                 </div>
               </form>
-              <div className={Style.uniqueViewDiv} style={{ display: "none" }}>
+              {/* <div className={Style.uniqueViewDiv} style={{ display: "none" }}>
                 <div>
                   <div>Unique Views: 3</div>
                   <hr />
@@ -366,7 +358,7 @@ const MyEventPage = () => {
                     <div className={Style.expenseItemTotal}>$6.00</div>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
             <div className={Style.right}>
               {eventData?.event_image ? (

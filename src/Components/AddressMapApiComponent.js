@@ -29,11 +29,11 @@ const AddressMapApiComponent = ({
       console.error("No geometry or location data in place object:", place);
       return;
     }
-    console.log(place);
-    console.log(
-      place?.mainAddress?.name,
-      place?.mainAddress?.formatted_address
-    );
+    // console.log(place);
+    // console.log(
+    //   place?.mainAddress?.name,
+    //   place?.mainAddress?.formatted_address
+    // );
 
     setValue(inputRef, place);
   };

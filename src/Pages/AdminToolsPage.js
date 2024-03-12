@@ -6,7 +6,7 @@ import calendarIcon from "../images/Group 33778.svg";
 import locationIcon from "../images/Group 18184.svg";
 import ticketIcon from "../images/ticket-icon.png";
 import payoutIcon from "../images/payout-icon.png";
-import { adminToolUpdate, singleEvents } from "../api/services";
+import { adminToolUpdate, getPayout, singleEvents } from "../api/services";
 import Style from "../Styles/MyEventPage.module.css";
 import Loader from "../Components/Loader";
 import { useForm } from "react-hook-form";
@@ -39,6 +39,7 @@ import CreateTicketComponent from "../Components/CreateTicketComponent";
 import DatePickerHookForm from "../Components/DatePickerHookForm";
 import ReactQuillEditor from "../Components/ReactQuillEditor";
 import EditTicketComponent from "../Components/EditTicketComponent";
+import Form from "react-bootstrap/Form";
 
 const AdminToolsPage = () => {
   const { adminId } = useParams();
@@ -48,7 +49,6 @@ const AdminToolsPage = () => {
   const [ticketData, setTicketData] = useState([]);
 
   const [loading, setLoading] = useState(false);
-  console.log(loading);
   const [error, setError] = useState(null);
 
   const userInfo = useSelector((state) => state?.userInfo);
@@ -68,6 +68,7 @@ const AdminToolsPage = () => {
     full_address: yup.string(),
     aboutEvent: yup.string(),
     name: yup.string(),
+    switch: yup.boolean(),
   });
 
   const {
@@ -88,6 +89,7 @@ const AdminToolsPage = () => {
   const [eventImage, setEventImage] = useState("");
   const [editTicketId, setEditTicketId] = useState("");
   const [eventImageToUpdate, setEventImageToUpdtate] = useState(null);
+  const [payoutDetails, setPayoutDetails] = useState({});
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -104,9 +106,6 @@ const AdminToolsPage = () => {
       reader.readAsDataURL(selectedFile);
     }
   };
-
-  const formVal = watch();
-  // console.log(formVal, "sdg");
 
   useEffect(() => {
     // Scroll to top as some time it shows in middle of after image section when comes to detail page
@@ -126,7 +125,34 @@ const AdminToolsPage = () => {
           setValue("aboutEvent", response?.data?.about);
           setValue("start_date", new Date(response?.data?.start_date));
           setValue("end_date", new Date(response?.data?.end_date));
+          setValue(
+            "switch",
+            response?.data?.event_type === "AO" ? true : false
+          );
           setEventImage(response?.data?.event_image);
+        } catch (error) {
+          setLoading(false);
+          setError(error.message);
+          console.log(error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchEventData();
+  }, [adminId]);
+  useEffect(() => {
+    // Scroll to top as some time it shows in middle of after image section when comes to detail page
+    scrollToTop();
+
+    const fetchEventData = async () => {
+      if (adminId) {
+        try {
+          setLoading(true);
+          const response = await getPayout(adminId);
+          console.log(response?.data);
+          setPayoutDetails(response?.data);
         } catch (error) {
           setLoading(false);
           setError(error.message);
@@ -148,9 +174,17 @@ const AdminToolsPage = () => {
 
   const onSubmit = async (data) => {
     setLoading(true);
+    const demoData = {
+      lat: data.mainAddress?.geometry?.location.lat(),
+      lng: data.mainAddress?.geometry?.location.lng(),
+      place: data?.mainAddress?.formatted_address,
+    };
+    console.log(demoData);
+    const toggleValue = data?.switch === false ? "VF" : "AO";
     // Convert the parsed date to ISO 8601 UTC format
     const formData = new FormData();
     formData.append("name", data.name);
+    formData.append("event_type", toggleValue);
     formData.append("about", data.aboutEvent);
     formData.append("address", data.address);
     formData.append("email_confirmation_body", data.confirmationMail);
@@ -175,7 +209,6 @@ const AdminToolsPage = () => {
         ? "0"
         : `${data.mainAddress?.geometry.location.lng()}`
     );
-    formData.append("event_type", "VF");
     if (eventImageToUpdate && eventImageToUpdate !== null) {
       formData.append("event_image", eventImageToUpdate);
     }
@@ -194,13 +227,13 @@ const AdminToolsPage = () => {
 
   function showExpenseAdd() {
     setAddPayoutType("expense");
-    // setShowPayoutModal(true);
+    setShowPayoutModal(true);
     console.log("Called showExpenseAdd");
   }
 
   function showPayoutAdd() {
     setAddPayoutType("payout");
-    // setShowPayoutModal(true);
+    setShowPayoutModal(true);
     console.log("Called showPayoutAdd");
   }
 
@@ -218,6 +251,11 @@ const AdminToolsPage = () => {
     return <NotFound />;
   }
 
+  const doCheckInCheck = () => {
+    console.log("checkedin");
+    ToasterSuccess("checkedin", 2000);
+  };
+
   ///edit ticket modal form submit
 
   return (
@@ -230,18 +268,40 @@ const AdminToolsPage = () => {
             <button className={Style.backButton} onClick={onLastPage}>
               {"< back"}
             </button>
-            <button className={Style.adminToolBtn}>
-              <img
-                src={ticketIcon}
-                className={Style.adminToolBtnIcon}
-                alt="ticket"
-              />
-              {"Admin Tools"}
-            </button>
           </div>
           <form onSubmit={handleSubmit(onSubmit)} className={Style.wrapper}>
             <div className={Style.left}>
               {/* //event name */}
+              <button className={Style.adminToolBtn}>
+                <img
+                  src={ticketIcon}
+                  className={Style.adminToolBtnIcon}
+                  alt="ticket"
+                />
+                {"Admin Tools"}
+              </button>
+
+              <button
+                className={Style.checkIns}
+                type="button"
+                onClick={doCheckInCheck}
+              >
+                {"Check Ins"}
+              </button>
+              <div className={Style.switchWraper}>
+                <div className={Style.fontLabel}>Village Friendly</div>
+                <label className={`${Style.toggleswitch}`}>
+                  <InputComponent
+                    type="checkbox"
+                    className={`${Style.toggleswitchCheckbox}`}
+                    register={register}
+                    inputRef={"switch"}
+                  />
+                  <span className={`${Style.toggleswitchSlider}`}></span>
+                </label>
+                <div className={Style.fontLabel}>Adult Oriented</div>
+              </div>
+
               <div className={Style.boxes}>
                 <InputComponent
                   type={"text"}
@@ -424,6 +484,101 @@ const AdminToolsPage = () => {
                   }}
                 />
                 <hr />
+                <div className={Style.uniqueViewDiv}>
+                  <div>
+                    <div>Unique Views: 3</div>
+                    <hr />
+                  </div>
+                </div>
+                <div className={Style.financialSection}>
+                  <div className={Style.financeLbl}>Financials</div>
+                  <div>
+                    <div className={Style.financeItem}>
+                      <span>Revenue</span>
+                      <span className={Style.itemAmt}>
+                        ${payoutDetails?.revenue_amount}
+                      </span>
+                    </div>
+                    <div className={Style.financeItem}>
+                      <span>Expenses</span>
+                      <span className={Style.itemAmt}>
+                        ${payoutDetails?.total_expenses}
+                      </span>
+                    </div>
+                    <div className={Style.financeItem}>
+                      <span>Profit</span>
+                      <span className={Style.itemAmt}>
+                        ${payoutDetails?.total_profit}
+                      </span>
+                    </div>
+                    <div
+                      className={`${Style.financeItem} ${Style.payoutSection}`}
+                    >
+                      <span>Payouts</span>
+                      <span className={Style.itemAmt}>
+                        ${payoutDetails?.total_payout}
+                      </span>
+                    </div>
+                    <div className={Style.financeItem}>
+                      <span>Remaining</span>
+                      <span className={Style.itemAmt}>
+                        ${payoutDetails?.remaining_amount}
+                      </span>
+                    </div>
+                    <div className={Style.sendPayoutSection}>
+                      <span className={Style.itemAmt}>
+                        <button className={Style.itemBtn} type="button">
+                          <img
+                            src={payoutIcon}
+                            alt="payout"
+                            className={Style.itemBtnIcon}
+                          />
+                          <span className={Style.itemBtnText}>
+                            Send Payouts
+                          </span>
+                        </button>
+                        <div className={Style.payNoteText}>
+                          Payout can be sent 3 days after the event. All refunds
+                          must happen within this time before a payout can be
+                          sent.
+                        </div>
+                      </span>
+                    </div>
+                  </div>
+                  <div className={Style.listContainer}>
+                    <div>
+                      <div className={Style.listHead}>Expenses</div>
+                      <div className={Style.noExpense}>No expenses yet</div>
+                      <ExpenseItemComponent
+                        title={"Bob Jones (sound gear)"}
+                        subTitle1={`Payout for Garden Party`}
+                        subTitle2={`on July 14, 2023`}
+                      />
+                      <FinanceAddBtn addAction={showExpenseAdd} />
+                      <div className={Style.expenseItemTotalLine}></div>
+                      <div className={Style.expenseItemTotal}>$0.00</div>
+                    </div>
+                    <div className={Style.payoutItemSection}>
+                      <div>Payouts</div>
+                      <ExpenseItemComponent
+                        title={"Bob Jones (sound gear)"}
+                        subTitle1={`Payout for Garden Party`}
+                        subTitle2={`on July 14, 2023`}
+                        itemAmt={"5.00"}
+                      />
+                      <ExpenseItemComponent
+                        title={"Bob Jones (sound gear)"}
+                        subTitle1={`Payout for Garden Party`}
+                        subTitle2={`on July 14, 2023`}
+                        itemAmt={""}
+                      />
+                      <FinanceAddBtn addAction={showPayoutAdd} />
+                      <div className={Style.expenseItemTotalLine}></div>
+                      <div className={Style.expenseItemTotal}>$6.00</div>
+                    </div>
+                  </div>
+                </div>
+                <hr />
                 <button
                   type="submit"
                   className={Style.purchase}
@@ -436,96 +591,6 @@ const AdminToolsPage = () => {
                     <img src={arrow} alt="arrow" />
                   </span>
                 </button>
-
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                  {/* Blank */}
-                </div>
-              </div>
-
-              <div className={Style.uniqueViewDiv} style={{ display: "none" }}>
-                <div>
-                  <div>Unique Views: 3</div>
-                  <hr />
-                </div>
-              </div>
-              <div
-                className={Style.financialSection}
-                style={{ display: "none" }}
-              >
-                <div className={Style.financeLbl}>Financials</div>
-                <div>
-                  <div className={Style.financeItem}>
-                    <span>Revenue</span>
-                    <span className={Style.itemAmt}>$10</span>
-                  </div>
-                  <div className={Style.financeItem}>
-                    <span>Expenses</span>
-                    <span className={Style.itemAmt}>$0</span>
-                  </div>
-                  <div className={Style.financeItem}>
-                    <span>Profit</span>
-                    <span className={Style.itemAmt}>$10.00</span>
-                  </div>
-                  <div
-                    className={`${Style.financeItem} ${Style.payoutSection}`}
-                  >
-                    <span>Payouts</span>
-                    <span className={Style.itemAmt}>$6</span>
-                  </div>
-                  <div className={Style.financeItem}>
-                    <span>Remaining</span>
-                    <span className={Style.itemAmt}>$4.00</span>
-                  </div>
-                  <div className={Style.sendPayoutSection}>
-                    <span className={Style.itemAmt}>
-                      <button className={Style.itemBtn}>
-                        <img
-                          src={payoutIcon}
-                          alt="payout"
-                          className={Style.itemBtnIcon}
-                        />
-                        <span className={Style.itemBtnText}>Send Payouts</span>
-                      </button>
-                      <div className={Style.payNoteText}>
-                        Payout can be sent 3 days after the event. All refunds
-                        must happen within this time before a payout can be
-                        sent.
-                      </div>
-                    </span>
-                  </div>
-                </div>
-                <div className={Style.listContainer}>
-                  <div>
-                    <div className={Style.listHead}>Expenses</div>
-                    <div className={Style.noExpense}>No expenses yet</div>
-                    <ExpenseItemComponent
-                      title={"Bob Jones (sound gear)"}
-                      subTitle1={`Payout for Garden Party`}
-                      subTitle2={`on July 14, 2023`}
-                    />
-                    <FinanceAddBtn addAction={showExpenseAdd} />
-                    <div className={Style.expenseItemTotalLine}></div>
-                    <div className={Style.expenseItemTotal}>$0.00</div>
-                  </div>
-                  <div className={Style.payoutItemSection}>
-                    <div>Payouts</div>
-                    <ExpenseItemComponent
-                      title={"Bob Jones (sound gear)"}
-                      subTitle1={`Payout for Garden Party`}
-                      subTitle2={`on July 14, 2023`}
-                      itemAmt={"5.00"}
-                    />
-                    <ExpenseItemComponent
-                      title={"Bob Jones (sound gear)"}
-                      subTitle1={`Payout for Garden Party`}
-                      subTitle2={`on July 14, 2023`}
-                      itemAmt={""}
-                    />
-                    <FinanceAddBtn addAction={showPayoutAdd} />
-                    <div className={Style.expenseItemTotalLine}></div>
-                    <div className={Style.expenseItemTotal}>$6.00</div>
-                  </div>
-                </div>
               </div>
             </div>
             <div className={`${Style.right} ${Style.posRelative}`}>

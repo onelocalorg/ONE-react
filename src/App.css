@@ -159,3 +159,27 @@ hr {
   background-color: #3f3c3c;
   outline: 1px solid slategrey;
 }
+
+/* #parent {
+  position: relative;
+}
+.userBadge {
+  display: flex;
+  width: 100%;
+}
+.userBadge .slick-slide {
+  width: auto !important;
+}
+.userBadge .slick-track {
+  display: flex !important;
+  gap: 8px;
+  width: 100% !important;
+}
+
+.userBadge .slick-prev {
+  position: absolute;
+  left: 20px !important;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 20px !important;
+} */
