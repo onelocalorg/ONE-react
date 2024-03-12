@@ -105,7 +105,9 @@ function PayoutModalDialog({ hideFunc, addPayoutType, setloadingFunc }) {
               <div style={{ width: "100%" }}>
                 <span>Expense</span>
                 <span>
-                  <button className={Style.payoutBtn}>Payout</button>
+                  <button className={Style.payoutBtn} type="button">
+                    Payout
+                  </button>
                 </span>
               </div>
             </div>
@@ -140,7 +142,9 @@ function PayoutModalDialog({ hideFunc, addPayoutType, setloadingFunc }) {
                 }}
               >
                 <span>
-                  <button className={Style.photoBtn}>Add Photos</button>
+                  <button className={Style.photoBtn} type="button">
+                    Add Photos
+                  </button>
                 </span>
               </div>
             </div>
