@@ -64,35 +64,34 @@ function RecentUserList() {
     }
   };
   return (
-    <div className={Style.userJoined}>
-      {userInfo?.userData !== null && (
-        <>
-          <button
-            onClick={() => scroll("prev")}
-            className={`${Style.buttonPrevNext}`}
-          >
-            <MdNavigateBefore />
-          </button>
-          <div ref={containerRef} className={`${Style.userWraper}`}>
-            {userInfo?.userData !== null &&
-              recentJoinedusers?.status === "fullfilled" &&
-              recentJoinedusers?.data?.map((user) => (
+    <>
+      {userInfo?.userData !== null &&
+        recentJoinedusers?.status === "fullfilled" && (
+          <div className={Style.userJoined}>
+            <button
+              onClick={() => scroll("prev")}
+              className={Style.buttonPrevNext}
+            >
+              <MdNavigateBefore />
+            </button>
+            <div ref={containerRef} className={Style.userWraper}>
+              {recentJoinedusers?.data?.map((user) => (
                 <UserBadgeComponent
                   src={user?.pic}
                   key={user?.user_unique_id}
                   recentUserId={user?.id}
                 />
               ))}
+            </div>
+            <button
+              onClick={() => scroll("next")}
+              className={Style.buttonPrevNext}
+            >
+              <MdNavigateNext />
+            </button>
           </div>
-          <button
-            onClick={() => scroll("next")}
-            className={`${Style.buttonPrevNext}`}
-          >
-            <MdNavigateNext />
-          </button>
-        </>
-      )}
-    </div>
+        )}
+    </>
   );
 
   return (
