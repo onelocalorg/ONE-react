@@ -13,11 +13,13 @@ const InputComponent = ({
   className,
   disabled,
   accept,
+  ...restprops
 }) => {
   return (
     <>
       <input
         type={type}
+        {...register(inputRef)}
         placeholder={placeholder}
         name={name}
         value={value}
@@ -26,7 +28,7 @@ const InputComponent = ({
         className={className}
         disabled={disabled}
         accept={accept}
-        {...register(inputRef)}
+        {...restprops}
       />
     </>
   );
