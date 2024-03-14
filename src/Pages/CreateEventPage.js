@@ -457,8 +457,9 @@ const CreateEventPage = () => {
                 <EditTicketCreateFlowCmp
                   ticketitem={ticketitem}
                   Style={Style}
-                  OldticketData={ticketData}
                   hideModal={hideModalFunc}
+                  startDateInstance={startDateInstance}
+                  endDateInstance={endDateInstance}
                   setTicketData={setTicketData}
                 />
               }
