@@ -78,6 +78,7 @@ const CreateEventPage = () => {
       start_date: new Date(),
       end_date: new Date(new Date().setDate(new Date().getDate() + 1)),
       aboutEvent: "",
+      confirmationMail: "",
     },
   });
   console.log(errors);
