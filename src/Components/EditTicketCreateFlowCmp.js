@@ -19,12 +19,12 @@ import ToasterSuccess from "./ToasterSuccess";
 const EditTicketCreateFlowCmp = ({
   Style,
   hideModal,
-  OldticketData,
   ticketitem,
   setTicketData,
+  startDateInstance,
+  endDateInstance,
 }) => {
   const [loading, setLoading] = useState(false);
-
   const schema = yup.object().shape({
     name: yup.string(),
     quantity: yup.number(),
@@ -34,7 +34,6 @@ const EditTicketCreateFlowCmp = ({
   });
 
   const ticketData = ticketitem && ticketitem;
-  const oldTicketData = OldticketData;
 
   const {
     register,
@@ -125,7 +124,7 @@ const EditTicketCreateFlowCmp = ({
               // setStartDate={setStartDate}
               // endDate={ticketData?.end_date}
               name="start_date"
-              maxDate={new Date(ticketData?.end_date)}
+              maxDate={new Date(endDateInstance)}
               minDate={new Date(ticketData?.start_date)}
             />
             {/* <div>to</div> */}
@@ -135,7 +134,7 @@ const EditTicketCreateFlowCmp = ({
               // start_date={end_date}
               // setStartDate={setEndDate}
               name="end_date"
-              maxDate={new Date(ticketData?.end_date)}
+              maxDate={new Date(endDateInstance)}
               minDate={new Date(ticketData?.start_date)}
             />
           </div>

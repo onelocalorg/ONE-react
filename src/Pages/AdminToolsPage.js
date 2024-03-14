@@ -87,7 +87,6 @@ const AdminToolsPage = () => {
   });
 
   const formVal = watch();
-  console.log(formVal?.start_date);
 
   const [eventImage, setEventImage] = useState("");
   const [editTicketId, setEditTicketId] = useState("");
@@ -284,13 +283,13 @@ const AdminToolsPage = () => {
                 {"Admin Tools"}
               </button>
 
-              <button
+              {/* <button
                 className={Style.checkIns}
                 type="button"
                 onClick={doCheckInCheck}
               >
                 {"Check Ins"}
-              </button>
+              </button> */}
               <div className={Style.switchWraper}>
                 <div className={Style.fontLabel}>Village Friendly</div>
                 <label className={`${Style.toggleswitch}`}>
