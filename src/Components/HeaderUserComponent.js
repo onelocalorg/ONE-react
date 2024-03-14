@@ -8,6 +8,7 @@ import { FaUser } from "react-icons/fa";
 import { FaCalendarAlt } from "react-icons/fa";
 import { logOutPanel } from "../Redux/thunk/userThunk";
 import ToasterSuccess from "./ToasterSuccess";
+import { IoCreateSharp } from "react-icons/io5";
 
 const HeaderUserComponent = ({ headerClass, calledFromClass }) => {
   const userInfo = useSelector((state) => state?.userInfo);
@@ -86,7 +87,10 @@ const HeaderUserComponent = ({ headerClass, calledFromClass }) => {
       </div>
       <div className={Style.dropdown} ref={optionMenu}>
         {isDropdownOpen && (
-          <ul className={`${Style.dropdownMenu} ${calledFromClass || ""}`}>
+          <ul
+            className={`${Style.dropdownMenu} ${calledFromClass || ""}`}
+            style={{ width: "max-content" }}
+          >
             <li aria-hidden="true">
               <NavLink to={"/my-profile"} className={headerClass.navLink}>
                 <FaUser />
@@ -97,6 +101,12 @@ const HeaderUserComponent = ({ headerClass, calledFromClass }) => {
               <NavLink to={"/my-events"} className={headerClass.navLink}>
                 <FaCalendarAlt />
                 <span className={Style.menuOption}>My Events</span>
+              </NavLink>
+            </li>
+            <li aria-hidden="true">
+              <NavLink to={"/create-event"} className={headerClass.navLink}>
+                <IoCreateSharp />
+                <span className={Style.menuOption}>Create Event</span>
               </NavLink>
             </li>
             <li onClick={handleLogout} aria-hidden="true">

@@ -177,12 +177,12 @@ const AdminToolsPage = () => {
 
   const onSubmit = async (data) => {
     setLoading(true);
-    const demoData = {
-      lat: data.mainAddress?.geometry?.location.lat(),
-      lng: data.mainAddress?.geometry?.location.lng(),
-      place: data?.mainAddress?.formatted_address,
-    };
-    console.log(demoData);
+    // const demoData = {
+    //   lat: data.mainAddress?.geometry?.location.lat(),
+    //   lng: data.mainAddress?.geometry?.location.lng(),
+    //   place: data?.mainAddress?.formatted_address,
+    // };
+    // console.log(demoData);
     const toggleValue = data?.switch === false ? "VF" : "AO";
     // Convert the parsed date to ISO 8601 UTC format
     const formData = new FormData();
