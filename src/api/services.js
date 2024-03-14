@@ -399,3 +399,12 @@ export const getPayout = async (eventId) => {
     console.log(error);
   }
 };
+
+export const createTicketApi = async (data) => {
+  try {
+    const response = await axiosClient.post(`/events/`, data);
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
