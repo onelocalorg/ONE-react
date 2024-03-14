@@ -400,6 +400,17 @@ export const getPayout = async (eventId) => {
   }
 };
 
+export const whoSearcher = async (query) => {
+  try {
+    const response = await axiosClient.get(
+      `/users/search-user?searchtext=${query}`
+    );
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const createTicketApi = async (data) => {
   try {
     const response = await axiosClient.post(`/events/`, data);

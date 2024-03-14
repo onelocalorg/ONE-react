@@ -86,6 +86,9 @@ const AdminToolsPage = () => {
     },
   });
 
+  const formVal = watch();
+  console.log(formVal?.start_date);
+
   const [eventImage, setEventImage] = useState("");
   const [editTicketId, setEditTicketId] = useState("");
   const [eventImageToUpdate, setEventImageToUpdtate] = useState(null);
@@ -326,20 +329,13 @@ const AdminToolsPage = () => {
                   <div className={Style.date} style={{ color: "black" }}>
                     Start Date
                   </div>
-                  {/* <InputComponent
-                    type={"text"}
-                    className={`${Style.timing} ${Style.outline} ${Style.pointernone} ${Style.bgTransparent} ${Style.textBlack}`}
-                    inputRef={"startDate"}
-                    register={register}
-                    placeholder={"start date"}
-                  /> */}
                   {eventData?.start_date && (
                     <DatePickerHookForm
                       control={control}
                       className={`${Style.wfull} ${Style.bgTransparent}`}
                       name="start_date"
-                      maxDate={new Date(eventData.end_date)}
-                      minDate={new Date(eventData.start_date)}
+                      // maxDate={new Date(eventData.end_date)}
+                      minDate={new Date()}
                     />
                   )}
                 </div>
@@ -358,21 +354,14 @@ const AdminToolsPage = () => {
                   <div className={Style.date} style={{ color: "black" }}>
                     End Date
                   </div>
-                  {/* <InputComponent
-                    type={"text"}
-                    className={`${Style.timing} ${Style.outline} ${Style.pointernone} ${Style.bgTransparent} ${Style.textBlack}`}
-                    inputRef={"endDate"}
-                    register={register}
-                    placeholder={"end date"}
-                  /> */}
                   {eventData?.end_date && (
                     <DatePickerHookForm
                       control={control}
                       className={`${Style.wfull} ${Style.bgTransparent}`}
                       // start_date={end_date}
                       name="end_date"
-                      maxDate={new Date(eventData?.end_date)}
-                      minDate={new Date(eventData?.start_date)}
+                      // maxDate={new Date(eventData?.end_date)}
+                      minDate={new Date(formVal.start_date)}
                     />
                   )}
                 </div>
@@ -456,13 +445,7 @@ const AdminToolsPage = () => {
                   ))}
                 <hr />
                 <div className={Style.desc}>Confirmation Mail:</div>
-                {/* 
-                <TextAreaComponent
-                  className={`${Style.timing} ${Style.outline} ${Style.customTextarea} `}
-                  inputRef={"confirmationMail"}
-                  register={register}
-                  placeholder={"address"}
-                /> */}
+
                 <ReactQuillEditor
                   control={control}
                   id={"confirmationMail"}
@@ -582,9 +565,11 @@ const AdminToolsPage = () => {
                 <button
                   type="submit"
                   className={Style.purchase}
-                  style={{
-                    marginTop: "10px",
-                  }}
+                  style={
+                    {
+                      // marginTop: "10px",
+                    }
+                  }
                 >
                   <span>SAVE EVENT</span>
                   <span className={Style.arrowIcon}>
@@ -626,18 +611,6 @@ const AdminToolsPage = () => {
                     className={`${Style.aboutEventDetail} about-event-detail`}
                   >
                     {eventData?.about ? (
-                      // <div
-                      //   className={`${Style.aboutEventDiv} ${Style.bgGray} ${Style.textBlack} ${Style.aboutEventStyle}`}
-                      //   dangerouslySetInnerHTML={{
-                      //     __html: DOMPurify.sanitize(eventData?.about),
-                      //   }}
-                      // />
-                      // <TextAreaComponent
-                      //   type={"text"}
-                      //   className={`${Style.aboutEventDiv} ${Style.bgGray} ${Style.textBlack} ${Style.aboutEventStyle} ${Style.wfull}`}
-                      //   inputRef={"aboutEvent"}
-                      //   register={register}
-                      // />
                       <ReactQuillEditor
                         id={"aboutEvent"}
                         control={control}
