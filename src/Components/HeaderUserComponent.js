@@ -89,7 +89,7 @@ const HeaderUserComponent = ({ headerClass, calledFromClass }) => {
         {isDropdownOpen && (
           <ul
             className={`${Style.dropdownMenu} ${calledFromClass || ""}`}
-            style={{ width: "fit-content" }}
+            style={{ width: "max-content" }}
           >
             <li aria-hidden="true">
               <NavLink to={"/my-profile"} className={headerClass.navLink}>

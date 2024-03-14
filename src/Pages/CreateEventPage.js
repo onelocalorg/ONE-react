@@ -77,6 +77,7 @@ const CreateEventPage = () => {
       full_address: "",
       start_date: new Date(),
       end_date: new Date(new Date().setDate(new Date().getDate() + 1)),
+      aboutEvent: "",
     },
   });
   console.log(errors);
