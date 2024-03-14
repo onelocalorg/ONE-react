@@ -35,34 +35,31 @@ import DatePickerHookForm from "../Components/DatePickerHookForm";
 import ReactQuillEditor from "../Components/ReactQuillEditor";
 import EditTicketComponent from "../Components/EditTicketComponent";
 import ModalComponent from "../Components/ModalCompnent";
+import CreateTicketCreateFlowCmp from "../Components/CreateTicketCreateFlowCmp";
+import EditTicketCreateFlowCmp from "../Components/EditTicketCreateFlowCmp";
+import ToasterComponent from "../Components/ToasterComponent";
 
 const CreateEventPage = () => {
-  const { adminId } = useParams();
-
-  const scrollToTop = useScrollToTop();
-  const [eventData, setEventData] = useState({});
   const [ticketData, setTicketData] = useState([]);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const userInfo = useSelector((state) => state?.userInfo);
   const [showPayoutModal, setShowPayoutModal] = useState(false);
-  const [addPayoutType, setAddPayoutType] = useState(null);
 
   const navigate = useNavigate();
   const onLastPage = () => {
     navigate("/my-events");
   };
   const schema = yup.object().shape({
-    startDate: yup.string(),
-    endDate: yup.string(),
-    address: yup.string(),
+    start_date: yup.string(),
+    end_date: yup.string(),
+    address: yup.string().required("Address is Required"),
     confirmationMail: yup.string(),
     mainAddress: yup.object(),
     full_address: yup.string(),
     aboutEvent: yup.string(),
-    name: yup.string(),
+    name: yup.string().required("Event Name Required"),
     switch: yup.boolean(),
   });
 
@@ -79,8 +76,20 @@ const CreateEventPage = () => {
       mainAddress: {},
       full_address: "",
       start_date: new Date(),
+      end_date: new Date(new Date().setDate(new Date().getDate() + 1)),
     },
   });
+  console.log(errors);
+  useEffect(() => {
+    const errorMsg = Object.values(errors).map((item) => item?.message);
+
+    errorMsg.slice(0, 1).forEach((errorMessage) => {
+      ToasterComponent(errorMessage, 3000);
+    });
+  }, [errors]);
+
+  const startDateInstance = watch("start_date");
+  const endDateInstance = watch("end_date");
 
   const [eventImage, setEventImage] = useState("");
   const [editTicketId, setEditTicketId] = useState("");
@@ -101,62 +110,68 @@ const CreateEventPage = () => {
     }
   };
 
-  useEffect(() => {
-    // Scroll to top as some time it shows in middle of after image section when comes to detail page
-    scrollToTop();
-    setValue("start_date", new Date());
-    setValue("end_date", new Date());
-  }, []);
-
   const hideModalFunc = () => {
     setEditTicketId("");
   };
 
   const onSubmit = async (data) => {
-    setLoading(true);
-    const toggleValue = data?.switch === false ? "VF" : "AO";
-    // Convert the parsed date to ISO 8601 UTC format
-    const formData = new FormData();
-    formData.append("name", data.name);
-    formData.append("event_type", toggleValue);
-    formData.append("about", data.aboutEvent);
-    formData.append("address", data.address);
-    formData.append("email_confirmation_body", data.confirmationMail);
-    formData.append("start_date", new Date(data.start_date).toISOString());
-    formData.append("end_date", new Date(data.end_date).toISOString());
-    formData.append(
-      "full_address",
-      Object.keys(data?.mainAddress || {}).length === 0
-        ? "-"
-        : `${data?.mainAddress?.formatted_address}`
-    );
-    formData.append(
-      "event_lat",
-      Object.keys(data?.mainAddress || {}).length === 0
-        ? "0"
-        : `${data.mainAddress?.geometry.location.lat()}`
-    );
-    formData.append(
-      "event_lng",
-      Object.keys(data?.mainAddress || {}).length === 0
-        ? "0"
-        : `${data.mainAddress?.geometry.location.lng()}`
-    );
-    if (eventImageToUpdate && eventImageToUpdate !== null) {
-      formData.append("event_image", eventImageToUpdate);
+    if (ticketData.length === 0) {
+      ToasterComponent(
+        "Please add at least one ticket to create an event",
+        2000
+      );
     }
-
-    try {
-      const res = await createTicketApi(formData); // Wait for the promise to resolve
-      if (res.success) {
-        ToasterSuccess(`${res.message}`, 2000);
-      } else {
-        ToasterError(`${res.message}`, 2000);
+    if (eventImageToUpdate === null) {
+      ToasterComponent("Event Image is Mandatory", 2000);
+    } else {
+      setLoading(true);
+      const toggleValue = data?.switch === false ? "VF" : "AO";
+      // Convert the parsed date to ISO 8601 UTC format
+      const idArray = ticketData.map((item) => item.id).join(",");
+      const formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("tickets", idArray);
+      formData.append("event_type", toggleValue);
+      formData.append("about", data.aboutEvent);
+      formData.append("address", data.address);
+      formData.append("email_confirmation_body", data.confirmationMail);
+      formData.append("start_date", new Date(data.start_date).toISOString());
+      formData.append("end_date", new Date(data.end_date).toISOString());
+      formData.append(
+        "full_address",
+        Object.keys(data?.mainAddress || {}).length === 0
+          ? "-"
+          : `${data?.mainAddress?.formatted_address}`
+      );
+      formData.append(
+        "event_lat",
+        Object.keys(data?.mainAddress || {}).length === 0
+          ? "0"
+          : `${data.mainAddress?.geometry.location.lat()}`
+      );
+      formData.append(
+        "event_lng",
+        Object.keys(data?.mainAddress || {}).length === 0
+          ? "0"
+          : `${data.mainAddress?.geometry.location.lng()}`
+      );
+      if (eventImageToUpdate && eventImageToUpdate !== null) {
+        formData.append("event_image", eventImageToUpdate);
       }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
+
+      try {
+        const res = await createTicketApi(formData); // Wait for the promise to resolve
+        if (res.success) {
+          ToasterSuccess(`${res.message}`, 2000);
+          navigate("/my-events");
+        } else {
+          ToasterError(`${res.message}`, 2000);
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -423,6 +438,34 @@ const CreateEventPage = () => {
           </form>
         </div>
       </div>
+      {ticketData &&
+        ticketData?.map((ticketitem) =>
+          editTicketId === ticketitem.id ? (
+            <ModalComponent
+              key={ticketitem.id}
+              hideFunc={hideModalFunc}
+              show={ticketitem.id === editTicketId}
+              // className={`${Style.wModal}`}
+              wrapperClassname={` ${Style.wModal}`}
+              header={
+                <div className={`${Style.modalTicketHeader}`}>
+                  <h2 className={`${Style.headerTitle}`}>Edit Ticket</h2>
+                </div>
+              }
+              body={
+                <EditTicketCreateFlowCmp
+                  ticketitem={ticketitem}
+                  Style={Style}
+                  OldticketData={ticketData}
+                  hideModal={hideModalFunc}
+                  setTicketData={setTicketData}
+                />
+              }
+            />
+          ) : (
+            ""
+          )
+        )}
       <ModalComponent
         hideFunc={addNewTicketModalOpen}
         show={showModalTicket}
@@ -430,34 +473,16 @@ const CreateEventPage = () => {
         header={
           <div className={`${Style.modalTicketHeader}`}>
             <h2 className={`${Style.headerTitle}`}>Add Ticket</h2>
-            {adminId && (
-              <div className={`${Style.pointernone} ${Style.cardWrapper}`}>
-                <Card
-                  eventId={adminId}
-                  key={0}
-                  tent={tent}
-                  img={eventData?.event_image}
-                  start_date={eventData?.start_date}
-                  name={eventData?.name || ""}
-                  full_address={eventData?.full_address || ""}
-                  locationPin={locationPin}
-                  ticket={eventData?.tickets}
-                  address={eventData?.address || ""}
-                  start_date_label={eventData?.start_date_label}
-                  start_time_label={eventData?.start_time_label}
-                  eventProducer={eventData?.eventProducer}
-                />
-              </div>
-            )}
           </div>
         }
         body={
-          <CreateTicketComponent
-            adminId={adminId}
+          <CreateTicketCreateFlowCmp
             Style={Style}
-            eventData={eventData}
             hideModal={addNewTicketModalOpen}
             setTicketData={setTicketData}
+            startDateInstance={startDateInstance}
+            endDateInstance={endDateInstance}
+            ticketData={ticketData}
           />
         }
       />

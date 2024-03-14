@@ -19,9 +19,7 @@ const InputComponent = ({
     <>
       <input
         type={type}
-        {...register(inputRef)}
         placeholder={placeholder}
-        name={name}
         value={value}
         style={{ style }}
         id={id}
@@ -29,6 +27,8 @@ const InputComponent = ({
         disabled={disabled}
         accept={accept}
         {...restprops}
+        name={name}
+        {...register(inputRef)}
       />
     </>
   );
