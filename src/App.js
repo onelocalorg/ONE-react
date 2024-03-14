@@ -24,6 +24,7 @@ import SharingOutLet from "./Pages/SharingOutlet";
 import ComingsoonPage from "./Pages/ComingsoonPage";
 import AdminToolsPage from "./Pages/AdminToolsPage";
 import PostList from "./Pages/PostList";
+import CreateEventPage from "./Pages/CreateEventPage";
 
 function App() {
   return (
@@ -130,6 +131,7 @@ function App() {
             path="/my-event/admintool/:adminId"
             element={<AdminToolsPage />}
           />
+          <Route path="/create-event" element={<CreateEventPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <ToastContainer />
