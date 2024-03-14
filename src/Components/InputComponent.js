@@ -26,9 +26,9 @@ const InputComponent = ({
         className={className}
         disabled={disabled}
         accept={accept}
-        {...restprops}
         name={name}
         {...register(inputRef)}
+        {...restprops}
       />
     </>
   );
