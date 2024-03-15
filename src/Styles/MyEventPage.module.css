@@ -488,6 +488,8 @@
 .expenseItemImg {
   width: 24px;
   height: 24px;
+  border-radius: 50%;
+  border: 1px solid #fff;
 }
 
 .expenseItemTitle {
@@ -504,6 +506,8 @@
 
 .expenseItemLeft {
   display: flex;
+  gap: 8px;
+  justify-content: flex-start;
 }
 
 .expenseItemTotalLine {
@@ -513,7 +517,7 @@
 .expenseItemTotal {
   display: flex;
   justify-content: end;
-  margin-right: 30px;
+  /* margin-right: 30px; */
   font-weight: 500;
 }
 

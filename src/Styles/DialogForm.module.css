@@ -417,7 +417,7 @@ input[type="number"]::-webkit-outer-spin-button {
   padding: 5px 10px;
   border: 0;
   outline: 0;
-  color: rgb(155, 152, 152);
+  color: rgb(37, 37, 37);
   font-size: 14px;
   font-weight: 400;
   width: 100%;
@@ -445,7 +445,6 @@ input[type="number"]::-webkit-outer-spin-button {
   object-position: center;
   border-radius: 50%;
   border: 1px solid #fff;
-  cursor: pointer;
 }
 
 .userIconWrapper {
@@ -456,4 +455,48 @@ input[type="number"]::-webkit-outer-spin-button {
   gap: 5px;
   overflow-x: auto;
   flex-wrap: nowrap;
+}
+
+.posRelative {
+  position: relative;
+}
+
+.iconCross {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  background-color: #cbcaca;
+  color: #000;
+  backdrop-filter: blur(10px);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.submitBtnWrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 5px;
+  width: 100%;
+}
+
+.saveBtn {
+  border: 0;
+  outline: 0;
+  background-color: #cbcaca;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 23px;
+  height: 23px;
+  padding: 4px;
+}
+
+.saveBtn > img {
+  width: 15px;
+  height: 15px;
+  transform: scale(0.85);
 }

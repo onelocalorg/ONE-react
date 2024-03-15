@@ -40,6 +40,7 @@ import DatePickerHookForm from "../Components/DatePickerHookForm";
 import ReactQuillEditor from "../Components/ReactQuillEditor";
 import EditTicketComponent from "../Components/EditTicketComponent";
 import Form from "react-bootstrap/Form";
+import EditPayoutModalDialog from "../Components/EditPayoutModalDialog";
 
 const AdminToolsPage = () => {
   const { adminId } = useParams();
@@ -153,7 +154,6 @@ const AdminToolsPage = () => {
         try {
           setLoading(true);
           const response = await getPayout(adminId);
-          console.log(response?.data);
           setPayoutDetails(response?.data);
         } catch (error) {
           setLoading(false);
@@ -258,7 +258,25 @@ const AdminToolsPage = () => {
     ToasterSuccess("checkedin", 2000);
   };
 
+  const [expenseEditModal, setExpensesEditModal] = useState({});
+  const [payoutEditModal, setPayoutEditModal] = useState({});
+
+  const openExpenseModal = (obj) => {
+    setExpensesEditModal(obj);
+  };
+  const openEditPayoutModal = (obj) => {
+    setPayoutEditModal(obj);
+  };
+  function closeEditExpenseModal() {
+    setExpensesEditModal({});
+  }
+  function closePayoutModal() {
+    setPayoutEditModal({});
+  }
   ///edit ticket modal form submit
+
+  const [expenses, setExpenses] = useState([]);
+  const [payouts, setPayouts] = useState([]);
 
   return (
     <>
@@ -472,94 +490,136 @@ const AdminToolsPage = () => {
                     <hr />
                   </div>
                 </div>
-                <div className={Style.financialSection}>
-                  <div className={Style.financeLbl}>Financials</div>
-                  <div>
-                    <div className={Style.financeItem}>
-                      <span>Revenue</span>
-                      <span className={Style.itemAmt}>
-                        ${payoutDetails?.revenue_amount}
-                      </span>
-                    </div>
-                    <div className={Style.financeItem}>
-                      <span>Expenses</span>
-                      <span className={Style.itemAmt}>
-                        ${payoutDetails?.total_expenses}
-                      </span>
-                    </div>
-                    <div className={Style.financeItem}>
-                      <span>Profit</span>
-                      <span className={Style.itemAmt}>
-                        ${payoutDetails?.total_profit}
-                      </span>
-                    </div>
-                    <div
-                      className={`${Style.financeItem} ${Style.payoutSection}`}
-                    >
-                      <span>Payouts</span>
-                      <span className={Style.itemAmt}>
-                        ${payoutDetails?.total_payout}
-                      </span>
-                    </div>
-                    <div className={Style.financeItem}>
-                      <span>Remaining</span>
-                      <span className={Style.itemAmt}>
-                        ${payoutDetails?.remaining_amount}
-                      </span>
-                    </div>
-                    <div className={Style.sendPayoutSection}>
-                      <span className={Style.itemAmt}>
-                        <button className={Style.itemBtn} type="button">
-                          <img
-                            src={payoutIcon}
-                            alt="payout"
-                            className={Style.itemBtnIcon}
-                          />
-                          <span className={Style.itemBtnText}>
-                            Send Payouts
+                {payoutDetails?.revenue_amount > 0 && (
+                  <>
+                    <div className={Style.financialSection}>
+                      <div className={Style.financeLbl}>Financials</div>
+                      <div>
+                        <div className={Style.financeItem}>
+                          <span>Revenue</span>
+                          <span className={Style.itemAmt}>
+                            ${payoutDetails?.revenue_amount}
                           </span>
-                        </button>
-                        <div className={Style.payNoteText}>
-                          Payout can be sent 3 days after the event. All refunds
-                          must happen within this time before a payout can be
-                          sent.
                         </div>
-                      </span>
+                        <div className={Style.financeItem}>
+                          <span>Expenses</span>
+                          <span className={Style.itemAmt}>
+                            ${payoutDetails?.total_expenses}
+                          </span>
+                        </div>
+                        <div className={Style.financeItem}>
+                          <span>Profit</span>
+                          <span className={Style.itemAmt}>
+                            ${payoutDetails?.total_profit}
+                          </span>
+                        </div>
+                        <div
+                          className={`${Style.financeItem} ${Style.payoutSection}`}
+                        >
+                          <span>Payouts</span>
+                          <span className={Style.itemAmt}>
+                            ${payoutDetails?.total_payout}
+                          </span>
+                        </div>
+                        <div className={Style.financeItem}>
+                          <span>Remaining</span>
+                          <span className={Style.itemAmt}>
+                            ${payoutDetails?.remaining_amount}
+                          </span>
+                        </div>
+                        <div className={Style.sendPayoutSection}>
+                          <span className={Style.itemAmt}>
+                            <button className={Style.itemBtn} type="button">
+                              <img
+                                src={payoutIcon}
+                                alt="payout"
+                                className={Style.itemBtnIcon}
+                              />
+                              <span className={Style.itemBtnText}>
+                                Send Payouts
+                              </span>
+                            </button>
+                            <div className={Style.payNoteText}>
+                              Payout can be sent 3 days after the event. All
+                              refunds must happen within this time before a
+                              payout can be sent.
+                            </div>
+                          </span>
+                        </div>
+                      </div>
+                      <div className={Style.listContainer}>
+                        <div>
+                          <div className={Style.listHead}>Expenses</div>
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: "2px",
+                            }}
+                          >
+                            {payoutDetails?.expenses?.length &&
+                              payoutDetails?.expenses?.map((exp) => (
+                                <ExpenseItemComponent
+                                  key={exp?.key}
+                                  title={`${exp?.user_id?.first_name}-${exp?.user_id?.last_name}`}
+                                  subTitle1={`${exp?.description}`}
+                                  payoutProfileIcon={`${exp?.user_id?.pic}`}
+                                  itemAmt={`${exp?.amount}`}
+                                  pricetype={`${exp?.type}`}
+                                  openEditModal={() => openExpenseModal(exp)}
+                                />
+                              ))}
+                            {payoutDetails?.expenses?.length === 0 && (
+                              <div className={Style.noExpense}>
+                                No expenses yet
+                              </div>
+                            )}
+                          </div>
+
+                          <FinanceAddBtn addAction={showExpenseAdd} />
+                          <div className={Style.expenseItemTotalLine}></div>
+                          <div className={Style.expenseItemTotal}>
+                            ${payoutDetails?.total_expenses}
+                          </div>
+                        </div>
+                        <div className={Style.payoutItemSection}>
+                          <div>Payouts</div>
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: "2px",
+                            }}
+                          >
+                            {payoutDetails?.payouts?.length &&
+                              payoutDetails?.payouts?.map((exp) => (
+                                <ExpenseItemComponent
+                                  key={exp?.key}
+                                  title={`${exp?.user_id?.first_name}-${exp?.user_id?.last_name}`}
+                                  subTitle1={`${exp?.description}`}
+                                  payoutProfileIcon={`${exp?.user_id?.pic}`}
+                                  itemAmt={`${exp?.amount}`}
+                                  pricetype={`${exp?.type}`}
+                                  openEditModal={() => openEditPayoutModal(exp)}
+                                />
+                              ))}
+                            {payoutDetails?.payouts?.length === 0 && (
+                              <div className={Style.noExpense}>
+                                No payouts yet
+                              </div>
+                            )}
+                          </div>
+                          <FinanceAddBtn addAction={showPayoutAdd} />
+                          <div className={Style.expenseItemTotalLine}></div>
+                          <div className={Style.expenseItemTotal}>
+                            ${payoutDetails?.total_payout}
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div className={Style.listContainer}>
-                    <div>
-                      <div className={Style.listHead}>Expenses</div>
-                      <div className={Style.noExpense}>No expenses yet</div>
-                      <ExpenseItemComponent
-                        title={"Bob Jones (sound gear)"}
-                        subTitle1={`Payout for Garden Party`}
-                        subTitle2={`on July 14, 2023`}
-                      />
-                      <FinanceAddBtn addAction={showExpenseAdd} />
-                      <div className={Style.expenseItemTotalLine}></div>
-                      <div className={Style.expenseItemTotal}>$0.00</div>
-                    </div>
-                    <div className={Style.payoutItemSection}>
-                      <div>Payouts</div>
-                      <ExpenseItemComponent
-                        title={"Bob Jones (sound gear)"}
-                        subTitle1={`Payout for Garden Party`}
-                        subTitle2={`on July 14, 2023`}
-                        itemAmt={"5.00"}
-                      />
-                      <ExpenseItemComponent
-                        title={"Bob Jones (sound gear)"}
-                        subTitle1={`Payout for Garden Party`}
-                        subTitle2={`on July 14, 2023`}
-                        itemAmt={""}
-                      />
-                      <FinanceAddBtn addAction={showPayoutAdd} />
-                      <div className={Style.expenseItemTotalLine}></div>
-                      <div className={Style.expenseItemTotal}>$6.00</div>
-                    </div>
-                  </div>
-                </div>
+                  </>
+                )}
+
                 <hr />
                 <button
                   type="submit"
@@ -655,7 +715,36 @@ const AdminToolsPage = () => {
         </div>
       </div>
       {showPayoutModal && (
-        <PayoutModalDialog addPayoutType={addPayoutType} hideFunc={hideFunc} />
+        <PayoutModalDialog
+          addPayoutType={addPayoutType}
+          hideFunc={hideFunc}
+          setExpenses={setExpenses}
+          setPayouts={setPayouts}
+          eventId={adminId}
+          setPayoutDetails={setPayoutDetails}
+        />
+      )}
+      {Object.keys(expenseEditModal).length > 0 && (
+        <EditPayoutModalDialog
+          addPayoutType={"expense"}
+          hideFunc={closeEditExpenseModal}
+          setExpenses={setExpenses}
+          setPayouts={setPayouts}
+          eventId={adminId}
+          setPayoutDetails={setPayoutDetails}
+          exp={expenseEditModal}
+        />
+      )}
+      {Object.keys(payoutEditModal).length > 0 && (
+        <EditPayoutModalDialog
+          addPayoutType={"payout"}
+          hideFunc={closePayoutModal}
+          setExpenses={setExpenses}
+          setPayouts={setPayouts}
+          eventId={adminId}
+          setPayoutDetails={setPayoutDetails}
+          exp={payoutEditModal}
+        />
       )}
       {loading && <Loader />}
       {ticketData &&
