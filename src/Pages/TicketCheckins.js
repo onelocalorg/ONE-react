@@ -7,7 +7,7 @@ import CheckinCardComponent from "../Components/CheckinCardComponent";
 import Loader from "../Components/Loader";
 import user from "../images/user.png";
 import { ListCheckins, onCheckin } from "../api/services";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const EachData = ({ element, clickOnCheckIn }) => {
   const [state, setState] = useState(false);
@@ -46,14 +46,12 @@ const EachData = ({ element, clickOnCheckIn }) => {
 };
 
 const TicketCheckins = () => {
-  // const [checkedin,setCheckin] = useState(false)
   const checkedin = false;
-  // const { ticketId  } = useParams();
-  const ticketId = "65f16e03d85036422b30db97";
+  const { eventId } = useParams();
   const [data, setData] = useState([]);
 
   const getData = async () => {
-    const data = await ListCheckins(ticketId);
+    const data = await ListCheckins(eventId);
     setData(data.data.results);
   };
 
@@ -62,7 +60,6 @@ const TicketCheckins = () => {
   }, []);
 
   const clickOnCheckIn = async (data) => {
-    // const ticketId =  "65ef00eca3109faf020f6662"
     const ticketId = data._id;
     const getConfirm = await onCheckin(ticketId, {
       email: data.user.email,
@@ -71,7 +68,6 @@ const TicketCheckins = () => {
     });
 
     return getConfirm;
-    // console.log("getConfirm",getConfirm)
   };
 
   return (
@@ -86,7 +82,6 @@ const TicketCheckins = () => {
 
           {data.length > 0 &&
             data.map((element) => {
-              console.log("element", element);
               return (
                 <EachData element={element} clickOnCheckIn={clickOnCheckIn} />
               );

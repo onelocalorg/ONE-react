@@ -57,9 +57,18 @@ const CreateTicketComponent = ({
 
       // Await the creation of the ticket
       const createResponse = await createTicket(dataToCreate);
-
+      console.log("createResponse", createResponse);
+      if (
+        createResponse.success === false ||
+        createResponse.success === "false"
+      ) {
+        ToasterComponent(`${createResponse.message}`, 4000);
+        return;
+      }
       // Construct the new ID list
-      const id = idArray + "," + createResponse?.data?.id;
+      const id = idArray
+        ? idArray + "," + createResponse?.data?.id
+        : createResponse?.data?.id;
       const formData = new FormData();
       formData.append("tickets", `${id}`);
       formData.append("event_lng", `${eventData?.location?.coordinates[0]}`);
