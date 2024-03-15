@@ -134,10 +134,12 @@ function App() {
           />
           <Route path="/create-event" element={<CreateEventPage />} />
           <Route path="*" element={<NotFound />} />
-          <Route path="/ticket-checkins/:ticketId" element={<TicketCheckins />} />
+          <Route
+            path="/ticket-checkins/:eventId"
+            element={<TicketCheckins />}
+          />
         </Routes>
         <ToastContainer />
-        
       </BrowserRouter>
     </div>
   );
