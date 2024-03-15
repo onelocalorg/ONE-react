@@ -455,3 +455,27 @@ export const deletePayoutDelete = async (userId, type, data) => {
     console.log(error);
   }
 };
+
+export const ListCheckins = async (ticketId, limit = 15, page = 1) => {
+  try {
+    const response = await axiosClient.get(
+      `events/getTicketHolders/${ticketId}?limit=${limit}&page=${page}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const onCheckin = async (EventId, data) => {
+  try {
+    const response = await axiosClient.patch(
+      `tickets/checkedInEvent/${EventId}`,
+      data
+    );
+    return response.data.success;
+  } catch (error) {
+    console.log(error);
+  }
+};
+

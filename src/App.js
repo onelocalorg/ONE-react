@@ -25,6 +25,7 @@ import ComingsoonPage from "./Pages/ComingsoonPage";
 import AdminToolsPage from "./Pages/AdminToolsPage";
 import PostList from "./Pages/PostList";
 import CreateEventPage from "./Pages/CreateEventPage";
+import TicketCheckins from "./Pages/TicketCheckins";
 
 function App() {
   return (
@@ -133,8 +134,10 @@ function App() {
           />
           <Route path="/create-event" element={<CreateEventPage />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/ticket-checkins/:ticketId" element={<TicketCheckins />} />
         </Routes>
         <ToastContainer />
+        
       </BrowserRouter>
     </div>
   );
