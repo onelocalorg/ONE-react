@@ -24,6 +24,7 @@ import { useDispatch } from "react-redux";
 import whitetent from "../images/white-tent.png";
 import playerIcon from "../images/player.png";
 import backgroundDefault from "../images/background-default.png";
+import { fireEvent } from "@testing-library/react";
 
 const MyProfileForm = ({ userInfo }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -98,12 +99,23 @@ const MyProfileForm = ({ userInfo }) => {
   };
 
   const onSubmit = async (data) => {
+   
     try {
+      const ApiObj = {}
+     
       setIsLoading(true);
       data["skills"] = skills?.length ? skills.toString() : "";
+
+      Object.keys(data).forEach(e =>{ 
+        if(e === data.first_name || e === data.last_name){
+           ApiObj[e] = data[e]
+        }else if(data[e] !==''){
+          ApiObj[e] = data[e]
+        }
+      })
       const response = await updateUserProfileApi(
         userInfo?.userData?.userId,
-        data
+        ApiObj
       );
 
       if (response?.success) {
