@@ -99,23 +99,13 @@ const MyProfileForm = ({ userInfo }) => {
   };
 
   const onSubmit = async (data) => {
-   
     try {
-      const ApiObj = {}
-     
       setIsLoading(true);
       data["skills"] = skills?.length ? skills.toString() : "";
 
-      Object.keys(data).forEach(e =>{ 
-        if(e === data.first_name || e === data.last_name){
-           ApiObj[e] = data[e]
-        }else if(data[e] !==''){
-          ApiObj[e] = data[e]
-        }
-      })
       const response = await updateUserProfileApi(
         userInfo?.userData?.userId,
-        ApiObj
+        data
       );
 
       if (response?.success) {
