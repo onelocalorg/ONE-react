@@ -244,6 +244,10 @@ const AdminToolsPage = () => {
   }
 
   const [showModalTicket, setShowModalTicket] = useState(false);
+  const [expenseEditModal, setExpensesEditModal] = useState({});
+  const [payoutEditModal, setPayoutEditModal] = useState({});
+  const [expenses, setExpenses] = useState([]);
+  const [payouts, setPayouts] = useState([]);
 
   const addNewTicketModalOpen = () => {
     setShowModalTicket((prev) => !prev);
@@ -254,12 +258,8 @@ const AdminToolsPage = () => {
   }
 
   const doCheckInCheck = () => {
-    console.log("checkedin");
-    ToasterSuccess("checkedin", 2000);
+    navigate(`/ticket-checkins/${adminId}`);
   };
-
-  const [expenseEditModal, setExpensesEditModal] = useState({});
-  const [payoutEditModal, setPayoutEditModal] = useState({});
 
   const openExpenseModal = (obj) => {
     setExpensesEditModal(obj);
@@ -274,9 +274,6 @@ const AdminToolsPage = () => {
     setPayoutEditModal({});
   }
   ///edit ticket modal form submit
-
-  const [expenses, setExpenses] = useState([]);
-  const [payouts, setPayouts] = useState([]);
 
   return (
     <>
@@ -301,13 +298,13 @@ const AdminToolsPage = () => {
                 {"Admin Tools"}
               </button>
 
-              {/* <button
+              <button
                 className={Style.checkIns}
                 type="button"
                 onClick={doCheckInCheck}
               >
                 {"Check Ins"}
-              </button> */}
+              </button>
               <div className={Style.switchWraper}>
                 <div className={Style.fontLabel}>Village Friendly</div>
                 <label className={`${Style.toggleswitch}`}>
