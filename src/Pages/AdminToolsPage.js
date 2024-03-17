@@ -275,6 +275,8 @@ const AdminToolsPage = () => {
   }
   ///edit ticket modal form submit
 
+  console.log("PayoutDetails", payoutDetails);
+
   return (
     <>
       <div className={Style.mainDiv}>
@@ -524,24 +526,27 @@ const AdminToolsPage = () => {
                             ${payoutDetails?.remaining_amount}
                           </span>
                         </div>
+
                         <div className={Style.sendPayoutSection}>
-                          <span className={Style.itemAmt}>
-                            <button className={Style.itemBtn} type="button">
-                              <img
-                                src={payoutIcon}
-                                alt="payout"
-                                className={Style.itemBtnIcon}
-                              />
-                              <span className={Style.itemBtnText}>
-                                Send Payouts
-                              </span>
-                            </button>
-                            <div className={Style.payNoteText}>
-                              Payout can be sent 3 days after the event. All
-                              refunds must happen within this time before a
-                              payout can be sent.
-                            </div>
-                          </span>
+                          {payoutDetails?.isPayout && (
+                            <span className={Style.itemAmt}>
+                              <button className={Style.itemBtn} type="button">
+                                <img
+                                  src={payoutIcon}
+                                  alt="payout"
+                                  className={Style.itemBtnIcon}
+                                />
+                                <span className={Style.itemBtnText}>
+                                  Send Payouts
+                                </span>
+                              </button>
+                              <div className={Style.payNoteText}>
+                                Payout can be sent 3 days after the event. All
+                                refunds must happen within this time before a
+                                payout can be sent.
+                              </div>
+                            </span>
+                          )}
                         </div>
                       </div>
                       <div className={Style.listContainer}>
@@ -573,7 +578,9 @@ const AdminToolsPage = () => {
                             )}
                           </div>
 
-                          <FinanceAddBtn addAction={showExpenseAdd} />
+                          {payoutDetails?.isPayoutAddEdit && (
+                            <FinanceAddBtn addAction={showExpenseAdd} />
+                          )}
                           <div className={Style.expenseItemTotalLine}></div>
                           <div className={Style.expenseItemTotal}>
                             ${payoutDetails?.total_expenses}
@@ -598,6 +605,7 @@ const AdminToolsPage = () => {
                                   itemAmt={`${exp?.amount}`}
                                   pricetype={`${exp?.type}`}
                                   openEditModal={() => openEditPayoutModal(exp)}
+                                  showEditIcon={payoutDetails?.isPayoutAddEdit}
                                 />
                               ))}
                             {payoutDetails?.payouts?.length === 0 && (
@@ -606,7 +614,9 @@ const AdminToolsPage = () => {
                               </div>
                             )}
                           </div>
-                          <FinanceAddBtn addAction={showPayoutAdd} />
+                          {payoutDetails?.isPayoutAddEdit && (
+                            <FinanceAddBtn addAction={showPayoutAdd} />
+                          )}
                           <div className={Style.expenseItemTotalLine}></div>
                           <div className={Style.expenseItemTotal}>
                             ${payoutDetails?.total_payout}
@@ -719,6 +729,7 @@ const AdminToolsPage = () => {
           setPayouts={setPayouts}
           eventId={adminId}
           setPayoutDetails={setPayoutDetails}
+          setloadingFunc={setLoading}
         />
       )}
       {Object.keys(expenseEditModal).length > 0 && (
@@ -730,6 +741,7 @@ const AdminToolsPage = () => {
           eventId={adminId}
           setPayoutDetails={setPayoutDetails}
           exp={expenseEditModal}
+          setloadingFunc={setLoading}
         />
       )}
       {Object.keys(payoutEditModal).length > 0 && (
@@ -741,6 +753,7 @@ const AdminToolsPage = () => {
           eventId={adminId}
           setPayoutDetails={setPayoutDetails}
           exp={payoutEditModal}
+          setloadingFunc={setLoading}
         />
       )}
       {loading && <Loader />}

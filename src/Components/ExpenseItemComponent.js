@@ -9,23 +9,26 @@ function ExpenseItemComponent({
   payoutProfileIcon,
   pricetype,
   openEditModal,
+  showEditIcon,
 }) {
   return (
     <>
       <div className={Style.expenseItem}>
         <div className={Style.expenseItemLeft}>
           <div className={Style.profileIcon}>
-            <img
-              src={EditIcon}
-              alt="edit"
-              className={Style.editIcon}
-              style={{
-                marginRight: "3px",
-                transform: "scale(0.85",
-                cursor: "pointer",
-              }}
-              onClick={openEditModal}
-            />
+            {showEditIcon && (
+              <img
+                src={EditIcon}
+                alt="edit"
+                className={Style.editIcon}
+                style={{
+                  marginRight: "3px",
+                  transform: "scale(0.85",
+                  cursor: "pointer",
+                }}
+                onClick={openEditModal}
+              />
+            )}
             <img src={payoutProfileIcon} className={Style.expenseItemImg} />
           </div>
           <div>

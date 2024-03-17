@@ -284,49 +284,6 @@
   font-weight: 400;
 }
 
-/* Responsive */
-@media only screen and (max-width: 768px) {
-  .modalItem {
-    [class~="modal-dialog"] {
-      margin-top: 10%;
-    }
-  }
-
-  .purchaseModalItem {
-    [class~="modal-dialog"] {
-      margin-top: 5%;
-    }
-  }
-}
-
-@media only screen and (max-width: 431px) {
-  .modalItem {
-    [class~="modal-dialog"] {
-      margin-top: 20%;
-    }
-  }
-
-  .purchseArrowIconContainer {
-    right: 13%;
-  }
-
-  .purchaseModalItem {
-    [class~="modal-dialog"] {
-      margin-top: 5%;
-    }
-    padding-left: 6px !important;
-  }
-
-  .inputField {
-    height: 30px;
-  }
-
-  .alreadyText {
-    font-size: 20px;
-    font-weight: 400;
-  }
-}
-
 .toggleswitchcheckbox {
   opacity: 0;
   position: absolute;
@@ -366,7 +323,6 @@
 
 .currencyType {
   background-color: transparent;
-  border: 0;
   outline: 0;
   border-radius: 50%;
   border: 1px solid transparent;
@@ -499,4 +455,52 @@ input[type="number"]::-webkit-outer-spin-button {
   width: 15px;
   height: 15px;
   transform: scale(0.85);
+}
+
+.amountError {
+  width: 100%;
+  text-align: right;
+}
+
+/* Responsive */
+@media only screen and (max-width: 768px) {
+  .modalItem {
+    [class~="modal-dialog"] {
+      margin-top: 10%;
+    }
+  }
+
+  .purchaseModalItem {
+    [class~="modal-dialog"] {
+      margin-top: 5%;
+    }
+  }
+}
+
+@media only screen and (max-width: 431px) {
+  .modalItem {
+    [class~="modal-dialog"] {
+      margin-top: 20%;
+    }
+  }
+
+  .purchseArrowIconContainer {
+    right: 13%;
+  }
+
+  .purchaseModalItem {
+    [class~="modal-dialog"] {
+      margin-top: 5%;
+    }
+    padding-left: 6px !important;
+  }
+
+  .inputField {
+    height: 30px;
+  }
+
+  .alreadyText {
+    font-size: 20px;
+    font-weight: 400;
+  }
 }

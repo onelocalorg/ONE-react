@@ -95,8 +95,7 @@ function EditPayoutModalDialog({
   });
 
   const formval = watch();
-  // console.log(formval);
-  console.log("errors", errors);
+
   const [payouttypeVal, setPayoutTypeVal] = useState(
     addPayoutType.toLowerCase()
   );
@@ -109,6 +108,7 @@ function EditPayoutModalDialog({
 
   const handleFormSubmit = async (data) => {
     try {
+      setloadingFunc(true);
       const dataToSend = {
         user_id: data?.listofPayer[0]?.id,
         type: currencyType === "$" ? "price" : "percentage",
@@ -127,13 +127,14 @@ function EditPayoutModalDialog({
         type: currencyType === "$" ? "price" : "percentage",
       };
       const resp = await expensePayoutEdit(eventId, payouttypeVal, dataToSend);
-      if (resp.success === true && resp.code === 200) {
+      if (resp.success) {
         if (payouttypeVal === "expense") {
           setExpenses(dataToset);
           try {
             const response = await getPayout(eventId);
             hideFunc();
             setPayoutDetails(response?.data);
+            ToasterSuccess(`${resp?.message}`, 2000);
           } catch (error) {
             ToasterComponent(`${error.message}`, 2000);
             console.log(error);
@@ -144,6 +145,7 @@ function EditPayoutModalDialog({
             const response = await getPayout(eventId);
             hideFunc();
             setPayoutDetails(response?.data);
+            ToasterSuccess(`${resp?.message}`, 2000);
           } catch (error) {
             ToasterComponent(`${error.message}`, 2000);
             console.log(error);
@@ -152,6 +154,8 @@ function EditPayoutModalDialog({
       }
     } catch (error) {
       ToasterComponent(`${error.message}`, 2000);
+    } finally {
+      setloadingFunc(false);
     }
   };
 

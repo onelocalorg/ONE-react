@@ -5,7 +5,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import InputComponent from "./InputComponent";
 import Style from "../Styles/DialogForm.module.css";
 import closeIcon from "../images/close-icon.svg";
-import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { expensePayoutDraft, getPayout, whoSearcher } from "../api/services";
 import { debounce } from "lodash";
@@ -13,6 +12,7 @@ import ToasterComponent from "./ToasterComponent";
 import WhoUserBadgeComponent from "./WhoUserBadgeComponent";
 import { IoIosClose } from "react-icons/io";
 import SaveBtn from "../images/Saveicon.svg";
+import ToasterSuccess from "./ToasterSuccess";
 
 function PayoutModalDialog({
   hideFunc,
@@ -23,17 +23,13 @@ function PayoutModalDialog({
   eventId,
   setPayoutDetails,
 }) {
-  const dispatch = useDispatch();
-
   const handleClose = () => {
     hideFunc(false);
   };
 
-  console.log(eventId);
-
   const validationSchema = yup.object().shape({
     who: yup.string(),
-    amount: yup.number().positive(),
+    amount: yup.number().required("Amount is required"),
     photos: yup
       .mixed()
       .test(
@@ -54,29 +50,25 @@ function PayoutModalDialog({
     watch,
     formState: { errors },
   } = useForm({
-    defaultValues: {},
     resolver: yupResolver(validationSchema),
     defaultValues: {
       who: "",
+      amount: null,
       listofPayer: [],
       descripton: "",
     },
   });
 
   const formval = watch();
-  console.log("errors", errors);
-  console.log(formval);
+
   const [payouttypeVal, setPayoutTypeVal] = useState(
     addPayoutType.toLowerCase()
   );
   const [currencyType, setCurrencyType] = useState("$");
-  const onSubmit = async (data) => {
-    setloadingFunc(true);
-  };
 
   const handleFormSubmit = async (data) => {
+    setloadingFunc(true);
     try {
-      console.log(data);
       const dataToSend = {
         user_id: data?.listofPayer[0]?.id,
         type: currencyType === "$" ? "price" : "percentage",
@@ -94,7 +86,7 @@ function PayoutModalDialog({
         type: currencyType === "$" ? "price" : "percentage",
       };
       const resp = await expensePayoutDraft(eventId, payouttypeVal, dataToSend);
-      console.log(resp);
+
       if (resp.success === true && resp.code === 200) {
         if (payouttypeVal === "expense") {
           setExpenses(dataToset);
@@ -102,6 +94,7 @@ function PayoutModalDialog({
             const response = await getPayout(eventId);
             hideFunc();
             setPayoutDetails(response?.data);
+            ToasterSuccess(`${resp?.message}`, 2000);
           } catch (error) {
             ToasterComponent(`${error.message}`, 2000);
             console.log(error);
@@ -112,14 +105,19 @@ function PayoutModalDialog({
             const response = await getPayout(eventId);
             hideFunc();
             setPayoutDetails(response?.data);
+            ToasterSuccess(`${resp?.message}`, 2000);
           } catch (error) {
             ToasterComponent(`${error.message}`, 2000);
             console.log(error);
           }
         }
+      } else {
+        ToasterComponent(`${resp?.message}`, 2000);
       }
     } catch (error) {
       ToasterComponent(`${error.message}`, 2000);
+    } finally {
+      setloadingFunc(false);
     }
   };
 
@@ -340,6 +338,13 @@ function PayoutModalDialog({
                 </div>
               </div>
             </div>
+            {errors?.amount && (
+              <div className={Style.dialogItem}>
+                <div className={`error-text  ${Style.amountError}`}>
+                  {errors?.amount?.message}
+                </div>
+              </div>
+            )}
             <div className={Style.dialogItem1}>
               <div className={Style.dialogItemLabel}>Description:</div>
               <div
@@ -377,6 +382,14 @@ function PayoutModalDialog({
                 />
               </div>
             </div>
+            {errors?.photos && (
+              <div className={Style.dialogItem}>
+                <div className={`error-text  ${Style.amountError}`}>
+                  {errors?.photos?.message}
+                </div>
+              </div>
+            )}
+
             <div className={Style.dialogItem}>
               <div className={Style.submitBtnWrapper}>
                 <button

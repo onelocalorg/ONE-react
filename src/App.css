@@ -47,20 +47,8 @@ hr {
   margin-top: 2px;
 }
 
-@media only screen and (max-width: 431px) {
-  .modal .modal-dialog {
-    margin-top: 20%;
-  }
-}
-
 .bagde.active {
   border: 3px solid #fff;
-}
-
-@media only screen and (max-width: 768px) {
-  .bagde.active {
-    border: 2px solid #fff;
-  }
 }
 
 .display-none {
@@ -183,3 +171,21 @@ hr {
   transform: translateY(-50%);
   margin-left: 20px !important;
 } */
+
+.error-text {
+  font-family: "Average Sans", sans-serif;
+  color: red;
+  font-size: 11px;
+}
+
+@media only screen and (max-width: 431px) {
+  .modal .modal-dialog {
+    margin-top: 20%;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .bagde.active {
+    border: 2px solid #fff;
+  }
+}
