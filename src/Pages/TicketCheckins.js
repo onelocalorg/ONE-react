@@ -4,6 +4,7 @@ import { PrivateComponent } from "../Components/PrivateComponent";
 // import { useScrollToTop } from "../hooks/useScrollToTop";
 import HeaderComponent from "../Components/HeaderComponent";
 import CheckinCardComponent from "../Components/CheckinCardComponent";
+import InfiniteScroll from "react-infinite-scroll-component";
 import Loader from "../Components/Loader";
 import user from "../images/user.png";
 import { ListCheckins, onCheckin } from "../api/services";
@@ -49,10 +50,25 @@ const TicketCheckins = () => {
   const checkedin = false;
   const { eventId } = useParams();
   const [data, setData] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   const getData = async () => {
-    const data = await ListCheckins(eventId);
-    setData(data.data.results);
+    setLoading(true);
+    if (hasMore) {
+      const apiData = await ListCheckins(eventId, 5, page);
+      setData((prevItems) => [...prevItems, ...apiData.data.results]);
+
+      console.log("apiData", apiData.data.page, apiData.data.totalPages);
+      if (apiData.data.page < apiData.data.totalPages) {
+        setHasMore(true);
+        setPage(page + 1);
+      } else {
+        setHasMore(false);
+      }
+    }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -79,13 +95,19 @@ const TicketCheckins = () => {
           <div className={Style.pageHeader}>
             <h1 className={Style.title}>Garden Party</h1>
           </div>
-
-          {data.length > 0 &&
-            data.map((element) => {
-              return (
-                <EachData element={element} clickOnCheckIn={clickOnCheckIn} />
-              );
-            })}
+          <InfiniteScroll
+            dataLength={data.length}
+            next={getData}
+            hasMore={hasMore}
+            loader={loading ? <Loader /> : ""}
+          >
+            {data.length > 0 &&
+              data.map((element) => {
+                return (
+                  <EachData element={element} clickOnCheckIn={clickOnCheckIn} />
+                );
+              })}
+          </InfiniteScroll>
         </div>
       </div>
     </>

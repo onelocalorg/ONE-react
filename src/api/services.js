@@ -456,7 +456,7 @@ export const deletePayoutDelete = async (userId, type, data) => {
   }
 };
 
-export const ListCheckins = async (ticketId, limit = 15, page = 1) => {
+export const ListCheckins = async (ticketId, limit = 5, page = 1) => {
   try {
     const response = await axiosClient.get(
       `events/getTicketHolders/${ticketId}?limit=${limit}&page=${page}`
@@ -479,3 +479,9 @@ export const onCheckin = async (EventId, data) => {
   }
 };
 
+export const eventFinance = async (EventId) => {
+  const res = await axiosClient.post(
+    `events/event-financial/${EventId}/create`
+  );
+  return res.data;
+};
