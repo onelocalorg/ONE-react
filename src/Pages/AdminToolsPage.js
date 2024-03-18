@@ -41,6 +41,8 @@ import ReactQuillEditor from "../Components/ReactQuillEditor";
 import EditTicketComponent from "../Components/EditTicketComponent";
 import Form from "react-bootstrap/Form";
 import EditPayoutModalDialog from "../Components/EditPayoutModalDialog";
+import { eventFinance } from "../api/services";
+import ToasterError from "../Components/ToasterComponent";
 
 const AdminToolsPage = () => {
   const { adminId } = useParams();
@@ -55,6 +57,7 @@ const AdminToolsPage = () => {
   const userInfo = useSelector((state) => state?.userInfo);
   const [showPayoutModal, setShowPayoutModal] = useState(false);
   const [addPayoutType, setAddPayoutType] = useState(null);
+  const [sendPaument, setSendPayment] = useState(false);
 
   const navigate = useNavigate();
   const onLastPage = () => {
@@ -93,6 +96,7 @@ const AdminToolsPage = () => {
   const [editTicketId, setEditTicketId] = useState("");
   const [eventImageToUpdate, setEventImageToUpdtate] = useState(null);
   const [payoutDetails, setPayoutDetails] = useState({});
+  const [isPayout, setIsPayout] = useState(true);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -155,6 +159,8 @@ const AdminToolsPage = () => {
           setLoading(true);
           const response = await getPayout(adminId);
           setPayoutDetails(response?.data);
+          //
+          setIsPayout(response.data.isPayout);
         } catch (error) {
           setLoading(false);
           setError(error.message);
@@ -170,6 +176,29 @@ const AdminToolsPage = () => {
 
   const hideModalFunc = () => {
     setEditTicketId("");
+  };
+
+  const onClickSendPayment = async () => {
+    setSendPayment(true);
+    setLoading(true);
+    const res = await eventFinance(adminId);
+    setLoading(false);
+    if (res.success === true) {
+      ToasterSuccess(`${res.message}`, 2000);
+      setIsPayout(true);
+      setSendPayment(false);
+    } else {
+      ToasterError(`${res.message}`, 2000);
+      setSendPayment(false);
+    }
+  };
+
+  const openModal = () => {
+    setSendPayment(true);
+  };
+
+  const hideSendLayoutPopup = () => {
+    setSendPayment(false);
   };
 
   console.log(errors);
@@ -528,9 +557,15 @@ const AdminToolsPage = () => {
                         </div>
 
                         <div className={Style.sendPayoutSection}>
-                          {payoutDetails?.isPayout && (
+                          {!isPayout && (
                             <span className={Style.itemAmt}>
-                              <button className={Style.itemBtn} type="button">
+                              <button
+                                className={Style.itemBtn}
+                                type="button"
+                                onClick={() => {
+                                  openModal();
+                                }}
+                              >
                                 <img
                                   src={payoutIcon}
                                   alt="payout"
@@ -838,6 +873,59 @@ const AdminToolsPage = () => {
             hideModal={addNewTicketModalOpen}
             setTicketData={setTicketData}
           />
+        }
+      />
+
+      <ModalComponent
+        show={sendPaument}
+        wrapperClassname={` ${Style.wModal}`}
+        hideFunc={hideSendLayoutPopup}
+        header={<div className="sendLayoutHeader" />}
+        body={
+          <div
+          // style={{ height: "500px", backgroundColor: "#FFF" }}
+          >
+            <div>
+              <p className={Style.confirmationText1}>
+                Are you sure you want to send payout?
+              </p>
+              <p className={Style.confirmationText2}>
+                (you won’t be able to make changes after sending)
+              </p>
+
+              <div className={Style.btnContailer}>
+                <button
+                  onClick={() => {
+                    onClickSendPayment();
+                  }}
+                  // type="submit"
+                  className={Style.sendPayout}
+                  style={
+                    {
+                      // marginTop: "10px",
+                    }
+                  }
+                >
+                  <span>Send Payout</span>
+                  <span className={Style.sendArrowIcon}>
+                    <img src={arrow} alt="arrow" />
+                  </span>
+                </button>
+
+                <button
+                  onClick={() => {
+                    hideSendLayoutPopup();
+                  }}
+                  className={Style.cancelPayout}
+                >
+                  <span>Cancel</span>
+                  <span className={Style.cancelArrowIcon}>
+                    <img src={arrow} alt="arrow" />
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
         }
       />
     </>

@@ -116,14 +116,65 @@
   transition: all 0.3s ease;
 }
 
+.sendPayout {
+  max-width: 271px;
+  margin: auto;
+  width: 90%;
+  height: 58px;
+  background-color: #007112;
+  border-radius: 15px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+  position: relative;
+  border: 0;
+  outline: 0;
+  box-shadow: 0 0 10px #6f7ec940;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.cancelPayout{
+  max-width: 271px;
+  margin: auto;
+  width: 90%;
+  height: 58px;
+  background-color: #710000  ;
+  border-radius: 15px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+  position: relative;
+  border: 0;
+  outline: 0;
+  box-shadow: 0 0 10px #6f7ec940;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+  transition: all 0.3s ease;
+  margin-top: 1vh;
+}
+
 .purchase:hover {
   background-color: #fff;
   color: #7744b0;
 }
 
+.sendPayout:hover {
+  background-color: #fff;
+  color: #007112;
+}
+
 .purchase:hover > .arrowIcon > img {
   transform: rotate(-45deg);
 }
+
 
 .arrowIcon {
   width: 30px;
@@ -137,6 +188,45 @@
   padding: 8px;
 }
 
+.sendArrowIcon {
+  background-color: #5B9865;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+
+.cancelArrowIcon {
+  background-color: #8D5757;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+
+.cancelPayout:hover {
+  background-color: #fff;
+  color:#710000;
+}
+.cancelArrowIcon >img {
+  transition: transform 0.3s ease;
+  width: 100%;
+  height: 100%;
+}
+
+.sendArrowIcon > img {
+  transition: transform 0.3s ease;
+  width: 100%;
+  height: 100%;
+}
 .arrowIcon > img {
   transition: transform 0.3s ease;
   width: 100%;
@@ -914,3 +1004,30 @@
   outline: 0;
   /* display: none; */
 }
+
+.modalBackground{
+  background-color: #fff;
+  min-height: 50vh;
+}
+
+.confirmationText1{
+  font-weight:400;
+  font-size:35px;
+}
+
+.confirmationText1{
+  font-weight:400;
+  font-size:35px;
+}
+
+.confirmationText2{
+  font-weight:400;
+  font-size:20px;
+}
+
+.sendLayoutHeader {
+  /* padding: none; */
+  visibility: none;
+}
+
+

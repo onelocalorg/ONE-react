@@ -33,6 +33,10 @@ hr {
   border-bottom: none;
   padding: 10px 1rem 0px 1rem;
 }
+
+.sendLayoutHeader + .btn-close{
+  z-index: 3;
+}
 .modal-dialog .modal-footer {
   border-top: none;
 }
