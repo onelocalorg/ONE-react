@@ -93,20 +93,6 @@ function RecentUserList() {
         )}
     </>
   );
-
-  return (
-    <div className={Style.userJoined}>
-      {userInfo?.userData !== null &&
-        recentJoinedusers?.status === "fullfilled" &&
-        recentJoinedusers?.data?.map((user) => (
-          <UserBadgeComponent
-            src={user?.pic}
-            key={user?.user_unique_id}
-            recentUserId={user?.id}
-          />
-        ))}
-    </div>
-  );
 }
 
 export default RecentUserList;

@@ -22,7 +22,7 @@ const JoinedProfileForm = ({ params }) => {
 
   const handleErrorForBg = (event) => {
     // Handle image loading error
-    //   event.target.src = backgroundDefault;
+    event.target.src = backgroundDefault;
     event.target.style.backgroundColor = "rgba(255,255,255,0.75)";
     event.target.style.minWidth = "800px";
     event.target.onerror = null; // To avoid infinite loop in case the backup image also fails
@@ -30,51 +30,47 @@ const JoinedProfileForm = ({ params }) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       try {
         if (params?.recentUserId !== "") {
           const data = await getSingleUserDetails(params?.recentUserId);
-          console.log(data?.data);
           setuserInfo(data?.data);
         } else {
           console.log(params?.recentUserId);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchData();
   }, []);
-  console.log(userInfo);
 
   const userProfileImage = userInfo?.pic ? (
-    <>
-      <img
-        src={userInfo?.pic}
-        alt="user"
-        className={style.profileImage}
-        onError={(e) => handleError(e, "profileImg")}
-      />
-    </>
+    <img
+      src={userInfo?.pic}
+      alt="user"
+      className={style.profileImage}
+      onError={(e) => handleError(e, "profileImg")}
+    />
   ) : (
-    <>
-      <img src={user} alt="user" className={style.profileImage} />
-    </>
+    <img src={user} alt="user" className={style.profileImage} />
   );
 
   const userProfileCoverImage = userInfo?.cover_image ? (
-    <>
-      <img
-        src={userInfo?.cover_image}
-        alt="background"
-        className={style.profileBackImage}
-        onError={(e) => handleErrorForBg(e, "coverImage")}
-      />
-    </>
+    <img
+      src={userInfo?.cover_image}
+      alt="background"
+      className={style.profileBackImage}
+      onError={(e) => handleErrorForBg(e, "coverImage")}
+    />
   ) : (
     <img
-      className={style.blankCover}
+      className={style.profileBackImage}
       style={{ backgroundColor: "greenyellow" }}
+      src={backgroundDefault}
     >
       {/* //blank */}
     </img>
@@ -111,29 +107,6 @@ const JoinedProfileForm = ({ params }) => {
         </div>
 
         <div className={style.formDiv}>
-          {/* <div className={`${style.profileItem} ${style.profileFieldItem}`}>
-            <div className={style.memberDiv}>
-              <div className={style.memberLbl}>Membership</div>
-              <div className={style.btnSection}>
-                <button className={`${style.memberbtn} ${style.playerBtn}`}>
-                  <img
-                    src={playerIcon}
-                    className={style.eventPlayerBtnIcon}
-                    alt="player"
-                  />
-                  Player
-                </button>
-                <button className={`${style.memberbtn} ${style.eventProdBtn}`}>
-                  <img
-                    src={whitetent}
-                    className={style.eventProdBtnIcon}
-                    alt="tent"
-                  />
-                  Event Producer
-                </button>
-              </div>
-            </div>
-          </div> */}
           <div className={style.formBox}>
             <div className={`${style.profileItem} ${style.profileFieldItem}`}>
               <div className={`${style.profileField} `}>
@@ -159,11 +132,12 @@ const JoinedProfileForm = ({ params }) => {
                     border: "0.5px solid #ffffff24",
                     borderRadius: "5px",
                     padding: "5px 5px",
+                    minHeight: "35px",
                   }}
                 >
                   {userInfo?.last_name && userInfo?.last_name !== ""
                     ? userInfo.last_name
-                    : "No last name available"}
+                    : " "}
                 </div>
               </div>
             </div>
@@ -176,11 +150,12 @@ const JoinedProfileForm = ({ params }) => {
                     border: "0.5px solid #ffffff24",
                     borderRadius: "5px",
                     padding: "5px 5px",
+                    minHeight: "35px",
                   }}
                 >
                   {userInfo?.nick_name && userInfo?.nick_name !== ""
                     ? userInfo.nick_name
-                    : "No nick name available"}
+                    : " "}
                 </div>
               </div>
             </div>

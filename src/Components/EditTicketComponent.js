@@ -25,7 +25,6 @@ const EditTicketComponent = ({
   setTicketData,
 }) => {
   const [loading, setLoading] = useState(false);
-  console.log(loading);
 
   const schema = yup.object().shape({
     name: yup.string(),
@@ -36,9 +35,6 @@ const EditTicketComponent = ({
   });
 
   const ticketData = ticketitem && ticketitem;
-  const ticketExistingData = eventData && eventData?.tickets;
-  const idArray = ticketExistingData.map((item) => item.id).join(",");
-  console.log(idArray);
 
   const {
     register,
