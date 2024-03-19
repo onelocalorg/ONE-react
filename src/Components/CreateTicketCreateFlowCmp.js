@@ -11,12 +11,13 @@ import calender from "../images/calender.svg";
 import ToasterSuccess from "./ToasterSuccess";
 import Loader from "./Loader";
 
-const CreateTicketComponent = ({
+const CreateTicketCreateFlowCmp = ({
   Style,
   hideModal,
-  eventData,
-  adminId,
   setTicketData,
+  endDateInstance,
+  startDateInstance,
+  ticketData,
 }) => {
   const [loading, setLoading] = useState(false);
   const schema = yup.object().shape({
@@ -27,22 +28,22 @@ const CreateTicketComponent = ({
     price: yup.number(),
   });
 
-  const data = eventData || {};
-  const ticketData = eventData && eventData?.tickets;
-  const idArray = ticketData.map((item) => item.id).join(",");
-
   const {
     register,
     handleSubmit,
     control,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      start_date: new Date(data?.start_date),
-      end_date: new Date(data?.end_date),
+      start_date: new Date(startDateInstance),
+      end_date: new Date(endDateInstance),
     },
   });
+  const formVal = watch();
+  console.log(errors, "errors");
+  console.log(formVal);
 
   const createTicketHandle = async (dataOfCreateFrom) => {
     // Early return if dataOfCreateFrom is not provided
@@ -57,36 +58,17 @@ const CreateTicketComponent = ({
 
       // Await the creation of the ticket
       const createResponse = await createTicket(dataToCreate);
-      console.log("createResponse", createResponse);
-      if (
-        createResponse.success === false ||
-        createResponse.success === "false"
-      ) {
-        ToasterComponent(`${createResponse.message}`, 4000);
-        return;
-      }
-      // Construct the new ID list
-      const id = idArray
-        ? idArray + "," + createResponse?.data?.id
-        : createResponse?.data?.id;
-      const formData = new FormData();
-      formData.append("tickets", `${id}`);
-      formData.append("event_lng", `${eventData?.location?.coordinates[0]}`);
-      formData.append("event_lat", `${eventData?.location?.coordinates[1]}`);
 
-      // Await the admin tool update
-      const updateResponse = await adminToolUpdate(adminId, formData);
-
-      if (updateResponse.code === 200) {
-        ToasterSuccess(`${updateResponse.message}`, 2000);
-        const response = await singleEvents(adminId);
-        setTicketData(response?.data?.tickets);
+      if (createResponse.code === 201) {
+        ToasterSuccess(`${createResponse.message}`, 2000);
+        // const response = await singleEvents(adminId);
+        setTicketData([...ticketData, createResponse?.data]);
         hideModal();
       } else if (
-        updateResponse.success === false ||
-        updateResponse.code === "false"
+        createResponse.success === false ||
+        createResponse.code === "false"
       ) {
-        ToasterComponent(`${updateResponse.message}`, 2000);
+        ToasterComponent(`${createResponse.message}`, 2000);
       }
     } catch (error) {
       console.error(error);
@@ -126,8 +108,8 @@ const CreateTicketComponent = ({
               // setStartDate={setStartDate}
               // endDate={eventData.end_date}
               name="start_date"
-              maxDate={new Date(eventData.end_date)}
-              minDate={new Date(eventData.start_date)}
+              maxDate={new Date(endDateInstance)}
+              minDate={new Date(startDateInstance)}
             />
             {/* <div>to</div> */}
             <DatePickerHookForm
@@ -136,15 +118,15 @@ const CreateTicketComponent = ({
               // start_date={end_date}
               // setStartDate={setEndDate}
               name="end_date"
-              maxDate={new Date(eventData.end_date)}
-              minDate={new Date(eventData.start_date)}
+              maxDate={new Date(endDateInstance)}
+              minDate={new Date(formVal?.start_date)}
             />
           </div>
         </div>
         <div className={`${Style.boxWrapper}`}>
           <h2 className={`${Style.editTicketHeader}`}>Ticket Quantity</h2>
           <InputComponent
-            type={"text"}
+            type={"number"}
             className={`${Style.inputStyliing}`}
             inputRef={"quantity"}
             register={register}
@@ -174,4 +156,4 @@ const CreateTicketComponent = ({
   );
 };
 
-export default CreateTicketComponent;
+export default CreateTicketCreateFlowCmp;

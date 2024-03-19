@@ -24,6 +24,7 @@ import { useDispatch } from "react-redux";
 import whitetent from "../images/white-tent.png";
 import playerIcon from "../images/player.png";
 import backgroundDefault from "../images/background-default.png";
+import { fireEvent } from "@testing-library/react";
 
 const MyProfileForm = ({ userInfo }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -101,6 +102,7 @@ const MyProfileForm = ({ userInfo }) => {
     try {
       setIsLoading(true);
       data["skills"] = skills?.length ? skills.toString() : "";
+
       const response = await updateUserProfileApi(
         userInfo?.userData?.userId,
         data

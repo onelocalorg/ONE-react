@@ -6,7 +6,7 @@ import calendarIcon from "../images/Group 33778.svg";
 import locationIcon from "../images/Group 18184.svg";
 import ticketIcon from "../images/ticket-icon.png";
 import payoutIcon from "../images/payout-icon.png";
-import { adminToolUpdate, singleEvents } from "../api/services";
+import { adminToolUpdate, getPayout, singleEvents } from "../api/services";
 import Style from "../Styles/MyEventPage.module.css";
 import Loader from "../Components/Loader";
 import { useForm } from "react-hook-form";
@@ -36,6 +36,13 @@ import locationPin from "../images/map-pin.svg";
 import tent from "../images/Vector.png";
 import "../App.css";
 import CreateTicketComponent from "../Components/CreateTicketComponent";
+import DatePickerHookForm from "../Components/DatePickerHookForm";
+import ReactQuillEditor from "../Components/ReactQuillEditor";
+import EditTicketComponent from "../Components/EditTicketComponent";
+import Form from "react-bootstrap/Form";
+import EditPayoutModalDialog from "../Components/EditPayoutModalDialog";
+import { eventFinance } from "../api/services";
+import ToasterError from "../Components/ToasterComponent";
 
 const AdminToolsPage = () => {
   const { adminId } = useParams();
@@ -44,12 +51,13 @@ const AdminToolsPage = () => {
   const [eventData, setEventData] = useState({});
   const [ticketData, setTicketData] = useState([]);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const userInfo = useSelector((state) => state?.userInfo);
   const [showPayoutModal, setShowPayoutModal] = useState(false);
   const [addPayoutType, setAddPayoutType] = useState(null);
+  const [sendPaument, setSendPayment] = useState(false);
 
   const navigate = useNavigate();
   const onLastPage = () => {
@@ -64,6 +72,7 @@ const AdminToolsPage = () => {
     full_address: yup.string(),
     aboutEvent: yup.string(),
     name: yup.string(),
+    switch: yup.boolean(),
   });
 
   const {
@@ -71,6 +80,7 @@ const AdminToolsPage = () => {
     handleSubmit,
     setValue,
     watch,
+    control,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -80,8 +90,13 @@ const AdminToolsPage = () => {
     },
   });
 
+  const formVal = watch();
+
   const [eventImage, setEventImage] = useState("");
-  const [eventImageToUpdate, setEventImageToUpdtate] = useState([]);
+  const [editTicketId, setEditTicketId] = useState("");
+  const [eventImageToUpdate, setEventImageToUpdtate] = useState(null);
+  const [payoutDetails, setPayoutDetails] = useState({});
+  const [isPayout, setIsPayout] = useState(true);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -99,9 +114,6 @@ const AdminToolsPage = () => {
     }
   };
 
-  const formVal = watch("mainAddress");
-  console.log(formVal, "sdg");
-
   useEffect(() => {
     // Scroll to top as some time it shows in middle of after image section when comes to detail page
     scrollToTop();
@@ -109,26 +121,21 @@ const AdminToolsPage = () => {
     const fetchEventData = async () => {
       if (adminId) {
         try {
+          setLoading(true);
           const response = await singleEvents(adminId);
           setEventData(response?.data);
           setTicketData(response?.data?.tickets);
           setValue("name", response?.data?.name);
-          setValue(
-            "startDate",
-            `${moment(response?.data?.start_date).format(
-              "MMM - DD - YYYY (hh:mm A)"
-            )}`
-          );
-          setValue(
-            "endDate",
-            `${moment(response?.data?.end_date).format(
-              "MMM - DD - YYYY (hh:mm A)"
-            )}`
-          );
           setValue("full_address", "");
           setValue("address", response?.data?.address);
           setValue("confirmationMail", response?.data?.email_confirmation_body);
           setValue("aboutEvent", response?.data?.about);
+          setValue("start_date", new Date(response?.data?.start_date));
+          setValue("end_date", new Date(response?.data?.end_date));
+          setValue(
+            "switch",
+            response?.data?.event_type === "AO" ? true : false
+          );
           setEventImage(response?.data?.event_image);
         } catch (error) {
           setLoading(false);
@@ -142,31 +149,84 @@ const AdminToolsPage = () => {
 
     fetchEventData();
   }, [adminId]);
+  useEffect(() => {
+    // Scroll to top as some time it shows in middle of after image section when comes to detail page
+    scrollToTop();
+
+    const fetchEventData = async () => {
+      if (adminId) {
+        try {
+          setLoading(true);
+          const response = await getPayout(adminId);
+          setPayoutDetails(response?.data);
+          //
+          setIsPayout(response.data.isPayout);
+        } catch (error) {
+          setLoading(false);
+          setError(error.message);
+          console.log(error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchEventData();
+  }, [adminId]);
+
+  const hideModalFunc = () => {
+    setEditTicketId("");
+  };
+
+  const onClickSendPayment = async () => {
+    setSendPayment(true);
+    setLoading(true);
+    const res = await eventFinance(adminId);
+    setLoading(false);
+    if (res.success === true) {
+      ToasterSuccess(`${res.message}`, 2000);
+      setIsPayout(true);
+      setSendPayment(false);
+    } else {
+      ToasterError(`${res.message}`, 2000);
+      setSendPayment(false);
+    }
+  };
+
+  const openModal = () => {
+    setSendPayment(true);
+  };
+
+  const hideSendLayoutPopup = () => {
+    setSendPayment(false);
+  };
 
   console.log(errors);
 
-  const onSubmit = (data) => {
-    const formatString = "MMM - DD - YYYY (hh:mm A)";
-
+  const onSubmit = async (data) => {
+    setLoading(true);
+    // const demoData = {
+    //   lat: data.mainAddress?.geometry?.location.lat(),
+    //   lng: data.mainAddress?.geometry?.location.lng(),
+    //   place: data?.mainAddress?.formatted_address,
+    // };
+    // console.log(demoData);
+    const toggleValue = data?.switch === false ? "VF" : "AO";
     // Convert the parsed date to ISO 8601 UTC format
     const formData = new FormData();
     formData.append("name", data.name);
+    formData.append("event_type", toggleValue);
     formData.append("about", data.aboutEvent);
     formData.append("address", data.address);
     formData.append("email_confirmation_body", data.confirmationMail);
-    formData.append(
-      "start_date",
-      moment(data.startDate, formatString).utc().format()
-    );
-    formData.append(
-      "end_date",
-      moment(data.endDate, formatString).utc().format()
-    );
+    formData.append("start_date", new Date(data.start_date).toISOString());
+    formData.append("end_date", new Date(data.end_date).toISOString());
     formData.append(
       "full_address",
       Object.keys(data?.mainAddress || {}).length === 0
         ? "-"
-        : `${data.mainAddress?.name}, ${data?.mainAddress?.formatted_address}`
+        : `${data?.mainAddress?.formatted_address}`
+      // : `${data.mainAddress?.name}, ${data?.mainAddress?.formatted_address}`
     );
     formData.append(
       "event_lat",
@@ -180,32 +240,31 @@ const AdminToolsPage = () => {
         ? "0"
         : `${data.mainAddress?.geometry.location.lng()}`
     );
-    formData.append("event_type", "VF");
-    if (eventImageToUpdate.length > 0) {
+    if (eventImageToUpdate && eventImageToUpdate !== null) {
       formData.append("event_image", eventImageToUpdate);
     }
 
     try {
-      adminToolUpdate(adminId, formData).then((res) => {
-        console.log(res);
-        if (res.code === 200) {
-          ToasterSuccess(`${res.message}`, 2000);
-        }
-      });
+      const res = await adminToolUpdate(adminId, formData); // Wait for the promise to resolve
+      if (res.code === 200) {
+        ToasterSuccess(`${res.message}`, 2000);
+      }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   function showExpenseAdd() {
     setAddPayoutType("expense");
-    // setShowPayoutModal(true);
+    setShowPayoutModal(true);
     console.log("Called showExpenseAdd");
   }
 
   function showPayoutAdd() {
     setAddPayoutType("payout");
-    // setShowPayoutModal(true);
+    setShowPayoutModal(true);
     console.log("Called showPayoutAdd");
   }
 
@@ -214,6 +273,10 @@ const AdminToolsPage = () => {
   }
 
   const [showModalTicket, setShowModalTicket] = useState(false);
+  const [expenseEditModal, setExpensesEditModal] = useState({});
+  const [payoutEditModal, setPayoutEditModal] = useState({});
+  const [expenses, setExpenses] = useState([]);
+  const [payouts, setPayouts] = useState([]);
 
   const addNewTicketModalOpen = () => {
     setShowModalTicket((prev) => !prev);
@@ -223,7 +286,25 @@ const AdminToolsPage = () => {
     return <NotFound />;
   }
 
+  const doCheckInCheck = () => {
+    navigate(`/ticket-checkins/${adminId}`);
+  };
+
+  const openExpenseModal = (obj) => {
+    setExpensesEditModal(obj);
+  };
+  const openEditPayoutModal = (obj) => {
+    setPayoutEditModal(obj);
+  };
+  function closeEditExpenseModal() {
+    setExpensesEditModal({});
+  }
+  function closePayoutModal() {
+    setPayoutEditModal({});
+  }
   ///edit ticket modal form submit
+
+  console.log("PayoutDetails", payoutDetails);
 
   return (
     <>
@@ -235,18 +316,40 @@ const AdminToolsPage = () => {
             <button className={Style.backButton} onClick={onLastPage}>
               {"< back"}
             </button>
-            <button className={Style.adminToolBtn}>
-              <img
-                src={ticketIcon}
-                className={Style.adminToolBtnIcon}
-                alt="ticket"
-              />
-              {"Admin Tools"}
-            </button>
           </div>
           <form onSubmit={handleSubmit(onSubmit)} className={Style.wrapper}>
             <div className={Style.left}>
               {/* //event name */}
+              <button className={Style.adminToolBtn} type="button">
+                <img
+                  src={ticketIcon}
+                  className={Style.adminToolBtnIcon}
+                  alt="ticket"
+                />
+                {"Admin Tools"}
+              </button>
+
+              {/* <button
+                className={Style.checkIns}
+                type="button"
+                onClick={doCheckInCheck}
+              >
+                {"Check Ins"}
+              </button> */}
+              <div className={Style.switchWraper}>
+                <div className={Style.fontLabel}>Village Friendly</div>
+                <label className={`${Style.toggleswitch}`}>
+                  <InputComponent
+                    type="checkbox"
+                    className={`${Style.toggleswitchCheckbox}`}
+                    register={register}
+                    inputRef={"switch"}
+                  />
+                  <span className={`${Style.toggleswitchSlider}`}></span>
+                </label>
+                <div className={Style.fontLabel}>Adult Oriented</div>
+              </div>
+
               <div className={Style.boxes}>
                 <InputComponent
                   type={"text"}
@@ -271,13 +374,15 @@ const AdminToolsPage = () => {
                   <div className={Style.date} style={{ color: "black" }}>
                     Start Date
                   </div>
-                  <InputComponent
-                    type={"text"}
-                    className={`${Style.timing} ${Style.outline} ${Style.pointernone} ${Style.bgTransparent} ${Style.textBlack}`}
-                    inputRef={"startDate"}
-                    register={register}
-                    placeholder={"start date"}
-                  />
+                  {eventData?.start_date && (
+                    <DatePickerHookForm
+                      control={control}
+                      className={`${Style.wfull} ${Style.bgTransparent}`}
+                      name="start_date"
+                      // maxDate={new Date(eventData.end_date)}
+                      minDate={new Date()}
+                    />
+                  )}
                 </div>
               </div>
               {/*box1.1*/}
@@ -294,13 +399,16 @@ const AdminToolsPage = () => {
                   <div className={Style.date} style={{ color: "black" }}>
                     End Date
                   </div>
-                  <InputComponent
-                    type={"text"}
-                    className={`${Style.timing} ${Style.outline} ${Style.pointernone} ${Style.bgTransparent} ${Style.textBlack}`}
-                    inputRef={"endDate"}
-                    register={register}
-                    placeholder={"end date"}
-                  />
+                  {eventData?.end_date && (
+                    <DatePickerHookForm
+                      control={control}
+                      className={`${Style.wfull} ${Style.bgTransparent}`}
+                      // start_date={end_date}
+                      name="end_date"
+                      // maxDate={new Date(eventData?.end_date)}
+                      minDate={new Date(formVal.start_date)}
+                    />
+                  )}
                 </div>
               </div>
               {/* boxes 2  */}
@@ -376,121 +484,199 @@ const AdminToolsPage = () => {
                         src={EditIcon}
                         alt="editIcon"
                         style={{ cursor: "pointer" }}
+                        onClick={() => setEditTicketId(ticketitem.id)}
                       />
                     </div>
                   ))}
                 <hr />
                 <div className={Style.desc}>Confirmation Mail:</div>
 
-                <TextAreaComponent
-                  className={`${Style.timing} ${Style.outline} ${Style.customTextarea} `}
-                  inputRef={"confirmationMail"}
-                  register={register}
-                  placeholder={"address"}
+                <ReactQuillEditor
+                  control={control}
+                  id={"confirmationMail"}
+                  name={"confirmationMail"}
+                  modules={{
+                    toolbar: {
+                      container: [
+                        ["bold", "italic", "underline", "strike"],
+                        [
+                          { list: "ordered" },
+                          { list: "bullet" },
+                          { indent: "-1" },
+                          { indent: "+1" },
+                        ],
+                        ["link"],
+                        ["clean"],
+                      ],
+                    },
+                  }}
                 />
+                <hr />
+                <div className={Style.uniqueViewDiv}>
+                  <div>
+                    <div>Unique Views: 3</div>
+                    <hr />
+                  </div>
+                </div>
+                {payoutDetails?.revenue_amount > 0 && (
+                  <>
+                    <div className={Style.financialSection}>
+                      <div className={Style.financeLbl}>Financials</div>
+                      <div>
+                        <div className={Style.financeItem}>
+                          <span>Revenue</span>
+                          <span className={Style.itemAmt}>
+                            ${payoutDetails?.revenue_amount}
+                          </span>
+                        </div>
+                        <div className={Style.financeItem}>
+                          <span>Expenses</span>
+                          <span className={Style.itemAmt}>
+                            ${payoutDetails?.total_expenses}
+                          </span>
+                        </div>
+                        <div className={Style.financeItem}>
+                          <span>Profit</span>
+                          <span className={Style.itemAmt}>
+                            ${payoutDetails?.total_profit}
+                          </span>
+                        </div>
+                        <div
+                          className={`${Style.financeItem} ${Style.payoutSection}`}
+                        >
+                          <span>Payouts</span>
+                          <span className={Style.itemAmt}>
+                            ${payoutDetails?.total_payout}
+                          </span>
+                        </div>
+                        <div className={Style.financeItem}>
+                          <span>Remaining</span>
+                          <span className={Style.itemAmt}>
+                            ${payoutDetails?.remaining_amount}
+                          </span>
+                        </div>
+
+                        <div className={Style.sendPayoutSection}>
+                          {!isPayout && (
+                            <span className={Style.itemAmt}>
+                              <button
+                                className={Style.itemBtn}
+                                type="button"
+                                onClick={() => {
+                                  openModal();
+                                }}
+                              >
+                                <img
+                                  src={payoutIcon}
+                                  alt="payout"
+                                  className={Style.itemBtnIcon}
+                                />
+                                <span className={Style.itemBtnText}>
+                                  Send Payouts
+                                </span>
+                              </button>
+                              <div className={Style.payNoteText}>
+                                Payout can be sent 3 days after the event. All
+                                refunds must happen within this time before a
+                                payout can be sent.
+                              </div>
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div className={Style.listContainer}>
+                        <div>
+                          <div className={Style.listHead}>Expenses</div>
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: "2px",
+                            }}
+                          >
+                            {payoutDetails?.expenses?.length &&
+                              payoutDetails?.expenses?.map((exp) => (
+                                <ExpenseItemComponent
+                                  key={exp?.key}
+                                  title={`${exp?.user_id?.first_name}-${exp?.user_id?.last_name}`}
+                                  subTitle1={`${exp?.description}`}
+                                  payoutProfileIcon={`${exp?.user_id?.pic}`}
+                                  itemAmt={`${exp?.amount}`}
+                                  pricetype={`${exp?.type}`}
+                                  openEditModal={() => openExpenseModal(exp)}
+                                />
+                              ))}
+                            {payoutDetails?.expenses?.length === 0 && (
+                              <div className={Style.noExpense}>
+                                No expenses yet
+                              </div>
+                            )}
+                          </div>
+
+                          {payoutDetails?.isPayoutAddEdit && (
+                            <FinanceAddBtn addAction={showExpenseAdd} />
+                          )}
+                          <div className={Style.expenseItemTotalLine}></div>
+                          <div className={Style.expenseItemTotal}>
+                            ${payoutDetails?.total_expenses}
+                          </div>
+                        </div>
+                        <div className={Style.payoutItemSection}>
+                          <div>Payouts</div>
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: "2px",
+                            }}
+                          >
+                            {payoutDetails?.payouts?.length &&
+                              payoutDetails?.payouts?.map((exp) => (
+                                <ExpenseItemComponent
+                                  key={exp?.key}
+                                  title={`${exp?.user_id?.first_name}-${exp?.user_id?.last_name}`}
+                                  subTitle1={`${exp?.description}`}
+                                  payoutProfileIcon={`${exp?.user_id?.pic}`}
+                                  itemAmt={`${exp?.amount}`}
+                                  pricetype={`${exp?.type}`}
+                                  openEditModal={() => openEditPayoutModal(exp)}
+                                  showEditIcon={payoutDetails?.isPayoutAddEdit}
+                                />
+                              ))}
+                            {payoutDetails?.payouts?.length === 0 && (
+                              <div className={Style.noExpense}>
+                                No payouts yet
+                              </div>
+                            )}
+                          </div>
+                          {payoutDetails?.isPayoutAddEdit && (
+                            <FinanceAddBtn addAction={showPayoutAdd} />
+                          )}
+                          <div className={Style.expenseItemTotalLine}></div>
+                          <div className={Style.expenseItemTotal}>
+                            ${payoutDetails?.total_payout}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
+
                 <hr />
                 <button
                   type="submit"
                   className={Style.purchase}
-                  style={{
-                    marginTop: "10px",
-                  }}
+                  style={
+                    {
+                      // marginTop: "10px",
+                    }
+                  }
                 >
                   <span>SAVE EVENT</span>
                   <span className={Style.arrowIcon}>
                     <img src={arrow} alt="arrow" />
                   </span>
                 </button>
-
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                  {/* Blank */}
-                </div>
-              </div>
-
-              <div className={Style.uniqueViewDiv} style={{ display: "none" }}>
-                <div>
-                  <div>Unique Views: 3</div>
-                  <hr />
-                </div>
-              </div>
-              <div
-                className={Style.financialSection}
-                style={{ display: "none" }}
-              >
-                <div className={Style.financeLbl}>Financials</div>
-                <div>
-                  <div className={Style.financeItem}>
-                    <span>Revenue</span>
-                    <span className={Style.itemAmt}>$10</span>
-                  </div>
-                  <div className={Style.financeItem}>
-                    <span>Expenses</span>
-                    <span className={Style.itemAmt}>$0</span>
-                  </div>
-                  <div className={Style.financeItem}>
-                    <span>Profit</span>
-                    <span className={Style.itemAmt}>$10.00</span>
-                  </div>
-                  <div
-                    className={`${Style.financeItem} ${Style.payoutSection}`}
-                  >
-                    <span>Payouts</span>
-                    <span className={Style.itemAmt}>$6</span>
-                  </div>
-                  <div className={Style.financeItem}>
-                    <span>Remaining</span>
-                    <span className={Style.itemAmt}>$4.00</span>
-                  </div>
-                  <div className={Style.sendPayoutSection}>
-                    <span className={Style.itemAmt}>
-                      <button className={Style.itemBtn}>
-                        <img
-                          src={payoutIcon}
-                          alt="payout"
-                          className={Style.itemBtnIcon}
-                        />
-                        <span className={Style.itemBtnText}>Send Payouts</span>
-                      </button>
-                      <div className={Style.payNoteText}>
-                        Payout can be sent 3 days after the event. All refunds
-                        must happen within this time before a payout can be
-                        sent.
-                      </div>
-                    </span>
-                  </div>
-                </div>
-                <div className={Style.listContainer}>
-                  <div>
-                    <div className={Style.listHead}>Expenses</div>
-                    <div className={Style.noExpense}>No expenses yet</div>
-                    <ExpenseItemComponent
-                      title={"Bob Jones (sound gear)"}
-                      subTitle1={`Payout for Garden Party`}
-                      subTitle2={`on July 14, 2023`}
-                    />
-                    <FinanceAddBtn addAction={showExpenseAdd} />
-                    <div className={Style.expenseItemTotalLine}></div>
-                    <div className={Style.expenseItemTotal}>$0.00</div>
-                  </div>
-                  <div className={Style.payoutItemSection}>
-                    <div>Payouts</div>
-                    <ExpenseItemComponent
-                      title={"Bob Jones (sound gear)"}
-                      subTitle1={`Payout for Garden Party`}
-                      subTitle2={`on July 14, 2023`}
-                      itemAmt={"5.00"}
-                    />
-                    <ExpenseItemComponent
-                      title={"Bob Jones (sound gear)"}
-                      subTitle1={`Payout for Garden Party`}
-                      subTitle2={`on July 14, 2023`}
-                      itemAmt={""}
-                    />
-                    <FinanceAddBtn addAction={showPayoutAdd} />
-                    <div className={Style.expenseItemTotalLine}></div>
-                    <div className={Style.expenseItemTotal}>$6.00</div>
-                  </div>
-                </div>
               </div>
             </div>
             <div className={`${Style.right} ${Style.posRelative}`}>
@@ -526,17 +712,25 @@ const AdminToolsPage = () => {
                     className={`${Style.aboutEventDetail} about-event-detail`}
                   >
                     {eventData?.about ? (
-                      // <div
-                      //   className={`${Style.aboutEventDiv} ${Style.bgGray} ${Style.textBlack} ${Style.aboutEventStyle}`}
-                      //   dangerouslySetInnerHTML={{
-                      //     __html: DOMPurify.sanitize(eventData?.about),
-                      //   }}
-                      // />
-                      <TextAreaComponent
-                        type={"text"}
-                        className={`${Style.aboutEventDiv} ${Style.bgGray} ${Style.textBlack} ${Style.aboutEventStyle} ${Style.wfull}`}
-                        inputRef={"aboutEvent"}
-                        register={register}
+                      <ReactQuillEditor
+                        id={"aboutEvent"}
+                        control={control}
+                        name={"aboutEvent"}
+                        modules={{
+                          toolbar: {
+                            container: [
+                              ["bold", "italic", "underline", "strike"],
+                              [
+                                { list: "ordered" },
+                                { list: "bullet" },
+                                { indent: "-1" },
+                                { indent: "+1" },
+                              ],
+                              ["link", "image"],
+                              ["clean"],
+                            ],
+                          },
+                        }}
                       />
                     ) : (
                       "No description available"
@@ -547,7 +741,7 @@ const AdminToolsPage = () => {
               <button
                 type="button"
                 className={Style.purchase}
-                // onClick={navigateToAdminToolsPage}
+                onClick={handleSubmit(onSubmit)}
                 style={{
                   marginTop: "10px",
                   // pointerEvents: !confirmation ? "none" : "",
@@ -563,9 +757,87 @@ const AdminToolsPage = () => {
         </div>
       </div>
       {showPayoutModal && (
-        <PayoutModalDialog addPayoutType={addPayoutType} hideFunc={hideFunc} />
+        <PayoutModalDialog
+          addPayoutType={addPayoutType}
+          hideFunc={hideFunc}
+          setExpenses={setExpenses}
+          setPayouts={setPayouts}
+          eventId={adminId}
+          setPayoutDetails={setPayoutDetails}
+          setloadingFunc={setLoading}
+        />
+      )}
+      {Object.keys(expenseEditModal).length > 0 && (
+        <EditPayoutModalDialog
+          addPayoutType={"expense"}
+          hideFunc={closeEditExpenseModal}
+          setExpenses={setExpenses}
+          setPayouts={setPayouts}
+          eventId={adminId}
+          setPayoutDetails={setPayoutDetails}
+          exp={expenseEditModal}
+          setloadingFunc={setLoading}
+        />
+      )}
+      {Object.keys(payoutEditModal).length > 0 && (
+        <EditPayoutModalDialog
+          addPayoutType={"payout"}
+          hideFunc={closePayoutModal}
+          setExpenses={setExpenses}
+          setPayouts={setPayouts}
+          eventId={adminId}
+          setPayoutDetails={setPayoutDetails}
+          exp={payoutEditModal}
+          setloadingFunc={setLoading}
+        />
       )}
       {loading && <Loader />}
+      {ticketData &&
+        ticketData?.map((ticketitem) =>
+          editTicketId === ticketitem.id ? (
+            <ModalComponent
+              key={ticketitem.id}
+              hideFunc={hideModalFunc}
+              show={ticketitem.id === editTicketId}
+              // className={`${Style.wModal}`}
+              wrapperClassname={` ${Style.wModal}`}
+              header={
+                <div className={`${Style.modalTicketHeader}`}>
+                  <h2 className={`${Style.headerTitle}`}>Edit Ticket</h2>
+                  <div className={`${Style.pointernone} ${Style.cardWrapper}`}>
+                    <Card
+                      eventId={adminId}
+                      key={0}
+                      tent={tent}
+                      img={eventData?.event_image}
+                      start_date={eventData?.start_date}
+                      name={eventData?.name}
+                      full_address={eventData?.full_address}
+                      locationPin={locationPin}
+                      ticket={eventData?.tickets}
+                      address={eventData?.address}
+                      start_date_label={eventData?.start_date_label}
+                      start_time_label={eventData?.start_time_label}
+                      eventProducer={eventData?.eventProducer}
+                    />
+                  </div>
+                </div>
+              }
+              body={
+                <EditTicketComponent
+                  ticketitem={ticketitem}
+                  adminId={adminId}
+                  Style={Style}
+                  eventData={eventData}
+                  hideModal={hideModalFunc}
+                  setTicketData={setTicketData}
+                />
+              }
+            />
+          ) : (
+            ""
+          )
+        )}
       <ModalComponent
         hideFunc={addNewTicketModalOpen}
         show={showModalTicket}
@@ -599,8 +871,61 @@ const AdminToolsPage = () => {
             Style={Style}
             eventData={eventData}
             hideModal={addNewTicketModalOpen}
-            setLoading={setLoading}
+            setTicketData={setTicketData}
           />
+        }
+      />
+
+      <ModalComponent
+        show={sendPaument}
+        wrapperClassname={` ${Style.wModal}`}
+        hideFunc={hideSendLayoutPopup}
+        header={<div className="sendLayoutHeader" />}
+        body={
+          <div
+          // style={{ height: "500px", backgroundColor: "#FFF" }}
+          >
+            <div>
+              <p className={Style.confirmationText1}>
+                Are you sure you want to send payout?
+              </p>
+              <p className={Style.confirmationText2}>
+                (you won’t be able to make changes after sending)
+              </p>
+
+              <div className={Style.btnContailer}>
+                <button
+                  onClick={() => {
+                    onClickSendPayment();
+                  }}
+                  // type="submit"
+                  className={Style.sendPayout}
+                  style={
+                    {
+                      // marginTop: "10px",
+                    }
+                  }
+                >
+                  <span>Send Payout</span>
+                  <span className={Style.sendArrowIcon}>
+                    <img src={arrow} alt="arrow" />
+                  </span>
+                </button>
+
+                <button
+                  onClick={() => {
+                    hideSendLayoutPopup();
+                  }}
+                  className={Style.cancelPayout}
+                >
+                  <span>Cancel</span>
+                  <span className={Style.cancelArrowIcon}>
+                    <img src={arrow} alt="arrow" />
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
         }
       />
     </>

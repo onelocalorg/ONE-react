@@ -5,16 +5,24 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import InputComponent from "./InputComponent";
 import Style from "../Styles/DialogForm.module.css";
 import closeIcon from "../images/close-icon.svg";
+import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { expensePayoutDraft, getPayout, whoSearcher } from "../api/services";
+import {
+  deletePayoutDelete,
+  expensePayoutDraft,
+  expensePayoutEdit,
+  getPayout,
+  whoSearcher,
+} from "../api/services";
 import { debounce } from "lodash";
 import ToasterComponent from "./ToasterComponent";
 import WhoUserBadgeComponent from "./WhoUserBadgeComponent";
 import { IoIosClose } from "react-icons/io";
 import SaveBtn from "../images/Saveicon.svg";
+import DeleteIcon from "../images/Delete.svg";
 import ToasterSuccess from "./ToasterSuccess";
 
-function PayoutModalDialog({
+function EditPayoutModalDialog({
   hideFunc,
   addPayoutType,
   setloadingFunc,
@@ -22,27 +30,44 @@ function PayoutModalDialog({
   setPayouts,
   eventId,
   setPayoutDetails,
+  exp,
 }) {
+  const dispatch = useDispatch();
+
   const handleClose = () => {
     hideFunc(false);
   };
 
   const validationSchema = yup.object().shape({
     who: yup.string(),
-    amount: yup.number().required("Amount is required"),
+    amount: yup.number().positive(),
     photos: yup
-      .mixed()
-      .test(
-        "fileSize",
-        "File is required",
-        (value) => value && value.length > 0
-      ),
+      .array()
+      .of(
+        yup.object().shape({
+          key: yup.string().required("Image key is required"),
+          imageUrl: yup
+            .string()
+            .url("Must be a valid URL")
+            .required("Image URL is required"),
+        })
+      )
+      .min(1, "At least one photo is required"),
     listofPayer: yup.array(),
     payoutType: yup.string(),
     currencyMode: yup.string(),
     description: yup.string(),
   });
 
+  const oldData = exp || {};
+  const userListPerson =
+    {
+      first_name: oldData?.user_id?.first_name,
+      id: oldData?.user_id?.id,
+      last_name: oldData?.user_id?.last_name,
+      pic: oldData?.user_id?.pic,
+      key: oldData?.key,
+    } || {};
   const {
     register,
     handleSubmit,
@@ -50,12 +75,22 @@ function PayoutModalDialog({
     watch,
     formState: { errors },
   } = useForm({
+    defaultValues: {},
     resolver: yupResolver(validationSchema),
     defaultValues: {
       who: "",
-      amount: null,
-      listofPayer: [],
-      descripton: "",
+      listofPayer: [
+        {
+          first_name: oldData?.user_id?.first_name,
+          id: oldData?.user_id?.id,
+          last_name: oldData?.user_id?.last_name,
+          pic: oldData?.user_id?.pic,
+          key: oldData?.key,
+        },
+      ],
+      description: oldData?.description,
+      amount: `${oldData?.amount}`,
+      // photos: [oldData?.images[0].name],
     },
   });
 
@@ -65,29 +100,34 @@ function PayoutModalDialog({
     addPayoutType.toLowerCase()
   );
   const [currencyType, setCurrencyType] = useState("$");
+  const onSubmit = async (data) => {
+    setloadingFunc(true);
+  };
+  const [imageval, setImageVal] = useState(oldData?.images[0]?.imageUrl);
+  const [ImageToUpdate, setImageToUpdtate] = useState(oldData?.images[0]);
 
   const handleFormSubmit = async (data) => {
-    setloadingFunc(true);
     try {
+      setloadingFunc(true);
       const dataToSend = {
         user_id: data?.listofPayer[0]?.id,
         type: currencyType === "$" ? "price" : "percentage",
         amount: Number(data?.amount),
         description: data?.description,
-        images: [data?.photos[0]?.name],
+        images: [ImageToUpdate?.key ? ImageToUpdate?.key : ImageToUpdate?.name],
+        key: oldData?.key,
       };
 
       const dataToset = {
         amount: Number(data?.amount),
         description: data?.description,
-        images: [data?.photos[0]?.name],
+        images: [ImageToUpdate[0]?.key],
         user_id: data?.listofPayer[0]?.id,
         first_name: data?.listofPayer[0]?.first_name,
         type: currencyType === "$" ? "price" : "percentage",
       };
-      const resp = await expensePayoutDraft(eventId, payouttypeVal, dataToSend);
-
-      if (resp.success === true && resp.code === 200) {
+      const resp = await expensePayoutEdit(eventId, payouttypeVal, dataToSend);
+      if (resp.success) {
         if (payouttypeVal === "expense") {
           setExpenses(dataToset);
           try {
@@ -111,8 +151,6 @@ function PayoutModalDialog({
             console.log(error);
           }
         }
-      } else {
-        ToasterComponent(`${resp?.message}`, 2000);
       }
     } catch (error) {
       ToasterComponent(`${error.message}`, 2000);
@@ -164,7 +202,7 @@ function PayoutModalDialog({
     };
   }, [query]);
 
-  const [list, setYourList] = useState([]);
+  const [list, setYourList] = useState([userListPerson]);
 
   const addToList = (user) => {
     if (list.length === 1 || list.lenght > 0) {
@@ -192,6 +230,8 @@ function PayoutModalDialog({
     }
   };
   const removeFromList = (userToRemove) => {
+    ToasterComponent("Cann't remove from list", 2000);
+    return;
     setYourList((prevList) => {
       const updatedList = prevList.filter(
         (existingUser) => existingUser.id !== userToRemove.id
@@ -199,6 +239,47 @@ function PayoutModalDialog({
       setValue("listofPayer", updatedList);
       return updatedList;
     });
+  };
+
+  const details = {
+    key: oldData?.key,
+  };
+
+  const deletePayout = async () => {
+    try {
+      const resp = await deletePayoutDelete(eventId, payouttypeVal, details);
+      if (resp.code === 200 && resp.success === true) {
+        try {
+          const response = await getPayout(eventId);
+          hideFunc();
+          setPayoutDetails(response?.data);
+          ToasterSuccess(`${resp.message}`, 2000);
+        } catch (error) {
+          ToasterComponent(`${error.message}`, 2000);
+          console.log(error);
+        }
+      }
+      console.log(resp);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    console.log(selectedFile);
+    if (selectedFile) {
+      setImageToUpdtate(selectedFile);
+      const [fileNameWithoutExtension] = selectedFile["name"].split(".");
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        console.log(reader.result);
+        setImageVal(reader.result);
+      };
+
+      // handleFileUpload(type, reader.result, fileNameWithoutExtension);
+      reader.readAsDataURL(selectedFile);
+    }
   };
 
   return (
@@ -215,7 +296,7 @@ function PayoutModalDialog({
               <img src={closeIcon} alt="close" />
             </div>
             <div className={Style.modalTitleContainer}>
-              <label className={Style.modalTitle}>Add Breakdown</label>
+              <label className={Style.modalTitle}>Edit Breakdown</label>
             </div>
           </div>
         </Modal.Header>
@@ -277,24 +358,28 @@ function PayoutModalDialog({
               <div className={Style.dialogItemLabel}>Type:</div>
               <div style={{ width: "100%" }}>
                 <div className={Style.toggleswitch}>
-                  <button
-                    type="button"
-                    onClick={() => handleButtonChange("expense")}
-                    className={`${Style.switchtext} ${
-                      payouttypeVal === "expense" ? `${Style.active}` : ""
-                    }`}
-                  >
-                    Expense
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleButtonChange("payout")}
-                    className={`${Style.switchtext} ${
-                      payouttypeVal === "payout" ? `${Style.active}` : ""
-                    }`}
-                  >
-                    Payout
-                  </button>
+                  {payouttypeVal === "expense" && (
+                    <button
+                      type="button"
+                      onClick={() => handleButtonChange("expense")}
+                      className={`${Style.switchtext} ${
+                        payouttypeVal === "expense" ? `${Style.active}` : ""
+                      }`}
+                    >
+                      Expense
+                    </button>
+                  )}
+                  {payouttypeVal === "payout" && (
+                    <button
+                      type="button"
+                      onClick={() => handleButtonChange("payout")}
+                      className={`${Style.switchtext} ${
+                        payouttypeVal === "payout" ? `${Style.active}` : ""
+                      }`}
+                    >
+                      Payout
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -338,13 +423,6 @@ function PayoutModalDialog({
                 </div>
               </div>
             </div>
-            {errors?.amount && (
-              <div className={Style.dialogItem}>
-                <div className={`error-text  ${Style.amountError}`}>
-                  {errors?.amount?.message}
-                </div>
-              </div>
-            )}
             <div className={Style.dialogItem1}>
               <div className={Style.dialogItemLabel}>Description:</div>
               <div
@@ -369,27 +447,32 @@ function PayoutModalDialog({
                   textAlign: "right",
                 }}
               >
-                <label htmlFor="addPhotos" className={Style.photoBtn}>
+                <label
+                  htmlFor="addImagePopUp"
+                  className={Style.photoBtn}
+                  style={{ cursor: "pointer" }}
+                >
                   Add Photos
                 </label>
-                <InputComponent
-                  inputRef={"photos"}
+                <input
+                  onChange={(e) => handleFileChange(e)}
                   accept={"image/png, image/jpeg, image/svg"}
-                  register={register}
-                  id={"addPhotos"}
-                  type={"file"}
+                  id={"addImagePopUp"}
                   className={`${Style.dnone}`}
+                  type="file"
+                  style={{ display: "none" }}
                 />
               </div>
             </div>
-            {errors?.photos && (
-              <div className={Style.dialogItem}>
-                <div className={`error-text  ${Style.amountError}`}>
-                  {errors?.photos?.message}
-                </div>
-              </div>
-            )}
-
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+            >
+              <img src={imageval} alt="Image" style={{ width: "50px" }} />
+            </div>
             <div className={Style.dialogItem}>
               <div className={Style.submitBtnWrapper}>
                 <button
@@ -398,6 +481,14 @@ function PayoutModalDialog({
                   onClick={handleSubmit(handleFormSubmit)}
                 >
                   <img alt="save" src={SaveBtn} />
+                </button>
+                <button
+                  type="submit"
+                  className={Style.saveBtn}
+                  style={{ marginLeft: "10px" }}
+                  onClick={deletePayout}
+                >
+                  <img alt="save" src={DeleteIcon} />
                 </button>
               </div>
             </div>
@@ -409,4 +500,4 @@ function PayoutModalDialog({
   );
 }
 
-export default PayoutModalDialog;
+export default EditPayoutModalDialog;

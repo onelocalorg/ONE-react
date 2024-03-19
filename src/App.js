@@ -24,6 +24,8 @@ import SharingOutLet from "./Pages/SharingOutlet";
 import ComingsoonPage from "./Pages/ComingsoonPage";
 import AdminToolsPage from "./Pages/AdminToolsPage";
 import PostList from "./Pages/PostList";
+import CreateEventPage from "./Pages/CreateEventPage";
+import TicketCheckins from "./Pages/TicketCheckins";
 
 function App() {
   return (
@@ -130,7 +132,12 @@ function App() {
             path="/my-event/admintool/:adminId"
             element={<AdminToolsPage />}
           />
+          <Route path="/create-event" element={<CreateEventPage />} />
           <Route path="*" element={<NotFound />} />
+          <Route
+            path="/ticket-checkins/:eventId"
+            element={<TicketCheckins />}
+          />
         </Routes>
         <ToastContainer />
       </BrowserRouter>

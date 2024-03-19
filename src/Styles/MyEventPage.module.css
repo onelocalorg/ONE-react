@@ -116,14 +116,65 @@
   transition: all 0.3s ease;
 }
 
+.sendPayout {
+  max-width: 271px;
+  margin: auto;
+  width: 90%;
+  height: 58px;
+  background-color: #007112;
+  border-radius: 15px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+  position: relative;
+  border: 0;
+  outline: 0;
+  box-shadow: 0 0 10px #6f7ec940;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.cancelPayout{
+  max-width: 271px;
+  margin: auto;
+  width: 90%;
+  height: 58px;
+  background-color: #710000  ;
+  border-radius: 15px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+  position: relative;
+  border: 0;
+  outline: 0;
+  box-shadow: 0 0 10px #6f7ec940;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+  transition: all 0.3s ease;
+  margin-top: 1vh;
+}
+
 .purchase:hover {
   background-color: #fff;
   color: #7744b0;
 }
 
+.sendPayout:hover {
+  background-color: #fff;
+  color: #007112;
+}
+
 .purchase:hover > .arrowIcon > img {
   transform: rotate(-45deg);
 }
+
 
 .arrowIcon {
   width: 30px;
@@ -137,6 +188,45 @@
   padding: 8px;
 }
 
+.sendArrowIcon {
+  background-color: #5B9865;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+
+.cancelArrowIcon {
+  background-color: #8D5757;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+
+.cancelPayout:hover {
+  background-color: #fff;
+  color:#710000;
+}
+.cancelArrowIcon >img {
+  transition: transform 0.3s ease;
+  width: 100%;
+  height: 100%;
+}
+
+.sendArrowIcon > img {
+  transition: transform 0.3s ease;
+  width: 100%;
+  height: 100%;
+}
 .arrowIcon > img {
   transition: transform 0.3s ease;
   width: 100%;
@@ -312,14 +402,91 @@
   background-color: #ffffff;
   width: 162.74px;
   height: 30px;
+  margin: auto;
   border-radius: 15px;
   border: 0;
   outline: 0;
-  /* display: flex; */
-  display: none;
+  display: flex;
+  /* display: none; */
   justify-content: center;
   align-items: center;
   gap: 8px;
+  margin-bottom: 10px;
+}
+
+.checkIns {
+  margin-bottom: 10px !important;
+  border: 0;
+  outline: 0;
+  max-width: 331px;
+  display: block;
+  width: 85%;
+  margin: auto;
+  background-color: #eab9b4;
+  font-size: 13px;
+  font-weight: 400;
+  color: #000;
+  height: 35px;
+  border-radius: 20px;
+}
+
+/* toggleSwitchStyles.css */
+.toggleswitch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  transform: scale(0.6);
+}
+
+.toggleswitchCheckbox {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggleswitchSlider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.toggleswitchCheckbox:checked + .toggleswitchSlider {
+  background-color: #50ac30;
+}
+
+.toggleswitchSlider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+.toggleswitchCheckbox:checked + .toggleswitchSlider:before {
+  transform: translateX(26px);
+}
+
+.switchWraper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fontLabel {
+  font-family: "Average Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
 }
 
 .adminToolBtnIcon {
@@ -411,6 +578,8 @@
 .expenseItemImg {
   width: 24px;
   height: 24px;
+  border-radius: 50%;
+  border: 1px solid #fff;
 }
 
 .expenseItemTitle {
@@ -427,6 +596,8 @@
 
 .expenseItemLeft {
   display: flex;
+  gap: 8px;
+  justify-content: flex-start;
 }
 
 .expenseItemTotalLine {
@@ -436,7 +607,7 @@
 .expenseItemTotal {
   display: flex;
   justify-content: end;
-  margin-right: 30px;
+  /* margin-right: 30px; */
   font-weight: 500;
 }
 
@@ -833,3 +1004,30 @@
   outline: 0;
   /* display: none; */
 }
+
+.modalBackground{
+  background-color: #fff;
+  min-height: 50vh;
+}
+
+.confirmationText1{
+  font-weight:400;
+  font-size:35px;
+}
+
+.confirmationText1{
+  font-weight:400;
+  font-size:35px;
+}
+
+.confirmationText2{
+  font-weight:400;
+  font-size:20px;
+}
+
+.sendLayoutHeader {
+  /* padding: none; */
+  visibility: none;
+}
+
+

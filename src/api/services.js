@@ -352,7 +352,6 @@ export const getFilterBadgeButtons = async () => {
 export const adminToolUpdate = async (adminId, data) => {
   try {
     const response = await axiosClient.patch(`/events/${adminId}`, data);
-    console.log(response);
     return response?.data;
   } catch (error) {
     console.log(error);
@@ -375,4 +374,114 @@ export const updateTicket = async (ticketId, data) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const getPostListAPI = async (page, data) => {
+  try {
+    const response = await axiosClient.post(
+      `/posts/list?limit=10&page=${page}`,
+      data
+    );
+
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getPayout = async (eventId) => {
+  try {
+    const response = await axiosClient.get(
+      `/events/event-financial/${eventId}`
+    );
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const whoSearcher = async (query) => {
+  try {
+    const response = await axiosClient.get(
+      `/users/search-user?searchtext=${query}`
+    );
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const createTicketApi = async (data) => {
+  try {
+    const response = await axiosClient.post(`/events/`, data);
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const expensePayoutDraft = async (userId, type, data) => {
+  try {
+    const response = await axiosClient.post(
+      `events/event-financial/${userId}/draft/${type}`,
+      data
+    );
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const expensePayoutEdit = async (userId, type, data) => {
+  try {
+    const response = await axiosClient.post(
+      `events/event-financial/${userId}/edit/${type}`,
+      data
+    );
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deletePayoutDelete = async (userId, type, data) => {
+  try {
+    const response = await axiosClient.post(
+      `events/event-financial/${userId}/delete/${type}`,
+      data
+    );
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const ListCheckins = async (ticketId, limit = 5, page = 1) => {
+  try {
+    const response = await axiosClient.get(
+      `events/getTicketHolders/${ticketId}?limit=${limit}&page=${page}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const onCheckin = async (EventId, data) => {
+  try {
+    const response = await axiosClient.patch(
+      `tickets/checkedInEvent/${EventId}`,
+      data
+    );
+    return response.data.success;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const eventFinance = async (EventId) => {
+  const res = await axiosClient.post(
+    `events/event-financial/${EventId}/create`
+  );
+  return res.data;
 };

@@ -12,26 +12,48 @@
 
 .userJoined {
   display: flex;
-  overflow-x: auto;
-  gap: 8px;
-  max-width: 1222px;
-  width: 96%;
-  margin: auto;
-  padding: 8px 6px;
+  width: 100%;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
+}
+
+.userWraper {
+  max-width: 1222px;
+  padding: 0 5px;
+  width: 100%;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.buttonPrevNext {
+  background-color: #fff;
+  color: #194747;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0;
+  outline: 0;
 }
 
 @media only screen and (max-width: 768px) {
-  .userJoined {
-    gap: 8px;
-    justify-content: center;
+  .userWraper {
+    gap: 4px;
+    justify-content: flex-start;
+    padding: 0px 4px;
   }
 }
 @media only screen and (max-width: 431px) {
-  .userJoined {
-    gap: 5px;
-    padding: 6px 0px;
+  .userWraper {
+    gap: 4px;
+    padding: 6px 4px;
     justify-content: flex-start;
   }
 }
@@ -41,6 +63,13 @@
 }
 
 .userJoined {
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+}
+.userWraper::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome, Safari, and Opera */
+}
+
+.userWraper {
   scrollbar-width: none; /* Hide scrollbar for Firefox */
 }
 

@@ -24,6 +24,7 @@ function EventFilterComponent({
   setFilterData,
   filterData,
   child,
+  isCalenderVisible = false,
 }) {
   return (
     <>
@@ -34,13 +35,16 @@ function EventFilterComponent({
       <div className={Style.filterdiv}>
         {child}
         <RecentUserList />
-        <CalendarFilterComponent
-          startDate={startDate}
-          endDate={endDate}
-          setStartDate={setStartDate}
-          setEndDate={setEndDate}
-          handleSearch={handleSearch}
-        />
+        {isCalenderVisible && (
+          <CalendarFilterComponent
+            startDate={startDate}
+            endDate={endDate}
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
+            handleSearch={handleSearch}
+          />
+        )}
+
         {/* <div className={Style.datediv}>
           <span>Select Start Date: </span>
           <DatePicker

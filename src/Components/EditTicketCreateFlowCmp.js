@@ -4,19 +4,25 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import saveBtn from "../images/Change Button.svg";
-import { adminToolUpdate, createTicket, singleEvents } from "../api/services";
+import {
+  adminToolUpdate,
+  createTicket,
+  singleEvents,
+  updateTicket,
+} from "../api/services";
 import ToasterComponent from "./ToasterComponent";
 import DatePickerHookForm from "./DatePickerHookForm";
 import calender from "../images/calender.svg";
-import ToasterSuccess from "./ToasterSuccess";
 import Loader from "./Loader";
+import ToasterSuccess from "./ToasterSuccess";
 
-const CreateTicketComponent = ({
+const EditTicketCreateFlowCmp = ({
   Style,
   hideModal,
-  eventData,
-  adminId,
+  ticketitem,
   setTicketData,
+  startDateInstance,
+  endDateInstance,
 }) => {
   const [loading, setLoading] = useState(false);
   const schema = yup.object().shape({
@@ -27,72 +33,64 @@ const CreateTicketComponent = ({
     price: yup.number(),
   });
 
-  const data = eventData || {};
-  const ticketData = eventData && eventData?.tickets;
-  const idArray = ticketData.map((item) => item.id).join(",");
+  const ticketData = ticketitem && ticketitem;
 
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     control,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      start_date: new Date(data?.start_date),
-      end_date: new Date(data?.end_date),
+      name: ticketData?.name,
+      quantity: ticketData?.quantity,
+      price: ticketData?.price,
+      start_date: new Date(ticketData?.start_date),
+      end_date: new Date(ticketData?.end_date),
     },
   });
 
-  const createTicketHandle = async (dataOfCreateFrom) => {
-    // Early return if dataOfCreateFrom is not provided
-    setLoading(true); // Start loading
-
+  const editTicketHandle = async (dataOfCreateFrom) => {
+    setLoading(true);
     try {
       const dataToCreate = {
         ...dataOfCreateFrom,
         start_date: new Date(dataOfCreateFrom?.start_date).toISOString(),
         end_date: new Date(dataOfCreateFrom?.end_date).toISOString(),
+        price: `${dataOfCreateFrom?.price}`,
       };
 
-      // Await the creation of the ticket
-      const createResponse = await createTicket(dataToCreate);
-      console.log("createResponse", createResponse);
-      if (
-        createResponse.success === false ||
-        createResponse.success === "false"
-      ) {
-        ToasterComponent(`${createResponse.message}`, 4000);
-        return;
-      }
-      // Construct the new ID list
-      const id = idArray
-        ? idArray + "," + createResponse?.data?.id
-        : createResponse?.data?.id;
-      const formData = new FormData();
-      formData.append("tickets", `${id}`);
-      formData.append("event_lng", `${eventData?.location?.coordinates[0]}`);
-      formData.append("event_lat", `${eventData?.location?.coordinates[1]}`);
+      const res = await updateTicket(ticketitem?.id, dataToCreate);
+      console.log(res);
+      if (res.code === 200) {
+        const eventId = res?.data?.id;
 
-      // Await the admin tool update
-      const updateResponse = await adminToolUpdate(adminId, formData);
+        // Update oldTicketData by either replacing the existing item or adding a new one
+        setTicketData((currentData) => {
+          const index = currentData.findIndex((item) => item.id === eventId);
+          if (index !== -1) {
+            // Found the item, so we need to replace it
+            return currentData.map((item, idx) =>
+              idx === index ? res.data : item
+            );
+          } else {
+            // Item not found, add it to the array
+            return [...currentData, res.data];
+          }
+        });
 
-      if (updateResponse.code === 200) {
-        ToasterSuccess(`${updateResponse.message}`, 2000);
-        const response = await singleEvents(adminId);
-        setTicketData(response?.data?.tickets);
+        ToasterSuccess("Ticket Updated Successfully", 2000);
         hideModal();
-      } else if (
-        updateResponse.success === false ||
-        updateResponse.code === "false"
-      ) {
-        ToasterComponent(`${updateResponse.message}`, 2000);
+      } else if (res.success === false || res.code === "false") {
+        ToasterComponent(`${res.message}`, 2000);
       }
     } catch (error) {
-      console.error(error);
-      ToasterComponent("An error occurred.", 2000);
+      console.log(error);
     } finally {
-      setLoading(false); // End loading
+      setLoading(false);
     }
   };
 
@@ -101,7 +99,7 @@ const CreateTicketComponent = ({
   return (
     <>
       <form
-        onSubmit={handleSubmit(createTicketHandle)}
+        onSubmit={handleSubmit(editTicketHandle)}
         className={`${Style.formTicketEdit}`}
       >
         <div className={`${Style.boxWrapper}`}>
@@ -124,10 +122,10 @@ const CreateTicketComponent = ({
               className={`${Style.wfull}`}
               // start_date={start_date}
               // setStartDate={setStartDate}
-              // endDate={eventData.end_date}
+              // endDate={ticketData?.end_date}
               name="start_date"
-              maxDate={new Date(eventData.end_date)}
-              minDate={new Date(eventData.start_date)}
+              maxDate={new Date(endDateInstance)}
+              minDate={new Date(ticketData?.start_date)}
             />
             {/* <div>to</div> */}
             <DatePickerHookForm
@@ -136,8 +134,8 @@ const CreateTicketComponent = ({
               // start_date={end_date}
               // setStartDate={setEndDate}
               name="end_date"
-              maxDate={new Date(eventData.end_date)}
-              minDate={new Date(eventData.start_date)}
+              maxDate={new Date(endDateInstance)}
+              minDate={new Date(ticketData?.start_date)}
             />
           </div>
         </div>
@@ -174,4 +172,4 @@ const CreateTicketComponent = ({
   );
 };
 
-export default CreateTicketComponent;
+export default EditTicketCreateFlowCmp;
