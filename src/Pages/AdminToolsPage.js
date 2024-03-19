@@ -276,16 +276,16 @@ const AdminToolsPage = () => {
     setShowPayoutModal(false);
   }
 
-  const onClickCancelEvent = async (event) => {
+  const onClickCancelEvent = async () => {
     setLoading(true);
     const res = await cancelEvent(adminId);
-    if (res.data.success) {
+    if (res.success) {
       setLoading(false);
-      ToasterSuccess(res.data.success, 2000);
       setShowCancelEventModal(false);
+      ToasterSuccess(res.message, 2000);
     } else {
       setLoading(false);
-      ToasterError(res.data.error, 2000);
+      ToasterError(res.message, 2000);
       setShowCancelEventModal(false);
     }
   };
@@ -912,29 +912,35 @@ const AdminToolsPage = () => {
         hideFunc={hideCancelEventModal}
         header={<div className="sendLayoutHeader" />}
         body={
-          <div>
+          <div className={Style.modalContainer}>
             <div>
-              <p className={Style.confirmationText1}>
+              <p
+                className={`${Style.confirmationText1} ${Style.text1ExtraPAdding}`}
+              >
                 Are you sure you want to cancel event?
               </p>
               <div className={Style.btnContailer}>
                 <button
                   type="button"
                   onClick={onClickCancelEvent}
-                  className={Style.sendPayout}
+                  className={`${Style.payoutBtn} ${Style.greenBtn}`}
                 >
                   <span>Countinue</span>
-                  <span className={Style.sendArrowIcon}>
+                  <span
+                    className={`${Style.commonArrowIcon} ${Style.greenCommonArrrowIcon}`}
+                  >
                     <img src={arrow} alt="arrow" />
                   </span>
                 </button>
 
                 <button
                   onClick={hideCancelEventModal}
-                  className={Style.cancelPayout}
+                  className={`${Style.payoutBtn} ${Style.redBtn}`}
                 >
-                  <span>Cancel</span>
-                  <span className={Style.cancelArrowIcon}>
+                  <span className={``}>Cancel</span>
+                  <span
+                    className={`${Style.commonArrowIcon} ${Style.redCommonArrrowIcon}`}
+                  >
                     <img src={arrow} alt="arrow" />
                   </span>
                 </button>
@@ -950,9 +956,7 @@ const AdminToolsPage = () => {
         hideFunc={hideSendLayoutPopup}
         header={<div className="sendLayoutHeader" />}
         body={
-          <div
-          // style={{ height: "500px", backgroundColor: "#FFF" }}
-          >
+          <div className={Style.modalContainer}>
             <div>
               <p className={Style.confirmationText1}>
                 Are you sure you want to send payout?
@@ -967,7 +971,7 @@ const AdminToolsPage = () => {
                     onClickSendPayment();
                   }}
                   // type="submit"
-                  className={Style.sendPayout}
+                  className={`${Style.payoutBtn} ${Style.greenBtn}`}
                   style={
                     {
                       // marginTop: "10px",
@@ -975,7 +979,9 @@ const AdminToolsPage = () => {
                   }
                 >
                   <span>Send Payout</span>
-                  <span className={Style.sendArrowIcon}>
+                  <span
+                    className={`${Style.commonArrowIcon} ${Style.greenCommonArrrowIcon}`}
+                  >
                     <img src={arrow} alt="arrow" />
                   </span>
                 </button>
@@ -984,10 +990,12 @@ const AdminToolsPage = () => {
                   onClick={() => {
                     hideSendLayoutPopup();
                   }}
-                  className={Style.cancelPayout}
+                  className={`${Style.payoutBtn} ${Style.redBtn}`}
                 >
                   <span>Cancel</span>
-                  <span className={Style.cancelArrowIcon}>
+                  <span
+                    className={`${Style.commonArrowIcon} ${Style.redCommonArrrowIcon}`}
+                  >
                     <img src={arrow} alt="arrow" />
                   </span>
                 </button>

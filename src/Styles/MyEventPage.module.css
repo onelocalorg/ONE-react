@@ -116,16 +116,14 @@
   transition: all 0.3s ease;
 }
 
-.sendPayout {
+.payoutBtn {
   max-width: 271px;
   margin: auto;
-  width: 90%;
-  height: 58px;
-  background-color: #007112;
+  width: 48%;
+  height: 47px;
   border-radius: 15px;
   font-size: 16px;
   font-weight: 500;
-  color: #fff;
   position: relative;
   border: 0;
   outline: 0;
@@ -133,31 +131,18 @@
   text-decoration: none;
   display: flex;
   justify-content: center;
-  gap: 10px;
   align-items: center;
   transition: all 0.3s ease;
 }
 
-.cancelPayout{
-  max-width: 271px;
-  margin: auto;
-  width: 90%;
-  height: 58px;
-  background-color: #710000  ;
-  border-radius: 15px;
-  font-size: 16px;
-  font-weight: 500;
+.greenBtn {
+  background-color: #007112;
   color: #fff;
-  position: relative;
-  border: 0;
-  outline: 0;
-  box-shadow: 0 0 10px #6f7ec940;
-  text-decoration: none;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  align-items: center;
-  transition: all 0.3s ease;
+}
+ 
+.redBtn {
+  background-color: #710000;
+  color: #fff;
   margin-top: 1vh;
 }
 
@@ -166,10 +151,14 @@
   color: #7744b0;
 }
 
-.sendPayout:hover {
+.payoutBtn:hover {
   background-color: #fff;
-  color: #007112;
 }
+
+.greenBtn:hover {
+  color: #007112
+}
+
 
 .purchase:hover > .arrowIcon > img {
   transform: rotate(-45deg);
@@ -188,17 +177,33 @@
   padding: 8px;
 }
 
-.sendArrowIcon {
-  background-color: #5B9865;
-  width: 30px;
+.commonArrowIcon {
   height: 30px;
   border-radius: 50%;
-  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 8px;
+  /* right: 2px; */
+  position: absolute;
+  right: 2.5%;
 }
+
+.greenCommonArrrowIcon {
+  background-color: #5B9865;
+  color: #fff;
+}
+
+.redCommonArrrowIcon {
+  background-color: #8D5757;
+  color: #fff;
+}
+
+.redBtn:hover{
+  color:#710000;
+}
+
+
 
 .cancelArrowIcon {
   background-color: #8D5757;
@@ -212,17 +217,7 @@
   padding: 8px;
 }
 
-.cancelPayout:hover {
-  background-color: #fff;
-  color:#710000;
-}
-.cancelArrowIcon >img {
-  transition: transform 0.3s ease;
-  width: 100%;
-  height: 100%;
-}
-
-.sendArrowIcon > img {
+.commonArrowIcon > img {
   transition: transform 0.3s ease;
   width: 100%;
   height: 100%;
@@ -232,12 +227,10 @@
   width: 100%;
   height: 100%;
 }
-
 .date {
   font-size: 16px;
   font-weight: 500;
 }
-
 .timing {
   font-size: 12px;
   font-weight: 300;
@@ -652,6 +645,16 @@
     width: 100%;
     min-width: 100%;
   }
+
+  .commonArrowIcon {
+  
+    width: 18%;
+
+  }
+}
+
+.text1ExtraPAdding{
+  padding-bottom: 16px;
 }
 @media only screen and (max-width: 768px) {
   .brand {
@@ -665,7 +668,16 @@
     width: 60px;
     height: 60px;
   }
+  .payoutBtn{
+    font-size: 12px;
+  }
+  .commonArrowIcon {
+  
+    width: 18%;
+
+  }
 }
+
 
 @media only screen and (max-width: 431px) {
   .boxes {
@@ -706,6 +718,12 @@
   .payNoteText {
     margin-left: 47%;
   }
+  .commonArrowIcon >img {
+  
+    width: 11px;
+    height:11px
+
+  }
 }
 
 @media only screen and (max-width: 325px) {
@@ -728,6 +746,17 @@
   }
   .payNoteText {
     margin-left: 25%;
+  }
+  .payoutBtn{
+    font-size: 10px;
+    width: 70%;
+  }
+
+  .commonArrowIcon >img {
+  
+    /* width: %;
+    height:100% */
+
   }
 }
 
@@ -1013,18 +1042,18 @@
 }
 
 .confirmationText1{
+  text-align: center;
   font-weight:400;
-  font-size:35px;
+  font-size:20px;
+  margin: 0;
 }
 
-.confirmationText1{
-  font-weight:400;
-  font-size:35px;
-}
+
 
 .confirmationText2{
   font-weight:400;
-  font-size:20px;
+  font-size:15px;
+  text-align: center
 }
 
 .sendLayoutHeader {
@@ -1036,6 +1065,10 @@
   background-color: transparent;
     color: #fff;
     border: none;
+}
+
+.modalContainer{
+  margin: 10%;
 }
 
 
