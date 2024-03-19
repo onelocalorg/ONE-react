@@ -221,25 +221,30 @@ const AdminToolsPage = () => {
     formData.append("email_confirmation_body", data.confirmationMail);
     formData.append("start_date", new Date(data.start_date).toISOString());
     formData.append("end_date", new Date(data.end_date).toISOString());
-    formData.append(
-      "full_address",
-      Object.keys(data?.mainAddress || {}).length === 0
-        ? "-"
-        : `${data?.mainAddress?.formatted_address}`
-      // : `${data.mainAddress?.name}, ${data?.mainAddress?.formatted_address}`
-    );
+
+    if (Object.keys(data?.mainAddress).length) {
+      formData.append(
+        "full_address",
+        Object.keys(data?.mainAddress || {}).length === 0
+          ? "-"
+          : `${data?.mainAddress?.formatted_address}`
+        // : `${data.mainAddress?.name}, ${data?.mainAddress?.formatted_address}`
+      );
+    }
+
     formData.append(
       "event_lat",
       Object.keys(data?.mainAddress || {}).length === 0
-        ? "0"
+        ? eventData?.location?.coordinates[1] || "0"
         : `${data.mainAddress?.geometry.location.lat()}`
     );
     formData.append(
       "event_lng",
       Object.keys(data?.mainAddress || {}).length === 0
-        ? "0"
+        ? eventData?.location?.coordinates[0] || "0"
         : `${data.mainAddress?.geometry.location.lng()}`
     );
+
     if (eventImageToUpdate && eventImageToUpdate !== null) {
       formData.append("event_image", eventImageToUpdate);
     }
