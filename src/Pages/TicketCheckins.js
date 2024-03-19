@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Style from "../Styles/TicketCheckins.module.css";
 import { PrivateComponent } from "../Components/PrivateComponent";
-// import { useScrollToTop } from "../hooks/useScrollToTop";
+import { useScrollToTop } from "../hooks/useScrollToTop";
 import HeaderComponent from "../Components/HeaderComponent";
 import CheckinCardComponent from "../Components/CheckinCardComponent";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Loader from "../Components/Loader";
-import user from "../images/user.png";
+
 import { ListCheckins, onCheckin } from "../api/services";
 import { useParams } from "react-router-dom";
 
@@ -32,7 +32,7 @@ const EachData = ({ element, clickOnCheckIn }) => {
           element.isCheckedIn || state ? Style.greenbutton : Style.button
         }
         onClick={async () => {
-          if (!element.isCheckedIn) {
+          if (!element.isCheckedIn && !state) {
             const res = await clickOnCheckIn(element);
             if (res === true) {
               setState(true);
@@ -47,8 +47,8 @@ const EachData = ({ element, clickOnCheckIn }) => {
 };
 
 const TicketCheckins = () => {
-  const checkedin = false;
   const { eventId } = useParams();
+  const scrollToTop = useScrollToTop();
   const [data, setData] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
@@ -57,33 +57,43 @@ const TicketCheckins = () => {
   const getData = async () => {
     setLoading(true);
     if (hasMore) {
-      const apiData = await ListCheckins(eventId, 5, page);
-      setData((prevItems) => [...prevItems, ...apiData.data.results]);
+      const apiData = await ListCheckins(eventId, 8, page);
+      if (apiData?.success) {
+        setData((prevItems) => [...prevItems, ...apiData.data.results]);
 
-      console.log("apiData", apiData.data.page, apiData.data.totalPages);
-      if (apiData.data.page < apiData.data.totalPages) {
-        setHasMore(true);
-        setPage(page + 1);
-      } else {
-        setHasMore(false);
+        if (apiData.data.page < apiData.data.totalPages) {
+          setHasMore(true);
+          setPage(page + 1);
+        } else {
+          setHasMore(false);
+        }
       }
     }
     setLoading(false);
   };
 
   useEffect(() => {
+    scrollToTop();
     getData();
   }, []);
 
   const clickOnCheckIn = async (data) => {
-    const ticketId = data._id;
-    const getConfirm = await onCheckin(ticketId, {
-      email: data.user.email,
-      is_app_user: 1,
-      isCheckedIn: true,
-    });
-
-    return getConfirm;
+    setLoading(true);
+    try {
+      const ticketId = data._id;
+      const getConfirm = await onCheckin(ticketId, {
+        email: data.user.email,
+        is_app_user: 1,
+        isCheckedIn: true,
+      });
+      return getConfirm;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      return false;
+    } finally {
+      setLoading(false);
+      return true;
+    }
   };
 
   return (
@@ -92,24 +102,46 @@ const TicketCheckins = () => {
         <PrivateComponent />
         <HeaderComponent />
         <div className={Style.page}>
-          <div className={Style.pageHeader}>
-            <h1 className={Style.title}>Garden Party</h1>
-          </div>
-          <InfiniteScroll
-            dataLength={data.length}
-            next={getData}
-            hasMore={hasMore}
-            loader={loading ? <Loader /> : ""}
-          >
-            {data.length > 0 &&
-              data.map((element) => {
-                return (
-                  <EachData element={element} clickOnCheckIn={clickOnCheckIn} />
-                );
-              })}
-          </InfiniteScroll>
+          {data.length ? (
+            <>
+              <div className={Style.pageHeader}>
+                <h1 className={Style.title}>
+                  {data.length ? data[0]?.event?.name : ""}
+                </h1>
+              </div>
+              <InfiniteScroll
+                dataLength={data.length}
+                next={getData}
+                hasMore={hasMore}
+                loader={loading ? <Loader /> : ""}
+                className={Style.infinitescroll}
+              >
+                {data.length > 0 &&
+                  data.map((element, index) => {
+                    return (
+                      <EachData
+                        element={element}
+                        clickOnCheckIn={clickOnCheckIn}
+                        key={index}
+                      />
+                    );
+                  })}
+              </InfiniteScroll>
+            </>
+          ) : (
+            <div
+              style={{
+                textAlign: "center",
+                fontWeight: "600",
+                margin: "150px 14px 0px 14px",
+              }}
+            >
+              {!loading && "No Data Found"}
+            </div>
+          )}
         </div>
       </div>
+      {loading && <Loader />}
     </>
   );
 };
