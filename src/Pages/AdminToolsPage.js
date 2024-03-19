@@ -41,7 +41,7 @@ import ReactQuillEditor from "../Components/ReactQuillEditor";
 import EditTicketComponent from "../Components/EditTicketComponent";
 import Form from "react-bootstrap/Form";
 import EditPayoutModalDialog from "../Components/EditPayoutModalDialog";
-import { eventFinance } from "../api/services";
+import { eventFinance, cancelEvent } from "../api/services";
 import ToasterError from "../Components/ToasterComponent";
 
 const AdminToolsPage = () => {
@@ -50,6 +50,7 @@ const AdminToolsPage = () => {
   const scrollToTop = useScrollToTop();
   const [eventData, setEventData] = useState({});
   const [ticketData, setTicketData] = useState([]);
+  const [showCanelEventModal, setShowCancelEventModal] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -272,6 +273,19 @@ const AdminToolsPage = () => {
     setShowPayoutModal(false);
   }
 
+  const onClickCancelEvent = async (event) => {
+    setLoading(true);
+    const res = await cancelEvent(adminId);
+    if (res.data.success) {
+      setLoading(false);
+      ToasterSuccess(res.data.success, 2000);
+      setShowCancelEventModal(false);
+    } else {
+      setLoading(false);
+      ToasterError(res.data.error, 2000);
+      setShowCancelEventModal(false);
+    }
+  };
   const [showModalTicket, setShowModalTicket] = useState(false);
   const [expenseEditModal, setExpensesEditModal] = useState({});
   const [payoutEditModal, setPayoutEditModal] = useState({});
@@ -302,9 +316,13 @@ const AdminToolsPage = () => {
   function closePayoutModal() {
     setPayoutEditModal({});
   }
-  ///edit ticket modal form submit
 
-  console.log("PayoutDetails", payoutDetails);
+  const displayEventCancelModal = () => {
+    setShowCancelEventModal(true);
+  };
+  const hideCancelEventModal = () => {
+    setShowCancelEventModal(false);
+  };
 
   return (
     <>
@@ -515,7 +533,15 @@ const AdminToolsPage = () => {
                 <div className={Style.uniqueViewDiv}>
                   <div>
                     <div>Unique Views: 3</div>
-                    <hr />
+                  </div>
+                  <div>
+                    <button
+                      className={Style.cancelEvent}
+                      type="button"
+                      onClick={displayEventCancelModal}
+                    >
+                      Cancel Event
+                    </button>
                   </div>
                 </div>
                 {payoutDetails?.revenue_amount > 0 && (
@@ -875,7 +901,45 @@ const AdminToolsPage = () => {
           />
         }
       />
+      {/* Modal for cancel Event */}
+      <ModalComponent
+        show={showCanelEventModal}
+        wrapperClassname={` ${Style.wModal}`}
+        hideFunc={hideCancelEventModal}
+        header={<div className="sendLayoutHeader" />}
+        body={
+          <div>
+            <div>
+              <p className={Style.confirmationText1}>
+                Are you sure you want to cancel event?
+              </p>
+              <div className={Style.btnContailer}>
+                <button
+                  type="button"
+                  onClick={onClickCancelEvent}
+                  className={Style.sendPayout}
+                >
+                  <span>Countinue</span>
+                  <span className={Style.sendArrowIcon}>
+                    <img src={arrow} alt="arrow" />
+                  </span>
+                </button>
 
+                <button
+                  onClick={hideCancelEventModal}
+                  className={Style.cancelPayout}
+                >
+                  <span>Cancel</span>
+                  <span className={Style.cancelArrowIcon}>
+                    <img src={arrow} alt="arrow" />
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+      />
+      {/* Modal for send Layout */}
       <ModalComponent
         show={sendPaument}
         wrapperClassname={` ${Style.wModal}`}

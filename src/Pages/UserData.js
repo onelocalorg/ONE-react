@@ -334,6 +334,7 @@ function UserData() {
             start_date_label={event?.start_date_label}
             start_time_label={event?.start_time_label}
             eventProducer={event?.eventProducer}
+            cancelled={event?.cancelled}
           />
         ))}
       </React.Fragment>
