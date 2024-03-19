@@ -635,6 +635,8 @@
 
 .uniqueViewDiv {
   margin-top: -10px;
+  display: flex;
+  justify-content: space-between;
 }
 
 @media only screen and (max-width: 800px) {
@@ -1029,5 +1031,12 @@
   /* padding: none; */
   visibility: none;
 }
+
+.cancelEvent {
+  background-color: transparent;
+    color: #fff;
+    border: none;
+}
+
 
 

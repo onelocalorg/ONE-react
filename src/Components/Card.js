@@ -15,6 +15,7 @@ const Card = ({
   detailType,
   start_date_label,
   start_time_label,
+  cancelled,
 }) => {
   const navigate = useNavigate();
 
@@ -43,6 +44,8 @@ const Card = ({
           <div className={Style.address}>{address}</div>
         </div>
       </div>
+
+      {cancelled && <p className={Style.cancelText}>Cancelled</p>}
     </div>
   );
 };
