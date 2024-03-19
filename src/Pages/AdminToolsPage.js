@@ -202,8 +202,6 @@ const AdminToolsPage = () => {
     setSendPayment(false);
   };
 
-  console.log(errors);
-
   const onSubmit = async (data) => {
     setLoading(true);
     // const demoData = {
@@ -903,6 +901,7 @@ const AdminToolsPage = () => {
             eventData={eventData}
             hideModal={addNewTicketModalOpen}
             setTicketData={setTicketData}
+            ticketData={ticketData}
           />
         }
       />

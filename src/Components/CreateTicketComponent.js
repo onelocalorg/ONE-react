@@ -17,6 +17,7 @@ const CreateTicketComponent = ({
   eventData,
   adminId,
   setTicketData,
+  ticketData,
 }) => {
   const [loading, setLoading] = useState(false);
   const schema = yup.object().shape({
@@ -28,7 +29,7 @@ const CreateTicketComponent = ({
   });
 
   const data = eventData || {};
-  const ticketData = eventData && eventData?.tickets;
+  // const ticketData = eventData && eventData?.tickets;
   const idArray = ticketData.map((item) => item.id).join(",");
 
   const {
@@ -57,7 +58,7 @@ const CreateTicketComponent = ({
 
       // Await the creation of the ticket
       const createResponse = await createTicket(dataToCreate);
-      console.log("createResponse", createResponse);
+
       if (
         createResponse.success === false ||
         createResponse.success === "false"
