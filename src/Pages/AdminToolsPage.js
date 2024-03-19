@@ -586,7 +586,7 @@ const AdminToolsPage = () => {
                         </div>
 
                         <div className={Style.sendPayoutSection}>
-                          {!isPayout && (
+                          {isPayout && (
                             <span className={Style.itemAmt}>
                               <button
                                 className={Style.itemBtn}
