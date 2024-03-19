@@ -485,3 +485,8 @@ export const eventFinance = async (EventId) => {
   );
   return res.data;
 };
+
+export const cancelEvent = async (EventId) => {
+  const res = await axiosClient.post(`events/cancel-event/${EventId}`);
+  return res.data;
+};

@@ -358,7 +358,10 @@ const EventPage = () => {
                         value={ticketitem?.id}
                         style={{ height: "18px" }}
                         disabled={
-                          ticketitem?.max_quantity_to_show === 0 ? true : false
+                          ticketitem?.max_quantity_to_show === 0 ||
+                          eventData.cancelled
+                            ? true
+                            : false
                         }
                       />
 
