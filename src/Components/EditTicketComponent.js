@@ -31,7 +31,7 @@ const EditTicketComponent = ({
     quantity: yup.number(),
     start_date: yup.string(),
     end_date: yup.string(),
-    price: yup.number(),
+    price: yup.string(),
   });
 
   const ticketData = ticketitem && ticketitem;
@@ -55,6 +55,20 @@ const EditTicketComponent = ({
   });
 
   const editTicketHandle = async (dataOfCreateFrom) => {
+    if (dataOfCreateFrom.price) {
+      const numberString = dataOfCreateFrom.price.toString();
+      const isFloat = /^\d+(\.\d+)?$/.test(numberString);
+
+      const isNumber = Number.isInteger(dataOfCreateFrom.price);
+
+      if ((isFloat || isNumber) === false) {
+        ToasterComponent(
+          "you can't enter price value other than numbers",
+          2000
+        );
+      }
+    }
+
     setLoading(true);
     try {
       const dataToCreate = {
@@ -139,7 +153,7 @@ const EditTicketComponent = ({
           <h2 className={`${Style.editTicketHeader}`}>Ticket Price</h2>
           <p className={`${Style.currency}`}>$</p>
           <InputComponent
-            type={"number"}
+            // type={"number"}
             className={`${Style.inputStyliing}`}
             inputRef={"price"}
             register={register}
