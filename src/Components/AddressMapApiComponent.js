@@ -34,7 +34,6 @@ const AddressMapApiComponent = ({
 
   const handlePlaceChanged = (autocomplete) => {
     const place = autocomplete.getPlace();
-    console.log("place", place);
     if (!place.geometry || !place.geometry.location) {
       console.error("No geometry or location data in place object:", place);
       return;
