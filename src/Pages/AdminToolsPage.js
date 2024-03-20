@@ -98,6 +98,7 @@ const AdminToolsPage = () => {
   const [eventImageToUpdate, setEventImageToUpdtate] = useState(null);
   const [payoutDetails, setPayoutDetails] = useState({});
   const [isPayout, setIsPayout] = useState(true);
+  const [AddressValue, setAddressValue] = useState("");
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -133,6 +134,7 @@ const AdminToolsPage = () => {
           setValue("aboutEvent", response?.data?.about);
           setValue("start_date", new Date(response?.data?.start_date));
           setValue("end_date", new Date(response?.data?.end_date));
+          setAddressValue(response?.data?.full_address);
           setValue(
             "switch",
             response?.data?.event_type === "AO" ? true : false
@@ -198,12 +200,22 @@ const AdminToolsPage = () => {
     setSendPayment(true);
   };
 
+  const onChangeAddress = (event) => {
+    setAddressValue(event.target.value);
+  };
+
+  const onLocationSelect = (value) => {
+    setAddressValue(value);
+  };
+
   const hideSendLayoutPopup = () => {
     setSendPayment(false);
   };
 
   const onSubmit = async (data) => {
     setLoading(true);
+
+    // console.log(data.mainAddress.formatted_address);
     // const demoData = {
     //   lat: data.mainAddress?.geometry?.location.lat(),
     //   lng: data.mainAddress?.geometry?.location.lng(),
@@ -458,11 +470,15 @@ const AdminToolsPage = () => {
                     {eventData ? eventData?.full_address : ""}
                   </div> */}
                   <AddressMapApiComponent
+                    value={AddressValue}
                     parentStyle={`${Style.flexGrow1}`}
                     inputRef={"mainAddress"}
                     setValue={setValue}
+                    register={register}
                     className={`${Style.timing} ${Style.outline} ${Style.bgGray} ${Style.textBlack} ${Style.wfull} ${Style.paadingX7} ${Style.borderOutline} ${Style.height} ${Style.borderRadius10}`}
                     placeholder={"Google Address"}
+                    onChangeAddress={onChangeAddress}
+                    onLocationSelect={onLocationSelect}
                   />
                 </div>
               </div>
@@ -633,6 +649,7 @@ const AdminToolsPage = () => {
                                   itemAmt={`${exp?.amount}`}
                                   pricetype={`${exp?.type}`}
                                   openEditModal={() => openExpenseModal(exp)}
+                                  showEditIcon={payoutDetails?.isPayoutAddEdit}
                                 />
                               ))}
                             {payoutDetails?.expenses?.length === 0 && (

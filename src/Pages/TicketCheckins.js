@@ -25,7 +25,7 @@ const EachData = ({ element, clickOnCheckIn }) => {
           <p className={Style.member_status}>{element.ticket_name}</p>
         </div>
 
-        <p className={Style.price}>${element.ticket_price}</p>
+        <p className={Style.price}>${element.ticket_total_price}</p>
       </div>
       <button
         className={
