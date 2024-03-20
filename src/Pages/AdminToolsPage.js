@@ -649,6 +649,7 @@ const AdminToolsPage = () => {
                                   itemAmt={`${exp?.amount}`}
                                   pricetype={`${exp?.type}`}
                                   openEditModal={() => openExpenseModal(exp)}
+                                  showEditIcon={payoutDetails?.isPayoutAddEdit}
                                 />
                               ))}
                             {payoutDetails?.expenses?.length === 0 && (
