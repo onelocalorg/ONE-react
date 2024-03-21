@@ -20,8 +20,6 @@ import MyProfile from "./Pages/MyProfile";
 import MyEvents from "./Pages/MyEvents";
 import MyEventPage from "./Pages/MyEventPage";
 
-
-
 function App() {
   return (
     <div className="App">
@@ -49,6 +47,7 @@ function App() {
           <Route path="/my-profile" element={<MyProfile />} />
           <Route path="/my-events" element={<MyEvents />} />
           <Route path="/my-event/:eventId" element={<MyEventPage />} />
+          <Route path="/androidDownload" element={<AndroidAppDownload />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <ToastContainer />
