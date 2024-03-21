@@ -25,12 +25,14 @@ function EventFilterComponent({
   filterData,
   child,
   isCalenderVisible = false,
+  isCreateEventEnabled,
 }) {
   return (
     <>
       <NavHeaderComponent
         setFilterData={setFilterData}
         filterData={filterData}
+        isCreateEventEnabled={isCreateEventEnabled}
       />
       <div className={Style.filterdiv}>
         {child}

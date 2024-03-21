@@ -13,6 +13,9 @@ import WhoUserBadgeComponent from "./WhoUserBadgeComponent";
 import { IoIosClose } from "react-icons/io";
 import SaveBtn from "../images/Saveicon.svg";
 import ToasterSuccess from "./ToasterSuccess";
+import { useRef } from "react";
+import { uploadImageAPI } from "../api/services";
+import Loader from "./Loader";
 
 function PayoutModalDialog({
   hideFunc,
@@ -27,16 +30,19 @@ function PayoutModalDialog({
     hideFunc(false);
   };
 
+  const [loader, setLoader] = useState(false);
+  const [images, setImages] = useState([]);
+
   const validationSchema = yup.object().shape({
     who: yup.string(),
     amount: yup.number().required("Amount is required"),
-    photos: yup
-      .mixed()
-      .test(
-        "fileSize",
-        "File is required",
-        (value) => value && value.length > 0
-      ),
+    // photos: yup
+    //   .mixed()
+    //   .test(
+    //     "fileSize",
+    //     "File is required",
+    //     (value) => value && value.length > 0
+    //   ),
     listofPayer: yup.array(),
     payoutType: yup.string(),
     currencyMode: yup.string(),
@@ -61,6 +67,43 @@ function PayoutModalDialog({
 
   const formval = watch();
 
+  const hiddenFileInput = useRef(null);
+
+  const handleClick = () => {
+    hiddenFileInput.current.click();
+  };
+
+  const handleUpload = async (uploadData) => {
+    const res = await uploadImageAPI(uploadData);
+    console.log("Res", res);
+    setLoader(false);
+    const resImg = { imgUrl: res.data.imageUrl, key: res.data.key };
+    setImages([...images, resImg]);
+    // console.log("images", images);
+  };
+  const handleChange = async (event) => {
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      const [fileNameWithoutExtension] = selectedFile["name"].split(".");
+      const reader = new FileReader();
+      reader.readAsDataURL(selectedFile);
+
+      reader.onload = () => {
+        // Make a fileInfo Object
+
+        setLoader(true);
+        const baseURL = reader.result;
+        console.log(baseURL);
+        console.log("fileNameWithoutExtension", fileNameWithoutExtension);
+        const uploadData = {
+          uploadKey: "payout_image",
+          imageName: fileNameWithoutExtension,
+          base64String: baseURL,
+        };
+        handleUpload(uploadData);
+      };
+    }
+  };
   const [payouttypeVal, setPayoutTypeVal] = useState(
     addPayoutType.toLowerCase()
   );
@@ -68,25 +111,31 @@ function PayoutModalDialog({
 
   const handleFormSubmit = async (data) => {
     setloadingFunc(true);
+
+    const sendImages = images.map((e) => e.key);
+    console.log("data?.listofPayer[0]?.id", data?.listofPayer[0]?.id);
     try {
       const dataToSend = {
         user_id: data?.listofPayer[0]?.id,
         type: currencyType === "$" ? "price" : "percentage",
         amount: Number(data?.amount),
         description: data?.description,
-        images: [data?.photos[0]?.name],
+        images: sendImages,
       };
+
+      console.log("data to send", dataToSend);
 
       const dataToset = {
         amount: Number(data?.amount),
         description: data?.description,
-        images: [data?.photos[0]?.name],
+        images: sendImages,
         user_id: data?.listofPayer[0]?.id,
         first_name: data?.listofPayer[0]?.first_name,
         type: currencyType === "$" ? "price" : "percentage",
       };
       const resp = await expensePayoutDraft(eventId, payouttypeVal, dataToSend);
 
+      console.log("Resp", resp);
       if (resp.success === true && resp.code === 200) {
         if (payouttypeVal === "expense") {
           setExpenses(dataToset);
@@ -203,6 +252,7 @@ function PayoutModalDialog({
 
   return (
     <div className="module-dialog">
+      {loader && <Loader />}
       <Modal
         show
         onHide={handleClose}
@@ -369,19 +419,27 @@ function PayoutModalDialog({
                   textAlign: "right",
                 }}
               >
-                <label htmlFor="addPhotos" className={Style.photoBtn}>
+                <label
+                  // htmlFor="addPhotos"
+                  className={Style.photoBtn}
+                  onClick={handleClick}
+                >
                   Add Photos
                 </label>
-                <InputComponent
-                  inputRef={"photos"}
+                <input
+                  // inputRef={"photos"}
                   accept={"image/png, image/jpeg, image/svg"}
                   register={register}
-                  id={"addPhotos"}
+                  // id={"addPhotos"}
                   type={"file"}
                   className={`${Style.dnone}`}
+                  onChange={handleChange}
+                  ref={hiddenFileInput}
+                  style={{ display: "none" }}
                 />
               </div>
             </div>
+
             {errors?.photos && (
               <div className={Style.dialogItem}>
                 <div className={`error-text  ${Style.amountError}`}>
@@ -389,6 +447,19 @@ function PayoutModalDialog({
                 </div>
               </div>
             )}
+
+            <div>
+              {console.log(
+                "ssss",
+                images.map((e) => {
+                  <img src={e.imgUrl}></img>;
+                })
+              )}
+
+              {images.map((e) => {
+                return <img src={e.imgUrl} className={Style.userimage}></img>;
+              })}
+            </div>
 
             <div className={Style.dialogItem}>
               <div className={Style.submitBtnWrapper}>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 
@@ -41,6 +41,7 @@ import ToasterComponent from "../Components/ToasterComponent";
 
 const CreateEventPage = () => {
   const [ticketData, setTicketData] = useState([]);
+  const [AddressValue, setAddressValue] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -48,6 +49,16 @@ const CreateEventPage = () => {
   const [showPayoutModal, setShowPayoutModal] = useState(false);
 
   const navigate = useNavigate();
+
+  const state = useSelector(
+    (state) => state.showTicketCheckins.isCreateEventEnabled
+  );
+
+  useEffect(() => {
+    if (state === false) {
+      navigate("/");
+    }
+  }, [state]);
   const onLastPage = () => {
     navigate("/my-events");
   };
@@ -177,6 +188,13 @@ const CreateEventPage = () => {
     }
   };
 
+  const onChangeAddress = (event) => {
+    setAddressValue(event.target.value);
+  };
+
+  const onLocationSelect = (value) => {
+    setAddressValue(value);
+  };
   function hideFunc() {
     setShowPayoutModal(false);
   }
@@ -292,11 +310,14 @@ const CreateEventPage = () => {
                   />
 
                   <AddressMapApiComponent
+                    value={AddressValue}
                     parentStyle={`${Style.flexGrow1}`}
                     inputRef={"mainAddress"}
                     setValue={setValue}
                     className={`${Style.timing} ${Style.outline} ${Style.bgGray} ${Style.textBlack} ${Style.wfull} ${Style.paadingX7} ${Style.borderOutline} ${Style.height} ${Style.borderRadius10}`}
                     placeholder={"Google Address"}
+                    onChangeAddress={onChangeAddress}
+                    onLocationSelect={onLocationSelect}
                   />
                 </div>
               </div>

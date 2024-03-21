@@ -10,7 +10,11 @@ import { logOutPanel } from "../Redux/thunk/userThunk";
 import ToasterSuccess from "./ToasterSuccess";
 import { IoCreateSharp } from "react-icons/io5";
 
-const HeaderUserComponent = ({ headerClass, calledFromClass }) => {
+const HeaderUserComponent = ({
+  headerClass,
+  calledFromClass,
+  isCreateEventEnabled,
+}) => {
   const userInfo = useSelector((state) => state?.userInfo);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
@@ -104,10 +108,12 @@ const HeaderUserComponent = ({ headerClass, calledFromClass }) => {
               </NavLink>
             </li>
             <li aria-hidden="true">
-              <NavLink to={"/create-event"} className={headerClass.navLink}>
-                <IoCreateSharp />
-                <span className={Style.menuOption}>Create Event</span>
-              </NavLink>
+              {isCreateEventEnabled && (
+                <NavLink to={"/create-event"} className={headerClass.navLink}>
+                  <IoCreateSharp />
+                  <span className={Style.menuOption}>Create Event</span>
+                </NavLink>
+              )}
             </li>
             <li onClick={handleLogout} aria-hidden="true">
               <CiLogout />

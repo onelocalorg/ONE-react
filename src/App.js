@@ -26,8 +26,12 @@ import AdminToolsPage from "./Pages/AdminToolsPage";
 import PostList from "./Pages/PostList";
 import CreateEventPage from "./Pages/CreateEventPage";
 import TicketCheckins from "./Pages/TicketCheckins";
+import { useSelector } from "react-redux";
 
 function App() {
+  const state = useSelector(
+    (state) => state.showTicketCheckins.isCreateEventEnabled
+  );
   return (
     <div className="App">
       <BrowserRouter>
@@ -133,6 +137,9 @@ function App() {
             element={<AdminToolsPage />}
           />
           <Route path="/create-event" element={<CreateEventPage />} />
+          {/* {state === true && (
+            <Route path="/create-event" element={<CreateEventPage />} />
+          )} */}
           <Route path="*" element={<NotFound />} />
           <Route
             path="/ticket-checkins/:eventId"
