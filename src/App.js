@@ -19,6 +19,7 @@ import ForgotOtp from "./Pages/ForgotOtp";
 import MyProfile from "./Pages/MyProfile";
 import MyEvents from "./Pages/MyEvents";
 import MyEventPage from "./Pages/MyEventPage";
+import AndroidAppDownload from "./Components/AndroidApp";
 
 function App() {
   return (
