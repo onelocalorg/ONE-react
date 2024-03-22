@@ -6,7 +6,7 @@ import InputComponent from "./InputComponent";
 import Style from "../Styles/DialogForm.module.css";
 import closeIcon from "../images/close-icon.svg";
 import { useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   deletePayoutDelete,
   expensePayoutDraft,
@@ -22,6 +22,9 @@ import SaveBtn from "../images/Saveicon.svg";
 import DeleteIcon from "../images/Delete.svg";
 import ToasterSuccess from "./ToasterSuccess";
 
+import { uploadImageAPI } from "../api/services";
+import Loader from "./Loader";
+
 function EditPayoutModalDialog({
   hideFunc,
   addPayoutType,
@@ -33,6 +36,45 @@ function EditPayoutModalDialog({
   exp,
 }) {
   const dispatch = useDispatch();
+
+  const hiddenFileInput = useRef(null);
+  const [images, setImages] = useState(exp.images);
+  const [loader, setLoader] = useState(false);
+
+  const handleChange = async (event) => {
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      setLoader(true);
+      const [fileNameWithoutExtension] = selectedFile["name"].split(".");
+      const reader = new FileReader();
+      reader.readAsDataURL(selectedFile);
+
+      const uploadKey =
+        addPayoutType.toLowerCase() === "expense"
+          ? "expense_image"
+          : "payout_image";
+      reader.onload = () => {
+        // Make a fileInfo Object
+
+        const baseURL = reader.result;
+        console.log(baseURL);
+        console.log("fileNameWithoutExtension", fileNameWithoutExtension);
+        const uploadData = {
+          uploadKey: uploadKey,
+          imageName: fileNameWithoutExtension,
+          base64String: baseURL,
+        };
+        handleUpload(uploadData);
+      };
+    }
+  };
+
+  const handleUpload = async (uploadData) => {
+    const res = await uploadImageAPI(uploadData);
+    setLoader(false);
+    const resImg = { imgUrl: res.data.imageUrl, key: res.data.key };
+    setImages([...images, resImg]);
+  };
 
   const handleClose = () => {
     hideFunc(false);
@@ -109,12 +151,13 @@ function EditPayoutModalDialog({
   const handleFormSubmit = async (data) => {
     try {
       setloadingFunc(true);
+      const sendImages = images.map((e) => e.key);
       const dataToSend = {
         user_id: data?.listofPayer[0]?.id,
         type: currencyType === "$" ? "price" : "percentage",
         amount: Number(data?.amount),
         description: data?.description,
-        images: [ImageToUpdate?.key ? ImageToUpdate?.key : ImageToUpdate?.name],
+        images: sendImages,
         key: oldData?.key,
       };
 
@@ -157,6 +200,10 @@ function EditPayoutModalDialog({
     } finally {
       setloadingFunc(false);
     }
+  };
+
+  const handleClick = () => {
+    hiddenFileInput.current.click();
   };
 
   const handleButtonChange = (text) => {
@@ -448,19 +495,21 @@ function EditPayoutModalDialog({
                 }}
               >
                 <label
-                  htmlFor="addImagePopUp"
+                  // htmlFor="addImagePopUp"
                   className={Style.photoBtn}
                   style={{ cursor: "pointer" }}
+                  onClick={handleClick}
                 >
                   Add Photos
                 </label>
                 <input
-                  onChange={(e) => handleFileChange(e)}
+                  onChange={handleChange}
                   accept={"image/png, image/jpeg, image/svg"}
                   id={"addImagePopUp"}
                   className={`${Style.dnone}`}
                   type="file"
                   style={{ display: "none" }}
+                  ref={hiddenFileInput}
                 />
               </div>
             </div>
@@ -471,7 +520,16 @@ function EditPayoutModalDialog({
                 alignItems: "center",
               }}
             >
-              <img src={imageval} alt="Image" style={{ width: "50px" }} />
+              {images.map((e) => {
+                console.log("e.imgUrl", images);
+                return (
+                  <img
+                    src={e.imageUrl}
+                    className={Style.userimage}
+                    key={e.imageUrl}
+                  />
+                );
+              })}
             </div>
             <div className={Style.dialogItem}>
               <div className={Style.submitBtnWrapper}>
@@ -496,6 +554,8 @@ function EditPayoutModalDialog({
         </Modal.Body>
         <Modal.Footer></Modal.Footer>
       </Modal>
+
+      {loader && <Loader />}
     </div>
   );
 }

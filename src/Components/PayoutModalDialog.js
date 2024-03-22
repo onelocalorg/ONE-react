@@ -90,13 +90,16 @@ function PayoutModalDialog({
 
       reader.onload = () => {
         // Make a fileInfo Object
-
+        const uploadKey =
+          addPayoutType.toLowerCase() === "expense"
+            ? "expense_image"
+            : "payout_image";
         setLoader(true);
         const baseURL = reader.result;
         console.log(baseURL);
         console.log("fileNameWithoutExtension", fileNameWithoutExtension);
         const uploadData = {
-          uploadKey: "payout_image",
+          uploadKey: uploadKey,
           imageName: fileNameWithoutExtension,
           base64String: baseURL,
         };

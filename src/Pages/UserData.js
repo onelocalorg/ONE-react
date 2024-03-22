@@ -191,12 +191,10 @@ function UserData() {
         );
 
         dispatch(
-          setCreateEventEnabled(
-            userResponseData.data.isServiceActiveSubscription
-          )
+          setCreateEventEnabled(userResponseData.data.isEventActiveSubscription)
         );
         setIsCreateEventEnabled(
-          userResponseData.data.isServiceActiveSubscription
+          userResponseData.data.isEventActiveSubscription
         );
 
         // Data set
