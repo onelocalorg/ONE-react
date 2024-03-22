@@ -591,7 +591,7 @@ const AdminToolsPage = () => {
                         >
                           <span>Payouts</span>
                           <span className={Style.itemAmt}>
-                            ${payoutDetails?.total_payout}
+                            ${parseFloat(payoutDetails?.total_payout).toFixed(2)}
                           </span>
                         </div>
                         <div className={Style.financeItem}>
@@ -664,7 +664,7 @@ const AdminToolsPage = () => {
                           )}
                           <div className={Style.expenseItemTotalLine}></div>
                           <div className={Style.expenseItemTotal}>
-                            ${payoutDetails?.total_expenses}
+                            ${parseFloat(payoutDetails?.total_expenses).toFixed(2)}
                           </div>
                         </div>
                         <div className={Style.payoutItemSection}>
