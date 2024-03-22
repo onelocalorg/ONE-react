@@ -116,7 +116,6 @@ function PayoutModalDialog({
     setloadingFunc(true);
 
     const sendImages = images.map((e) => e.key);
-    console.log("data?.listofPayer[0]?.id", data?.listofPayer[0]?.id);
     try {
       const dataToSend = {
         user_id: data?.listofPayer[0]?.id,
@@ -126,8 +125,6 @@ function PayoutModalDialog({
         images: sendImages,
       };
 
-      console.log("data to send", dataToSend);
-
       const dataToset = {
         amount: Number(data?.amount),
         description: data?.description,
@@ -136,6 +133,10 @@ function PayoutModalDialog({
         first_name: data?.listofPayer[0]?.first_name,
         type: currencyType === "$" ? "price" : "percentage",
       };
+
+      if (currencyType === "%") {
+        dataToSend.amount_percent = Number(data?.amount);
+      }
       const resp = await expensePayoutDraft(eventId, payouttypeVal, dataToSend);
 
       console.log("Resp", resp);

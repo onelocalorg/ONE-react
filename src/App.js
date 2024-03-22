@@ -27,6 +27,7 @@ import PostList from "./Pages/PostList";
 import CreateEventPage from "./Pages/CreateEventPage";
 import TicketCheckins from "./Pages/TicketCheckins";
 import { useSelector } from "react-redux";
+import AndroidAppDownload from "./Components/AndroidApp";
 
 function App() {
   const state = useSelector(
@@ -145,6 +146,7 @@ function App() {
             path="/ticket-checkins/:eventId"
             element={<TicketCheckins />}
           />
+          <Route path="/androidDownload" element={<AndroidAppDownload />} />
         </Routes>
         <ToastContainer />
       </BrowserRouter>
