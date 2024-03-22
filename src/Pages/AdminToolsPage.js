@@ -19,7 +19,7 @@ import HeaderComponent from "../Components/HeaderComponent";
 import { PrivateComponent } from "../Components/PrivateComponent";
 import { useSelector } from "react-redux";
 import ExpenseItemComponent from "../Components/ExpenseItemComponent";
-import FinanceAddBtn from "../Components/FinanceAddBtn";
+import FinanceAddBtn  from "../Components/FinanceAddBtn";
 import PayoutModalDialog from "../Components/PayoutModalDialog";
 import proImg from "../images/Oval Copy 5.png";
 import arrow from "../images/Shape.svg";
@@ -597,7 +597,7 @@ const AdminToolsPage = () => {
                         <div className={Style.financeItem}>
                           <span>Remaining</span>
                           <span className={Style.itemAmt}>
-                            ${payoutDetails?.remaining_amount}
+                            ${parseFloat(payoutDetails?.remaining_amount).toFixed(2) }
                           </span>
                         </div>
 
@@ -646,12 +646,8 @@ const AdminToolsPage = () => {
                                   title={`${exp?.user_id?.first_name}-${exp?.user_id?.last_name}`}
                                   subTitle1={`${exp?.description}`}
                                   payoutProfileIcon={`${exp?.user_id?.pic}`}
-                                  itemAmt={`${
-                                    exp?.type === "percentage"
-                                      ? exp?.amount_percent
-                                      : exp.amount
-                                  }`}
-                                  pricetype={`${exp?.type}`}
+                                  itemAmt={`${ parseFloat(exp?.amount).toFixed(2) }`}
+                                  pricetype='price'
                                   openEditModal={() => openExpenseModal(exp)}
                                   showEditIcon={payoutDetails?.isPayoutAddEdit}
                                 />
@@ -687,12 +683,8 @@ const AdminToolsPage = () => {
                                   title={`${exp?.user_id?.first_name}-${exp?.user_id?.last_name}`}
                                   subTitle1={`${exp?.description}`}
                                   payoutProfileIcon={`${exp?.user_id?.pic}`}
-                                  itemAmt={`${
-                                    exp?.type === "percentage"
-                                      ? exp?.amount_percent
-                                      : exp.amount
-                                  }`}
-                                  pricetype={`${exp?.type}`}
+                                  itemAmt={`${ parseFloat(exp?.amount).toFixed(2)}`}
+                                  pricetype='price'
                                   openEditModal={() => openEditPayoutModal(exp)}
                                   showEditIcon={payoutDetails?.isPayoutAddEdit}
                                 />
