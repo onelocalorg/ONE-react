@@ -683,7 +683,11 @@ const AdminToolsPage = () => {
                                   title={`${exp?.user_id?.first_name}-${exp?.user_id?.last_name}`}
                                   subTitle1={`${exp?.description}`}
                                   payoutProfileIcon={`${exp?.user_id?.pic}`}
-                                  itemAmt={`${exp?.amount}`}
+                                  itemAmt={`${
+                                    exp?.type === "percentage"
+                                      ? exp?.amount_percent
+                                      : exp.amount
+                                  }`}
                                   pricetype={`${exp?.type}`}
                                   openEditModal={() => openEditPayoutModal(exp)}
                                   showEditIcon={payoutDetails?.isPayoutAddEdit}
