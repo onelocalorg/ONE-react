@@ -164,7 +164,7 @@ function EditPayoutModalDialog({
       const dataToset = {
         amount: Number(data?.amount),
         description: data?.description,
-        images: [ImageToUpdate[0]?.key],
+        images: sendImages,
         user_id: data?.listofPayer[0]?.id,
         first_name: data?.listofPayer[0]?.first_name,
         type: currencyType === "$" ? "price" : "percentage",
@@ -196,6 +196,7 @@ function EditPayoutModalDialog({
         }
       }
     } catch (error) {
+      console.log("error", error);
       ToasterComponent(`${error.message}`, 2000);
     } finally {
       setloadingFunc(false);
