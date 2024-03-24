@@ -21,6 +21,7 @@ import Loader from "../Components/Loader";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserData } from "../Redux/slices/UserSlice";
+import { setCreateEventEnabled } from "../Redux/slices/TicketCheckinsSlice";
 import ViewAppModalDialog from "../Components/ViewAppModalDialog";
 import { deleteCookie, getCookie, setCookie } from "../utils/CookieManager";
 import HeaderFiltersComponent from "../Components/HeaderFiltersComponent";
@@ -87,6 +88,7 @@ function UserData() {
   const [endDate, setEndDate] = useState(oneMonthLater);
   const [search, setSearch] = useState(false);
   const [filterData, setFilterData] = useState("");
+  const [isCreateEventEnabled, setIsCreateEventEnabled] = useState(false);
 
   const handleCloseAppViewDialog = () => {
     setShowAppViewOption(false);
@@ -186,6 +188,13 @@ function UserData() {
       async function getUserData() {
         const userResponseData = await getUserDetails(
           userInfo?.userData?.userId
+        );
+
+        dispatch(
+          setCreateEventEnabled(userResponseData.data.isEventActiveSubscription)
+        );
+        setIsCreateEventEnabled(
+          userResponseData.data.isEventActiveSubscription
         );
 
         // Data set
@@ -354,6 +363,7 @@ function UserData() {
         setFilterData={setFilterData}
         filterData={filterData}
         isCalenderVisible={true}
+        isCreateEventEnabled={isCreateEventEnabled}
         child={<HeaderFiltersComponent data={headerFilterData} />}
       />
 

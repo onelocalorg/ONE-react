@@ -25,7 +25,7 @@ const CreateTicketCreateFlowCmp = ({
     quantity: yup.number(),
     start_date: yup.string(),
     end_date: yup.string(),
-    price: yup.number(),
+    // price: yup.number(),
   });
 
   const {
@@ -126,7 +126,7 @@ const CreateTicketCreateFlowCmp = ({
         <div className={`${Style.boxWrapper}`}>
           <h2 className={`${Style.editTicketHeader}`}>Ticket Quantity</h2>
           <InputComponent
-            type={"number"}
+            type={Text}
             className={`${Style.inputStyliing}`}
             inputRef={"quantity"}
             register={register}
@@ -137,7 +137,6 @@ const CreateTicketCreateFlowCmp = ({
           <h2 className={`${Style.editTicketHeader}`}>Ticket Price</h2>
           <p className={`${Style.currency}`}>$</p>
           <InputComponent
-            type={"number"}
             className={`${Style.inputStyliing}`}
             inputRef={"price"}
             register={register}
