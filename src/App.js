@@ -131,13 +131,13 @@ function App() {
           <Route path="/payment-failed" element={<PaymentFailed />} />
           <Route path="/event/:eventId" element={<EventPage />} />
           <Route path="/my-profile" element={<MyProfile />} />
-          <Route path="/my-events" element={<MyEvents />} />
+          {/* <Route path="/my-events" element={<MyEvents />} />
           <Route path="/my-event/:eventId" element={<MyEventPage />} />
           <Route
             path="/my-event/admintool/:adminId"
             element={<AdminToolsPage />}
           />
-          <Route path="/create-event" element={<CreateEventPage />} />
+          <Route path="/create-event" element={<CreateEventPage />} /> */}
           {/* {state === true && (
             <Route path="/create-event" element={<CreateEventPage />} />
           )} */}
