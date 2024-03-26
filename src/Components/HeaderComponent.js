@@ -8,7 +8,7 @@ const HeaderComponent = ({ isCreateEventEnabled }) => {
   const navigate = useNavigate();
 
   const isCreateEventEnabledFromLocal = useSelector(
-    (state) => state.userInfo.userData.isEventActiveSubscription
+    (state) => state.userInfo?.userData?.isEventActiveSubscription
   );
 
   const goToHomePage = () => {

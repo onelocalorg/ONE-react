@@ -156,7 +156,7 @@ const CreateTicketComponent = ({
           <h2 className={`${Style.editTicketHeader}`}>Ticket Price</h2>
           <p className={`${Style.currency}`}>$</p>
           <InputComponent
-            type={"number"}
+            // type={"number"}
             className={`${Style.inputStyliing}`}
             inputRef={"price"}
             register={register}

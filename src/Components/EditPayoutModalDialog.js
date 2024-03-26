@@ -110,6 +110,8 @@ function EditPayoutModalDialog({
       pic: oldData?.user_id?.pic,
       key: oldData?.key,
     } || {};
+
+  const getAmount = exp.type === "percentage" ? exp.amount_percent : exp.amount;
   const {
     register,
     handleSubmit,
@@ -131,7 +133,7 @@ function EditPayoutModalDialog({
         },
       ],
       description: oldData?.description,
-      amount: `${oldData?.amount}`,
+      amount: `${getAmount}`,
       // photos: [oldData?.images[0].name],
     },
   });
@@ -141,7 +143,9 @@ function EditPayoutModalDialog({
   const [payouttypeVal, setPayoutTypeVal] = useState(
     addPayoutType.toLowerCase()
   );
-  const [currencyType, setCurrencyType] = useState("$");
+  const [currencyType, setCurrencyType] = useState(
+    exp.type === "percentage" ? "%" : "$"
+  );
   const onSubmit = async (data) => {
     setloadingFunc(true);
   };
@@ -160,6 +164,10 @@ function EditPayoutModalDialog({
         images: sendImages,
         key: oldData?.key,
       };
+      console.log("currencyType", currencyType);
+      if (currencyType === "%") {
+        dataToSend.amount_percent = data?.amount;
+      }
 
       const dataToset = {
         amount: Number(data?.amount),
@@ -169,6 +177,10 @@ function EditPayoutModalDialog({
         first_name: data?.listofPayer[0]?.first_name,
         type: currencyType === "$" ? "price" : "percentage",
       };
+
+      if (currencyType === "%") {
+        dataToset.amount_percent = data?.amount;
+      }
       const resp = await expensePayoutEdit(eventId, payouttypeVal, dataToSend);
       if (resp.success) {
         if (payouttypeVal === "expense") {
