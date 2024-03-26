@@ -3,7 +3,7 @@ import HeaderUserComponent from "./HeaderUserComponent";
 import logo from "../images/logo.svg";
 import HeaderStyle from "../Styles/Header.module.css";
 
-const HeaderComponent = () => {
+const HeaderComponent = ({ isCreateEventEnabled }) => {
   const navigate = useNavigate();
   const goToHomePage = () => {
     navigate("/");
@@ -45,6 +45,7 @@ const HeaderComponent = () => {
         <HeaderUserComponent
           headerClass={HeaderStyle}
           calledFromClass="eventDetailHeader"
+          isCreateEventEnabled={isCreateEventEnabled}
         />
       </div>
     </div>

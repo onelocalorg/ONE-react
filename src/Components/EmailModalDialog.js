@@ -87,6 +87,7 @@ function EmailModalDialog({
         JSON.stringify({
           profile_image: response?.data?.pic || "",
           userId: response?.data?.id,
+          isEventActiveSubscription: response?.data?.isEventActiveSubscription,
         })
       );
       purchaseFunc(true);

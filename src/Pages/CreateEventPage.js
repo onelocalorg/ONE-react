@@ -51,7 +51,7 @@ const CreateEventPage = () => {
   const navigate = useNavigate();
 
   const state = useSelector(
-    (state) => state.showTicketCheckins.isCreateEventEnabled
+    (state) => state.userInfo.userData.isEventActiveSubscription
   );
 
   useEffect(() => {
@@ -211,7 +211,7 @@ const CreateEventPage = () => {
     <>
       <div className={Style.mainDiv}>
         <PrivateComponent />
-        <HeaderComponent />
+        <HeaderComponent isCreateEventEnabled={state} />
         <div className={Style.dataContainer}>
           <div className={Style.btnDiv}>
             <button className={Style.backButton} onClick={onLastPage}>
