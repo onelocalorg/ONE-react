@@ -128,7 +128,7 @@ const EventPage = () => {
     if (userInfo?.userData) {
       getCardList();
     }
-  }, []);
+  }, [userInfo.userData]);
 
   const submitBuyData = async () => {
     const linktoTicketPurchase = ticketData.find(

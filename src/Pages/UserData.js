@@ -211,10 +211,13 @@ function UserData() {
             JSON.stringify({
               profile_image: userResponseData?.data?.pic || "",
               userId: userResponseData?.data?.id,
+              isEventActiveSubscription:
+                userResponseData.data.isEventActiveSubscription,
             })
           );
         }
       }
+
       getUserData();
     }
   }, []);
