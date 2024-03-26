@@ -211,11 +211,6 @@ function MyEvents() {
           setCreateEventEnabled(userResponseData.data.isEventActiveSubscription)
         );
 
-        console.log(
-          "userResponseData",
-          userResponseData.data.isEventActiveSubscription
-        );
-
         setISCreateEventEnabled(
           userResponseData.data.isEventActiveSubscription
         );

@@ -12,7 +12,6 @@ import { useNavigate, useParams } from "react-router-dom";
 const MyProfile = () => {
   const scrollToTop = useScrollToTop();
   const userInfo = useSelector((state) => state?.userInfo);
-  console.log(userInfo);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();

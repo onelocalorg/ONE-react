@@ -1,10 +1,16 @@
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import HeaderUserComponent from "./HeaderUserComponent";
 import logo from "../images/logo.svg";
 import HeaderStyle from "../Styles/Header.module.css";
 
 const HeaderComponent = ({ isCreateEventEnabled }) => {
   const navigate = useNavigate();
+
+  const isCreateEventEnabledFromLocal = useSelector(
+    (state) => state.userInfo.userData.isEventActiveSubscription
+  );
+
   const goToHomePage = () => {
     navigate("/");
   };
@@ -45,7 +51,9 @@ const HeaderComponent = ({ isCreateEventEnabled }) => {
         <HeaderUserComponent
           headerClass={HeaderStyle}
           calledFromClass="eventDetailHeader"
-          isCreateEventEnabled={isCreateEventEnabled}
+          isCreateEventEnabled={
+            isCreateEventEnabledFromLocal || isCreateEventEnabled
+          }
         />
       </div>
     </div>
