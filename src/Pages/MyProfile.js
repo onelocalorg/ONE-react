@@ -7,13 +7,24 @@ import { getUserDetails } from "../api/services";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserData } from "../Redux/slices/UserSlice";
 import { PrivateComponent } from "../Components/PrivateComponent";
+import { useNavigate, useParams } from "react-router-dom";
 
 const MyProfile = () => {
   const scrollToTop = useScrollToTop();
   const userInfo = useSelector((state) => state?.userInfo);
-  console.log(userInfo);
   const dispatch = useDispatch();
 
+  const navigate = useNavigate();
+
+  const state = useSelector(
+    (state) => state.userInfo.userData.isEventActiveSubscription
+  );
+
+  useEffect(() => {
+    if (state === false) {
+      navigate("/");
+    }
+  }, [state]);
   useEffect(() => {
     // Scroll to top as some time it shows in middle page
     scrollToTop();
@@ -49,7 +60,7 @@ const MyProfile = () => {
   return (
     <div className={style.mainDiv}>
       <PrivateComponent />
-      <HeaderComponent />
+      <HeaderComponent isCreateEventEnabled={state} />
       <div className={style.formContainer}>
         <MyProfileForm userInfo={userInfo} />
       </div>
