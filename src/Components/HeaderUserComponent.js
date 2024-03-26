@@ -101,20 +101,20 @@ const HeaderUserComponent = ({
                 <span className={Style.menuOption}>My Profile</span>
               </NavLink>
             </li>
-            {/* <li aria-hidden="true">
+            <li aria-hidden="true">
               <NavLink to={"/my-events"} className={headerClass.navLink}>
                 <FaCalendarAlt />
                 <span className={Style.menuOption}>My Events</span>
               </NavLink>
-            </li> */}
-            {/* <li aria-hidden="true">
+            </li>
+            <li aria-hidden="true">
               {isCreateEventEnabled && (
                 <NavLink to={"/create-event"} className={headerClass.navLink}>
                   <IoCreateSharp />
                   <span className={Style.menuOption}>Create Event</span>
                 </NavLink>
               )}
-            </li> */}
+            </li>
             <li onClick={handleLogout} aria-hidden="true">
               <CiLogout />
               <span className={Style.menuOption}>Logout</span>
