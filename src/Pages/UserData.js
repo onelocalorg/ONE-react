@@ -227,11 +227,11 @@ function UserData() {
 
     // Set end_date to one month from today
     // const end_date = moment().add(1, "months").format("YYYY-MM-DD");
-
     const initialDate = {
       start_date: moment(startDate).format("YYYY-MM-DD"),
       end_date: moment(endDate).format("YYYY-MM-DD"),
       eventName: filterData,
+      loginUserId: userInfo?.userData ? userInfo.userData.userId : "",
     };
     const fetchDataOfMonth = async () => {
       setItems([]); //Clear all data when new search
