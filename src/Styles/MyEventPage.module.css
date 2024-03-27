@@ -32,8 +32,8 @@
 .eventImg {
   width: 100%;
   margin: auto;
-  height: 263px;
-  min-height: 263px;
+  /* height: 263px; */
+  /* min-height: 263px; */
   object-fit: cover;
 }
 
@@ -691,8 +691,8 @@
   }
   .eventImg {
     height: auto;
-    max-height: 250px;
-    min-height: 200px;
+    /* max-height: 250px; */
+    /* min-height: 200px; */
   }
 
   .brand {
