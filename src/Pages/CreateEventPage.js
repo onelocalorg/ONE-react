@@ -128,12 +128,6 @@ const CreateEventPage = () => {
   };
 
   const onSubmit = async (data) => {
-    if (ticketData.length === 0) {
-      ToasterComponent(
-        "Please add at least one ticket to create an event",
-        2000
-      );
-    }
     if (eventImageToUpdate === null) {
       ToasterComponent("Event Image is Mandatory", 2000);
     } else {
