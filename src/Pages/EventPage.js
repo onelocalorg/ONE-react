@@ -126,7 +126,9 @@ const EventPage = () => {
 
   useEffect(() => {
     if (userInfo?.userData) {
+      setloading(true);
       getCardList();
+      setloading(false);
     }
   }, [userInfo.userData]);
 
@@ -146,6 +148,29 @@ const EventPage = () => {
     } else {
       // hideFunc(false);
       ToasterComponent(responseData?.message || "Something went wrong", 1500);
+    }
+  };
+
+  const handleZeroTicketNotLoggedIn = async () => {
+    setloading(true);
+    const res = await getCardListAPI();
+    const linktoTicketPurchase = ticketData.find(
+      (item) => item.id === formVal.ticket
+    );
+
+    const sendCard = res?.data?.default_source ? res?.data?.default_source : "";
+    const responseData = await submitPurchaseData(
+      linktoTicketPurchase?.id,
+      formVal?.quantity,
+      sendCard
+    );
+    setloading(false);
+    if (responseData.success) {
+      navigate("/payment-successfull");
+    } else {
+      // hideFunc(false);
+      ToasterComponent(responseData?.message || "Something went wrong", 1500);
+      // awaitsubmitBuyData();
     }
   };
   const onSubmit = async (data) => {
@@ -611,9 +636,11 @@ const EventPage = () => {
           setShowBillingInformation={setShowBillingInformation}
           setUserEmail={setUserEmail}
           setActivePurchaseStep={setActivePurchaseStep}
+          handleZeroTicketNotLoggedIn={handleZeroTicketNotLoggedIn}
+          taxAmount={taxAmount}
         />
       )}
-      {showPurchseDialog && (
+      {taxAmount?.total > 0 && showPurchseDialog && (
         <Elements stripe={stripePromise}>
           <PurchaseModalDialog
             hideFunc={setShowPurchseDialog}
