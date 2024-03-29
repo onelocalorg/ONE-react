@@ -132,7 +132,7 @@ function App() {
           <Route path="/payment-failed" element={<PaymentFailed />} />
           <Route path="/event/:eventId" element={<EventPage />} />
           <Route path="/my-profile" element={<MyProfile />} />
-          <Route path="/login-profile" element={<LoginProfile />} />
+          <Route path="/loginprofile" element={<LoginProfile />} />
           <Route path="/my-events" element={<MyEvents />} />
           <Route path="/my-event/:eventId" element={<MyEventPage />} />
           <Route

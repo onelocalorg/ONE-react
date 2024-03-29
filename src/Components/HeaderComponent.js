@@ -4,12 +4,8 @@ import HeaderUserComponent from "./HeaderUserComponent";
 import logo from "../images/logo.svg";
 import HeaderStyle from "../Styles/Header.module.css";
 
-const HeaderComponent = ({ isCreateEventEnabled }) => {
+const HeaderComponent = () => {
   const navigate = useNavigate();
-
-  const isCreateEventEnabledFromLocal = useSelector(
-    (state) => state.userInfo?.userData?.isEventActiveSubscription
-  );
 
   const goToHomePage = () => {
     navigate("/");
@@ -51,9 +47,6 @@ const HeaderComponent = ({ isCreateEventEnabled }) => {
         <HeaderUserComponent
           headerClass={HeaderStyle}
           calledFromClass="eventDetailHeader"
-          isCreateEventEnabled={
-            isCreateEventEnabledFromLocal || isCreateEventEnabled
-          }
         />
       </div>
     </div>
