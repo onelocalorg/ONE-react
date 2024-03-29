@@ -139,7 +139,6 @@ function PayoutModalDialog({
       }
       const resp = await expensePayoutDraft(eventId, payouttypeVal, dataToSend);
 
-      console.log("Resp", resp);
       if (resp.success === true && resp.code === 200) {
         if (payouttypeVal === "expense") {
           setExpenses(dataToset);

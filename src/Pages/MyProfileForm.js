@@ -26,7 +26,7 @@ import playerIcon from "../images/player.png";
 import backgroundDefault from "../images/background-default.png";
 import { fireEvent } from "@testing-library/react";
 
-const MyProfileForm = ({ userInfo }) => {
+const MyProfileForm = ({ userInfo, onClickDelete, showDelete }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [skills, setSkills] = useState([]);
@@ -446,6 +446,15 @@ const MyProfileForm = ({ userInfo }) => {
             <button className={style.formBtn} type="submit">
               Update
             </button>
+            {showDelete && (
+              <button
+                className={style.formBtn}
+                type="button"
+                onClick={onClickDelete}
+              >
+                delete
+              </button>
+            )}
           </div>
         </form>
       </div>

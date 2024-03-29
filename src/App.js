@@ -17,6 +17,7 @@ import PaymentSuccessfull from "./Pages/PaymentSuccessfull";
 import PaymentFailed from "./Pages/PaymentFailed";
 import ForgotOtp from "./Pages/ForgotOtp";
 import MyProfile from "./Pages/MyProfile";
+import LoginProfile from "./Pages/LoginProfile";
 import MyEvents from "./Pages/MyEvents";
 import MyEventPage from "./Pages/MyEventPage";
 import JoinedUser from "./Pages/JoinedUser";
@@ -131,6 +132,7 @@ function App() {
           <Route path="/payment-failed" element={<PaymentFailed />} />
           <Route path="/event/:eventId" element={<EventPage />} />
           <Route path="/my-profile" element={<MyProfile />} />
+          <Route path="/login-profile" element={<LoginProfile />} />
           <Route path="/my-events" element={<MyEvents />} />
           <Route path="/my-event/:eventId" element={<MyEventPage />} />
           <Route

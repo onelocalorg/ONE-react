@@ -97,7 +97,8 @@ const LoginForm = () => {
     ToasterSuccess("Login Successfully", 1500);
     setTimeout(() => {
       // navigate("/dashboard");
-      navigate("/");
+      // navigate("/");
+      navigate("/login-profile");
     }, 1000);
   };
 

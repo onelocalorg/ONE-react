@@ -514,3 +514,7 @@ input[type="number"]::-webkit-outer-spin-button {
   border-radius: 50%;
   border: 1px solid #fff;
 }
+
+.headerHeight {
+  height: 50px;
+}
