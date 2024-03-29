@@ -21,6 +21,7 @@ import Loader from "../Components/Loader";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserData } from "../Redux/slices/UserSlice";
+import { setCreateEventEnabled } from "../Redux/slices/TicketCheckinsSlice";
 import ViewAppModalDialog from "../Components/ViewAppModalDialog";
 import { deleteCookie, getCookie, setCookie } from "../utils/CookieManager";
 import HeaderFiltersComponent from "../Components/HeaderFiltersComponent";
@@ -87,6 +88,7 @@ function UserData() {
   const [endDate, setEndDate] = useState(oneMonthLater);
   const [search, setSearch] = useState(false);
   const [filterData, setFilterData] = useState("");
+  const [isCreateEventEnabled, setIsCreateEventEnabled] = useState(false);
 
   const handleCloseAppViewDialog = () => {
     setShowAppViewOption(false);
@@ -188,6 +190,15 @@ function UserData() {
           userInfo?.userData?.userId
         );
 
+        dispatch(
+          setCreateEventEnabled(
+            userResponseData?.data?.isEventActiveSubscription
+          )
+        );
+        setIsCreateEventEnabled(
+          userResponseData?.data?.isEventActiveSubscription
+        );
+
         // Data set
         if (userResponseData?.data) {
           dispatch(
@@ -202,10 +213,13 @@ function UserData() {
             JSON.stringify({
               profile_image: userResponseData?.data?.pic || "",
               userId: userResponseData?.data?.id,
+              isEventActiveSubscription:
+                userResponseData.data.isEventActiveSubscription,
             })
           );
         }
       }
+
       getUserData();
     }
   }, []);
@@ -215,11 +229,11 @@ function UserData() {
 
     // Set end_date to one month from today
     // const end_date = moment().add(1, "months").format("YYYY-MM-DD");
-
     const initialDate = {
       start_date: moment(startDate).format("YYYY-MM-DD"),
       end_date: moment(endDate).format("YYYY-MM-DD"),
       eventName: filterData,
+      loginUserId: userInfo?.userData ? userInfo.userData.userId : "",
     };
     const fetchDataOfMonth = async () => {
       setItems([]); //Clear all data when new search
@@ -334,6 +348,7 @@ function UserData() {
             start_date_label={event?.start_date_label}
             start_time_label={event?.start_time_label}
             eventProducer={event?.eventProducer}
+            cancelled={event?.cancelled}
           />
         ))}
       </React.Fragment>
@@ -353,6 +368,8 @@ function UserData() {
         setFilterData={setFilterData}
         filterData={filterData}
         isCalenderVisible={true}
+        isCreateEventEnabled={isCreateEventEnabled}
+        RecentUserListVisible
         child={<HeaderFiltersComponent data={headerFilterData} />}
       />
 

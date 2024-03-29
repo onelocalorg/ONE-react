@@ -17,6 +17,7 @@ import PaymentSuccessfull from "./Pages/PaymentSuccessfull";
 import PaymentFailed from "./Pages/PaymentFailed";
 import ForgotOtp from "./Pages/ForgotOtp";
 import MyProfile from "./Pages/MyProfile";
+import LoginProfile from "./Pages/LoginProfile";
 import MyEvents from "./Pages/MyEvents";
 import MyEventPage from "./Pages/MyEventPage";
 import JoinedUser from "./Pages/JoinedUser";
@@ -24,8 +25,15 @@ import SharingOutLet from "./Pages/SharingOutlet";
 import ComingsoonPage from "./Pages/ComingsoonPage";
 import AdminToolsPage from "./Pages/AdminToolsPage";
 import PostList from "./Pages/PostList";
+import CreateEventPage from "./Pages/CreateEventPage";
+import TicketCheckins from "./Pages/TicketCheckins";
+import { useSelector } from "react-redux";
+import AndroidAppDownload from "./Components/AndroidApp";
 
 function App() {
+  const state = useSelector(
+    (state) => state.showTicketCheckins.isCreateEventEnabled
+  );
   return (
     <div className="App">
       <BrowserRouter>
@@ -124,13 +132,23 @@ function App() {
           <Route path="/payment-failed" element={<PaymentFailed />} />
           <Route path="/event/:eventId" element={<EventPage />} />
           <Route path="/my-profile" element={<MyProfile />} />
+          <Route path="/loginprofile" element={<LoginProfile />} />
           <Route path="/my-events" element={<MyEvents />} />
           <Route path="/my-event/:eventId" element={<MyEventPage />} />
           <Route
             path="/my-event/admintool/:adminId"
             element={<AdminToolsPage />}
           />
+          <Route path="/create-event" element={<CreateEventPage />} />
+          {/* {state === true && (
+            <Route path="/create-event" element={<CreateEventPage />} />
+          )} */}
           <Route path="*" element={<NotFound />} />
+          <Route
+            path="/ticket-checkins/:eventId"
+            element={<TicketCheckins />}
+          />
+          <Route path="/androidDownload" element={<AndroidAppDownload />} />
         </Routes>
         <ToastContainer />
       </BrowserRouter>

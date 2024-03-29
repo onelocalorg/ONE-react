@@ -4,93 +4,77 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import saveBtn from "../images/Change Button.svg";
-import {
-  adminToolUpdate,
-  createTicket,
-  singleEvents,
-  updateTicket,
-} from "../api/services";
+import { adminToolUpdate, createTicket, singleEvents } from "../api/services";
 import ToasterComponent from "./ToasterComponent";
 import DatePickerHookForm from "./DatePickerHookForm";
 import calender from "../images/calender.svg";
-import Loader from "./Loader";
 import ToasterSuccess from "./ToasterSuccess";
+import Loader from "./Loader";
 
-const EditTicketComponent = ({
+const CreateTicketCreateFlowCmp = ({
   Style,
   hideModal,
-  eventData,
-  adminId,
-  ticketitem,
   setTicketData,
+  endDateInstance,
+  startDateInstance,
+  ticketData,
 }) => {
   const [loading, setLoading] = useState(false);
-
   const schema = yup.object().shape({
     name: yup.string(),
     quantity: yup.number(),
     start_date: yup.string(),
     end_date: yup.string(),
-    price: yup.string(),
+    // price: yup.number(),
   });
-
-  const ticketData = ticketitem && ticketitem;
 
   const {
     register,
     handleSubmit,
-    setValue,
-    watch,
     control,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      name: ticketData?.name,
-      quantity: ticketData?.quantity,
-      price: ticketData?.price,
-      start_date: new Date(ticketData?.start_date),
-      end_date: new Date(ticketData?.end_date),
+      start_date: new Date(startDateInstance),
+      end_date: new Date(endDateInstance),
     },
   });
+  const formVal = watch();
+  console.log(errors, "errors");
+  console.log(formVal);
 
-  const editTicketHandle = async (dataOfCreateFrom) => {
-    if (dataOfCreateFrom.price) {
-      const numberString = dataOfCreateFrom.price.toString();
-      const isFloat = /^\d+(\.\d+)?$/.test(numberString);
+  const createTicketHandle = async (dataOfCreateFrom) => {
+    // Early return if dataOfCreateFrom is not provided
+    setLoading(true); // Start loading
 
-      const isNumber = Number.isInteger(dataOfCreateFrom.price);
-
-      if ((isFloat || isNumber) === false) {
-        ToasterComponent(
-          "you can't enter price value other than numbers",
-          2000
-        );
-      }
-    }
-
-    setLoading(true);
     try {
       const dataToCreate = {
         ...dataOfCreateFrom,
         start_date: new Date(dataOfCreateFrom?.start_date).toISOString(),
         end_date: new Date(dataOfCreateFrom?.end_date).toISOString(),
-        price: `${dataOfCreateFrom?.price}`,
       };
 
-      const res = await updateTicket(ticketitem?.id, dataToCreate);
-      if (res.code === 200) {
-        const response = await singleEvents(adminId);
-        setTicketData(response?.data?.tickets);
-        ToasterSuccess("Ticket Updated Successfully", 2000);
+      // Await the creation of the ticket
+      const createResponse = await createTicket(dataToCreate);
+
+      if (createResponse.code === 201) {
+        ToasterSuccess(`${createResponse.message}`, 2000);
+        // const response = await singleEvents(adminId);
+        setTicketData([...ticketData, createResponse?.data]);
         hideModal();
-      } else if (res.success === false || res.code === "false") {
-        ToasterComponent(`${res.message}`, 2000);
+      } else if (
+        createResponse.success === false ||
+        createResponse.code === "false"
+      ) {
+        ToasterComponent(`${createResponse.message}`, 2000);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      ToasterComponent("An error occurred.", 2000);
     } finally {
-      setLoading(false);
+      setLoading(false); // End loading
     }
   };
 
@@ -99,7 +83,7 @@ const EditTicketComponent = ({
   return (
     <>
       <form
-        onSubmit={handleSubmit(editTicketHandle)}
+        onSubmit={handleSubmit(createTicketHandle)}
         className={`${Style.formTicketEdit}`}
       >
         <div className={`${Style.boxWrapper}`}>
@@ -124,8 +108,8 @@ const EditTicketComponent = ({
               // setStartDate={setStartDate}
               // endDate={eventData.end_date}
               name="start_date"
-              maxDate={new Date(eventData.end_date)}
-              minDate={new Date(eventData.start_date)}
+              maxDate={new Date(endDateInstance)}
+              minDate={new Date(startDateInstance)}
             />
             {/* <div>to</div> */}
             <DatePickerHookForm
@@ -134,15 +118,15 @@ const EditTicketComponent = ({
               // start_date={end_date}
               // setStartDate={setEndDate}
               name="end_date"
-              maxDate={new Date(eventData.end_date)}
-              minDate={new Date(eventData.start_date)}
+              maxDate={new Date(endDateInstance)}
+              minDate={new Date(formVal?.start_date)}
             />
           </div>
         </div>
         <div className={`${Style.boxWrapper}`}>
           <h2 className={`${Style.editTicketHeader}`}>Ticket Quantity</h2>
           <InputComponent
-            type={"text"}
+            type={Text}
             className={`${Style.inputStyliing}`}
             inputRef={"quantity"}
             register={register}
@@ -153,7 +137,6 @@ const EditTicketComponent = ({
           <h2 className={`${Style.editTicketHeader}`}>Ticket Price</h2>
           <p className={`${Style.currency}`}>$</p>
           <InputComponent
-            // type={"number"}
             className={`${Style.inputStyliing}`}
             inputRef={"price"}
             register={register}
@@ -172,4 +155,4 @@ const EditTicketComponent = ({
   );
 };
 
-export default EditTicketComponent;
+export default CreateTicketCreateFlowCmp;

@@ -17,6 +17,7 @@ const CreateTicketComponent = ({
   eventData,
   adminId,
   setTicketData,
+  ticketData,
 }) => {
   const [loading, setLoading] = useState(false);
   const schema = yup.object().shape({
@@ -28,7 +29,7 @@ const CreateTicketComponent = ({
   });
 
   const data = eventData || {};
-  const ticketData = eventData && eventData?.tickets;
+  // const ticketData = eventData && eventData?.tickets;
   const idArray = ticketData.map((item) => item.id).join(",");
 
   const {
@@ -58,8 +59,17 @@ const CreateTicketComponent = ({
       // Await the creation of the ticket
       const createResponse = await createTicket(dataToCreate);
 
+      if (
+        createResponse.success === false ||
+        createResponse.success === "false"
+      ) {
+        ToasterComponent(`${createResponse.message}`, 4000);
+        return;
+      }
       // Construct the new ID list
-      const id = idArray + "," + createResponse?.data?.id;
+      const id = idArray
+        ? idArray + "," + createResponse?.data?.id
+        : createResponse?.data?.id;
       const formData = new FormData();
       formData.append("tickets", `${id}`);
       formData.append("event_lng", `${eventData?.location?.coordinates[0]}`);
@@ -146,7 +156,7 @@ const CreateTicketComponent = ({
           <h2 className={`${Style.editTicketHeader}`}>Ticket Price</h2>
           <p className={`${Style.currency}`}>$</p>
           <InputComponent
-            type={"number"}
+            // type={"number"}
             className={`${Style.inputStyliing}`}
             inputRef={"price"}
             register={register}

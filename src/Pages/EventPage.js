@@ -10,6 +10,8 @@ import {
   getAmountOfTickets,
   getTaxAndAmout,
   singleEvents,
+  submitPurchaseData,
+  getCardListAPI,
 } from "../api/services";
 
 import Style from "../Styles/EventPage.module.css";
@@ -78,6 +80,7 @@ const EventPage = () => {
   const [taxAmount, setTaxAmount] = useState({});
   const [confirmation, setConfirmation] = useState(false);
   const [userEmail, setUserEmail] = useState("");
+  const [savedcard, setSavedCard] = useState("");
 
   const [loading, setloading] = useState(true);
   const [error, setError] = useState(null);
@@ -108,6 +111,68 @@ const EventPage = () => {
       window.open(link, "_self");
     }
   };
+
+  const getCardList = async () => {
+    setloading(true);
+    const res = await getCardListAPI();
+
+    setloading(false);
+    if (res?.success) {
+      setSavedCard(res?.data?.default_source ? res?.data?.default_source : "");
+    } else {
+      ToasterComponent(res?.message || "No card found", 2000);
+    }
+  };
+
+  useEffect(() => {
+    if (userInfo?.userData) {
+      setloading(true);
+      getCardList();
+      setloading(false);
+    }
+  }, [userInfo.userData]);
+
+  const submitBuyData = async () => {
+    const linktoTicketPurchase = ticketData.find(
+      (item) => item.id === formVal.ticket
+    );
+    setloading(true);
+    const responseData = await submitPurchaseData(
+      linktoTicketPurchase?.id,
+      formVal?.quantity,
+      savedcard
+    );
+    setloading(false);
+    if (responseData.success) {
+      navigate("/payment-successfull");
+    } else {
+      // hideFunc(false);
+      ToasterComponent(responseData?.message || "Something went wrong", 1500);
+    }
+  };
+
+  const handleZeroTicketNotLoggedIn = async () => {
+    setloading(true);
+    const res = await getCardListAPI();
+    const linktoTicketPurchase = ticketData.find(
+      (item) => item.id === formVal.ticket
+    );
+
+    const sendCard = res?.data?.default_source ? res?.data?.default_source : "";
+    const responseData = await submitPurchaseData(
+      linktoTicketPurchase?.id,
+      formVal?.quantity,
+      sendCard
+    );
+    setloading(false);
+    if (responseData.success) {
+      navigate("/payment-successfull");
+    } else {
+      // hideFunc(false);
+      ToasterComponent(responseData?.message || "Something went wrong", 1500);
+      // awaitsubmitBuyData();
+    }
+  };
   const onSubmit = async (data) => {
     if (!userInfo?.userData) {
       setActivePurchaseStep(0);
@@ -116,7 +181,14 @@ const EventPage = () => {
     } else {
       setActivePurchaseStep(1);
       setShowBillingInformation(false);
-      setShowPurchseDialog(true);
+
+      if (taxAmount?.total > 0) {
+        setShowPurchseDialog(true);
+      } else {
+        submitBuyData();
+        return;
+      }
+
       setShowRegister(false);
       return;
     }
@@ -358,7 +430,10 @@ const EventPage = () => {
                         value={ticketitem?.id}
                         style={{ height: "18px" }}
                         disabled={
-                          ticketitem?.max_quantity_to_show === 0 ? true : false
+                          ticketitem?.max_quantity_to_show === 0 ||
+                          eventData.cancelled
+                            ? true
+                            : false
                         }
                       />
 
@@ -503,19 +578,21 @@ const EventPage = () => {
                   )}
                 </div>
                 <hr />
-                <button
-                  type="submit"
-                  className={Style.purchase}
-                  style={{
-                    marginTop: "10px",
-                    pointerEvents: !confirmation ? "none" : "",
-                  }}
-                >
-                  <span>BUY TICKET</span>
-                  <span className={Style.arrowIcon}>
-                    <img src={arrow} alt="arrow" />
-                  </span>
-                </button>
+                {!eventData.hasOwnProperty("cancelled") && (
+                  <button
+                    type="submit"
+                    className={Style.purchase}
+                    style={{
+                      marginTop: "10px",
+                      pointerEvents: !confirmation ? "none" : "",
+                    }}
+                  >
+                    {<span>BUY TICKET</span>}
+                    <span className={Style.arrowIcon}>
+                      <img src={arrow} alt="arrow" />
+                    </span>
+                  </button>
+                )}
               </form>
             </div>
             <div className={Style.right}>
@@ -561,9 +638,11 @@ const EventPage = () => {
           setShowBillingInformation={setShowBillingInformation}
           setUserEmail={setUserEmail}
           setActivePurchaseStep={setActivePurchaseStep}
+          handleZeroTicketNotLoggedIn={handleZeroTicketNotLoggedIn}
+          taxAmount={taxAmount}
         />
       )}
-      {showPurchseDialog && (
+      {taxAmount?.total > 0 && showPurchseDialog && (
         <Elements stripe={stripePromise}>
           <PurchaseModalDialog
             hideFunc={setShowPurchseDialog}

@@ -16,22 +16,21 @@ import calender from "../images/calender.svg";
 import Loader from "./Loader";
 import ToasterSuccess from "./ToasterSuccess";
 
-const EditTicketComponent = ({
+const EditTicketCreateFlowCmp = ({
   Style,
   hideModal,
-  eventData,
-  adminId,
   ticketitem,
   setTicketData,
+  startDateInstance,
+  endDateInstance,
 }) => {
   const [loading, setLoading] = useState(false);
-
   const schema = yup.object().shape({
     name: yup.string(),
     quantity: yup.number(),
     start_date: yup.string(),
     end_date: yup.string(),
-    price: yup.string(),
+    price: yup.number(),
   });
 
   const ticketData = ticketitem && ticketitem;
@@ -55,20 +54,6 @@ const EditTicketComponent = ({
   });
 
   const editTicketHandle = async (dataOfCreateFrom) => {
-    if (dataOfCreateFrom.price) {
-      const numberString = dataOfCreateFrom.price.toString();
-      const isFloat = /^\d+(\.\d+)?$/.test(numberString);
-
-      const isNumber = Number.isInteger(dataOfCreateFrom.price);
-
-      if ((isFloat || isNumber) === false) {
-        ToasterComponent(
-          "you can't enter price value other than numbers",
-          2000
-        );
-      }
-    }
-
     setLoading(true);
     try {
       const dataToCreate = {
@@ -79,9 +64,24 @@ const EditTicketComponent = ({
       };
 
       const res = await updateTicket(ticketitem?.id, dataToCreate);
+      console.log(res);
       if (res.code === 200) {
-        const response = await singleEvents(adminId);
-        setTicketData(response?.data?.tickets);
+        const eventId = res?.data?.id;
+
+        // Update oldTicketData by either replacing the existing item or adding a new one
+        setTicketData((currentData) => {
+          const index = currentData.findIndex((item) => item.id === eventId);
+          if (index !== -1) {
+            // Found the item, so we need to replace it
+            return currentData.map((item, idx) =>
+              idx === index ? res.data : item
+            );
+          } else {
+            // Item not found, add it to the array
+            return [...currentData, res.data];
+          }
+        });
+
         ToasterSuccess("Ticket Updated Successfully", 2000);
         hideModal();
       } else if (res.success === false || res.code === "false") {
@@ -122,10 +122,10 @@ const EditTicketComponent = ({
               className={`${Style.wfull}`}
               // start_date={start_date}
               // setStartDate={setStartDate}
-              // endDate={eventData.end_date}
+              // endDate={ticketData?.end_date}
               name="start_date"
-              maxDate={new Date(eventData.end_date)}
-              minDate={new Date(eventData.start_date)}
+              maxDate={new Date(endDateInstance)}
+              minDate={new Date(ticketData?.start_date)}
             />
             {/* <div>to</div> */}
             <DatePickerHookForm
@@ -134,8 +134,8 @@ const EditTicketComponent = ({
               // start_date={end_date}
               // setStartDate={setEndDate}
               name="end_date"
-              maxDate={new Date(eventData.end_date)}
-              minDate={new Date(eventData.start_date)}
+              maxDate={new Date(endDateInstance)}
+              minDate={new Date(ticketData?.start_date)}
             />
           </div>
         </div>
@@ -153,7 +153,7 @@ const EditTicketComponent = ({
           <h2 className={`${Style.editTicketHeader}`}>Ticket Price</h2>
           <p className={`${Style.currency}`}>$</p>
           <InputComponent
-            // type={"number"}
+            type={"number"}
             className={`${Style.inputStyliing}`}
             inputRef={"price"}
             register={register}
@@ -172,4 +172,4 @@ const EditTicketComponent = ({
   );
 };
 
-export default EditTicketComponent;
+export default EditTicketCreateFlowCmp;

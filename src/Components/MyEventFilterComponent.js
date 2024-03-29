@@ -6,7 +6,11 @@ import { useNavigate } from "react-router-dom";
 import HeaderUserComponent from "./HeaderUserComponent";
 import { IoMdClose } from "react-icons/io";
 
-function MyEventFilterComponent({ setFilterData, filterData }) {
+function MyEventFilterComponent({
+  setFilterData,
+  filterData,
+  isCreateEventEnabled,
+}) {
   const navigate = useNavigate();
 
   const getFilterOutPut = (e) => {
@@ -69,7 +73,10 @@ function MyEventFilterComponent({ setFilterData, filterData }) {
           </div>
         </div>
         <div style={{ flex: "1" }}>
-          <HeaderUserComponent headerClass={Style} />
+          <HeaderUserComponent
+            headerClass={Style}
+            isCreateEventEnabled={isCreateEventEnabled}
+          />
         </div>
       </div>
     </div>

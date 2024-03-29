@@ -11,17 +11,26 @@ const AddressMapApiComponent = ({
   setValue,
   placeholder,
   parentStyle,
+  register,
+  value,
+  onChangeAddress,
+  onLocationSelect,
 }) => {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
     libraries,
   });
 
-  // Use useFormContext to get the setValue method from react-hook-form
-  // const { setValue } = useForm(); // Ensure that this component is within a FormProvider
-
   if (!isLoaded) return <div>Loading...</div>;
   if (loadError) return <div>Error loading maps</div>;
+
+  const changeValue = (type, value) => {
+    if (type === "editing") {
+      onChangeAddress(value);
+    } else {
+      onLocationSelect(value.formatted_address);
+    }
+  };
 
   const handlePlaceChanged = (autocomplete) => {
     const place = autocomplete.getPlace();
@@ -29,13 +38,9 @@ const AddressMapApiComponent = ({
       console.error("No geometry or location data in place object:", place);
       return;
     }
-    // console.log(place);
-    // console.log(
-    //   place?.mainAddress?.name,
-    //   place?.mainAddress?.formatted_address
-    // );
 
     setValue(inputRef, place);
+    changeValue("selecting", place);
   };
 
   return (
@@ -51,7 +56,15 @@ const AddressMapApiComponent = ({
         );
       }}
     >
-      <input type="text" placeholder={placeholder} className={`${className}`} />
+      <input
+        type="text"
+        placeholder={placeholder}
+        className={`${className}`}
+        value={value}
+        onChange={(event) => {
+          changeValue("editing", event);
+        }}
+      />
     </Autocomplete>
   );
 };

@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import HeaderUserComponent from "./HeaderUserComponent";
 import logo from "../images/logo.svg";
 import HeaderStyle from "../Styles/Header.module.css";
 
 const HeaderComponent = () => {
   const navigate = useNavigate();
+
   const goToHomePage = () => {
     navigate("/");
   };

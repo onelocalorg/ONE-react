@@ -25,16 +25,19 @@ function EventFilterComponent({
   filterData,
   child,
   isCalenderVisible = false,
+  isCreateEventEnabled,
+  RecentUserListVisible = false,
 }) {
   return (
     <>
       <NavHeaderComponent
         setFilterData={setFilterData}
         filterData={filterData}
+        isCreateEventEnabled={isCreateEventEnabled}
       />
       <div className={Style.filterdiv}>
         {child}
-        <RecentUserList />
+        {RecentUserListVisible && <RecentUserList />}
         {isCalenderVisible && (
           <CalendarFilterComponent
             startDate={startDate}

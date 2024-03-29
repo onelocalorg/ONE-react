@@ -9,6 +9,7 @@ function ModalComponent({
   footer,
   className,
   wrapperClassname,
+  isHeaderHight,
 }) {
   return (
     <div className={`module-dialog ${wrapperClassname}`}>
@@ -18,7 +19,12 @@ function ModalComponent({
         // backdrop="static"
         className={className}
       >
-        <Modal.Header closeButton>{header}</Modal.Header>
+        <Modal.Header
+          className={isHeaderHight ? Style.headerHeight : ""}
+          closeButton
+        >
+          {header}
+        </Modal.Header>
         <Modal.Body>{body}</Modal.Body>
         <Modal.Footer>{footer}</Modal.Footer>
       </Modal>

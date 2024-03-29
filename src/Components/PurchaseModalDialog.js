@@ -181,7 +181,7 @@ function PurchaseModalDialog({
     const paymentCard = stripeCardStatus?.token;
     if (paymentCard !== "") {
       const linktoTicketPurchase = ticketData.find(
-        (item) => item.price === Number(ticketFormVal.ticket)
+        (item) => item.id === ticketFormVal.ticket
       );
 
       const responseData = await userRegistrationWithPayment({

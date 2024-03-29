@@ -24,8 +24,9 @@ import { useDispatch } from "react-redux";
 import whitetent from "../images/white-tent.png";
 import playerIcon from "../images/player.png";
 import backgroundDefault from "../images/background-default.png";
+import { fireEvent } from "@testing-library/react";
 
-const MyProfileForm = ({ userInfo }) => {
+const MyProfileForm = ({ userInfo, onClickDelete }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [skills, setSkills] = useState([]);
@@ -101,6 +102,7 @@ const MyProfileForm = ({ userInfo }) => {
     try {
       setIsLoading(true);
       data["skills"] = skills?.length ? skills.toString() : "";
+
       const response = await updateUserProfileApi(
         userInfo?.userData?.userId,
         data
@@ -443,6 +445,14 @@ const MyProfileForm = ({ userInfo }) => {
           <div className={style.formBtnDiv}>
             <button className={style.formBtn} type="submit">
               Update
+            </button>
+
+            <button
+              className={style.formBtn}
+              type="button"
+              onClick={onClickDelete}
+            >
+              delete
             </button>
           </div>
         </form>

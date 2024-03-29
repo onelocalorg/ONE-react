@@ -8,7 +8,11 @@ import { useNavigate } from "react-router-dom";
 import HeaderUserComponent from "./HeaderUserComponent";
 import { IoMdClose } from "react-icons/io";
 
-function NavHeaderComponent({ setFilterData, filterData }) {
+function NavHeaderComponent({
+  setFilterData,
+  filterData,
+  isCreateEventEnabled,
+}) {
   const navigate = useNavigate();
 
   const getFilterOutPut = (e) => {
@@ -56,7 +60,10 @@ function NavHeaderComponent({ setFilterData, filterData }) {
           </div>
         </div>
         <div style={{ flex: "1" }}>
-          <HeaderUserComponent headerClass={Style} />
+          <HeaderUserComponent
+            headerClass={Style}
+            isCreateEventEnabled={isCreateEventEnabled}
+          />
         </div>
       </div>
     </div>
