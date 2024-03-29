@@ -21,6 +21,7 @@ const LoginForm = () => {
   const userInfo = useSelector((state) => state?.userInfo);
   const dispatch = useDispatch();
   const location = useLocation();
+  const currentPath = location.pathname;
 
   const validationSchema = yup.object().shape({
     email: yup
@@ -45,16 +46,14 @@ const LoginForm = () => {
   });
 
   const navigate = useNavigate();
-  // useEffect(() => {
-  //   const errorMsg = Object.values(errors).map((item) => item.message);
-  //   errorMsg.slice(0, 1).forEach((errorMessage) => {
-  //     ToasterComponent(errorMessage, 3000);
-  //   });
-  // }, [errors]);
 
   const handleSuccessfulLogin = () => {
     setTimeout(() => {
-      navigate("/");
+      if (!currentPath === "/login") {
+        navigate("/");
+      } else {
+        navigate("/my-profile");
+      }
     }, 1000);
   };
 
