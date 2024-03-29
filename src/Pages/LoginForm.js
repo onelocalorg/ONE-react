@@ -48,7 +48,6 @@ const LoginForm = () => {
   const navigate = useNavigate();
 
   const handleSuccessfulLogin = () => {
-    console.log("currentPath", currentPath);
     setTimeout(() => {
       if (!currentPath === "/login") {
         navigate("/");
