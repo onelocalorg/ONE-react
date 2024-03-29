@@ -191,10 +191,12 @@ function UserData() {
         );
 
         dispatch(
-          setCreateEventEnabled(userResponseData.data.isEventActiveSubscription)
+          setCreateEventEnabled(
+            userResponseData?.data?.isEventActiveSubscription
+          )
         );
         setIsCreateEventEnabled(
-          userResponseData.data.isEventActiveSubscription
+          userResponseData?.data?.isEventActiveSubscription
         );
 
         // Data set
@@ -367,6 +369,7 @@ function UserData() {
         filterData={filterData}
         isCalenderVisible={true}
         isCreateEventEnabled={isCreateEventEnabled}
+        RecentUserListVisible
         child={<HeaderFiltersComponent data={headerFilterData} />}
       />
 

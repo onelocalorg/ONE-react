@@ -189,6 +189,7 @@ const AdminToolsPage = () => {
     if (res.success === true) {
       ToasterSuccess(`${res.message}`, 2000);
       setIsPayout(true);
+      window.location.reload();
       setSendPayment(false);
     } else {
       ToasterError(`${res.message}`, 2000);

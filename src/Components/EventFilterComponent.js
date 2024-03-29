@@ -26,6 +26,7 @@ function EventFilterComponent({
   child,
   isCalenderVisible = false,
   isCreateEventEnabled,
+  RecentUserListVisible = false,
 }) {
   return (
     <>
@@ -36,7 +37,7 @@ function EventFilterComponent({
       />
       <div className={Style.filterdiv}>
         {child}
-        <RecentUserList />
+        {RecentUserListVisible && <RecentUserList />}
         {isCalenderVisible && (
           <CalendarFilterComponent
             startDate={startDate}

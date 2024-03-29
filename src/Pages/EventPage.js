@@ -578,19 +578,21 @@ const EventPage = () => {
                   )}
                 </div>
                 <hr />
-                <button
-                  type="submit"
-                  className={Style.purchase}
-                  style={{
-                    marginTop: "10px",
-                    pointerEvents: !confirmation ? "none" : "",
-                  }}
-                >
-                  <span>BUY TICKET</span>
-                  <span className={Style.arrowIcon}>
-                    <img src={arrow} alt="arrow" />
-                  </span>
-                </button>
+                {!eventData.hasOwnProperty("cancelled") && (
+                  <button
+                    type="submit"
+                    className={Style.purchase}
+                    style={{
+                      marginTop: "10px",
+                      pointerEvents: !confirmation ? "none" : "",
+                    }}
+                  >
+                    {<span>BUY TICKET</span>}
+                    <span className={Style.arrowIcon}>
+                      <img src={arrow} alt="arrow" />
+                    </span>
+                  </button>
+                )}
               </form>
             </div>
             <div className={Style.right}>

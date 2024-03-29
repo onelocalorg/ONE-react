@@ -490,3 +490,8 @@ export const cancelEvent = async (EventId) => {
   const res = await axiosClient.post(`events/cancel-event/${EventId}`);
   return res.data;
 };
+
+export const deleteUSer = async (userId) => {
+  const res = await axiosClient.post(`users/delete/${userId}`);
+  return res.data;
+};

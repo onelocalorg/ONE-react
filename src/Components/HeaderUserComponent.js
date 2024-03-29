@@ -16,6 +16,9 @@ const HeaderUserComponent = ({
   isCreateEventEnabled,
 }) => {
   const userInfo = useSelector((state) => state?.userInfo);
+  const state = useSelector(
+    (state) => state?.userInfo.userData?.isEventActiveSubscription
+  );
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -108,7 +111,7 @@ const HeaderUserComponent = ({
               </NavLink>
             </li>
             <li aria-hidden="true">
-              {isCreateEventEnabled && (
+              {state && (
                 <NavLink to={"/create-event"} className={headerClass.navLink}>
                   <IoCreateSharp />
                   <span className={Style.menuOption}>Create Event</span>
