@@ -15,10 +15,12 @@ import { setUserData } from "../Redux/slices/UserSlice";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { EMAIL_FORMAT, REQUIRED_FIELD_MESSAGE } from "../utils/AppConstants";
+import { useLocation } from "react-router-dom";
 
 const LoginForm = () => {
   const userInfo = useSelector((state) => state?.userInfo);
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const validationSchema = yup.object().shape({
     email: yup
@@ -43,19 +45,18 @@ const LoginForm = () => {
   });
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (userInfo?.userData) {
-      navigate("/");
-    }
-  }, []);
-
   // useEffect(() => {
   //   const errorMsg = Object.values(errors).map((item) => item.message);
   //   errorMsg.slice(0, 1).forEach((errorMessage) => {
   //     ToasterComponent(errorMessage, 3000);
   //   });
   // }, [errors]);
+
+  const handleSuccessfulLogin = () => {
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
+  };
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -79,6 +80,7 @@ const LoginForm = () => {
             userId: response?.data?.id,
           })
         );
+
         handleSuccessfulLogin();
       } else {
         ToasterComponent(
@@ -91,14 +93,6 @@ const LoginForm = () => {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleSuccessfulLogin = () => {
-    ToasterSuccess("Login Successfully", 1500);
-    setTimeout(() => {
-      // navigate("/dashboard");
-      navigate("/");
-    }, 1000);
   };
 
   const [show, setShow] = useState(false);

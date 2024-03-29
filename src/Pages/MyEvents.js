@@ -4,6 +4,7 @@ import { myEventsList, getUserDetails } from "../api/services";
 import Style from "../Styles/MyTicketsData.module.css";
 import moment from "moment";
 import MyEventFilterComponent from "../Components/MyEventFilterComponent";
+import { setCreateEventEnabled } from "../Redux/slices/TicketCheckinsSlice";
 
 // tent image
 import tent from "../images/Vector.png";
@@ -42,6 +43,7 @@ function MyEvents() {
   const [search, setSearch] = useState(false);
   const [filterData, setFilterData] = useState("");
   const containerRef = useRef(null);
+  const [isCreateEventEnabled, setISCreateEventEnabled] = useState(false);
 
   useEffect(() => {
     // For make sticky date bar when scroll functionality
@@ -205,6 +207,13 @@ function MyEvents() {
           userInfo?.userData?.userId
         );
 
+        dispatch(
+          setCreateEventEnabled(userResponseData.data.isEventActiveSubscription)
+        );
+
+        setISCreateEventEnabled(
+          userResponseData.data.isEventActiveSubscription
+        );
         // Data set
         if (userResponseData?.data) {
           dispatch(
@@ -293,6 +302,7 @@ function MyEvents() {
       detailType="my-event"
       start_date_label={event?.start_date_label}
       start_time_label={event?.start_time_label}
+      cancelled={event?.cancelled}
     />
   ));
 
@@ -337,6 +347,7 @@ function MyEvents() {
         // filter={items ? true : false}
         setFilterData={setFilterData}
         filterData={filterData}
+        isCreateEventEnabled={isCreateEventEnabled}
       />
       {isLoading && <Loader />}
       {!items?.length && !isLoading ? (

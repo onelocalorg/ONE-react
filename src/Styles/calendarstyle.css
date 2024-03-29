@@ -1,0 +1,35 @@
+/* Hide Default Date Range */
+.react-daterange-picker__wrapper {
+  opacity: 0 !important;
+  height: 0 !important;
+}
+
+.react-daterange-picker__calendar {
+  z-index: 3 !important;
+}
+
+.react-calendar
+  .react-calendar__navigation__arrow.react-calendar__navigation__next2-button,
+.react-calendar
+  .react-calendar__navigation__arrow.react-calendar__navigation__prev2-button {
+  display: none;
+}
+
+.react-daterange-picker .react-calendar {
+  border: 3px solid #db9791 !important;
+  border-radius: 10px !important;
+}
+
+.react-daterange-picker .react-calendar__tile--active {
+  background: #c2dbc6 !important;
+  color: white !important;
+}
+
+.react-daterange-picker .react-calendar__tile--hasActive {
+  background: #a5c4aa !important;
+  color: #fff !important;
+}
+.react-daterange-picker .react-calendar__tile:disabled {
+  background-color: #fff !important;
+  color: #dddddd !important;
+}

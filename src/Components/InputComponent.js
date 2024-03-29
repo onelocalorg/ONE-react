@@ -12,19 +12,23 @@ const InputComponent = ({
   name,
   className,
   disabled,
+  accept,
+  ...restprops
 }) => {
   return (
     <>
       <input
         type={type}
         placeholder={placeholder}
-        {...register(inputRef)}
-        style={{ style }}
         value={value}
+        style={{ style }}
         id={id}
-        name={name}
         className={className}
         disabled={disabled}
+        accept={accept}
+        name={name}
+        {...register(inputRef)}
+        {...restprops}
       />
     </>
   );

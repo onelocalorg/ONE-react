@@ -6,7 +6,11 @@ import { useNavigate } from "react-router-dom";
 import HeaderUserComponent from "./HeaderUserComponent";
 import { IoMdClose } from "react-icons/io";
 
-function MyEventFilterComponent({ setFilterData, filterData }) {
+function MyEventFilterComponent({
+  setFilterData,
+  filterData,
+  isCreateEventEnabled,
+}) {
   const navigate = useNavigate();
 
   const getFilterOutPut = (e) => {
@@ -22,36 +26,58 @@ function MyEventFilterComponent({ setFilterData, filterData }) {
   };
 
   return (
-    <div className={Style.navHeader}>
-      <div className={Style.filterContainer}>
-        <img src={searchIcon} alt="search.." />
-        <input
-          type="text"
-          className={Style.filter}
-          placeholder="Search"
-          onChange={getFilterOutPut}
-          // disabled={!filter}
-          value={filterData}
-        />
-        {filterData ? (
-          <span onClick={handleClearSearch} className={Style.clearIcon}>
-            <IoMdClose />
-          </span>
-        ) : (
-          <span className={Style.clearIcon}></span>
-        )}
-      </div>
+    <div className={Style.nav}>
+      <div className={Style.navHeader}>
+        <div
+          className={Style.filterContainer}
+          style={{ flex: "1", justifyContent: "flex-start" }}
+        >
+          <img src={searchIcon} alt="search.." />
+          <input
+            type="text"
+            className={Style.filter}
+            placeholder="Search"
+            onChange={getFilterOutPut}
+            // disabled={!filter}
+            style={{ width: "100%" }}
+            value={filterData}
+          />
+          {filterData ? (
+            <span onClick={handleClearSearch} className={Style.clearIcon}>
+              <IoMdClose />
+            </span>
+          ) : (
+            <span className={Style.clearIcon}></span>
+          )}
+        </div>
 
-      <div className={Style.upperHeader}>
-        <div className={Style.brandText} onClick={goToHomePage}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "1px",
+            cursor: "pointer",
+            flex: "1",
+          }}
+          onClick={goToHomePage}
+          aria-hidden="true"
+        >
           <img src={logo} alt="logo" className={Style.oneLogo} />
-          <div>
+          {/* <h2 className={Style.brand}>NE</h2>
+        <div className={Style.subBrand}>Boulder, CO</div> */}
+
+          <div className={Style.BounderWrapper}>
             <div className={Style.brand}>NE</div>
             <div className={Style.subBrand}>Boulder, CO</div>
           </div>
         </div>
-
-        <HeaderUserComponent headerClass={Style} />
+        <div style={{ flex: "1" }}>
+          <HeaderUserComponent
+            headerClass={Style}
+            isCreateEventEnabled={isCreateEventEnabled}
+          />
+        </div>
       </div>
     </div>
   );

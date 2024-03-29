@@ -23,6 +23,8 @@ function EmailModalDialog({
   setShowBillingInformation,
   setUserEmail,
   setActivePurchaseStep,
+  handleZeroTicketNotLoggedIn,
+  taxAmount,
 }) {
   const [activeStep, setActiveStep] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
@@ -87,10 +89,12 @@ function EmailModalDialog({
         JSON.stringify({
           profile_image: response?.data?.pic || "",
           userId: response?.data?.id,
+          isEventActiveSubscription: response?.data?.isEventActiveSubscription,
         })
       );
       purchaseFunc(true);
       handleClose();
+      if (taxAmount?.total <= 0) handleZeroTicketNotLoggedIn();
     } else {
       ToasterError(response?.message || "Invalid password", 3000);
     }

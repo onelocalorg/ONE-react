@@ -1,0 +1,21 @@
+.userBadgeWrapper {
+  display: flex;
+  padding: 5px 8px;
+  border-radius: 8px;
+  background-color: #007112;
+  color: #fff;
+  width: 100%;
+  cursor: pointer;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: flex-start;
+  align-items: center;
+}
+.userImg {
+  width: 35px;
+  height: 35px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+  border: 1px solid #fff;
+}

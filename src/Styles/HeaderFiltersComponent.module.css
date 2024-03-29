@@ -1,0 +1,74 @@
+.Wrapper {
+  max-width: 1095px;
+  width: 99%;
+  margin: auto;
+  display: flex;
+  gap: 3px;
+  justify-content: flex-start;
+  align-items: center;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  padding: 8px 0px;
+}
+
+.Wrapper::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome, Safari and Opera */
+}
+
+.font {
+  font-size: 12px;
+  line-height: 21px;
+  font-weight: 400;
+}
+
+.icon {
+  width: 25px;
+  height: 25px;
+}
+
+.btn {
+  border: 1px solid #fff;
+  border-radius: 20px;
+  color: #fff;
+  padding: 5px 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  text-decoration: none;
+}
+
+@media only screen and (max-width: 768px) {
+  .Wrapper {
+    padding: 10px 0px;
+  }
+  .btn {
+    border: 1px solid #fff;
+    border-radius: 20px;
+    color: #fff;
+    padding: 4px 10px;
+    gap: 3px;
+    font-size: 12px;
+  }
+
+  .icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media only screen and (max-width: 431px) {
+  .btn {
+    border: 0.5px solid #fff;
+    border-radius: 20px;
+    color: #fff;
+    padding: 4px 8px;
+    gap: 3px;
+    font-size: 10px;
+  }
+
+  .icon {
+    width: 13px;
+    height: 13px;
+  }
+}

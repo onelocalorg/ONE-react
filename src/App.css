@@ -33,6 +33,10 @@ hr {
   border-bottom: none;
   padding: 10px 1rem 0px 1rem;
 }
+
+.sendLayoutHeader + .btn-close{
+  z-index: 3;
+}
 .modal-dialog .modal-footer {
   border-top: none;
 }
@@ -47,8 +51,145 @@ hr {
   margin-top: 2px;
 }
 
+.bagde.active {
+  border: 3px solid #fff;
+}
+
+.display-none {
+  display: none !important;
+}
+
+.refer .modal-dialog {
+  max-width: 363px !important;
+}
+
+.btn-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+/* //quill-editor */
+#confirmationMail .ql-snow path {
+  stroke: #fff !important;
+}
+#confirmationMail .ql-toolbar {
+  display: none;
+}
+#confirmationMail .ql-snow line {
+  stroke: #fff !important;
+}
+#confirmationMail .ql-snow rect {
+  stroke: #fff !important;
+}
+#confirmationMail .ql-snow circle {
+  stroke: #fff !important;
+}
+#confirmationMail .ql-snow polyline {
+  stroke: #fff !important;
+}
+#confirmationMail .ql-container {
+  border: 0 !important;
+  outline: 0 !important;
+}
+#confirmationMail .ql-editor {
+  padding-inline: 7px;
+  background-color: #d1d1d1;
+  border-radius: 10px;
+  color: #000;
+}
+#aboutEvent .ql-toolbar {
+  border-radius: 10px 10px 0 0;
+}
+#aboutEvent .ql-container {
+  border-radius: 0 0 10px 10px;
+  overflow: hidden;
+}
+#aboutEvent .ql-snow path {
+  stroke: #fff !important;
+}
+#aboutEvent .ql-snow line {
+  stroke: #fff !important;
+}
+#aboutEvent .ql-snow rect {
+  stroke: #fff !important;
+}
+#aboutEvent .ql-snow circle {
+  stroke: #fff !important;
+}
+#aboutEvent .ql-snow polyline {
+  stroke: #fff !important;
+}
+#aboutEvent .ql-container {
+  border: 0 !important;
+  outline: 0 !important;
+}
+
+@media only screen and (max-width: 768px) {
+  #aboutEvent .ql-editor {
+    height: 300px !important;
+  }
+}
+#aboutEvent .ql-editor {
+  height: 500px;
+  overflow-y: auto;
+  padding-inline: 7px;
+  background-color: #d1d1d1;
+  color: #000;
+}
+
+#aboutEvent .ql-editor::-webkit-scrollbar {
+  width: 5px;
+}
+
+#aboutEvent .ql-editor::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px #fff;
+}
+
+#aboutEvent .ql-editor::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #3f3c3c;
+  outline: 1px solid slategrey;
+}
+
+/* #parent {
+  position: relative;
+}
+.userBadge {
+  display: flex;
+  width: 100%;
+}
+.userBadge .slick-slide {
+  width: auto !important;
+}
+.userBadge .slick-track {
+  display: flex !important;
+  gap: 8px;
+  width: 100% !important;
+}
+
+.userBadge .slick-prev {
+  position: absolute;
+  left: 20px !important;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 20px !important;
+} */
+
+.error-text {
+  font-family: "Average Sans", sans-serif;
+  color: red;
+  font-size: 11px;
+}
+
 @media only screen and (max-width: 431px) {
   .modal .modal-dialog {
     margin-top: 20%;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .bagde.active {
+    border: 2px solid #fff;
   }
 }

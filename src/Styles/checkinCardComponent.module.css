@@ -1,0 +1,39 @@
+.container {
+    width: 500px;
+    max-width: 500px;
+    border-radius: 16px;
+    border: 2px solid #DB9791;
+    /* margin:0 8%; */
+    background-color: #ffffff;
+    padding: 10px 0;
+    /* margin-top: 100px; */
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 0.5%
+
+    /* display: flex; */
+    /* width: 95% */
+}
+ 
+/* @media (min-width: 480px) {
+   .container{
+    margin:0;
+    margin-top: 108px;
+    margin-left: auto;
+    margin-right: auto;
+    width:500px;
+
+   }
+} */
+
+@media only screen and (max-width: 768px) {
+    .container {
+      width: 95%;
+      max-width: 95%;
+      /* margin-top: 108px; */
+      margin-left: auto;
+      /* margin:0; */
+     
+    }
+}
+

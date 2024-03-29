@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import Style from "../Styles/MyEventPage.module.css";
 import { PrivateComponent } from "./PrivateComponent";
 import HeaderComponent from "./HeaderComponent";
+import { useNavigate } from "react-router-dom";
 import Loader from "./Loader";
 
 const AndroildApp = () => {
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
   useEffect(() => {
     // Function to download the file
     const downloadFile = () => {
@@ -25,6 +28,9 @@ const AndroildApp = () => {
       // Clean up by removing the link from the body
       document.body.removeChild(link);
       setLoading(false);
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
     };
 
     // Call the download function when the component mounts

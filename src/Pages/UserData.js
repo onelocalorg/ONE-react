@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { listEvents, getUserDetails } from "../api/services";
+import {
+  listEvents,
+  getUserDetails,
+  getFilterBadgeButtons,
+} from "../api/services";
 import Style from "../Styles/UserData.module.css";
 import "../Styles/UserDataList.css";
 import moment from "moment";
@@ -17,8 +21,11 @@ import Loader from "../Components/Loader";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserData } from "../Redux/slices/UserSlice";
+import { setCreateEventEnabled } from "../Redux/slices/TicketCheckinsSlice";
 import ViewAppModalDialog from "../Components/ViewAppModalDialog";
 import { deleteCookie, getCookie, setCookie } from "../utils/CookieManager";
+import HeaderFiltersComponent from "../Components/HeaderFiltersComponent";
+import headerFilterData from "../utils/ButtonbadgeData";
 
 function UserData() {
   const userInfo = useSelector((state) => state?.userInfo);
@@ -27,7 +34,7 @@ function UserData() {
   const scrollToTop = useScrollToTop();
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(false);
-  const [showAppViewOption, setShowAppViewOption] = useState(false);
+  const [showAppViewOption, setShowAppViewOption] = useState(true);
   const [pagination, setPagination] = useState({
     totalData: 0,
     page: 1,
@@ -39,8 +46,9 @@ function UserData() {
   useEffect(() => {
     // Show app popup once in a hour
     const appViewflag = getCookie("app_view_option");
+    const expirationTime = 120; // hours in minutes
+
     if (appViewflag) {
-      const expirationTime = 120; // 1 hour in minutes
       const currentTime = new Date().getTime();
       const cookieExpirationTime =
         parseInt(appViewflag) + expirationTime * 60 * 1000;
@@ -53,7 +61,7 @@ function UserData() {
       }
     } else {
       const currentTime = new Date().getTime();
-      setCookie("app_view_option", currentTime, 60); // Set cookie to expire in 1 hour
+      setCookie("app_view_option", currentTime, expirationTime); // Set cookie to expire in 1 hour
     }
 
     //
@@ -80,6 +88,7 @@ function UserData() {
   const [endDate, setEndDate] = useState(oneMonthLater);
   const [search, setSearch] = useState(false);
   const [filterData, setFilterData] = useState("");
+  const [isCreateEventEnabled, setIsCreateEventEnabled] = useState(false);
 
   const handleCloseAppViewDialog = () => {
     setShowAppViewOption(false);
@@ -181,6 +190,15 @@ function UserData() {
           userInfo?.userData?.userId
         );
 
+        dispatch(
+          setCreateEventEnabled(
+            userResponseData?.data?.isEventActiveSubscription
+          )
+        );
+        setIsCreateEventEnabled(
+          userResponseData?.data?.isEventActiveSubscription
+        );
+
         // Data set
         if (userResponseData?.data) {
           dispatch(
@@ -195,10 +213,13 @@ function UserData() {
             JSON.stringify({
               profile_image: userResponseData?.data?.pic || "",
               userId: userResponseData?.data?.id,
+              isEventActiveSubscription:
+                userResponseData.data.isEventActiveSubscription,
             })
           );
         }
       }
+
       getUserData();
     }
   }, []);
@@ -208,11 +229,11 @@ function UserData() {
 
     // Set end_date to one month from today
     // const end_date = moment().add(1, "months").format("YYYY-MM-DD");
-
     const initialDate = {
       start_date: moment(startDate).format("YYYY-MM-DD"),
       end_date: moment(endDate).format("YYYY-MM-DD"),
       eventName: filterData,
+      loginUserId: userInfo?.userData ? userInfo.userData.userId : "",
     };
     const fetchDataOfMonth = async () => {
       setItems([]); //Clear all data when new search
@@ -237,9 +258,10 @@ function UserData() {
       setItems(dataToShow);
     };
     // fetchDataOfMonth();
+
     const timeoutId = setTimeout(fetchDataOfMonth, 500); // Adjust the delay as needed (e.g., 500 milliseconds)
     return () => clearTimeout(timeoutId);
-  }, [filterData]);
+  }, [filterData, startDate, endDate]);
   // comment
   // const filteredEvents =
   //   items &&
@@ -250,6 +272,25 @@ function UserData() {
   //   });
 
   const filteredEvents = items;
+  const [filterBtnBadge, setFilterBtnBadge] = useState([]);
+
+  // useEffect(() => {
+  //   const fetchBadgeData = async () => {
+  //     try {
+  //       if (
+  //         localStorage.getItem("loggedIn") === "true" ||
+  //         localStorage.getItem("loggedIn") === true
+  //       ) {
+  //         const data = await getFilterBadgeButtons();
+  //         // console.log(data?.data);
+  //         // setFilterBtnBadge(data?.data);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   };
+  //   fetchBadgeData();
+  // }, []);
 
   // const appEventData = filteredEvents.map((event, index) => (
   //   <Card
@@ -307,6 +348,7 @@ function UserData() {
             start_date_label={event?.start_date_label}
             start_time_label={event?.start_time_label}
             eventProducer={event?.eventProducer}
+            cancelled={event?.cancelled}
           />
         ))}
       </React.Fragment>
@@ -325,7 +367,12 @@ function UserData() {
         // filter={items ? true : false}
         setFilterData={setFilterData}
         filterData={filterData}
+        isCalenderVisible={true}
+        isCreateEventEnabled={isCreateEventEnabled}
+        RecentUserListVisible
+        child={<HeaderFiltersComponent data={headerFilterData} />}
       />
+
       {isLoading && <Loader />}
       {!items.length && !isLoading ? (
         <p
@@ -334,6 +381,7 @@ function UserData() {
           No Events Found
         </p>
       ) : null}
+
       {items.length ? (
         <InfiniteScroll
           className={Style.infinitescroll}
