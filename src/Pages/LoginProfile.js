@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import style from "../Styles/Login.module.css";
 import MyProfileForm from "./MyProfileForm";
-import LoginProfileForm from "./LoginProfileForm";
+import LoginForm from "./LoginForm";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import HeaderComponent from "../Components/HeaderComponent";
 
@@ -29,7 +29,7 @@ const Login = () => {
     <div className={style.mainDiv}>
       <HeaderComponent />
       <div className={style.formContainer}>
-        <LoginProfileForm />
+        <LoginForm />
       </div>
     </div>
   );
