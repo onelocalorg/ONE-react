@@ -18,9 +18,7 @@ import { EMAIL_FORMAT, REQUIRED_FIELD_MESSAGE } from "../utils/AppConstants";
 import { useLocation } from "react-router-dom";
 
 const LoginForm = () => {
-  const userInfo = useSelector((state) => state?.userInfo);
   const dispatch = useDispatch();
-  const location = useLocation();
 
   const validationSchema = yup.object().shape({
     email: yup
@@ -52,13 +50,12 @@ const LoginForm = () => {
   //   });
   // }, [errors]);
 
-  const handleSuccessfulLogin = () => {
-    setTimeout(() => {
-      navigate("/");
-    }, 1000);
-  };
-
   const [isLoading, setIsLoading] = useState(false);
+  const handleSuccessfulLogin = () => {
+    ToasterSuccess("Login Successfully", 1500);
+
+    navigate("/my-profile");
+  };
 
   const onSubmit = async (data) => {
     setIsLoading(true);
