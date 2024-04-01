@@ -499,7 +499,7 @@ function EditPayoutModalDialog({
                 />
               </div>
             </div>
-            <div className={Style.dialogItem}>
+            <div className={`${Style.dialogItem} ${Style.borderBottom}`}>
               <div className={Style.dialogItemLabel}>Media:</div>
               <div
                 style={{
