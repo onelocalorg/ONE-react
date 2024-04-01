@@ -42,6 +42,7 @@
   display: flex;
   gap: 10px;
   margin-bottom: 8px;
+  color: #000;;
 }
 
 .iconDiv {
@@ -256,6 +257,7 @@
 .eventName {
   font-size: 35px;
   font-weight: 500;
+  color: #000;
 }
 
 .brand {
