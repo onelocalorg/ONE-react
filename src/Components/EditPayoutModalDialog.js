@@ -72,10 +72,14 @@ function EditPayoutModalDialog({
   const handleUpload = async (uploadData) => {
     const res = await uploadImageAPI(uploadData);
     setLoader(false);
-    const resImg = { imgUrl: res.data.imageUrl, key: res.data.key };
+    const resImg = { imageUrl: res.data.imageUrl, key: res.data.key };
     setImages([...images, resImg]);
   };
 
+  const removeImage = async (img) => {
+    const deletedKeyObj = images.filter((obj) => obj.key !== img.key);
+    setImages(deletedKeyObj);
+  };
   const handleClose = () => {
     hideFunc(false);
   };
@@ -476,7 +480,7 @@ function EditPayoutModalDialog({
                   <InputComponent
                     inputRef={"amount"}
                     register={register}
-                    placeholder={0}
+                    placeholder="How Much"
                     type={"number"}
                     className={`${Style.amountinput}`}
                   />
@@ -499,7 +503,7 @@ function EditPayoutModalDialog({
                 />
               </div>
             </div>
-            <div className={Style.dialogItem}>
+            <div className={`${Style.dialogItem} ${Style.borderBottom}`}>
               <div className={Style.dialogItemLabel}>Media:</div>
               <div
                 style={{
@@ -534,13 +538,17 @@ function EditPayoutModalDialog({
               }}
             >
               {images.map((e) => {
-                console.log("e.imgUrl", images);
                 return (
-                  <img
-                    src={e.imageUrl}
-                    className={Style.userimage}
+                  <div
                     key={e.imageUrl}
-                  />
+                    className={`${Style.posRelative} ${Style.addspace}`}
+                  >
+                    <img src={e.imageUrl} className={Style.userimage} />
+                    <IoIosClose
+                      className={Style.iconCross}
+                      onClick={() => removeImage(e)}
+                    />
+                  </div>
                 );
               })}
             </div>

@@ -384,7 +384,7 @@ function PayoutModalDialog({
                   <InputComponent
                     inputRef={"amount"}
                     register={register}
-                    placeholder={0}
+                    placeholder="How Much"
                     type={"number"}
                     className={`${Style.amountinput}`}
                   />
@@ -414,7 +414,7 @@ function PayoutModalDialog({
                 />
               </div>
             </div>
-            <div className={Style.dialogItem}>
+            <div className={`${Style.dialogItem} ${Style.borderBottom}`}>
               <div className={Style.dialogItemLabel}>Media:</div>
               <div
                 style={{
