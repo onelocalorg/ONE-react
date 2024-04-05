@@ -8,8 +8,7 @@ import Request from "../images/Request.svg";
 import Graits from "../images/Graits.svg";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import EventSvgr from "./SVGR/Event";
-import ProducerMember from "./producerMembership";
+import SignUpMemberShipComponent from "./SignUpMemberShipComponent";
 import {
   subscriptionsPlansApi,
   packageListApi,
@@ -26,7 +25,7 @@ function StickyFooter() {
   const [showModal, setShowModal] = useState(false);
   const [EventProduce, setEventProduce] = useState(false);
   const [isProduceMemberShip, setProduceSetUpMemberShip] = useState(false);
-  const [checkoutDetail, setCheckoutDetail] = useState(false);
+
   const [select, setSelectData] = useState({});
   const isCreateEventEnabled = useSelector(
     (state) => state?.showTicketCheckins?.isCreateEventEnabled
@@ -34,7 +33,6 @@ function StickyFooter() {
 
   const state = useSelector((state) => state);
   const [isLoading, setIsLoading] = useState(false);
-  const [details, setAllDetails] = useState(null);
 
   const navigate = useNavigate();
 
@@ -59,22 +57,6 @@ function StickyFooter() {
     }
   };
 
-  const loadMemberShipDetail = async (id) => {
-    try {
-      setIsLoading(true);
-      const res = await memberShipCheckoutAPI(id);
-      const { data } = res.data;
-      setAllDetails(data);
-      setCheckoutDetail(data);
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-      setIsLoading(false);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const OnEventBtnClick = () => {
     if (state.userInfo.userData) {
       if (isCreateEventEnabled) {
@@ -88,26 +70,6 @@ function StickyFooter() {
     } else {
       ToasterComponent("Login is required to createEvent", 2000);
     }
-  };
-
-  const closeBtn = () => {
-    setEventProduce(false);
-  };
-
-  const onClickSignUpProducer = () => {
-    loadMemberShipDetail(select.id);
-    setEventProduce(false);
-    setProduceSetUpMemberShip(true);
-  };
-
-  const onClickCancelProducer = () => {
-    // loadMemberShipDetail(select.id);
-    // setProduceSetUpMemberShip(false);
-    setEventProduce(false);
-  };
-
-  const closeProduceSetUpMemberShip = () => {
-    setProduceSetUpMemberShip(false);
   };
 
   return (
@@ -147,50 +109,13 @@ function StickyFooter() {
           </div>
         }
       />
-      <ModalComponent
-        hideFunc={closeBtn}
-        show={EventProduce}
-        wrapperClassname={` ${Style.wModal}`}
-        isHeaderHight
-        body={
-          <div className={Style.ModalContainer}>
-            <div className={Style.eventProducerContainer}>
-              <EventSvgr width="40px" height="40px" fill="#fff" />
-              Event Producer
-            </div>
-            <span className={Style.textContainer}>{select.description}</span>
-
-            {select.status && (
-              <span className={Style.textContainerDefaultText}>
-                {select.defaultSignupText}
-              </span>
-            )}
-            {!select.status && (
-              <div className={Style.signup} onClick={onClickSignUpProducer}>
-                Sign Up!
-              </div>
-            )}
-            {select.status && (
-              <div className={Style.signup} onClick={onClickCancelProducer}>
-                Cancel Subscription
-              </div>
-            )}
-          </div>
-        }
+      <SignUpMemberShipComponent
+        setEventProduce={setEventProduce}
+        select={select}
+        setProduceSetUpMemberShip={setProduceSetUpMemberShip}
+        EventProduce={EventProduce}
+        isProduceMemberShip={isProduceMemberShip}
       />
-
-      {checkoutDetail && (
-        <ProducerMember
-          details={details}
-          shouldShowProduceModal={isProduceMemberShip}
-          checkoutDetail={checkoutDetail}
-          id={select?.id}
-          loadMemberShipDetail={loadMemberShipDetail}
-          setProduceSetUpMemberShip={(bool) => {
-            setProduceSetUpMemberShip(bool);
-          }}
-        />
-      )}
 
       {isLoading && <Loader />}
     </>
