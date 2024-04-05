@@ -565,7 +565,15 @@ export const cardStripeAPI = async (
 export const purchaseSubscription = async (id, data) => {
   try {
     const res = await axiosClient.post(`subscriptions/${id}/purchase`, data);
-    console.log("Res", res);
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const cancelSubscription = async (id, data) => {
+  try {
+    const res = await axiosClient.post(`subscriptions/${id}/cancel`, data);
     return res.data;
   } catch (error) {
     return error;

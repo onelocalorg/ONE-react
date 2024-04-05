@@ -25,6 +25,13 @@ import whitetent from "../images/white-tent.png";
 import playerIcon from "../images/player.png";
 import backgroundDefault from "../images/background-default.png";
 import { fireEvent } from "@testing-library/react";
+import SignUpMemberShipComponent from "../Components/SignUpMemberShipComponent";
+
+import { packageListApi } from "../api/services";
+
+function findObjectByKey(array, key, value) {
+  return array.find((obj) => obj[key] === value);
+}
 
 const MyProfileForm = ({ userInfo, onClickDelete }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -34,6 +41,14 @@ const MyProfileForm = ({ userInfo, onClickDelete }) => {
   const [profileCoverImage, setProfileCoverImage] = useState(null);
   const profilePicInputRef = useRef(null);
   const profileCoverInputRef = useRef(null);
+  const [select, setSelectData] = useState({});
+  const [EventProduce, setEventProduce] = useState(false);
+  const [isProduceMemberShip, setProduceSetUpMemberShip] = useState(false);
+  const [isPlayerActiveSubscription, setIsPlayerActiveSubscription] =
+    useState(false);
+  const [isEventProduerSubscription, setIsEventProducerSubscription] =
+    useState(false);
+
   const dispatch = useDispatch();
   const validationSchema = yup.object().shape({
     first_name: yup.string().required(REQUIRED_FIELD_MESSAGE),
@@ -59,6 +74,30 @@ const MyProfileForm = ({ userInfo, onClickDelete }) => {
     },
   });
 
+  const callPackageListAPi = async () => {
+    setIsLoading(true);
+    try {
+      const response = await packageListApi();
+      const { data } = response.data;
+      data.forEach((e) => {
+        if (e.title === "Event Producer") {
+          setIsEventProducerSubscription(e.status);
+        }
+        if (e.title === "Player") {
+          setIsPlayerActiveSubscription(e.status);
+        }
+      });
+      const result = findObjectByKey(data, "key", "event_producer");
+      setSelectData(result);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    callPackageListAPi();
+  }, []);
   useEffect(() => {
     setValue("first_name", userInfo?.userData?.first_name);
     setValue("last_name", userInfo?.userData?.last_name);
@@ -213,6 +252,9 @@ const MyProfileForm = ({ userInfo, onClickDelete }) => {
     event.target.onerror = null; // To avoid infinite loop in case the backup image also fails
   };
 
+  const onClickEventProducer = () => {
+    setEventProduce(true);
+  };
   const userProfileImage = userInfo?.userData?.profile_image ? (
     <>
       <input
@@ -332,7 +374,11 @@ const MyProfileForm = ({ userInfo, onClickDelete }) => {
           <div className={style.memberDiv}>
             <div className={style.memberLbl}>Membership</div>
             <div className={style.btnSection}>
-              <button className={`${style.memberbtn} ${style.playerBtn}`}>
+              <button
+                className={`${style.memberbtn} ${style.playerBtn} ${
+                  isPlayerActiveSubscription && style.ActiveBorderColor
+                }`}
+              >
                 <img
                   src={playerIcon}
                   className={style.eventPlayerBtnIcon}
@@ -340,7 +386,12 @@ const MyProfileForm = ({ userInfo, onClickDelete }) => {
                 />
                 Player
               </button>
-              <button className={`${style.memberbtn} ${style.eventProdBtn}`}>
+              <button
+                className={`${style.memberbtn} ${style.eventProdBtn} ${
+                  isEventProduerSubscription && style.ActiveBorderColor
+                }`}
+                onClick={onClickEventProducer}
+              >
                 <img
                   src={whitetent}
                   className={style.eventProdBtnIcon}
@@ -457,6 +508,14 @@ const MyProfileForm = ({ userInfo, onClickDelete }) => {
           </div>
         </form>
       </div>
+
+      <SignUpMemberShipComponent
+        setEventProduce={setEventProduce}
+        select={select}
+        setProduceSetUpMemberShip={setProduceSetUpMemberShip}
+        EventProduce={EventProduce}
+        isProduceMemberShip={isProduceMemberShip}
+      />
       <div>{isLoading && <Loader />}</div>
     </div>
   );

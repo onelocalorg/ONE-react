@@ -299,7 +299,7 @@ function ProducerMember({
                   className={Style.inputFeild}
                   value={cardnumber}
                   onChange={(event) => {
-                    if (event.target.value.length < 20) {
+                    if (event.target.value.length < 17) {
                       cardNumberData(event.target.value);
                     }
                   }}

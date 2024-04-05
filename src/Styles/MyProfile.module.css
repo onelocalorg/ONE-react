@@ -6,6 +6,8 @@
   flex-direction: column;
 }
 
+
+
 .formContainer {
   margin: 150px auto 25px auto !important;
   width: 100%;
@@ -13,6 +15,7 @@
   max-width: 600px;
   border: 1px solid #a5c4aa;
   border-radius: 20px;
+  
 }
 
 .backButton {
@@ -259,7 +262,7 @@
   outline: 0;
   color: #fff;
   border-radius: 20px;
-  border: 1px solid #000000;
+  border: 1px solid #a5c4aa;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -273,6 +276,7 @@
   height: 29px;
   width: 139px;
   margin-left: 5px;
+  
 }
 
 .eventProdBtnIcon {
@@ -367,4 +371,9 @@
   .profileBackContainer {
     min-height: 110px;
   }
+}
+
+.ActiveBorderColor{
+  border: 3px solid #000;;
+
 }
