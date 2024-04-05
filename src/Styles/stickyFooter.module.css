@@ -66,6 +66,18 @@
   align-items: center;
   justify-content: center;
 }
+.eventPlayerContainer{
+  background-color: #A5C4AA;
+  width: 80%;
+  height: 10vh;
+  border-radius: 14px;
+  color: #fff;
+  font-size: 400;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 .ModalContainer{
   /* margin: auto; */
@@ -90,6 +102,20 @@
 
 .signup{
   background-color: #DB9791;
+  width: 60%;
+  height: 8vh;
+  border-radius: 14px;
+  color: #fff;
+  font-size: 400;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5vh;
+}
+
+.signupGreen{
+  background-color:#A5C4AA;
   width: 60%;
   height: 8vh;
   border-radius: 14px;

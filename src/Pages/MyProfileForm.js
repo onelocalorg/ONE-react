@@ -49,6 +49,8 @@ const MyProfileForm = ({ userInfo, onClickDelete }) => {
   const [isEventProduerSubscription, setIsEventProducerSubscription] =
     useState(false);
 
+  const [resultApiData, setResultApiData] = useState(false);
+
   const dispatch = useDispatch();
   const validationSchema = yup.object().shape({
     first_name: yup.string().required(REQUIRED_FIELD_MESSAGE),
@@ -87,8 +89,8 @@ const MyProfileForm = ({ userInfo, onClickDelete }) => {
           setIsPlayerActiveSubscription(e.status);
         }
       });
-      const result = findObjectByKey(data, "key", "event_producer");
-      setSelectData(result);
+      setResultApiData(data);
+      // console.log("data", data);
     } catch (error) {
       console.log(error);
     } finally {
@@ -253,6 +255,14 @@ const MyProfileForm = ({ userInfo, onClickDelete }) => {
   };
 
   const onClickEventProducer = () => {
+    const result = findObjectByKey(resultApiData, "key", "event_producer");
+    setSelectData(result);
+    setEventProduce(true);
+  };
+
+  const onClickPlayer = () => {
+    const result = findObjectByKey(resultApiData, "key", "player_membership");
+    setSelectData(result);
     setEventProduce(true);
   };
   const userProfileImage = userInfo?.userData?.profile_image ? (
@@ -378,6 +388,7 @@ const MyProfileForm = ({ userInfo, onClickDelete }) => {
                 className={`${style.memberbtn} ${style.playerBtn} ${
                   isPlayerActiveSubscription && style.ActiveBorderColor
                 }`}
+                onClick={onClickPlayer}
               >
                 <img
                   src={playerIcon}
