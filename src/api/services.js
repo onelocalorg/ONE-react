@@ -101,6 +101,29 @@ export const getTaxAndAmout = async (ticketId, quantity) => {
   }
 };
 
+export const packageListApi = async () => {
+  try {
+    const response = await axiosClient.get(`subscriptions/packages`, {});
+    return response;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+};
+
+export const memberShipCheckoutAPI = async (id) => {
+  try {
+    const response = await axiosClient.get(
+      `subscriptions/packages/${id}/checkout`,
+      {}
+    );
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const subscriptionsPlansApi = async () => {
   try {
     const response = await axiosClient.get("/subscriptions/plans", {});
@@ -494,4 +517,57 @@ export const cancelEvent = async (EventId) => {
 export const deleteUSer = async (userId) => {
   const res = await axiosClient.post(`users/delete/${userId}`);
   return res.data;
+};
+
+export const configList = async () => {
+  try {
+    const res = await axiosClient.get("config/list");
+    return res.data;
+  } catch (error) {
+    console.log("error", error);
+  }
+};
+
+export const cardStripeAPI = async (
+  stripeId,
+  cardnumber,
+  cardExpmonth,
+  cardExpyear,
+  cardCvv
+) => {
+  const genCard = {
+    "card[number]": cardnumber,
+    "card[exp_month]": cardExpmonth,
+    "card[exp_year]": cardExpyear,
+    "card[cvc]": cardCvv,
+  };
+
+  try {
+    const results = await fetch("https://api.stripe.com/v1/tokens", {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization: "Bearer " + stripeId,
+      },
+      body: Object.keys(genCard)
+        .map((key) => key + "=" + genCard[key])
+        .join("&"),
+    })
+      .then((response) => response.json())
+      .then((res) => res);
+    return results;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const purchaseSubscription = async (id, data) => {
+  try {
+    const res = await axiosClient.post(`subscriptions/${id}/purchase`, data);
+    console.log("Res", res);
+    return res.data;
+  } catch (error) {
+    return error;
+  }
 };

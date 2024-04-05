@@ -26,6 +26,7 @@ import ViewAppModalDialog from "../Components/ViewAppModalDialog";
 import { deleteCookie, getCookie, setCookie } from "../utils/CookieManager";
 import HeaderFiltersComponent from "../Components/HeaderFiltersComponent";
 import headerFilterData from "../utils/ButtonbadgeData";
+import StickyFooter from "../Components/StickyFooter";
 
 function UserData() {
   const userInfo = useSelector((state) => state?.userInfo);
@@ -388,11 +389,12 @@ function UserData() {
           dataLength={items.length}
           next={fetchMoreData}
           hasMore={hasMore}
-          loader={
-            filterData === "" ? (
-              <h5 style={{ textAlign: "center" }}>Loading...</h5>
-            ) : null
-          }
+          //  as of now not needed
+          // loader={
+          //   filterData === "" ? (
+          //     <h5 style={{ textAlign: "center" }}>Loading...</h5>
+          //   ) : null
+          // }
           minHeight={"inherit"}
           style={{ padding: "20px 0" }}
         >
@@ -424,6 +426,8 @@ function UserData() {
           <ViewAppModalDialog hideFunc={handleCloseAppViewDialog} />
         )}
       </div>
+
+      {userInfo.userData && <StickyFooter />}
     </div>
   );
 }
