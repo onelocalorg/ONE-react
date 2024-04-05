@@ -32,6 +32,7 @@ hr {
 .modal-dialog .modal-header {
   border-bottom: none;
   padding: 10px 1rem 0px 1rem;
+  justify-content: center;
 }
 
 .sendLayoutHeader + .btn-close{

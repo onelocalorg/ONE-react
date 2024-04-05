@@ -1,0 +1,137 @@
+.headerHeight{
+    height:12px;
+}
+
+.background{
+    /* background-color: #fff; */
+}
+
+.inputForm {
+    width:223px;
+    border-color: #000000;
+    border-radius: 8px;
+    height: 40px;
+    padding: 5px;
+    padding: 1%;
+    font-weight: 400;
+    font-size: 14px;
+    /* color: #8B8888; */
+    border-width: 1px;
+    background-color: #EDEDED;
+    flex:1
+  }
+
+  input.inputForm:focus {
+    border-color: #000000;
+    border-radius: 8px;
+    border-width: 1px;
+    outline: 1px solid #000000; 
+
+    
+  }
+  
+
+  
+  .background{
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    /* display: flex; */
+    /* flex-direction: row; */
+
+    /* background-color: #fff; */
+  }
+  
+  
+  .textArea_postBody:focus {
+    width: 293px;
+    flex:1;
+    outline: 1px solid #000000; 
+  }
+  
+  .btnImg {
+    color:#8B8888
+  }
+  
+  .postImage{
+    width: 100px;
+    height: 100px;
+    border-radius: 20px;
+  } 
+  
+  
+  .offerBtn{
+    border-color: #000000;
+    border-radius: 8px;
+    height: 40px;
+    padding: 8px;
+    /* margin-left: 10px; */
+    border-width: 1px;
+  }
+
+  .userWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    flex-grow: 1;
+    gap: 5px;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  
+  .dialogItem {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    align-items: baseline;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .userIconWrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    gap: 5px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+
+  .posRelative {
+    position: relative;
+  }
+
+  .iconCross {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    background-color: #cbcaca;
+    color: #000;
+    backdrop-filter: blur(10px);
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .userimage {
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+    border: 1px solid #fff;
+  }
+
+  .wfull {
+    width: 100%;
+  }
+
+  .bgTransparent {
+    background-color: transparent !important;
+    border: 0;
+    outline: 0;
+    width: 100%;
+  }

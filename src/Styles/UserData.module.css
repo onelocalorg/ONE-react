@@ -145,6 +145,8 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  margin-bottom:90px ;
+  /* padding-bottom: 90px; */
 }
 .p {
   display: flex;

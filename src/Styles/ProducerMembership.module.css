@@ -1,0 +1,220 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Cormorant+SC:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Cormorant+SC:wght@300;400;500;600;700&family=Cormorant+Unicase:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Cormorant+SC:wght@300;400;500;600;700&family=Cormorant+Unicase:wght@300;400;500;600;700&display=swap');
+
+.producerSelection{
+    display: flex;
+    flex-direction: column;
+    background-color: #DB9791;
+    width:50%;
+    justify-content: center;
+    align-items: center;
+    padding: 1%;
+    border-radius: 20.96px;
+    gap: 1%;
+}
+
+.producerText{
+    font-size: 1rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap:20px;
+}
+
+.memberTitle{
+    font-family: "Cormorant SC", serif;
+    font-weight: 400;
+    font-size: 2rem;
+
+}
+
+.greenBorder{
+    border: 2px solid green;
+    padding: 20px;
+    border-radius: 20.96px;
+    display: flex;
+    flex-direction: column;
+    
+  
+  }
+
+  .withoutBorder{
+    padding: 20px;
+    border-radius: 20.96px;
+    display: flex;
+    flex-direction: column;
+   
+   
+  }
+
+  .priceConatiner{
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+  }
+
+  .numberDecimal{
+    font-family: "Cormorant Infant", serif;
+    font-weight: 400;
+    font-size: 64px;
+    text-align: center;
+    line-height: 77.5px;
+  }
+
+  .addbtn{
+    color:#000000;
+    border-width: 1px;
+    border-radius: 6px;
+    padding: 5px;
+    font-size: 14px;
+    font-weight: 400;
+    padding-left: 2%;
+    padding-right: 2%;
+    align-self: end;
+  }
+
+  .memberShipBtn{
+    width: 50%;
+    /* padding: 0 20%; */
+    display: flex;
+    background-color:#DABD84;
+    padding: 2%;
+    border-radius:12px;
+    border-width: 0;
+    justify-content: center;
+    /* border-color: #DABD84; */
+    /* border-radius: 12px; */
+
+
+
+  }
+
+  .bgCircle{
+    background-color: #BF820A;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    padding: 10px;
+    display: flex;
+    /* align-self: flex-end; */
+    
+   
+  }
+
+  .img{
+   
+    /* padding-top: 10px; */
+    /* height: 10px;
+    width: 10px; */
+    /* width: 13px;
+    height: 13px; */
+  }
+  
+  .purchaseTxt{
+    flex: 1;
+    font-weight: 400;
+    font-family: "Cormorant Unicase", serif;
+    font-size: 1.2em;
+    line-height: 18px;
+    align-self: center;
+    
+  }
+
+  .paragraph{
+    font-family: "Cormorant Garamond", serif;
+    font-family: 400;
+    text-align: center;
+    font-size: 1em;
+    
+  }
+
+  .li{
+
+  }
+
+  .ul{
+    list-style-type: none;
+  }
+
+  .payment{
+    align-self: flex-start;
+  }
+
+  .inputFeild{
+    font-family: "Average Sans", sans-serif;
+    background-color: #cbcaca;
+    /* padding: 10px; */
+    border: none;
+    font-size: 14px;
+    outline: 0;
+    width: 100%;
+    /* border-radius: 8px; */
+    /* margin: 10px 0 0px 0; */
+    /* height: 32px; */
+  }
+
+  .innerInput{
+    border: none !important;
+    display: block !important;
+    height: 1px !important;
+    padding: 0px !important;
+    margin: 0px !important;
+    width: 100% !important;
+    opacity: 0 !important;
+    background: transparent !important;
+    pointer-events: none !important;
+    font-size: 16px !important;
+  }
+
+  .MonthYearInputFeild{
+    border: none !important;
+    display: block !important;
+    height: 1px !important;
+    padding: 0px !important;
+    margin: 0px !important;
+    width: 100% !important;
+    opacity: 0 !important;
+    background: transparent !important;
+    pointer-events: none !important;
+    font-size: 16px !important;
+  }
+
+  .cvv{
+    width: 20%;
+  }
+
+
+  .addCard{
+  background-color: #0e80e8;
+  height: 58px;
+  color: #ffffff;
+  border-radius: 15px;
+  border: 0;
+  width: 50%;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  outline: 0;
+  margin-top: 2%;
+  margin-left: auto;
+  margin-right: auto;
+
+  }
+
+
+  .addText{
+    /* margin-left: auto; */
+    margin-left: auto;
+  }
+
+  .alightRight{
+    margin-left: auto;
+    margin-right:1%
+  }

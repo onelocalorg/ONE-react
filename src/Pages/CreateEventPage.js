@@ -51,7 +51,7 @@ const CreateEventPage = () => {
   const navigate = useNavigate();
 
   const state = useSelector(
-    (state) => state.userInfo.userData.isEventActiveSubscription
+    (state) => state?.userInfo?.userData?.isEventActiveSubscription
   );
 
   useEffect(() => {

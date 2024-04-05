@@ -33,7 +33,6 @@ import HeaderComponent from "../Components/HeaderComponent";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
 
-
 const EventPage = () => {
   const { eventId } = useParams();
   const navigate = useNavigate();

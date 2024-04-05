@@ -2,3 +2,10 @@
     font-weight: 600;
     position: relative;
 }
+
+.subscriptionProperty{
+    display: flex;
+      gap:10px;
+    justify-content:flex-start;
+    flex-wrap: Wrap
+}
