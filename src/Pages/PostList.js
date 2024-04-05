@@ -1,18 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import moment from "moment";
 import MainLayoutlet from "./MainLayoutlet";
 import Style from "../Styles/UserData.module.css";
-import PostStyle from "../Styles/Post.module.css";
 import PostListTopCard from "../Components/PostListTopCard";
 import { useScrollToTop } from "../hooks/useScrollToTop";
-import { getPostListAPI } from "../api/services";
+import { getPostListAPI, uploadImageAPI } from "../api/services";
 import PostListLayoutCard from "../Components/PostListLayoutCard";
+import OfferPostComponent from "../Components/OfferPostComponent";
+import Select, { components } from "react-select";
+import { CgStyle } from "react-icons/cg";
+import pic1 from "../images/Add.svg";
+import pic2 from "../images/Delete.svg";
 
 function PostList() {
   const scrollToTop = useScrollToTop();
   const [postItems, setPostItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
+
   const currentDate = new Date();
   const oneMonthLater = new Date(
     currentDate.setMonth(currentDate.getMonth() + 1)
@@ -134,6 +139,7 @@ function PostList() {
         filteredEvents={postItems}
         appEventData={appEventData}
       />
+      <OfferPostComponent />
     </div>
   );
 }

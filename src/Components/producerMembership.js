@@ -13,11 +13,13 @@ import arrow from "../images/Shape.svg";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { setCreateEventEnabled } from "../Redux/slices/TicketCheckinsSlice";
+import { setUserData } from "../Redux/slices/UserSlice";
 import {
   configList,
   cardStripeAPI,
   addNewCardAPI,
   purchaseSubscription,
+  getUserDetails,
 } from "../api/services";
 import Loader from "./Loader";
 import ToasterSuccess from "./ToasterSuccess";
@@ -58,6 +60,7 @@ function ProducerMember({
   const isCreateEventEnabled = useSelector(
     (state) => state?.showTicketCheckins?.isCreateEventEnabled
   );
+  const userInfo = useSelector((state) => state?.userInfo);
 
   const [cardnumber, cardNumberData] = useState("");
   const [cardExpmonth, cardExpMonth] = useState("");
@@ -93,7 +96,7 @@ function ProducerMember({
       cardCVVData("");
       setDate("");
       setIsLoading(false);
-
+      closeAddCardModal();
       ToasterSuccess(`Card added successfully`, 2000);
     } else {
       ToasterComponent(getStripeApiToken.error.message, 2000);
@@ -133,6 +136,33 @@ function ProducerMember({
     await getConfigList();
   };
 
+  // if (userInfo?.userData?.userId) {
+  async function getUserData() {
+    setIsLoading(true);
+    const userResponseData = await getUserDetails(userInfo?.userData?.userId);
+
+    // Data set
+    if (userResponseData?.data) {
+      dispatch(
+        setUserData({
+          profile_image: userResponseData?.data?.pic,
+          userId: userResponseData?.data?.id,
+          ...userResponseData?.data,
+        })
+      );
+      localStorage.setItem(
+        "user_info",
+        JSON.stringify({
+          profile_image: userResponseData?.data?.pic || "",
+          userId: userResponseData?.data?.id,
+        })
+      );
+      setIsLoading(false);
+    }
+  }
+
+  // }
+
   const purchase = async () => {
     setIsLoading(true);
     if (Object.keys(details.card).length !== 0) {
@@ -155,6 +185,9 @@ function ProducerMember({
         if (onpurchaseSelect.success) {
           ToasterSuccess(onpurchaseSelect.message, 2000);
           dispatch(setCreateEventEnabled(true));
+          setProduceSetUpMemberShip(false);
+          getUserData();
+          // window.location.reload();
         } else {
           setIsLoading(true);
           ToasterComponent("something went wrong", 2000);
