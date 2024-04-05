@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import EventSvgr from "./SVGR/Event";
 import Start from "./SVGR/star";
+import Player from "./SVGR/Player";
 import RightArrow from "../Components/SVGR/RightArrow";
 import Card from "./SVGR/Card";
 import { subscriptionsPlansApi, packageListApi } from "../api/services";
@@ -54,6 +55,7 @@ function ProducerMember({
   id,
   details,
 }) {
+  console.log("checkoutDetails", checkoutDetail);
   const [select, setSelect] = useState(checkoutDetail.plans[0].id);
   const [EventProduce, setEventProduce] = useState(shouldShowProduceModal);
   const [activePurchaseStep, setActivePurchaseStep] = useState(0);
@@ -214,9 +216,15 @@ function ProducerMember({
           body={
             <div className={Style.container}>
               <div className={Style.memberTitle}>Membership Checkout</div>
-              <div className={Style.producerSelection}>
-                <Start />
-                <h2 className={Style.producerText}>Event Producer </h2>
+              <div
+                className={`${
+                  checkoutDetail.title === "Player"
+                    ? Style.playerSelection
+                    : Style.producerSelection
+                }`}
+              >
+                {checkoutDetail.title === "Player" ? <Player /> : <Start />}
+                <h2 className={Style.producerText}>{checkoutDetail.title} </h2>
               </div>
 
               <div className={Style.priceConatiner}>

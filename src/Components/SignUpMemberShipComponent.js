@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import EventSvgr from "./SVGR/Event";
+import Player from "./SVGR/PlayerPopup";
 import ProducerMember from "./producerMembership";
 import {
   subscriptionsPlansApi,
@@ -75,6 +76,8 @@ function SignUpMemberShipComponent({
       setIsLoading(false);
     }
   };
+
+  console.log("select", select);
   return (
     <>
       <ModalComponent
@@ -84,9 +87,27 @@ function SignUpMemberShipComponent({
         isHeaderHight
         body={
           <div className={Style.ModalContainer}>
-            <div className={Style.eventProducerContainer}>
-              <EventSvgr width="40px" height="40px" fill="#fff" />
-              Event Producer
+            <div
+              className={`${
+                select.title === "Player"
+                  ? Style.eventPlayerContainer
+                  : Style.eventProducerContainer
+              }`}
+            >
+              {select.title === "Player" ? (
+                <span
+                  style={{
+                    marginRight: "2%",
+                  }}
+                >
+                  <Player width="50px" height="50px" fill="#fff" />
+                </span>
+              ) : (
+                <EventSvgr width="40px" height="40px" fill="#fff" />
+              )}
+              {/* <Player width="40px" height="40px" fill="#fff" /> */}
+              {/* <EventSvgr width="40px" height="40px" fill="#fff" /> */}
+              {select.title}
             </div>
             <span className={Style.textContainer}>{select.description}</span>
 
@@ -95,8 +116,14 @@ function SignUpMemberShipComponent({
                 {select.defaultSignupText}
               </span>
             )}
+
             {!select.status && (
-              <div className={Style.signup} onClick={onClickSignUpProducer}>
+              <div
+                className={
+                  select.title === "Player" ? Style.signupGreen : Style.signup
+                }
+                onClick={onClickSignUpProducer}
+              >
                 Sign Up!
               </div>
             )}

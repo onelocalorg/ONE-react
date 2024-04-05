@@ -15,6 +15,18 @@
     gap: 1%;
 }
 
+.playerSelection{
+    display: flex;
+    flex-direction: column;
+    background-color: #A5C4AA;
+    width:50%;
+    justify-content: center;
+    align-items: center;
+    padding: 1%;
+    border-radius: 20.96px;
+    gap: 1%;
+}
+
 .producerText{
     font-size: 1rem;
     font-weight: 700;
