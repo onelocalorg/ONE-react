@@ -86,7 +86,10 @@ function EditPayoutModalDialog({
 
   const validationSchema = yup.object().shape({
     who: yup.string(),
-    amount: yup.number().positive(),
+    amount: yup
+      .number()
+      .positive("Must be more than 0")
+      .required("This field is required"),
     photos: yup
       .array()
       .of(
@@ -487,6 +490,13 @@ function EditPayoutModalDialog({
                 </div>
               </div>
             </div>
+            {errors?.amount && (
+              <div className={Style.dialogItem}>
+                <div className={`error-text  ${Style.amountError}`}>
+                  {errors?.amount?.message}
+                </div>
+              </div>
+            )}
             <div className={Style.dialogItem1}>
               <div className={Style.dialogItemLabel}>Description:</div>
               <div

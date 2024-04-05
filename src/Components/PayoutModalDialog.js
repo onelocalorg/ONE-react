@@ -35,7 +35,10 @@ function PayoutModalDialog({
 
   const validationSchema = yup.object().shape({
     who: yup.string(),
-    amount: yup.number().required("Amount is required"),
+    amount: yup
+      .number()
+      .positive("Must be more than 0")
+      .required("This field is required"),
     // photos: yup
     //   .mixed()
     //   .test(
