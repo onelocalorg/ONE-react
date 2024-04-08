@@ -80,6 +80,7 @@ const EventPage = () => {
       try {
         setloading(true);
         const rsvp = await createRsvp(eventId, body);
+        setloading(false);
         if (rsvp.success) {
           ToasterSuccess(rsvp.message);
         }
