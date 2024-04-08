@@ -12,6 +12,7 @@ import {
   singleEvents,
   submitPurchaseData,
   getCardListAPI,
+  createRsvp,
 } from "../api/services";
 
 import Style from "../Styles/EventPage.module.css";
@@ -30,6 +31,10 @@ import { useScrollToTop } from "../hooks/useScrollToTop";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import HeaderComponent from "../Components/HeaderComponent";
+import { getRsvp } from "../api/services";
+import StarImg from "../images/startImg.png";
+import Going from "../images/going.png";
+import ToasterSuccess from "../Components/ToasterSuccess";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
 
@@ -42,7 +47,52 @@ const EventPage = () => {
   const [showBillingInformation, setShowBillingInformation] = useState(false);
   const [activePurchaseStep, setActivePurchaseStep] = useState(0); //0 - new register, 1- already user email available
   const userInfo = useSelector((state) => state?.userInfo);
+  const [rsvpData, setRsvpData] = useState();
+  const [showGreenBorder, setShowGreenBorder] = useState(false);
+  const [showMaybeGreenBorder, setShowMAybeGreenBorder] = useState(false);
   const scrollToTop = useScrollToTop();
+
+  const fetchRsvp = async () => {
+    try {
+      setloading(true);
+      const rsvp = await getRsvp(eventId);
+      setRsvpData(rsvp.data);
+      setloading(false);
+      const showBorder = rsvp.data.rsvps.some(
+        (obj) =>
+          obj.user_id.id === userInfo?.userData?.userId && obj.rsvp === "going"
+      );
+      setShowGreenBorder(showBorder);
+      const showMaybeBorder = rsvp.data.rsvps.some(
+        (obj) =>
+          obj.user_id.id === userInfo?.userData?.userId &&
+          obj.rsvp === "interested"
+      );
+      setShowMAybeGreenBorder(showMaybeBorder);
+    } catch (e) {}
+  };
+
+  const createRsvpApi = async (body) => {
+    if (!userInfo?.userData) {
+      setShowLoginDialog(true);
+      return;
+    } else {
+      try {
+        setloading(true);
+        const rsvp = await createRsvp(eventId, body);
+        if (rsvp.success) {
+          ToasterSuccess(rsvp.message);
+        }
+        fetchRsvp();
+
+        setloading(false);
+      } catch (e) {}
+    }
+  };
+
+  useEffect(() => {
+    fetchRsvp();
+  }, []);
 
   const onLastPage = () => {
     navigate("/");
@@ -594,7 +644,72 @@ const EventPage = () => {
                   </button>
                 )}
               </form>
+              <div className={`${Style.rsvpBtnSelection}`}>
+                <button
+                  className={`${Style.selectBtn} ${
+                    showGreenBorder && Style.greenBorder
+                  }`}
+                  onClick={() =>
+                    createRsvpApi({
+                      type: "going",
+                    })
+                  }
+                >
+                  Going
+                </button>
+                <button
+                  className={`${Style.selectBtn} ${
+                    showMaybeGreenBorder && Style.greenBorder
+                  }`}
+                  onClick={() =>
+                    createRsvpApi({
+                      type: "interested",
+                    })
+                  }
+                >
+                  Maybe
+                </button>
+                <button className={Style.selectBtn}>Invite</button>
+              </div>
+
+              <div style={{ display: "flex", flexWrap: "wrap" }}>
+                <div className={Style.rsvpContaner}>
+                  <div className={Style.rsvpHeader}>
+                    <div className={Style.rsvptxt}>RSVPS</div>
+                    <div>
+                      <div className={Style.RsvpNumber}>{rsvpData?.going}</div>
+                      <div className={Style.RsvpSubText}>Going</div>
+                    </div>
+                    <div>
+                      <div className={Style.RsvpNumber}>
+                        {rsvpData?.interested}
+                      </div>
+                      <div className={Style.RsvpSubText}>Maybe</div>
+                    </div>
+                  </div>
+                  {rsvpData?.rsvps &&
+                    rsvpData.rsvps.map((e) => {
+                      return (
+                        // <div style={{ color: "#000" }}>{e.user_id.pic}</div>
+                        <span className={Style.imgContainer} key={e.rsvp.id}>
+                          <img
+                            src={e.user_id.pic}
+                            className={Style.userImg}
+                            // style={{ width: "2vw", height: "2vw" }}
+                          />
+                          {e.rsvp === "going" && (
+                            <img src={Going} className={Style.starImg} />
+                          )}
+                          {e.rsvp === "interested" && (
+                            <img src={StarImg} className={Style.starImg} />
+                          )}
+                        </span>
+                      );
+                    })}
+                </div>
+              </div>
             </div>
+
             <div className={Style.right}>
               {eventData?.event_image ? (
                 <img

@@ -1,3 +1,4 @@
+import axios from "axios";
 import { axiosClient } from "../api/api";
 export const logInApi = async (data) => {
   try {
@@ -574,6 +575,24 @@ export const purchaseSubscription = async (id, data) => {
 export const cancelSubscription = async (id, data) => {
   try {
     const res = await axiosClient.post(`subscriptions/${id}/cancel`, data);
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getRsvp = async (id, body) => {
+  try {
+    const res = await axiosClient.get(`events/rsvp/${id}`, body);
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const createRsvp = async (id, body) => {
+  try {
+    const res = await axiosClient.post(`events/rsvp/${id}`, body);
     return res.data;
   } catch (error) {
     return error;
