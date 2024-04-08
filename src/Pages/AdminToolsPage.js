@@ -415,8 +415,8 @@ const AdminToolsPage = () => {
                       control={control}
                       className={`${Style.wfull} ${Style.bgTransparent}`}
                       name="start_date"
-                      // maxDate={new Date(eventData.end_date)}
-                      minDate={new Date()}
+                      minDate={new Date(formVal.start_date)}
+                      maxDate={new Date(formVal.end_date)}
                     />
                   )}
                 </div>
