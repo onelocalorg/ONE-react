@@ -81,6 +81,7 @@ const LoginForm = () => {
           })
         );
 
+        ToasterSuccess(response?.message, 3000);
         handleSuccessfulLogin();
       } else {
         ToasterComponent(
