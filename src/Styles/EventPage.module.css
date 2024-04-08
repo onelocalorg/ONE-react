@@ -319,7 +319,7 @@
 
 .rsvpBtnSelection{
   /* width: 75%; */
-  width: 53%;
+  /* width: 53%; */
   background-color: #DB9791  ;
   padding: 2% 5%;
   display: flex;
@@ -372,7 +372,8 @@
 .rsvpHeader{
   display: flex;
   justify-content: space-between;
-  padding: 0px 4%;
+  /* padding: 0px 4%; */
+  padding: 4% 12% 4%;
 }
 
 .RsvpSubText{
