@@ -32,12 +32,7 @@ const CreateTicketComponent = ({
   // const ticketData = eventData && eventData?.tickets;
   const idArray = ticketData.map((item) => item.id).join(",");
 
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm({
+  const { register, handleSubmit, control } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       start_date: new Date(data?.start_date),

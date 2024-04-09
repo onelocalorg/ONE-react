@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from "react";
 import Style from "../Styles/UserDropdown.module.css";
 import { NavLink, useNavigate } from "react-router-dom";

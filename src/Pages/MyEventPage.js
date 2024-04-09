@@ -1,11 +1,10 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 import DOMPurify from "dompurify";
 import calendarIcon from "../images/Group 33778.svg";
 import locationIcon from "../images/Group 18184.svg";
-import ticketIcon from "../images/ticket-icon.png";
-import payoutIcon from "../images/payout-icon.png";
 import { singleEvents } from "../api/services";
 import Style from "../Styles/MyEventPage.module.css";
 import Loader from "../Components/Loader";
@@ -18,19 +17,37 @@ import { useScrollToTop } from "../hooks/useScrollToTop";
 import HeaderComponent from "../Components/HeaderComponent";
 import { PrivateComponent } from "../Components/PrivateComponent";
 import { useSelector } from "react-redux";
-import ExpenseItemComponent from "../Components/ExpenseItemComponent";
-import FinanceAddBtn from "../Components/FinanceAddBtn";
 import PayoutModalDialog from "../Components/PayoutModalDialog";
 import proImg from "../images/Oval Copy 5.png";
 import arrow from "../images/Shape.svg";
+import { getRsvp } from "../api/services";
+import StarImg from "../images/startImg.png";
+import Going from "../images/going.png";
 
 const MyEventPage = () => {
-  const { eventId } = useParams();
   const navigate = useNavigate();
   const scrollToTop = useScrollToTop();
   const userInfo = useSelector((state) => state?.userInfo);
   const [showPayoutModal, setShowPayoutModal] = useState(false);
   const [addPayoutType, setAddPayoutType] = useState(null);
+
+  const [rsvpData, setRsvpData] = useState();
+
+  const { eventId } = useParams();
+
+  const fetchRsvp = async () => {
+    try {
+      setLoading(true);
+      const rsvp = await getRsvp(eventId);
+      setRsvpData(rsvp.data);
+      setLoading(false);
+    } catch (e) {}
+  };
+
+  useEffect(() => {
+    fetchRsvp();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onLastPage = () => {
     navigate("/my-events");
@@ -41,10 +58,7 @@ const MyEventPage = () => {
     quantity: yup.number(),
   });
   const {
-    register,
     handleSubmit,
-    setValue,
-    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -85,19 +99,8 @@ const MyEventPage = () => {
     };
 
     fetchEventData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventId]);
-
-  function showExpenseAdd() {
-    setAddPayoutType("expense");
-    // setShowPayoutModal(true);
-    console.log("Called showExpenseAdd");
-  }
-
-  function showPayoutAdd() {
-    setAddPayoutType("payout");
-    // setShowPayoutModal(true);
-    console.log("Called showPayoutAdd");
-  }
 
   function hideFunc() {
     setShowPayoutModal(false);
@@ -108,8 +111,6 @@ const MyEventPage = () => {
   const navigateToAdminToolsPage = () => {
     navigate(`/my-event/admintool/${eventId}`);
   };
-
-  const formVal = watch();
 
   if (error) {
     return <NotFound />;
@@ -274,6 +275,7 @@ const MyEventPage = () => {
                   {/* Blank */}
                 </div>
               </form>
+
               {/* <div className={Style.uniqueViewDiv} style={{ display: "none" }}>
                 <div>
                   <div>Unique Views: 3</div>
@@ -359,7 +361,59 @@ const MyEventPage = () => {
                   </div>
                 </div>
               </div> */}
+              <div className={`${Style.rsvpBtnSelection}`}>
+                <button className={`${Style.selectBtn}`}>Going</button>
+                <button className={`${Style.selectBtn}`}>Maybe</button>
+                <button className={Style.selectBtn}>Invite</button>
+              </div>
+
+              <div style={{ display: "flex", flexWrap: "wrap" }}>
+                <div className={Style.rsvpContaner}>
+                  <div className={Style.rsvpHeader}>
+                    <div className={Style.rsvptxt}>RSVPS</div>
+                    <div>
+                      <div className={Style.RsvpNumber}>{rsvpData?.going}</div>
+                      <div className={Style.RsvpSubText}>Going</div>
+                    </div>
+                    <div>
+                      <div className={Style.RsvpNumber}>
+                        {rsvpData?.interested}
+                      </div>
+                      <div className={Style.RsvpSubText}>Maybe</div>
+                    </div>
+                  </div>
+                  {rsvpData?.rsvps &&
+                    rsvpData.rsvps.map((e) => {
+                      return (
+                        // <div style={{ color: "#000" }}>{e.user_id.pic}</div>
+                        <span className={Style.imgContainer} key={e.rsvp.id}>
+                          <img
+                            src={e.user_id.pic}
+                            className={Style.userImg}
+                            alt="RSVP Users Profile"
+                            // style={{ width: "2vw", height: "2vw" }}
+                          />
+                          {e.rsvp === "going" && (
+                            <img
+                              src={Going}
+                              className={Style.starImg}
+                              alt="RSVP Going badge"
+                            />
+                          )}
+                          {e.rsvp === "interested" && (
+                            <img
+                              src={StarImg}
+                              className={Style.starImg}
+                              alt="RSVP Intrested badge"
+                            />
+                          )}
+                        </span>
+                      );
+                    })}
+                </div>
+              </div>
             </div>
+
             <div className={Style.right}>
               {eventData?.event_image ? (
                 <img

@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 // import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Style from "../Styles/UserData.module.css";
-import logo from "../images/logo.svg";
-import searchIcon from "../images/Search.svg";
-import { useNavigate } from "react-router-dom";
-import HeaderUserComponent from "./HeaderUserComponent";
-import { IoMdClose } from "react-icons/io";
+// import logo from "../images/logo.svg";
+// import searchIcon from "../images/Search.svg";
+// import { useNavigate } from "react-router-dom";
+// import HeaderUserComponent from "./HeaderUserComponent";
+// import { IoMdClose } from "react-icons/io";
 import CalendarFilterComponent from "./CalendarFilterComponent";
 import NavHeaderComponent from "./NavHeaderComponent";
-import UserBadgeComponent from "./UserBadgeComponent";
-import { useSelector } from "react-redux";
-import { getRecentJoinedUsers } from "../api/services";
+// import UserBadgeComponent from "./UserBadgeComponent";
+// import { useSelector } from "react-redux";
+// import { getRecentJoinedUsers } from "../api/services";
 import RecentUserList from "../Pages/RecentUsersList";
 
 function EventFilterComponent({

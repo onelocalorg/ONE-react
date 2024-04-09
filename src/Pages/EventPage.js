@@ -1,13 +1,15 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import moment from "moment";
+// import moment from "moment";
 import DOMPurify from "dompurify";
 import calendarIcon from "../images/Group 33778.svg";
 import locationIcon from "../images/Group 18184.svg";
 import proImg from "../images/Oval Copy 5.png";
 import arrow from "../images/Shape.svg";
 import {
-  getAmountOfTickets,
+  // getAmountOfTickets,
   getTaxAndAmout,
   singleEvents,
   submitPurchaseData,
@@ -93,6 +95,7 @@ const EventPage = () => {
 
   useEffect(() => {
     fetchRsvp();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onLastPage = () => {
@@ -157,11 +160,11 @@ const EventPage = () => {
 
     fetchEventData();
   }, [eventId]);
-  const navigateToTicketPurchase = (link) => {
-    if (link) {
-      window.open(link, "_self");
-    }
-  };
+  // const navigateToTicketPurchase = (link) => {
+  //   if (link) {
+  //     window.open(link, "_self");
+  //   }
+  // };
 
   const getCardList = async () => {
     setloading(true);
@@ -242,30 +245,6 @@ const EventPage = () => {
 
       setShowRegister(false);
       return;
-    }
-
-    try {
-      setloading(true); // Start loading
-
-      // Fetch object which has the same price as data.ticket
-      const linktoTicketPurchase = ticketData.filter(
-        (item) => item.price === Number(data.ticket)
-      );
-
-      // API call to get the amount of tickets
-      const res = await getAmountOfTickets(
-        linktoTicketPurchase[0]?.id,
-        data.quantity
-      );
-
-      // Set link to navigate
-      navigateToTicketPurchase(res?.data?.payment_link);
-    } catch (error) {
-      console.error("Error during submission:", error);
-      // Handle the error appropriately
-      // e.g., show an error message to the user
-    } finally {
-      setloading(false); // End loading
     }
   };
 
@@ -691,13 +670,8 @@ const EventPage = () => {
                   {rsvpData?.rsvps &&
                     rsvpData.rsvps.map((e) => {
                       return (
-                        // <div style={{ color: "#000" }}>{e.user_id.pic}</div>
-                        <span className={Style.imgContainer} key={e.rsvp.id}>
-                          <img
-                            src={e.user_id.pic}
-                            className={Style.userImg}
-                            // style={{ width: "2vw", height: "2vw" }}
-                          />
+                        <span className={Style.imgContainer} key={e.user_id.id}>
+                          <img src={e.user_id.pic} className={Style.userImg} />
                           {e.rsvp === "going" && (
                             <img src={Going} className={Style.starImg} />
                           )}

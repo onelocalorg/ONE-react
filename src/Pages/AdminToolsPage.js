@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
-import DOMPurify from "dompurify";
 import calendarIcon from "../images/Group 33778.svg";
 import locationIcon from "../images/Group 18184.svg";
 import ticketIcon from "../images/ticket-icon.png";
@@ -12,7 +13,6 @@ import Loader from "../Components/Loader";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import ToasterComponent from "../Components/ToasterComponent";
 import NotFound from "./NotFound";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import HeaderComponent from "../Components/HeaderComponent";
@@ -21,12 +21,9 @@ import { useSelector } from "react-redux";
 import ExpenseItemComponent from "../Components/ExpenseItemComponent";
 import FinanceAddBtn from "../Components/FinanceAddBtn";
 import PayoutModalDialog from "../Components/PayoutModalDialog";
-import proImg from "../images/Oval Copy 5.png";
 import arrow from "../images/Shape.svg";
-import DateTimePicker from "../Components/DateTimePicker";
 import InputComponent from "../Components/InputComponent";
 import EditIcon from "../images/Edit icon.svg";
-import TextAreaComponent from "../Components/TextAreaComponent";
 import AddressMapApiComponent from "../Components/AddressMapApiComponent";
 import AddSvg from "../images/Add.svg";
 import ToasterSuccess from "../Components/ToasterSuccess";
@@ -39,7 +36,6 @@ import CreateTicketComponent from "../Components/CreateTicketComponent";
 import DatePickerHookForm from "../Components/DatePickerHookForm";
 import ReactQuillEditor from "../Components/ReactQuillEditor";
 import EditTicketComponent from "../Components/EditTicketComponent";
-import Form from "react-bootstrap/Form";
 import EditPayoutModalDialog from "../Components/EditPayoutModalDialog";
 import { eventFinance, cancelEvent } from "../api/services";
 import ToasterError from "../Components/ToasterComponent";
@@ -55,7 +51,6 @@ const AdminToolsPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const userInfo = useSelector((state) => state?.userInfo);
   const [showPayoutModal, setShowPayoutModal] = useState(false);
   const [addPayoutType, setAddPayoutType] = useState(null);
   const [sendPaument, setSendPayment] = useState(false);
@@ -76,14 +71,7 @@ const AdminToolsPage = () => {
     switch: yup.boolean(),
   });
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    watch,
-    control,
-    formState: { errors },
-  } = useForm({
+  const { register, handleSubmit, setValue, watch, control } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       mainAddress: {},
@@ -265,6 +253,8 @@ const AdminToolsPage = () => {
 
     try {
       const res = await adminToolUpdate(adminId, formData); // Wait for the promise to resolve
+      setEventData(res?.data);
+      // console.log("res adminToolUpdate", res);
       if (res.code === 200) {
         ToasterSuccess(`${res.message}`, 2000);
       }
@@ -415,8 +405,8 @@ const AdminToolsPage = () => {
                       control={control}
                       className={`${Style.wfull} ${Style.bgTransparent}`}
                       name="start_date"
-                      // maxDate={new Date(eventData.end_date)}
-                      minDate={new Date()}
+                      minDate={new Date(formVal.start_date)}
+                      maxDate={new Date(formVal.end_date)}
                     />
                   )}
                 </div>

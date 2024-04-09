@@ -4,12 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import saveBtn from "../images/Change Button.svg";
-import {
-  adminToolUpdate,
-  createTicket,
-  singleEvents,
-  updateTicket,
-} from "../api/services";
+import { singleEvents, updateTicket } from "../api/services";
 import ToasterComponent from "./ToasterComponent";
 import DatePickerHookForm from "./DatePickerHookForm";
 import calender from "../images/calender.svg";
@@ -36,14 +31,7 @@ const EditTicketComponent = ({
 
   const ticketData = ticketitem && ticketitem;
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    watch,
-    control,
-    formState: { errors },
-  } = useForm({
+  const { register, handleSubmit, control } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       name: ticketData?.name,

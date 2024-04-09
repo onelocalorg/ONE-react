@@ -605,7 +605,7 @@
 }
 .expenseItemTotal {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   /* margin-right: 30px; */
   font-weight: 500;
 }
@@ -758,13 +758,7 @@
     font-size: 10px;
     width: 70%;
   }
-
-  .commonArrowIcon >img {
-  
-    /* width: %;
-    height:100% */
-
-  }
+ 
 }
 
 /* style for admin tools */
@@ -1100,6 +1094,155 @@
   /* stroke: #fff !important; */
 }
 
+.rsvpBtnSelection{
+  /* width: 75%; */
+  /* width: 53%; */
+  background-color: #DB9791  ;
+  padding: 2% 5%;
+  display: flex;
+  justify-content: space-around;
+  border-radius: 2%;
+  border-radius: 15px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 4%;
+  /* display: flex; */
+  /* gap:3% */
+}
+
+.selectBtn{
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+  background-color: #EAB9B4;
+  padding:1% 5%;
+  border-radius: 7px;
+}
+
+.greenBorder{
+  border:2px solid #457A24;
+  padding:1% 5%;
+  border-radius: 7px;
+}
+
+.rsvpContaner{
+  background-color: #fff;
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 15px;
+  margin-top: 5%;
+}
+
+.rsvptxt{
+  color: rgb(33, 33, 33);
+  font-weight: 600;
+}
+
+.RsvpNumber{
+  color: rgb(33, 33, 33);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.rsvpHeader{
+  display: flex;
+  justify-content: space-between;
+  /* padding: 0px 4%; */
+  padding: 4% 12% 4%;
+}
+
+.RsvpSubText{
+  color: rgb(33, 33, 33);
+  font-weight: 600;
+  font-size: 0.7rem;
+}
+
+.userImg{
+  width:8vw;
+  height:8vw;
+  border-radius: 100%;
+  margin: 2%;
+}
+
+.imgContainer{
+  width:8vw;
+  height:8vw;
+  border-radius: 100%;
+  position: relative;
+  
+}
+
+.starImg{
+  /* width: 5vw;
+  height: 5vh;
+  top: 0;
+  right: 0;
+  position: absolute; */
+
+
+  position: absolute;
+  top: 5vw;
+  right: 1.5vw;
+  width:2vw;
+  height:2vw;;
+  background-color: #cbcaca;
+  color: #000;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10 !important;
+  
+}
+
+
+@media screen and (min-width: 768px){
+  .userImg{
+    width: 4vw;
+    height: 4vw;
+   
+  }
+  
+  .imgContainer{
+    width: 4vw;
+    height: 4vw;
+    border-radius: 100%;
+    position: relative;
+    
+  }
+  
+  .starImg{
+    /* width: 5vw;
+    height: 5vh;
+    top: 0;
+    right: 0;
+    position: absolute; */
+  
+  
+    position: absolute;
+    top: 1.8vw;
+    right: 0.8vw;
+    width:1vw;
+    height:1vw;;
+    background-color: #cbcaca;
+    color: #000;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10 !important;
+    
+  }
+
+  .rsvpBtnSelection{
+    width: 95%;
+    padding: 3% 5%;
+   
+  }
+
+}
 
 
 

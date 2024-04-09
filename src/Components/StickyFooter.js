@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useState } from "react";
 import Style from "../Styles/stickyFooter.module.css";
 import Plus from "../images/plus.svg";
 import ModalComponent from "./ModalCompnent";
@@ -9,11 +9,7 @@ import Graits from "../images/Graits.svg";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import SignUpMemberShipComponent from "./SignUpMemberShipComponent";
-import {
-  subscriptionsPlansApi,
-  packageListApi,
-  memberShipCheckoutAPI,
-} from "../api/services";
+import { packageListApi } from "../api/services";
 import Loader from "./Loader";
 import ToasterComponent from "./ToasterComponent";
 
@@ -76,7 +72,7 @@ function StickyFooter() {
     <>
       <div className={Style.stickyFooter}>
         <span className={Style.fonts} onClick={openModal}>
-          <img src={Plus} className={Style.img} />
+          <img src={Plus} className={Style.img} alt="View Option" />
         </span>
       </div>
       <ModalComponent
@@ -88,21 +84,21 @@ function StickyFooter() {
           <div style={{ display: "flex", gap: 10, flexDirection: "column" }}>
             <div className={Style.subContainer} onClick={OnEventBtnClick}>
               <span className={Style.greenBorder}>
-                <img src={Event} className={Style.ModalImg} />
+                <img src={Event} className={Style.ModalImg} alt="Event" />
                 <span>Event</span>
               </span>
             </div>
             <div className={Style.subContainer}>
               <span className={Style.greenBorder}>
-                <img src={Offer} className={Style.ModalImg} />
+                <img src={Offer} className={Style.ModalImg} alt="Offer" />
                 <span>Offer</span>
               </span>
               <span className={Style.greenBorder}>
-                <img src={Request} className={Style.ModalImg} />
+                <img src={Request} className={Style.ModalImg} alt="Request" />
                 <span>Request</span>
               </span>
               <span className={Style.greenBorder}>
-                <img src={Graits} className={Style.ModalImg} />
+                <img src={Graits} className={Style.ModalImg} alt="Graits" />
                 <span>Graits</span>
               </span>
             </div>

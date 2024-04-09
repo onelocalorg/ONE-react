@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState, useRef, useEffect } from "react";
 import ModalComponent from "./ModalCompnent";
 import Style from "../Styles/OfferPostComponent.module.css";

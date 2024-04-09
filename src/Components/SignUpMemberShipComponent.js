@@ -2,12 +2,7 @@ import React, { useState } from "react";
 import EventSvgr from "./SVGR/Event";
 import Player from "./SVGR/PlayerPopup";
 import ProducerMember from "./producerMembership";
-import {
-  subscriptionsPlansApi,
-  packageListApi,
-  memberShipCheckoutAPI,
-  cancelSubscription,
-} from "../api/services";
+import { memberShipCheckoutAPI, cancelSubscription } from "../api/services";
 import ModalComponent from "./ModalCompnent";
 import Style from "../Styles/stickyFooter.module.css";
 import Loader from "./Loader";
@@ -57,10 +52,6 @@ function SignUpMemberShipComponent({
     // setEventProduce(false);
   };
 
-  const closeProduceSetUpMemberShip = () => {
-    setProduceSetUpMemberShip(false);
-  };
-
   const loadMemberShipDetail = async (id) => {
     try {
       setIsLoading(true);
@@ -77,7 +68,6 @@ function SignUpMemberShipComponent({
     }
   };
 
-  console.log("select", select);
   return (
     <>
       <ModalComponent

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Style from "../Styles/MyEventPage.module.css";
 import { PrivateComponent } from "./PrivateComponent";

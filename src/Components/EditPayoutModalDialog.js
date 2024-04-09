@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unreachable */
 import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -5,11 +8,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import InputComponent from "./InputComponent";
 import Style from "../Styles/DialogForm.module.css";
 import closeIcon from "../images/close-icon.svg";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import { useEffect, useState, useRef } from "react";
 import {
   deletePayoutDelete,
-  expensePayoutDraft,
   expensePayoutEdit,
   getPayout,
   whoSearcher,
@@ -35,8 +37,6 @@ function EditPayoutModalDialog({
   setPayoutDetails,
   exp,
 }) {
-  const dispatch = useDispatch();
-
   const hiddenFileInput = useRef(null);
   const [images, setImages] = useState(exp.images);
   const [loader, setLoader] = useState(false);
@@ -123,10 +123,10 @@ function EditPayoutModalDialog({
     register,
     handleSubmit,
     setValue,
-    watch,
+    // watch,
     formState: { errors },
   } = useForm({
-    defaultValues: {},
+    // defaultValues: {},
     resolver: yupResolver(validationSchema),
     defaultValues: {
       who: "",
@@ -145,7 +145,7 @@ function EditPayoutModalDialog({
     },
   });
 
-  const formval = watch();
+  // const formval = watch();
 
   const [payouttypeVal, setPayoutTypeVal] = useState(
     addPayoutType.toLowerCase()
@@ -153,11 +153,11 @@ function EditPayoutModalDialog({
   const [currencyType, setCurrencyType] = useState(
     exp.type === "percentage" ? "%" : "$"
   );
-  const onSubmit = async (data) => {
-    setloadingFunc(true);
-  };
-  const [imageval, setImageVal] = useState(oldData?.images[0]?.imageUrl);
-  const [ImageToUpdate, setImageToUpdtate] = useState(oldData?.images[0]);
+  // const onSubmit = async (data) => {
+  //   setloadingFunc(true);
+  // };
+  // const [imageval, setImageVal] = useState(oldData?.images[0]?.imageUrl);
+  // const [ImageToUpdate, setImageToUpdtate] = useState(oldData?.images[0]);
 
   const handleFormSubmit = async (data) => {
     try {
@@ -332,22 +332,22 @@ function EditPayoutModalDialog({
     }
   };
 
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    console.log(selectedFile);
-    if (selectedFile) {
-      setImageToUpdtate(selectedFile);
-      const [fileNameWithoutExtension] = selectedFile["name"].split(".");
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        console.log(reader.result);
-        setImageVal(reader.result);
-      };
+  // const handleFileChange = (e) => {
+  //   const selectedFile = e.target.files[0];
+  //   console.log(selectedFile);
+  //   if (selectedFile) {
+  //     // setImageToUpdtate(selectedFile);
+  //     const [fileNameWithoutExtension] = selectedFile["name"].split(".");
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       console.log(reader.result);
+  //       // setImageVal(reader.result);
+  //     };
 
-      // handleFileUpload(type, reader.result, fileNameWithoutExtension);
-      reader.readAsDataURL(selectedFile);
-    }
-  };
+  //     // handleFileUpload(type, reader.result, fileNameWithoutExtension);
+  //     reader.readAsDataURL(selectedFile);
+  //   }
+  // };
 
   return (
     <div className="module-dialog">

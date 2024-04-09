@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import saveBtn from "../images/Change Button.svg";
-import { adminToolUpdate, createTicket, singleEvents } from "../api/services";
+import { createTicket } from "../api/services";
 import ToasterComponent from "./ToasterComponent";
 import DatePickerHookForm from "./DatePickerHookForm";
 import calender from "../images/calender.svg";
