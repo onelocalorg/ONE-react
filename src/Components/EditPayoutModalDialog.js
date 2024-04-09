@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unreachable */
 import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";

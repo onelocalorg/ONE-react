@@ -72,7 +72,7 @@ function StickyFooter() {
     <>
       <div className={Style.stickyFooter}>
         <span className={Style.fonts} onClick={openModal}>
-          <img src={Plus} className={Style.img} alt="Icon for Add Image" />
+          <img src={Plus} className={Style.img} alt="View Option" />
         </span>
       </div>
       <ModalComponent
@@ -98,7 +98,7 @@ function StickyFooter() {
                 <span>Request</span>
               </span>
               <span className={Style.greenBorder}>
-                <img src={Graits} className={Style.ModalImg} lt="Graits" />
+                <img src={Graits} className={Style.ModalImg} alt="Graits" />
                 <span>Graits</span>
               </span>
             </div>

@@ -92,7 +92,6 @@ const CreateEventPage = () => {
       confirmationMail: "",
     },
   });
-  console.log(errors);
   useEffect(() => {
     const errorMsg = Object.values(errors).map((item) => item?.message);
 

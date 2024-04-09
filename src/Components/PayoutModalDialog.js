@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import InputComponent from "./InputComponent";
 import Style from "../Styles/DialogForm.module.css";
 import closeIcon from "../images/close-icon.svg";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { expensePayoutDraft, getPayout, whoSearcher } from "../api/services";
 import { debounce } from "lodash";
 import ToasterComponent from "./ToasterComponent";
@@ -56,7 +56,6 @@ function PayoutModalDialog({
     register,
     handleSubmit,
     setValue,
-    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema),
@@ -194,19 +193,22 @@ function PayoutModalDialog({
   const [serachUserData, setSerachUserData] = useState([]);
 
   // Debounce the API call function
-  const debouncedSearchQuery = debounce(async (query) => {
-    if (query !== "") {
-      try {
-        const resp = await whoSearcher(query);
-        if (resp.success === true || resp.success === "true") {
-          setSerachUserData(resp?.data);
+
+  const debouncedSearchQuery = useCallback(() => {
+    debounce(async (query) => {
+      if (query !== "") {
+        try {
+          const resp = await whoSearcher(query);
+          if (resp.success === true || resp.success === "true") {
+            setSerachUserData(resp?.data);
+          }
+        } catch (error) {
+          ToasterComponent(`${error.message}`, 2000);
+          console.log(error);
         }
-      } catch (error) {
-        ToasterComponent(`${error.message}`, 2000);
-        console.log(error);
       }
-    }
-  }, 500); // 500 milliseconds delay
+    }, 500);
+  }, []); // 500 milliseconds delay
 
   // Effect to handle the actual debounced search query
   useEffect(() => {
@@ -217,7 +219,7 @@ function PayoutModalDialog({
     return () => {
       debouncedSearchQuery.cancel();
     };
-  }, [query]);
+  }, [query, debouncedSearchQuery]);
 
   const [list, setYourList] = useState([]);
 
@@ -455,15 +457,14 @@ function PayoutModalDialog({
             )}
 
             <div>
-              {console.log(
-                "ssss",
-                images.map((e) => {
-                  <img src={e.imgUrl}></img>;
-                })
-              )}
-
               {images.map((e) => {
-                return <img src={e.imgUrl} className={Style.userimage}></img>;
+                return (
+                  <img
+                    src={e.imgUrl}
+                    className={Style.userimage}
+                    alt="img"
+                  ></img>
+                );
               })}
             </div>
 

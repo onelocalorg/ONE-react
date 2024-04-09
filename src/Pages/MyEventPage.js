@@ -1,11 +1,10 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 import DOMPurify from "dompurify";
 import calendarIcon from "../images/Group 33778.svg";
 import locationIcon from "../images/Group 18184.svg";
-import ticketIcon from "../images/ticket-icon.png";
-import payoutIcon from "../images/payout-icon.png";
 import { singleEvents } from "../api/services";
 import Style from "../Styles/MyEventPage.module.css";
 import Loader from "../Components/Loader";
@@ -18,8 +17,6 @@ import { useScrollToTop } from "../hooks/useScrollToTop";
 import HeaderComponent from "../Components/HeaderComponent";
 import { PrivateComponent } from "../Components/PrivateComponent";
 import { useSelector } from "react-redux";
-import ExpenseItemComponent from "../Components/ExpenseItemComponent";
-import FinanceAddBtn from "../Components/FinanceAddBtn";
 import PayoutModalDialog from "../Components/PayoutModalDialog";
 import proImg from "../images/Oval Copy 5.png";
 import arrow from "../images/Shape.svg";
@@ -44,20 +41,12 @@ const MyEventPage = () => {
       const rsvp = await getRsvp(eventId);
       setRsvpData(rsvp.data);
       setLoading(false);
-      const showBorder = rsvp.data.rsvps.some(
-        (obj) =>
-          obj.user_id.id === userInfo?.userData?.userId && obj.rsvp === "going"
-      );
-      const showMaybeBorder = rsvp.data.rsvps.some(
-        (obj) =>
-          obj.user_id.id === userInfo?.userData?.userId &&
-          obj.rsvp === "interested"
-      );
     } catch (e) {}
   };
 
   useEffect(() => {
     fetchRsvp();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onLastPage = () => {
@@ -69,10 +58,7 @@ const MyEventPage = () => {
     quantity: yup.number(),
   });
   const {
-    register,
     handleSubmit,
-    setValue,
-    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -113,19 +99,8 @@ const MyEventPage = () => {
     };
 
     fetchEventData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventId]);
-
-  function showExpenseAdd() {
-    setAddPayoutType("expense");
-    // setShowPayoutModal(true);
-    console.log("Called showExpenseAdd");
-  }
-
-  function showPayoutAdd() {
-    setAddPayoutType("payout");
-    // setShowPayoutModal(true);
-    console.log("Called showPayoutAdd");
-  }
 
   function hideFunc() {
     setShowPayoutModal(false);
@@ -136,8 +111,6 @@ const MyEventPage = () => {
   const navigateToAdminToolsPage = () => {
     navigate(`/my-event/admintool/${eventId}`);
   };
-
-  const formVal = watch();
 
   if (error) {
     return <NotFound />;
@@ -417,13 +390,22 @@ const MyEventPage = () => {
                           <img
                             src={e.user_id.pic}
                             className={Style.userImg}
+                            alt="RSVP Users Profile"
                             // style={{ width: "2vw", height: "2vw" }}
                           />
                           {e.rsvp === "going" && (
-                            <img src={Going} className={Style.starImg} />
+                            <img
+                              src={Going}
+                              className={Style.starImg}
+                              alt="RSVP Going badge"
+                            />
                           )}
                           {e.rsvp === "interested" && (
-                            <img src={StarImg} className={Style.starImg} />
+                            <img
+                              src={StarImg}
+                              className={Style.starImg}
+                              alt="RSVP Intrested badge"
+                            />
                           )}
                         </span>
                       );
