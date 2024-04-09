@@ -8,7 +8,7 @@ import Style from "../Styles/DialogForm.module.css";
 import nextarrow from "../images/next-arrow.svg";
 import closeIcon from "../images/close-icon.svg";
 import { getUserByEmail, loginWithEmailApi } from "../api/services";
-import ToasterSuccess from "./ToasterSuccess";
+// import ToasterSuccess from "./ToasterSuccess";
 import ToasterError from "./ToasterComponent";
 import { setUserData } from "../Redux/slices/UserSlice";
 import { useDispatch } from "react-redux";

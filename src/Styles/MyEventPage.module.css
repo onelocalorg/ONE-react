@@ -605,7 +605,7 @@
 }
 .expenseItemTotal {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   /* margin-right: 30px; */
   font-weight: 500;
 }

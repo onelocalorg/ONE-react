@@ -1,5 +1,4 @@
 import React from "react";
-import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import Style from "../Styles/Card.module.css";
 

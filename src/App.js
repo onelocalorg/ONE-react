@@ -27,13 +27,9 @@ import AdminToolsPage from "./Pages/AdminToolsPage";
 import PostList from "./Pages/PostList";
 import CreateEventPage from "./Pages/CreateEventPage";
 import TicketCheckins from "./Pages/TicketCheckins";
-import { useSelector } from "react-redux";
 import AndroidAppDownload from "./Components/AndroidApp";
 
 function App() {
-  const state = useSelector(
-    (state) => state.showTicketCheckins.isCreateEventEnabled
-  );
   return (
     <div className="App">
       <BrowserRouter>

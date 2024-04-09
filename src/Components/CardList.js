@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import Style from "../Styles/CardList.module.css";
 import AddIcon from "../images/add-icon.svg";
 import InputComponent from "./InputComponent";

@@ -29,7 +29,11 @@ function ExpenseItemComponent({
                 onClick={openEditModal}
               />
             )}
-            <img src={payoutProfileIcon} className={Style.expenseItemImg} />
+            <img
+              src={payoutProfileIcon}
+              className={Style.expenseItemImg}
+              alt="profile icon"
+            />
           </div>
           <div>
             <div className={Style.expenseItemTitle}>{title}</div>
