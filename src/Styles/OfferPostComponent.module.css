@@ -19,7 +19,7 @@
     border-width: 1px;
     background-color: #EDEDED;
     flex:1
-  }
+}
 
   input.inputForm:focus {
     border-color: #000000;
@@ -43,10 +43,16 @@
   }
   
   
-  .textArea_postBody:focus {
-    width: 293px;
+ 
+  .textArea_postBody {
     flex:1;
+    
+  }
+
+  .textArea_postBody:focus {
+   
     outline: 1px solid #000000; 
+    padding: 1%;
   }
   
   .btnImg {
@@ -86,7 +92,7 @@
     align-items: center;
     align-items: baseline;
     font-size: 14px;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
   }
 
   .userIconWrapper {
@@ -134,4 +140,78 @@
     border: 0;
     outline: 0;
     width: 100%;
+  }
+
+  .flexGrow1{
+    flex: 1;
+  }
+
+  .mapInput{
+    width: 100%;
+  }
+
+  .EachContainer{
+    display: flex;
+     gap: 10px;
+    width: 100%
+  }
+
+
+  .valueContainer1{
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+ 
+
+  .Menucontainer{
+    display: flex;
+    width: 30%;
+    justify-content:center
+    /* gap:10 */
+  }
+
+  .menuText{
+    margin-left: 10px;
+  }
+  .greenMenuText{
+    margin-left: 10px;
+    color: #007112;
+  }
+
+  .addIcon{
+    background-color: #007112;
+    /* width:5vw;
+    height: 5vw; */
+    height: 40px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+
+  }
+
+  .addIconInnerStyle{
+    height: 20px;
+    width: 20px;
+    /* width: 2vw;
+    height: 2vw; */
+  }
+
+  .tagContainer{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .tag{
+    background-color: #007112;
+    color: #fff;
+    padding: 1% 2%;
+    border-radius: 18px;
+  }
+
+  .greenText{
+    color: #007112;
   }

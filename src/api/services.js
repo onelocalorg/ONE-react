@@ -598,3 +598,12 @@ export const createRsvp = async (id, body) => {
     return error;
   }
 };
+
+export const cratePost = async (body) => {
+  try {
+    const res = await axiosClient.post(`posts/create`, body);
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};

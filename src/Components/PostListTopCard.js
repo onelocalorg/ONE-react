@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import PostStyle from "../Styles/Post.module.css";
 import profileImg from "../images/post-profile-default.png";
+import OfferPostListComponent from "../Components/OfferPostComponent";
 
 function PostListTopCard() {
+  const [currentFocus, setCurrentFocus] = useState(null);
+  const [Modal, setModalClose] = useState(false);
+  const openModal = () => {
+    setModalClose(true);
+  };
   return (
     <div className={PostStyle.topCardMainDiv}>
       <div className={PostStyle.topSection}>
@@ -16,10 +22,42 @@ function PostListTopCard() {
       <div className={PostStyle.separaterLine}></div>
       <div className={PostStyle.bottomSection}>
         <div className={PostStyle.label}></div>
-        <div className={PostStyle.label}>Offer</div>
-        <div className={PostStyle.label}>Request</div>
-        <div className={PostStyle.label}>Gratitude</div>
+        <div
+          className={PostStyle.label}
+          onClick={() => {
+            setCurrentFocus("offer");
+            openModal();
+          }}
+        >
+          Offer
+        </div>
+        <div
+          className={PostStyle.label}
+          onClick={() => {
+            setCurrentFocus("request");
+            openModal();
+          }}
+        >
+          Request
+        </div>
+        <div
+          className={PostStyle.label}
+          onClick={() => {
+            setCurrentFocus("gratis");
+            openModal();
+          }}
+        >
+          Gratitude
+        </div>
       </div>
+      {
+        <OfferPostListComponent
+          setModalClose={setModalClose}
+          Modal={Modal}
+          currentFocus={currentFocus}
+          setCurrentFocus={setCurrentFocus}
+        />
+      }
     </div>
   );
 }

@@ -194,3 +194,7 @@ hr {
     border: 2px solid #fff;
   }
 }
+
+.pac-container{
+  z-index: 10000;
+}
