@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Verification</title>
+</head>
+<body>
+  <h1>Email Verification</h1>
+  <p>Thank you for verifying your email. You will be redirected shortly...</p>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Function to detect if the user is on a mobile device
+      function isMobileDevice() {
+        return /Mobi|Android/i.test(navigator.userAgent);
+      }
+
+      // Redirect based on the device type
+      if (isMobileDevice()) {
+        window.location.href = 'your-app-scheme://'; // Replace with your app's custom URL scheme
+      } else {
+        window.location.href = 'https://app.onelocal.one';
+      }
+    });
+  </script>
+</body>
+</html>
