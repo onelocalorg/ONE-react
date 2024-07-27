@@ -40,7 +40,7 @@
   },
   "scripts": {
     "start": "npx react-scripts start",
-    "build": "npx react-scripts --max_old_space_size=4096 build",
+    "build": "npx react-scripts --max_old_space_size=1536 build",
     "test": "npx react-scripts test",
     "eject": "npx react-scripts eject"
   },
