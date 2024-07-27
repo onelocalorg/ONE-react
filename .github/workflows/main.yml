@@ -28,3 +28,5 @@ jobs:
           REMOTE_HOST: ${{ secrets.PROD_EC2_HOST_DNS }}
           REMOTE_USER: ${{ secrets.PROD_EC2_USERNAME }}
           TARGET: ${{ secrets.PROD_EC2_TARGET_DIR }}
+          SCRIPT_AFTER: |
+            npm run build
