@@ -1,40 +1,30 @@
-name: React CI CD
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-# Controls when the action will run. 
-on:
-  # Triggers the workflow on push or pull request events but only for the master branch
-  push:
-    branches: [ main ]
+name: Node.js Manual deployment for Main branch >> app.onelocal.one
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+on: workflow_dispatch
+
 jobs:
-  # This workflow contains a single job called "build"
-  deploy:
-    # The type of runner that the job will run on
+  build:
     runs-on: ubuntu-latest
+
     strategy:
-       fail-fast: false
-       matrix:
+      matrix:
         node-version: [18.x]
-       
-    # Steps represent a sequence of tasks that will be executed as part of the job
+
     steps:
-    - name: Deploy using ssh
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.ONE_HOST }}
-        username: ${{ secrets.ONE_USER }}
-        key: ${{ secrets.ONE_KEY }}
-        port: ${{ secrets.ONE_PORT }}
-        script: |
-          cd /var/www/onelocal/event-admin-react/ONE-react
-          pwd
-          git pull origin main
-          git status
-          export NVM_DIR=~/.nvm
-          source ~/.nvm/nvm.sh
-          node -v
-          npm -v
-          npm i --legacy-peer-deps
-          npm list
-          npm run build
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - run: npm ci
+      - name: Deploy to PROD server
+        uses: easingthemes/ssh-deploy@main
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.PROD_EC2_SSH_KEY }}
+          REMOTE_HOST: ${{ secrets.PROD_EC2_HOST_DNS }}
+          REMOTE_USER: ${{ secrets.PROD_EC2_USERNAME }}
+          TARGET: ${{ secrets.PROD_EC2_TARGET_DIR }}
