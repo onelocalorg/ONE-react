@@ -1,38 +1,36 @@
+import DOMPurify from "dompurify";
+import { DateTime } from "luxon";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import moment from "moment";
-import DOMPurify from "dompurify";
-import calendarIcon from "../images/Group 33778.svg";
-import locationIcon from "../images/Group 18184.svg";
-import proImg from "../images/Oval Copy 5.png";
-import arrow from "../images/Shape.svg";
 import {
-  getAmountOfTickets,
+  getCardListAPI,
   getTaxAndAmout,
   singleEvents,
   submitPurchaseData,
-  getCardListAPI,
 } from "../api/services";
+import locationIcon from "../images/Group 18184.svg";
+import calendarIcon from "../images/Group 33778.svg";
+import proImg from "../images/Oval Copy 5.png";
+import arrow from "../images/Shape.svg";
 
-import Style from "../Styles/EventPage.module.css";
-import Loader from "../Components/Loader";
-import { useForm } from "react-hook-form";
-import InputComponent from "../Components/InputComponent";
-import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import ToasterComponent from "../Components/ToasterComponent";
-import InputWithPlusAndMinusComponent from "../Components/InputWithPlusMinusComp";
-import NotFound from "./NotFound";
-import UserConfirmDialog from "../Components/EmailModalDialog";
-import PurchaseModalDialog from "../Components/PurchaseModalDialog";
-import { useSelector } from "react-redux";
-import { useScrollToTop } from "../hooks/useScrollToTop";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import * as yup from "yup";
+import UserConfirmDialog from "../Components/EmailModalDialog";
 import HeaderComponent from "../Components/HeaderComponent";
+import InputComponent from "../Components/InputComponent";
+import InputWithPlusAndMinusComponent from "../Components/InputWithPlusMinusComp";
+import Loader from "../Components/Loader";
+import PurchaseModalDialog from "../Components/PurchaseModalDialog";
+import ToasterComponent from "../Components/ToasterComponent";
+import { useScrollToTop } from "../hooks/useScrollToTop";
+import Style from "../Styles/EventPage.module.css";
+import NotFound from "./NotFound";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
-
 
 const EventPage = () => {
   const { eventId } = useParams();
@@ -193,30 +191,6 @@ const EventPage = () => {
       setShowRegister(false);
       return;
     }
-
-    try {
-      setloading(true); // Start loading
-
-      // Fetch object which has the same price as data.ticket
-      const linktoTicketPurchase = ticketData.filter(
-        (item) => item.price === Number(data.ticket)
-      );
-
-      // API call to get the amount of tickets
-      const res = await getAmountOfTickets(
-        linktoTicketPurchase[0]?.id,
-        data.quantity
-      );
-
-      // Set link to navigate
-      navigateToTicketPurchase(res?.data?.payment_link);
-    } catch (error) {
-      console.error("Error during submission:", error);
-      // Handle the error appropriately
-      // e.g., show an error message to the user
-    } finally {
-      setloading(false); // End loading
-    }
   };
 
   const formVal = watch();
@@ -295,6 +269,8 @@ const EventPage = () => {
     return <NotFound />;
   }
 
+  const showTickets = false;
+
   return (
     <>
       <div className={Style.mainDiv}>
@@ -322,9 +298,9 @@ const EventPage = () => {
                     {/* {eventData
                       ? moment(eventData?.start_date).format("MMMM DD, YYYY")
                       : ""} */}
-                    {eventData?.start_date_label
-                      ? eventData?.start_date_label
-                      : ""}
+                    {DateTime.fromISO(eventData?.startDate).toLocaleString(
+                      DateTime.DATE_MED
+                    )}
                   </div>
                   <div className={Style.timing}>
                     {/* {eventData
@@ -338,9 +314,16 @@ const EventPage = () => {
                     {eventData
                       ? moment(eventData?.end_date).format("hh:mm A")
                       : ""} */}
-                    {eventData?.start_date_label
-                      ? `${eventData?.start_day_label}, ${eventData?.start_time_label} - ${eventData?.end_time_label}`
-                      : ""}
+                    {`${DateTime.fromISO(eventData?.startDate).toLocaleString(
+                      DateTime.TIME_SIMPLE
+                    )} ${
+                      eventData.endDate
+                        ? " - " +
+                          DateTime.fromISO(eventData?.endDate).toLocaleString(
+                            DateTime.TIME_SIMPLE
+                          )
+                        : ""
+                    }`}
                   </div>
                 </div>
               </div>
@@ -353,9 +336,9 @@ const EventPage = () => {
                   <img src={locationIcon} alt="locationIcon" />
                 </div>
                 <div className={Style.infoDiv}>
-                  <div className={Style.date}>{eventData?.address}</div>
+                  <div className={Style.date}>{eventData?.venue}</div>
                   <div className={Style.timing}>
-                    {eventData ? eventData?.full_address : ""}
+                    {eventData ? eventData?.address : ""}
                   </div>
                 </div>
               </div>
@@ -365,7 +348,7 @@ const EventPage = () => {
                 style={{
                   width: "90%",
                   cursor:
-                    userInfo?.userData?.userId === eventData?.eventProducer?.id
+                    userInfo?.userData?.userId === eventData?.host?.id
                       ? "pointer"
                       : "auto",
                 }}
@@ -376,25 +359,21 @@ const EventPage = () => {
                   style={{ overflow: "hidden" }}
                 >
                   <img
-                    src={
-                      eventData?.eventProducer?.pic
-                        ? eventData.eventProducer.pic
-                        : proImg
-                    }
+                    src={eventData?.host?.pic ? eventData.host.pic : proImg}
                     alt="producerIcon"
                     style={{
                       width: "100%",
                       height: "100%",
                       objectFit: "cover",
                       transition: "opacity 0.3s ease-in-out",
-                      opacity: eventData?.eventProducer?.pic ? 1 : 0.5, // Lower opacity for placeholder
+                      opacity: eventData?.host?.pic ? 1 : 0.5, // Lower opacity for placeholder
                     }}
                   />
                 </div>
                 <div className={Style.producerInfo}>
                   <div className={Style.proName}>
-                    {eventData ? eventData?.eventProducer?.first_name : ""}{" "}
-                    {eventData ? eventData?.eventProducer?.last_name : ""}
+                    {eventData ? eventData?.host?.firstName : ""}{" "}
+                    {eventData ? eventData?.host?.lastName : ""}
                   </div>
                   <div className={Style.timing}>
                     {/* {eventData ? eventData?.eventProducer?.user_type : ""} */}
@@ -408,143 +387,148 @@ const EventPage = () => {
 
               {/* //here we need to mapover the tickets array and need to make radio button available options */}
 
-              <form onSubmit={handleSubmit(onSubmit)} className={Style.descDiv}>
-                <div className={Style.desc}>Ticket list</div>
-                {ticketData &&
-                  ticketData?.map((ticketitem) => (
-                    <div
-                      key={ticketitem.id}
-                      style={{
-                        display: "flex",
-                        gap: "8px",
-                        justifyContent: "flex-start",
-                        alignItems: "center",
-                      }}
-                    >
-                      <InputComponent
-                        type={"radio"}
-                        register={register}
-                        inputRef={"ticket"}
-                        name={"ticket"}
-                        id={ticketitem.id}
-                        // value={Number(ticketitem?.price)}
-                        value={ticketitem?.id}
-                        style={{ height: "18px" }}
-                        disabled={
-                          ticketitem?.max_quantity_to_show === 0 ||
-                          eventData.cancelled
-                            ? true
-                            : false
-                        }
-                      />
-
-                      <label
-                        htmlFor={ticketitem.id}
+              {showTickets && (
+                <form
+                  onSubmit={handleSubmit(onSubmit)}
+                  className={Style.descDiv}
+                >
+                  <div className={Style.desc}>Ticket list</div>
+                  {ticketData &&
+                    ticketData?.map((ticketitem) => (
+                      <div
+                        key={ticketitem.id}
                         style={{
-                          cursor:
-                            ticketitem?.max_quantity_to_show === 0
-                              ? "no-drop"
-                              : "pointer",
+                          display: "flex",
+                          gap: "8px",
+                          justifyContent: "flex-start",
+                          alignItems: "center",
                         }}
-                        className={Style.labelText}
                       >
-                        {/* Label content here */}${ticketitem.price} -{" "}
-                        {ticketitem.name}
-                        {ticketitem?.max_quantity_to_show === 0 && (
-                          <span
-                            style={{
-                              fontWeight: "600",
-                              color: "red",
-                              padding: "0 7px",
-                              fontSize: "12px",
-                            }}
-                          >
-                            -- sold out --
-                          </span>
+                        <InputComponent
+                          type={"radio"}
+                          register={register}
+                          inputRef={"ticket"}
+                          name={"ticket"}
+                          id={ticketitem.id}
+                          // value={Number(ticketitem?.price)}
+                          value={ticketitem?.id}
+                          style={{ height: "18px" }}
+                          disabled={
+                            ticketitem?.max_quantity_to_show === 0 ||
+                            eventData.cancelled
+                              ? true
+                              : false
+                          }
+                        />
+
+                        <label
+                          htmlFor={ticketitem.id}
+                          style={{
+                            cursor:
+                              ticketitem?.max_quantity_to_show === 0
+                                ? "no-drop"
+                                : "pointer",
+                          }}
+                          className={Style.labelText}
+                        >
+                          {/* Label content here */}${ticketitem.price} -{" "}
+                          {ticketitem.name}
+                          {ticketitem?.max_quantity_to_show === 0 && (
+                            <span
+                              style={{
+                                fontWeight: "600",
+                                color: "red",
+                                padding: "0 7px",
+                                fontSize: "12px",
+                              }}
+                            >
+                              -- sold out --
+                            </span>
+                          )}
+                        </label>
+
+                        {formVal.ticket === ticketitem.id && (
+                          <>
+                            <InputWithPlusAndMinusComponent
+                              type="number"
+                              defaultValue={1}
+                              register={register}
+                              inputRef="quantity"
+                              boundary={ticketitem?.max_quantity_to_show}
+                              classNamebtn1={Style.iconCover}
+                              classNamebtn2={Style.iconCover}
+                              className={Style.counterInput}
+                              setValue={setValue}
+                            />
+                          </>
                         )}
-                      </label>
+                      </div>
+                    ))}
+                  <hr />
 
-                      {formVal.ticket === ticketitem.id && (
-                        <>
-                          <InputWithPlusAndMinusComponent
-                            type="number"
-                            defaultValue={1}
-                            register={register}
-                            inputRef="quantity"
-                            boundary={ticketitem?.max_quantity_to_show}
-                            classNamebtn1={Style.iconCover}
-                            classNamebtn2={Style.iconCover}
-                            className={Style.counterInput}
-                            setValue={setValue}
-                          />
-                        </>
-                      )}
-                    </div>
-                  ))}
-                <hr />
-
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                  <div className={Style.desc}>Price and Taxes</div>
-                  {confirmation === true && (
-                    <div style={{ padding: "8px 0" }}>
-                      <div className={Style.calcDiv}>
-                        <p
-                          className={`${Style.descDetail} ${Style.descDetailLbl}`}
-                        >
-                          Sub Total
-                        </p>
-                        <p
-                          className={`${Style.descDetail} ${Style.descDetailVal}`}
-                        >
-                          $
-                          {taxAmount?.sub_total
-                            ? Number(taxAmount?.sub_total).toFixed(2)
-                            : "0.00"}
-                        </p>
-                      </div>
-                      <div className={Style.calcDiv}>
-                        <p
-                          className={`${Style.descDetail} ${Style.descDetailLbl}`}
-                        >
-                          Platform Fee
-                        </p>
-                        <p
-                          className={`${Style.descDetail} ${Style.descDetailVal}`}
-                        >
-                          $
-                          {taxAmount?.platformFee
-                            ? taxAmount?.platformFee
-                            : "0.00"}
-                        </p>
-                      </div>
-                      <div className={Style.calcDiv}>
-                        <p
-                          className={`${Style.descDetail} ${Style.descDetailLbl}`}
-                        >
-                          Sales Tax
-                        </p>
-                        <p
-                          className={`${Style.descDetail} ${Style.descDetailVal}`}
-                        >
-                          ${taxAmount?.salesTax ? taxAmount?.salesTax : "0.00"}
-                        </p>
-                      </div>
-                      <div className={Style.calcDiv}>
-                        <p
-                          className={`${Style.descDetail} ${Style.descDetailLbl}`}
-                        >
-                          Payment Fee
-                        </p>
-                        <p
-                          className={`${Style.descDetail} ${Style.descDetailVal}`}
-                        >
-                          $
-                          {taxAmount?.paymentFee
-                            ? taxAmount?.paymentFee
-                            : "0.00"}
-                        </p>
-                      </div>
-                      {/* <div className={Style.calcDiv}>
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <div className={Style.desc}>Price and Taxes</div>
+                    {confirmation === true && (
+                      <div style={{ padding: "8px 0" }}>
+                        <div className={Style.calcDiv}>
+                          <p
+                            className={`${Style.descDetail} ${Style.descDetailLbl}`}
+                          >
+                            Sub Total
+                          </p>
+                          <p
+                            className={`${Style.descDetail} ${Style.descDetailVal}`}
+                          >
+                            $
+                            {taxAmount?.sub_total
+                              ? Number(taxAmount?.sub_total).toFixed(2)
+                              : "0.00"}
+                          </p>
+                        </div>
+                        <div className={Style.calcDiv}>
+                          <p
+                            className={`${Style.descDetail} ${Style.descDetailLbl}`}
+                          >
+                            Platform Fee
+                          </p>
+                          <p
+                            className={`${Style.descDetail} ${Style.descDetailVal}`}
+                          >
+                            $
+                            {taxAmount?.platformFee
+                              ? taxAmount?.platformFee
+                              : "0.00"}
+                          </p>
+                        </div>
+                        <div className={Style.calcDiv}>
+                          <p
+                            className={`${Style.descDetail} ${Style.descDetailLbl}`}
+                          >
+                            Sales Tax
+                          </p>
+                          <p
+                            className={`${Style.descDetail} ${Style.descDetailVal}`}
+                          >
+                            $
+                            {taxAmount?.salesTax ? taxAmount?.salesTax : "0.00"}
+                          </p>
+                        </div>
+                        <div className={Style.calcDiv}>
+                          <p
+                            className={`${Style.descDetail} ${Style.descDetailLbl}`}
+                          >
+                            Payment Fee
+                          </p>
+                          <p
+                            className={`${Style.descDetail} ${Style.descDetailVal}`}
+                          >
+                            $
+                            {taxAmount?.paymentFee
+                              ? taxAmount?.paymentFee
+                              : "0.00"}
+                          </p>
+                        </div>
+                        {/* <div className={Style.calcDiv}>
                         <p className={`${Style.descDetail}`}>Ticket Price</p>
                         <p className={`${Style.descDetail}`}>
                           {taxAmount?.ticket_price} $
@@ -562,44 +546,45 @@ const EventPage = () => {
                           {taxAmount?.service_tax}
                         </p>
                       </div>*/}
-                      <hr />
-                      <div className={Style.calcDiv}>
-                        <p
-                          className={`${Style.descDetail} ${Style.descDetailLbl}`}
-                        >
-                          Total
-                        </p>
-                        <p
-                          className={`${Style.descDetail} ${Style.descDetailVal}`}
-                        >
-                          ${taxAmount?.total ? taxAmount?.total : "0.00"}
-                        </p>
+                        <hr />
+                        <div className={Style.calcDiv}>
+                          <p
+                            className={`${Style.descDetail} ${Style.descDetailLbl}`}
+                          >
+                            Total
+                          </p>
+                          <p
+                            className={`${Style.descDetail} ${Style.descDetailVal}`}
+                          >
+                            ${taxAmount?.total ? taxAmount?.total : "0.00"}
+                          </p>
+                        </div>
                       </div>
-                    </div>
+                    )}
+                  </div>
+                  <hr />
+                  {!eventData.hasOwnProperty("cancelled") && (
+                    <button
+                      type="submit"
+                      className={Style.purchase}
+                      style={{
+                        marginTop: "10px",
+                        pointerEvents: !confirmation ? "none" : "",
+                      }}
+                    >
+                      {<span>BUY TICKET</span>}
+                      <span className={Style.arrowIcon}>
+                        <img src={arrow} alt="arrow" />
+                      </span>
+                    </button>
                   )}
-                </div>
-                <hr />
-                {!eventData.hasOwnProperty("cancelled") && (
-                  <button
-                    type="submit"
-                    className={Style.purchase}
-                    style={{
-                      marginTop: "10px",
-                      pointerEvents: !confirmation ? "none" : "",
-                    }}
-                  >
-                    {<span>BUY TICKET</span>}
-                    <span className={Style.arrowIcon}>
-                      <img src={arrow} alt="arrow" />
-                    </span>
-                  </button>
-                )}
-              </form>
+                </form>
+              )}
             </div>
             <div className={Style.right}>
-              {eventData?.event_image ? (
+              {eventData?.images?.length > 0 ? (
                 <img
-                  src={eventData?.event_image}
+                  src={eventData.images[0]?.url}
                   alt={"event_image"}
                   className={Style.eventImg}
                 />
@@ -612,10 +597,10 @@ const EventPage = () => {
                   <div
                     className={`${Style.aboutEventDetail} about-event-detail`}
                   >
-                    {eventData?.about ? (
+                    {eventData?.details ? (
                       <span
                         dangerouslySetInnerHTML={{
-                          __html: DOMPurify.sanitize(eventData?.about),
+                          __html: DOMPurify.sanitize(eventData?.details),
                         }}
                       />
                     ) : (

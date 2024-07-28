@@ -1,31 +1,28 @@
+import { DateTime } from "luxon";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import {
-  listEvents,
-  getUserDetails,
-  getFilterBadgeButtons,
-} from "../api/services";
+import { getUserDetails, listEvents } from "../api/services";
+import EventFilterComponent from "../Components/EventFilterComponent";
 import Style from "../Styles/UserData.module.css";
 import "../Styles/UserDataList.css";
-import moment from "moment";
-import EventFilterComponent from "../Components/EventFilterComponent";
 
 // tent image
 import tent from "../images/Vector.png";
 
 //location mark
-import locationPin from "../images/map-pin.svg";
 import Card from "../Components/Card";
+import locationPin from "../images/map-pin.svg";
 
-import Loader from "../Components/Loader";
-import { useScrollToTop } from "../hooks/useScrollToTop";
 import { useDispatch, useSelector } from "react-redux";
-import { setUserData } from "../Redux/slices/UserSlice";
-import { setCreateEventEnabled } from "../Redux/slices/TicketCheckinsSlice";
-import ViewAppModalDialog from "../Components/ViewAppModalDialog";
-import { deleteCookie, getCookie, setCookie } from "../utils/CookieManager";
 import HeaderFiltersComponent from "../Components/HeaderFiltersComponent";
+import Loader from "../Components/Loader";
+import ViewAppModalDialog from "../Components/ViewAppModalDialog";
+import { useScrollToTop } from "../hooks/useScrollToTop";
+import { setCreateEventEnabled } from "../Redux/slices/TicketCheckinsSlice";
+import { setUserData } from "../Redux/slices/UserSlice";
 import headerFilterData from "../utils/ButtonbadgeData";
+import { deleteCookie, getCookie, setCookie } from "../utils/CookieManager";
 
 function UserData() {
   const userInfo = useSelector((state) => state?.userInfo);
@@ -241,18 +238,18 @@ function UserData() {
       const res = await listEvents(1, initialDate);
 
       // const dataToShow = res?.data?.events;
-      const dataToShow = res?.data?.results;
+      const dataToShow = res?.data;
 
       // On scroll new request was not called so added this lines
-      if (dataToShow.length > 0) {
-        setPagination((prev) => ({
-          ...prev,
-          totalData: res?.data?.totalEvents,
-          page: 2,
-          totalPage: res?.data?.totalPage,
-        }));
-      }
-      setHasMore(page < totalPage + 1);
+      // if (dataToShow.length > 0) {
+      //   setPagination((prev) => ({
+      //     ...prev,
+      //     totalData: res?.data?.totalEvents,
+      //     page: 2,
+      //     totalPage: res?.data?.totalPage,
+      //   }));
+      // }
+      // setHasMore(page < totalPage + 1);
       ///////
       setIsLoading(false);
       setItems(dataToShow);
@@ -309,48 +306,56 @@ function UserData() {
   //   />
   // ));
   const itemUniqueArray = [];
-  const appEventData = filteredEvents.map((eventItem, index) => {
+  const appEventData = filteredEvents.map((event, index) => {
     // Create Unique Key for separation
-    const dateTimeKey = `${eventItem?.date_title} ${eventItem?.day_title}`;
-    let stringWithoutSpacesAndCommas = dateTimeKey.replace(/[\s,]/g, " ");
-    let resultString = stringWithoutSpacesAndCommas
-      .split(" ")
-      .join("")
-      .toLowerCase();
-    itemUniqueArray.push(resultString);
-    let occurrences = itemUniqueArray.filter(
-      (item) => item === resultString
-    ).length;
+    // const dateTimeKey = `${eventItem?.date_title} ${eventItem?.day_title}`;
+    // let stringWithoutSpacesAndCommas = dateTimeKey.replace(/[\s,]/g, " ");
+    // let resultString = stringWithoutSpacesAndCommas
+    //   .split(" ")
+    //   .join("")
+    //   .toLowerCase();
+    // itemUniqueArray.push(resultString);
+    // let occurrences = itemUniqueArray.filter(
+    //   (item) => item === resultString
+    // ).length;
 
     return (
       <React.Fragment key={index}>
-        {occurrences == 1 && (
-          <div>
-            <div className={`${Style.eventSticky} followMeBar`}>
-              <span className={Style.mainLabel}>{eventItem?.date_title}</span>
-              <span className={Style.subLabel}>({eventItem?.day_title})</span>
-            </div>
+        {/* {occurrences == 1 && ( */}
+        {/* <div> */}
+        {/* <div className={`${Style.eventSticky} followMeBar`}>
+            <span className={Style.mainLabel}>
+              {DateTime.fromISO(event?.postDate).toLocaleString(
+                DateTime.DATETIME_MED
+              )}
+            </span>
+            <span className={Style.subLabel}>({eventItem?.day_title})</span>
           </div>
-        )}
-        {eventItem?.events.map((event, indexinner) => (
-          <Card
-            eventId={event?.id}
-            key={indexinner}
-            indexinner={index}
-            tent={tent}
-            img={event?.event_image}
-            start_date={event?.start_date}
-            name={event?.name}
-            full_address={event?.full_address}
-            locationPin={locationPin}
-            ticket={event?.tickets}
-            address={event?.address}
-            start_date_label={event?.start_date_label}
-            start_time_label={event?.start_time_label}
-            eventProducer={event?.eventProducer}
-            cancelled={event?.cancelled}
-          />
-        ))}
+        </div> */}
+        {/* )} */}
+        {/* {eventItem?.events.map((event, indexinner) => ( */}
+        <Card
+          eventId={event?.id}
+          key={event.id}
+          indexinner={index}
+          tent={tent}
+          img={event?.images?.[0]?.url}
+          start_date={event?.startDate}
+          name={event?.name}
+          full_address={event?.address}
+          locationPin={locationPin}
+          ticket={event?.tickets}
+          address={event?.address}
+          start_date_label={DateTime.fromISO(event?.startDate).toLocaleString(
+            DateTime.DATE_MED
+          )}
+          start_time_label={DateTime.fromISO(event?.startDate).toLocaleString(
+            DateTime.TIME_SIMPLE
+          )}
+          eventProducer={event?.eventProducer}
+          cancelled={event?.cancelled}
+        />
+        {/* ))} */}
       </React.Fragment>
     );
   });
@@ -367,7 +372,7 @@ function UserData() {
         // filter={items ? true : false}
         setFilterData={setFilterData}
         filterData={filterData}
-        isCalenderVisible={true}
+        isCalenderVisible={false}
         isCreateEventEnabled={isCreateEventEnabled}
         RecentUserListVisible
         child={<HeaderFiltersComponent data={headerFilterData} />}

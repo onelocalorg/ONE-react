@@ -15,6 +15,7 @@
     "axios": "^1.4.0",
     "bootstrap": "^5.3.1",
     "dompurify": "^3.0.8",
+    "luxon": "^3.4.4",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.45",
     "react": "^18.2.0",
@@ -40,7 +41,7 @@
   },
   "scripts": {
     "start": "npx react-scripts start",
-    "build": "npx react-scripts --max_old_space_size=1536 build",
+    "build": "npx react-scripts --max_old_space_size=2048 build",
     "test": "npx react-scripts test",
     "eject": "npx react-scripts eject"
   },

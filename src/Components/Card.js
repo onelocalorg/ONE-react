@@ -1,5 +1,4 @@
 import React from "react";
-import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import Style from "../Styles/Card.module.css";
 
@@ -31,7 +30,7 @@ const Card = ({
     <div key={index} className={Style.cardMainDiv} onClick={ticketPage}>
       <img src={tent} alt="event" className={Style.tent} />
 
-      <img src={img} className={Style.heroImage} alt="event" />
+      {img && <img src={img} className={Style.heroImage} alt="event" />}
 
       <div className={Style.infoDiv}>
         <div className={Style.dateTime}>

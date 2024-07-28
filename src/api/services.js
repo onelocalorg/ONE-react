@@ -49,10 +49,7 @@ export const getUserList = async () => {
 
 export const listEvents = async (page, data) => {
   try {
-    const response = await axiosClient.post(
-      `/open/events?limit=8&page=${page}`,
-      data
-    );
+    const response = await axiosClient.get(`/events?limit=8`, data);
     // console.log(response);
     return response.data;
   } catch (error) {
@@ -62,7 +59,7 @@ export const listEvents = async (page, data) => {
 // baseUrl =https://app.onelocal.one/api/v1
 export const singleEvents = async (eventId) => {
   try {
-    const response = await axiosClient.get(`/open/events/${eventId}`);
+    const response = await axiosClient.get(`/events/${eventId}`);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -290,7 +287,7 @@ export const updateUserProfileApi = async (userId, data) => {
 
 export const myEventsList = async (page, data, userId) => {
   try {
-    const response = await axiosClient.post(
+    const response = await axiosClient.get(
       `/events/list/${userId}?limit=8&page=${page}`,
       data
     );

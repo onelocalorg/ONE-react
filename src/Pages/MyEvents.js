@@ -1,23 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { myEventsList, getUserDetails } from "../api/services";
-import Style from "../Styles/MyTicketsData.module.css";
-import moment from "moment";
+import { getUserDetails, myEventsList } from "../api/services";
 import MyEventFilterComponent from "../Components/MyEventFilterComponent";
 import { setCreateEventEnabled } from "../Redux/slices/TicketCheckinsSlice";
+import Style from "../Styles/MyTicketsData.module.css";
 
 // tent image
 import tent from "../images/Vector.png";
 
 //location mark
-import locationPin from "../images/map-pin.svg";
 import Card from "../Components/Card";
+import locationPin from "../images/map-pin.svg";
 
-import Loader from "../Components/Loader";
-import { useScrollToTop } from "../hooks/useScrollToTop";
 import { useDispatch, useSelector } from "react-redux";
-import { setUserData } from "../Redux/slices/UserSlice";
+import Loader from "../Components/Loader";
 import { PrivateComponent } from "../Components/PrivateComponent";
+import { useScrollToTop } from "../hooks/useScrollToTop";
+import { setUserData } from "../Redux/slices/UserSlice";
 
 function MyEvents() {
   const userInfo = useSelector((state) => state?.userInfo);
