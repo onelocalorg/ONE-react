@@ -49,7 +49,7 @@ export const getUserList = async () => {
 
 export const listEvents = async (page, data) => {
   try {
-    const response = await axiosClient.get(`/events?limit=8`, data);
+    const response = await axiosClient.get(`/events?past=0`, data);
     // console.log(response);
     return response.data;
   } catch (error) {
